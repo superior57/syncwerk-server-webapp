@@ -1,0 +1,403 @@
+.card-header {
+  .actions {
+    margin-left: 15px;
+    right: 27px;
+    top: 26px;
+  }
+}
+
+.dropdown-margin {
+    margin-top: 35px;
+}
+
+.child-file .breadcrumb {
+  border-bottom: none;
+  margin-bottom: 0px;
+  margin-right: 40px;
+}
+
+.child-file .breadcrumb-container {
+  border-bottom: 1px solid #ebebeb;
+  margin-bottom: 1rem;
+}
+
+.dropdown-divider {
+  height: 1.5px;
+  margin: 0.5rem 0;
+  overflow: hidden;
+  background-color: #f2f2f2;
+}
+
+.btn {
+  margin-right: 5px;
+  & i {
+    margin-right: 5px;
+  }
+}
+
+.dropdown-menu {
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+}
+
+.file-drop-container {
+  file-drop ::ng-deep {
+    .drop-zone {
+      min-height: calc(100vh - 13rem);
+      border: darkgray dashed 1.5px;
+      border-radius: 3px;
+      .content {
+        padding: 35vh 30px 35vh;
+        color: darkgray;
+        h3 {
+          color: darkgray;
+        }
+      }
+    }
+    .over {
+      background-color: transparent;
+    }
+  }
+}
+
+.slider {
+  -webkit-appearance: none;
+  // width: 100%;
+  margin-top: 13px;
+  margin-right: 10px;
+  height: 2px;
+  border-radius: 5px;
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+
+input[type=range] {
+  /*removes default webkit styles*/
+  -webkit-appearance: none;
+
+  /*fix for FF unable to apply focus style bug */
+  // border: 1px solid white;
+
+  /*required for proper track sizing in FF*/
+  width: 90%;
+
+  margin-right: 10px;
+  margin-top: -13px;
+  @media (max-width:600px) {
+    margin-right: -40px;
+  }
+}
+input[type=range]::-webkit-slider-runnable-track {
+  width: 47%;
+  height: 2px; // 5
+  background: #ddd;
+  border: none;
+  border-radius: 3px;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  border: none;
+  height: 12px;
+  width: 12px;
+  border-radius: 0px;
+  background: #0067b3;;
+  margin-top: -4px;
+}
+input[type=range]:focus {
+  outline: none;
+}
+input[type=range]:focus::-webkit-slider-runnable-track {
+  background: #ccc;
+}
+
+input[type=range]::-moz-range-track {
+  width: 64px;
+  height: 5px;
+  background: #ddd;
+  border: none;
+  border-radius: 3px;
+}
+input[type=range]::-moz-range-thumb {
+  border: none;
+  height: 12px;
+  width: 12px;
+  border-radius: 0px;
+  background: #0067b3;;
+}
+
+/*hide the outline behind the border*/
+input[type=range]:-moz-focusring{
+  outline: 1px solid white;
+  outline-offset: -1px;
+}
+
+input[type=range]::-ms-track {
+  width: 64px;
+  height: 5px;
+
+  /*remove bg colour from the track, we'll use ms-fill-lower and ms-fill-upper instead */
+  background: transparent;
+
+  /*leave room for the larger thumb to overflow with a transparent border */
+  border-color: transparent;
+  border-width: 6px 0;
+
+  /*remove default tick marks*/
+  color: transparent;
+}
+input[type=range]::-ms-fill-lower {
+  background: #d3d3d3; // 777
+  border-radius: 10px;
+}
+input[type=range]::-ms-fill-upper {
+  background: #ddd;
+  border-radius: 10px;
+}
+input[type=range]::-ms-thumb {
+  border: none;
+  height: 12px;
+  width: 12px;
+  border-radius: 0px;
+  background:#0067b3;;
+}
+input[type=range]:focus::-ms-fill-lower {
+  background: #888;
+}
+input[type=range]:focus::-ms-fill-upper {
+  background: #ccc;
+}
+
+.file-drop-bottom {
+  file-drop ::ng-deep {
+    .drop-zone {
+      border-radius: 2px;
+      transition: border-color 300ms, background-color 300ms;
+      min-height: 50px;
+      background-color: #f6f6f6;
+      border: 0;
+      height: 140px;
+      &:hover {
+        background-color: #eeeeee;
+      }
+      .content {
+        padding: 15vh 30px 15vh;
+        span {
+          font-size: 1.2rem;
+          color: #969696;
+          display: inline-block;
+          border-radius: 2px;
+          transition: color 300ms, box-shadow, 300ms;
+          padding: 1rem 1.5rem;
+          background-color: #FFFFFF;
+          box-shadow: 0 4px 5px rgba(0, 0, 0, 0.1);
+        }
+      }
+    }
+  }
+}
+
+.encrypt {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.tab-container {
+  .actions {
+    position: absolute;
+    margin-left: 15px;
+    top: 35px;
+    right: 30px;
+  }
+}
+
+:host ::ng-deep {
+  app-empty-item {
+    .card {
+      margin-bottom: 0;
+    }
+  }
+  pagination {
+    ul.pagination {
+      padding-right: 2rem;
+      justify-content: flex-end;
+    }
+  }
+}
+
+.tips-drop {
+  font-size: 1.15rem;
+  padding: 2rem;
+  border: 1px dashed #e6e6e6;
+  text-align: center;
+  color: #9E9E9E;
+  margin-top: 2rem;
+}
+
+.data-table__header {
+  &.child-file-repos {
+    display: none;
+    position: absolute;
+    top: 38px;
+    left: 0;
+    width: 100%;
+    background: #fff;
+    padding: 0 2rem !important;
+    z-index: 9;
+    .data-table__filter {
+      display: flex;
+      max-width: 100%;
+      margin-bottom: 0;
+      &:before {
+        content: '';
+      }
+    }
+  }
+  &.child-file-group {
+    .data-table__filter {
+      margin-right: 11px;
+      width: 100%;
+      max-width: 100%;
+      &.form-group {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+.button-actions {
+  margin-bottom: 2rem;
+}
+
+.data-table__header {
+  .data-table__filter {
+    margin-right: 10px;
+    width: 100%;
+    max-width: 100%;
+  }
+  .row-selector {
+    min-width: 11rem;
+  }
+  .data-table_buttons {
+    margin: -2px 0 0 0px;
+    text-align: right;
+    min-width: 5rem;
+  }
+}
+
+.count-items-checked {
+  font-weight: bold;
+  margin-right: 1rem;
+  color: #9E9E9E;
+}
+
+.content__title {
+  h1 {
+    text-transform: inherit;
+    width: 50%;
+    overflow: hidden;
+    .icon-back-folders {
+      font-size: 1.4rem;
+      margin-right: 5px;
+      cursor: pointer;
+    }
+  }
+}
+
+.form-group {
+  align-self: center;
+  &.items--2{
+    margin-top: 4px;
+  }
+}
+
+.items--1{
+  margin-top: 4px;
+}
+
+.push-right {
+  flex: 1;
+}
+
+.margin-right-25px {
+  margin-right: 25px !important;
+  @media (max-width:1300px) {
+    margin-left: 15px;
+  }
+}
+
+.margin-right-15px {
+  margin-right: 15px !important;
+}
+
+.btn--custom{
+  i.fa.fa-star{
+    font-size: 1.2rem;
+    margin-right: 4px;
+  }
+}
+
+i.actions__item.zmdi.zmdi-time {
+  margin-top: -4px;
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+.fa-disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+
+
+.non__check__options{
+  display: flex;
+	// flex-wrap: wrap;
+	margin-left: -10px;
+  margin-top: -10px;
+  width: 100%;
+}
+
+.check__list__options{
+  display: flex;
+	// flex-wrap: wrap;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.actions.list-grid-custom {
+  display: flex;
+  flex-direction: row;
+  // flex-wrap: wrap;
+  top:12px;
+}
+
+
+@media (max-width: 768px){
+  .fl--custom{
+    flex-wrap: wrap;
+  }
+  .data-table_buttons.actions.form-group.items--5{
+    position: absolute;
+    top: 29px;
+    right: 2%;
+  }
+  .row-selector.form-group.items--4{
+    position: absolute;
+    top: 15px;
+    right: 12%;
+  }
+  header.content__title h1{
+    width: 38%;
+  }
+}
+
+@media (max-width: 442px){
+  .row-selector.form-group.items--4{
+    position: static !important;
+  }
+}
+
+
+

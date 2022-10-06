@@ -1,0 +1,132 @@
+<header class="content__title">
+  <h1 [innerHTML]="'KANBAN.TITLE' | translate"></h1>
+  <small [innerHTML]="'KANBAN.SUBTITLE' | translate"></small>
+  <div class="actions list-grid-custom">
+    <div class="list__grid__button">
+      <app-list-grid-button (onChangeViewMode)="toggleView($event)"></app-list-grid-button>
+    </div>
+  </div>
+</header>
+
+<div class="card">
+  <div class="card-block">
+    <div class="data-table__header d-flex justify-content-betwwen fl--custom">
+      <div class="form-group">
+        <button (click)="openAddProjectModal()" class="btn btn-secondary waves-effect btn--icon-text mr-25px">
+          {{'KANBAN.BUTTONS.CREATE_PROJECT' | translate}}
+        </button>
+      </div>
+      <div class="form-group data-table__filter">
+        <input [(ngModel)]="projectName" [placeholder]="'SEARCHS.PROJECTS' | translate" class="form-control" />
+        <i class="form-group__bar"></i>
+      </div>
+      <div class="row-selector">
+        <app-row-selector (changed)="($event)"></app-row-selector>
+      </div>
+    </div>
+    <app-processing *ngIf="loadingProjects"></app-processing>
+    <!-- LIST VIEW -->
+    <table *ngIf="isListView && !loadingProjects" class="table table-hover">
+      <thead>
+        <tr>
+          <th>{{ 'GROUP_MANAGEMENT.TABLE_HEADERS.NAME' | translate }}</th>
+          <th>{{ 'GROUP_MANAGEMENT.ROLE_OWNER' | translate }}</th>
+          <th>{{ 'GROUP_MANAGEMENT.TABLE_HEADERS.ACTIONS' | translate }}</th>
+        </tr>
+      </thead>
+      <tr class="card-list--view" *ngFor="let project of projects | filter_kanban:projectName:'project_name'">
+        <td routerLink="project/{{project.id}}">
+          <img *ngIf="project.image" class="project-img" [src]="project.image" alt="">
+          <i *ngIf="!project.image" class="project-img fas fa-image text-center bg-faded align-middle" style="font-size: 32px; line-height: 75px"></i>
+          <span class="project-name ml-2">{{project.project_name}}</span>
+        </td>
+        <td>
+          <img *ngIf="!project.owner.is_default_avatar" class="owner-avatar"
+                                                        [src]="project.owner.avatar_url" onError="this.src = '../../../../../assets/images/placeholder-profile.png'" />
+          <i *ngIf="project.owner.is_default_avatar" class="fas fa-user-circle align-middle" style="font-size: 20px;"></i>
+          <div class="d-inline-flex flex-column ml-2 project-owner-name align-middle">
+            <span>{{project.owner.name}}</span>
+            <span>{{'KANBAN.KANBAN_LIST.OWNER' | translate }}</span>
+          </div>
+        </td>
+        <td class="action-buttons">
+          <span *ngIf="project.writable" data-toggle="tooltip" [title]="'KANBAN.BUTTONS.RENAME' | translate" class="fal fa-pencil-alt actions__item" (click)="openRenameProjectModal(project)"></span>
+          <span data-toggle="tooltip" [title]="'KANBAN.BUTTONS.DELETE' | translate" class="fal fa-trash actions__item" (click)="openRemoveProjectModal(project)"></span>
+        </td>
+        <td>
+          <span class="fal fa-eye mr-3 view-project cursor-pointer" routerLink="project/{{project.id}}"></span>
+        </td>
+      </tr>
+    </table>
+    <!-- END LIST VIEW -->
+
+    <!-- GRID VIEW -->
+    <div *ngIf="!isListView && !loadingProjects">
+      <div class="row projects-container">
+        <div class="d-flex flex-wrap">
+          <div class="card grid--view mr-3" *ngFor="let project of projects | filter_kanban:projectName:'project_name'">
+              <button *ngIf="project.writable" class="btn btn-secondary waves-effect btn--custom" data-toggle="tooltip" [title]="'KANBAN.BUTTONS.RENAME' | translate"
+                (click)="openRenameProjectModal(project)">
+                <i class="fal fa-lg fa-pencil-alt ico--custom"></i>
+              </button>
+	      <!-- BUTTON SHARE -->
+	      <button (click)="openShareProjectModal(project)"
+		   *ngIf="project.owner.email == userInfo.email"
+		   class="btn btn-secondary waves-effect btn--custom"
+		   data-toggle="tooltip" [title]="'TOOLTIPS.SHARE' | translate: params">
+		<i class="fal fa-share-alt"></i>
+	      </button>
+              <button class="btn btn-secondary waves-effect btn--custom" data-toggle="tooltip" [title]="'KANBAN.BUTTONS.DELETE' | translate"
+                (click)="openRemoveProjectModal(project)">
+                <i class="fal fa-lg fa-trash-alt ico--custom"></i>
+              </button>
+            <img *ngIf="project.image" class="project-img" [src]="project.image" alt="project-image" routerLink="project/{{project.id}}">
+	    <i  *ngIf="!project.image" class="project-img fas fa-image text-center bg-faded" style="font-size: 64px; line-height: 172px" routerLink="project/{{project.id}}"></i>
+            <div class="project-details" routerLink="project/{{project.id}}">
+              <span class="project-name">{{project.project_name}}</span>
+              <div class="project-owner-details">
+                <img *ngIf="!project.owner.is_default_avatar" class="owner-avatar"
+                [src]="project.owner.avatar_url" onError="this.src = '../../../../../assets/images/placeholder-profile.png'" />
+                <i *ngIf="project.owner.is_default_avatar" class="fas fa-user-circle" style="font-size: 20px;"></i>
+                <div class="d-flex flex-column owner-name">
+                  <span>{{project.owner.name}}</span>
+                  <span>{{'KANBAN.KANBAN_LIST.OWNER' | translate }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- create project card -->
+          <div *ngIf="projects.length">
+            <div (click)="openAddProjectModal()" class="card grid--view create--project">
+              <div class="card-body d-flex align-items-center flex-column">
+                <div class="center-img" style="font-size: 20px;">
+                  <i class="fal fa-plus text-center fa-gray" style="transition: all 0.5s "></i>
+                </div>
+                <span>{{'KANBAN.BUTTONS.CREATE_PROJECT' | translate}}</span>
+              </div>
+            </div>
+          </div>
+          <!-- #create project card -->
+        </div>
+      </div>
+      <div>
+      </div>
+    </div>
+    <!-- END GRID VIEW -->
+
+    <!-- EMPTY ITEM -->
+    <app-empty-item *ngIf="!loadingProjects && !projects.length"
+      [messageTitle]="'KANBAN.KANBAN_LIST.NO_PROJECT_CREATED' | translate"
+      [messageSub]="'KANBAN.KANBAN_LIST.NO_PROJECT_SUBTITLE' | translate">
+    </app-empty-item>
+  </div>
+  <!-- #EMPTY ITEM -->
+</div>
+
+
+<div class="data-table__footer">
+  <div class="footer__wrapper">
+    <pagination [itemsPerPage]="pagination.itemsPerPage" [boundaryLinks]="true" [maxSize]="maxSize" [totalItems]="20" >
+      </pagination>
+  </div>
+</div>

@@ -1,0 +1,151 @@
+<header class="header">
+  <h1>
+    <a data-toggle="tooltip" [title]="logoTooltip" routerLink="/">
+      <img class="logo-image" height="30rem" [src]="logoURL" alt="" (error)="logoErrorHandler($event)">
+    </a>
+  </h1>
+  <div class="header__logo hidden-sm-down">
+    <strong class="filename">{{ fileDetails.file_name | CutStringAny: 100: 85: 10 }}</strong>
+    <div style="font-weight: 500">
+      <span [innerHTML]="'SHARE_LINK.SHARE_BY' | translate: params"></span>: {{ fileDetails.shared_by.user_name }}
+    </div>
+  </div>
+  <ul class="top-nav">
+    <li>
+      <button class="btn btn-success btn--icon-text waves-effect" (click)="downloadRevision()">
+        <span [innerHTML]="'BUTTONS.DOWNLOAD' | translate: params"></span> ({{ fileDetails.file_size | customFileSize
+        }})</button>
+    </li>
+  </ul>
+  <div class="clear-both"></div>
+  <select2 class="header-language" [data]="select2TranslateData" [options]="translateOptions" [value]="choosenLanguage"
+    (valueChanged)="switchLanguage($event)"></select2>
+</header>
+
+<section class="content content--full">
+  <header class="content__title" *ngIf="showCodeMirrorPreview">
+    <div class="actions">
+      <div class="form-group form-group--select form-inline">
+        <label [innerHTML]="'SHARE_LINK.DOWNLOAD_PREVIEW_FILE.ENCODING' | translate: params">:</label>
+        <div class="select">
+          <select [(ngModel)]="fileDetails.encoding" class="form-control">
+            <option *ngFor="let encOpt of fileDetails.file_encoding_list" [selected]="fileDetails.encoding === encOpt">{{
+              encOpt }}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </header>
+  <!-- Download button -->
+  <div class="card card__download text-center" *ngIf="showDownloadButton">
+    <div class="card-block">
+      <div class="row">
+        <div class="col-sm-12">
+          <button class="btn btn-success btn--icon-text waves-effect" (click)="downloadFile()">
+            <span [innerHTML]="'BUTTONS.DOWNLOAD' | translate"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Preview area -->
+  <div class="card card__preview" *ngIf="showCodeMirrorPreview">
+    <div class="card-block">
+      <div class="row">
+        <div class="col-sm-12">
+          <ngx-codemirror [(ngModel)]="fileDetails.file_content" [options]="codeMirrorConfig">
+          </ngx-codemirror>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Mark down preview -->
+  <div class="card card__preview" *ngIf="showMarkdownPreview">
+    <div class="card-block">
+      <div class="row">
+        <div class="col-sm-12">
+          <markdown [data]="fileDetails.file_content">
+          </markdown>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- HTML preview -->
+  <div class="card card-preview" *ngIf="showHTMLPreview">
+    <div class="card-block">
+      <div class="col-sm-12" *ngIf="!editMode">
+        <div [innerHTML]="fileDetails.file_content">
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Image preview -->
+  <div class="row" *ngIf="showImagePreview">
+    <div class="col-md-12 image-preview">
+      <img [src]="fileDetails.raw_path" alt="">
+    </div>
+  </div>
+  <!-- PDF preview -->
+  <div class="card card__preview" *ngIf="showPDFPreview">
+    <div class="card-block">
+      <div class="row">
+        <div class="col-sm-12">
+          <pdf-viewer [src]="fileDetails.raw_path" [render-text]="false" (after-load-complete)="onPDFLoadingComplete($event)"></pdf-viewer>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Audio player -->
+  <div class="card" *ngIf="showAudioPreview">
+    <div class="card-block">
+      <div class="row">
+        <div class="col-sm-12">
+          <vg-player style="height: 50px;">
+            <vg-controls>
+              <vg-play-pause></vg-play-pause>
+              <vg-time-display vgProperty="current" vgFormat="mm:ss"></vg-time-display>
+              <vg-scrub-bar [vgSlider]="false" [vgFor]="my-media">
+                <vg-scrub-bar-current-time [vgFor]="my-media"></vg-scrub-bar-current-time>
+                <!-- <vg-scrub-bar-buffering-time [vgFor]="my-media"></vg-scrub-bar-buffering-time> -->
+              </vg-scrub-bar>
+              <vg-time-display vgProperty="total" vgFormat="mm:ss"></vg-time-display>
+              <vg-mute></vg-mute>
+              <vg-volume></vg-volume>
+              <vg-fullscreen></vg-fullscreen>
+            </vg-controls>
+
+            <audio #media [vgMedia]="media" id="my-media" preload="auto">
+              <source [src]="fileDetails.raw_path">
+            </audio>
+          </vg-player>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- video player -->
+  <div class="card" *ngIf="showVideoPreview">
+    <div class="card-block">
+      <div class="row">
+        <div class="col-sm-12">
+          <vg-player>
+            <vg-controls>
+              <vg-play-pause></vg-play-pause>
+              <vg-time-display vgProperty="current" vgFormat="mm:ss"></vg-time-display>
+              <vg-scrub-bar [vgSlider]="false" [vgFor]="my-media">
+                <vg-scrub-bar-current-time [vgFor]="my-media"></vg-scrub-bar-current-time>
+                <!-- <vg-scrub-bar-buffering-time [vgFor]="my-media"></vg-scrub-bar-buffering-time> -->
+              </vg-scrub-bar>
+              <vg-mute></vg-mute>
+              <vg-volume></vg-volume>
+              <vg-fullscreen></vg-fullscreen>
+            </vg-controls>
+            <video #myMedia [vgMedia]="myMedia" id="my-video" preload="auto">
+              <source [src]="fileDetails.raw_path" type="video/mp4">
+            </video>
+          </vg-player>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

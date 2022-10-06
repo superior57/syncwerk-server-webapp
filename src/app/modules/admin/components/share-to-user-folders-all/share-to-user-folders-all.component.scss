@@ -1,0 +1,126 @@
+.tb-permission {
+  padding-left: 0;
+  width: 45%;
+}
+
+.selected {
+  border: solid #0067b3 1px;
+  float: left;
+  margin: 2px;
+  padding: 2px 15px;
+}
+
+.selected a {
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.scroll-user {
+  overflow-y: auto;
+  max-height: 250px;
+}
+
+.error-msg {
+  margin-left: 20px;
+  margin-top: -30px;
+}
+
+tag-input tag-input-dropdown ::ng-deep ng2-dropdown div.ng2-dropdown-menu {
+  top: inherit !important;
+  left: inherit !important;
+  .user-avt {
+    // float: left;
+    // margin-right: 10px;
+    margin-top: -5px;
+    img {
+      width: 32px;
+      height: 32px;
+      border-radius: 50px;
+    }
+  }
+  .user-detail {
+    height: 2rem;
+    margin-top: -10px;
+  }
+}
+
+td {
+  padding: 0.8rem 1.5rem;
+  vertical-align: middle;
+}
+
+:host ::ng-deep tag {
+  max-width: 305px;
+}
+
+.btn--custom {
+  margin-left: 22px;
+  @media (max-width:450px) {
+    margin-left: 4px;
+  }
+}
+
+.clearfix {
+  margin: 34px 0px;
+}
+
+.wrapper__user {
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 0 0 38%;
+  margin-top: 6px;
+}
+
+p.p--bold {
+  margin: 0px;
+  font-weight: 600;
+}
+
+.wrapper__per {
+  width: 100%;
+  margin: 5px 0px 20px 0px;
+  flex: 0 0 40%;
+}
+
+span.select--elm {
+  width: 50%;
+}
+
+span.btn--elm {
+  margin-left: 97px;
+  margin-top: -17px;
+}
+
+.wrapper {
+  margin: 10px 0px;
+
+  .wrapper__history {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    strong.history--custom{
+      margin: 10px 7px 7px 0px;
+      @media (max-width:991px) {
+        width: 90%;
+        margin-left: -1px;
+      }
+    }
+  }
+  .btn--custom {
+      margin-left: 0px !important;
+      width: 100px;
+      margin-top: 10px;
+  }
+}
+
+.fl--custom{
+  @media (max-width: 500px) {
+    flex-wrap: wrap;
+  }
+}
+
+:host ::ng-deep .ng2-tag-input__text-input {
+  padding: 0px !important;
+}

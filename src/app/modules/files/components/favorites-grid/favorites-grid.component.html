@@ -1,0 +1,62 @@
+<div class="card">
+  <div class="card-block">
+    <div *ngIf="!isProcessing">
+      <div class="data-table__header d-flex justify-content-betwwen fl--custom">
+        <div class="form-group data-table__filter">
+          <input *ngIf="config.filtering" [placeholder]="'SEARCHS.ALL_COLUMNS' | translate: params" [(ngModel)]="config.filtering.filterString"
+            class="form-control" (keyup)="changeTable(config)" />
+          <i class="form-group__bar"></i>
+        </div>
+        <app-row-selector (changed)="onPerPageChanged($event)"></app-row-selector>
+      </div>
+
+      <div *ngIf="listFavoriteDisplay.length > 0" class="row lightbox photos">
+        <div [ngClass]="dataRangeSizeGrid.rangeClass" class="no-padding" *ngFor="let item of listFavoriteDisplay; let index=index"
+          (mouseover)="hoveredIndex=index" (mouseleave)="hoveredIndex=-1" [ngClass]="{'hl':index==hoveredIndex}">
+          <div class="lightbox__item photos__item" style="text-align: center;">
+            <div *ngIf="index===hoveredIndex">
+              <div class="dropup actions__item grid-menu-button">
+                <button (click)="handleOpenModal('remove', item)" data-target="#delete-file-modal" class="btn btn-info waves-effect"
+                  data-toggle="tooltip" [title]="'BUTTONS.REMOVE' | translate:params" style="padding: 8.6px; width: 31px;">
+                  <i class="fal fa-trash-alt"></i>
+                </button>
+              </div>
+            </div>
+            <div class="grid-item">
+              <div class="center-img" [ngStyle]="{'height': dataRangeSizeGrid.rangeHeightPx}">
+                <a target="_blank" class="name" (click)="isEnabledFilePreview && openFilePreview(item)">
+                  <img *ngIf="!item.imgError || (item.imgError && item.imgError !==1 ) " style="transition: all 0.5s"
+                    [ngStyle]="{ 'transform': 'scale(' + dataRangeSizeGrid.rangeTransformScale + ')'} " (error)="setErrorImg(index) "
+                    class="file-icon hihi" max-height="90px " src="{{ item.file_name | customFileIcon: false: item.link_img }}">
+
+                  <div *ngIf="(item.imgError && item.imgError === 1 ) ">
+                    <i class="{{ item.file_name | customFileIcon }}" id="icon--custom" style="transition: all 0.5s"
+                      [ngStyle]="{ 'transform': 'scale(' + dataRangeSizeGrid.rangeTransformScale + ')'} "></i>
+                  </div>
+                </a>
+              </div>
+              <div class="tb-name-grid">
+                <a (click)="isEnabledFilePreview && openFilePreview(item)" class="name" data-toggle="tooltip" data-title="{{ item.file_name }}">{{item.file_name}}</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <app-modal-delete-remove *ngIf="isOpenModal.remove" [isDeleteModal]="false" [itemName]="currentItemFavorite.file_name"
+        [typeDelete]="'Favorite'" (submitRemoveItem)="onRemoveItem()"></app-modal-delete-remove>
+
+      <app-empty-item *ngIf="listFavoriteDisplay.length <= 0 && this.listFavorites.length===0" [messageTitle]="'FAVORITE.NO_STARRED_FILE_HEADER' | translate:params"
+        [messageSub]="'FAVORITE.NO_STARRED_FILE_DESCRIPTION' | translate:params"></app-empty-item>
+      <app-empty-item *ngIf="listFavoriteDisplay.length <= 0 && this.listFavorites.length !==0" [messageTitle]="'FAVORITE.FILTER_FILE_NOT_FOUND' | translate:params"
+        [messageSub]="'FAVORITE.FILTER_SUB_FILE_NOT_FOUND' | translate:params"></app-empty-item>
+
+    </div>
+
+    <app-processing *ngIf="isProcessing"></app-processing>
+  </div>
+</div>
+
+<pagination *ngIf="config.paging" [(ngModel)]="page.page" [totalItems]="length" [itemsPerPage]="page.itemsPerPage"
+  [maxSize]="maxSize" [boundaryLinks]="true" [rotate]="false" (pageChanged)="changeTable(config, $event)" (numPages)="numPages = $event">
+</pagination>

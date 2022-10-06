@@ -1,0 +1,262 @@
+<aside class="sidebar">
+  <div class="user d-none">
+    <div class="user__info" data-toggle="dropdown" aria-expanded="false">
+      <img *ngIf="UserInfo.avatar_url === ''; else imageAvatar" class="user__img" src="../assets/images/user_default.png">
+      <ng-template #imageAvatar>
+        <img class="user__img" src="{{ UserInfo.avatar_url }}">
+      </ng-template>
+      <div class="user__name_email">
+        <div class="user__name">{{UserInfo.username}}</div>
+        <div class="user__email">{{UserInfo.email}}</div>
+      </div>
+    </div>
+
+    <div class="dropdown-menu">
+      <a routerLink="/settings" class="dropdown-item" *ngIf="menuAccess.accountSetting" (click)="getType('settings')">
+        <span [innerHTML]="'SIDE_MENU_BAR.DROPDOWN_USER_AVATAR.SETTINGS' | translate:param"></span>
+      </a>
+      <a routerLink="/admin" class="dropdown-item" *ngIf="menuAccess.adminArea" (click)="getType('admin')">
+        <span [innerHTML]="'SIDE_MENU_BAR.DROPDOWN_USER_AVATAR.SYSTEM_ADMIN' | translate:param"></span>
+      </a>
+      <a [routerLink]="['/login']" role="button" class="dropdown-item" *ngIf="menuAccess.logout" (click)="logout()">
+        <span [innerHTML]="'SIDE_MENU_BAR.DROPDOWN_USER_AVATAR.LOGOUT' | translate:param"></span>
+      </a>
+    </div>
+  </div>
+  <div class="scrollable-menu scrollbar-macosx">
+    <ul class="navigation">
+      <li class="navigation__sub" [routerLinkActiveOptions]="{exact: true}" [routerLinkActive]="['navigation__sub--active']"
+        data-toggle="tooltip" [title]="'SIDE_MENU_BAR.HOME' | translate:param">
+        <a [routerLink]="['/home']">
+          <i class="fas fa-home"></i>
+          <span [innerHTML]="'SIDE_MENU_BAR.HOME' | translate:param"></span>
+        </a>
+      </li>
+
+      <!-- FAVORITES -->
+      <li id="lnk-favorites" class="navigation__sub" [routerLinkActive]="['navigation__sub--active']" data-toggle="tooltip" [title]="'SIDE_MENU_BAR.FAVORITES' | translate:param">
+        <a [routerLink]="['/favorites']">
+          <i class="fas fa-star"></i>
+          <span [innerHTML]="'SIDE_MENU_BAR.FAVORITES' | translate:param"></span>
+        </a>
+      </li>
+
+      <!-- FILES -->
+      <li id="lnk-files" class="navigation__sub" [routerLinkActive]="['navigation__sub--active']">
+        <a *ngIf="isEnabledFolderManager" [routerLink]="['/folders']" data-toggle="tooltip" [title]="'SIDE_MENU_BAR.FILES' | translate:param">
+          <i class="fas fa-folder fa-fw"></i>
+          <span [innerHTML]="'SIDE_MENU_BAR.FILES' | translate:param"></span>
+        </a>
+      </li>
+
+      <!-- WIKIS -->
+      <li id="lnk-wikis" *ngIf="isWiki && menuSettings.ENABLE_WIKI" class="navigation__sub" [routerLinkActive]="['navigation__sub--active']">
+        <a *ngIf="isGetAvaiableFeatures.wiki" [routerLink]="['/wikis']" data-toggle="tooltip" [title]="'SIDE_MENU_BAR.WIKIS' | translate:param">
+          <i class="fas fa-book"></i>
+          <span [innerHTML]="'SIDE_MENU_BAR.WIKIS' | translate:param"></span>
+        </a>
+      </li>
+
+      <!-- MEETINGS -->
+      <li  class="navigation__sub" [routerLinkActive]="['navigation__sub--active']">
+        <a *ngIf="isEnableMeetings" [routerLink]="['/meetings']" data-toggle="tooltip" [title]="'SIDE_MENU_BAR.MEETINGS' | translate:param">
+          <i class="fas fa-video"></i>
+          <span [innerHTML]="'SIDE_MENU_BAR.MEETINGS' | translate:param"></span>
+        </a>
+      </li>
+
+      <!-- Kanban Board-->
+      <!-- <li  class="navigation__sub" [routerLinkActive]="['navigation__sub--active']">
+        <a [routerLink]="['/kanban']" data-toggle="tooltip" [title]="'SIDE_MENU_BAR.KANBAN' | translate:param">
+          <i class="fas fa-tasks"></i>
+          <span [innerHTML]="'SIDE_MENU_BAR.KANBAN' | translate:param"></span>
+        </a>
+      </li> -->
+      <!-- BBB SETTINGS -->
+      <!-- <li  class="navigation__sub" [routerLinkActive]="['navigation__sub--active']">
+        <a *ngIf="isEnableMeetings" [routerLink]="['/manage', 'meeting-servers']" data-toggle="tooltip">
+          <i class="fas fa-server"></i>
+          <span [innerHTML]="'SIDE_MENU_BAR.BBB_SERVERS' | translate:param"></span>
+        </a>
+      </li> -->
+
+      <li class="space">
+        <a href="javascript:void(0)">&nbsp;</a>
+      </li>
+      <li class="space">
+        <a href="javascript:void(0)">&nbsp;</a>
+      </li>
+      <!-- MANAGE -->
+      <li id="lnk-manage" class="navigation__sub" data-toggle="tooltip" [title]="'SIDE_MENU_BAR.MANAGE' | translate: param"
+        [routerLinkActive]="['navigation__sub--active']">
+        <a data-toggle="tooltip" class="dropdown-toggle" [title]="'SIDE_MENU_BAR.MANAGE' | translate: param">
+          <i class="fas fa-toolbox"></i>
+          <span [innerHTML]="'SIDE_MENU_BAR.MANAGE' | translate: param"></span>
+        </a>
+        <ul class="navigation">
+          <!-- DEVICES -->
+          <li id="lnk-devices" [routerLinkActive]="['navigation__active']" data-toggle="tooltip" [title]="'SIDE_MENU_BAR.LINKED_DEVICES' | translate:param">
+            <a [routerLink]="['/manage', 'devices']">
+              <span [innerHTML]="'SIDE_MENU_BAR.LINKED_DEVICES' | translate:param"></span>
+            </a>
+          </li>
+          <!-- SHARES -->
+          <li id="lnk-shares" *ngIf="!isGuest" [routerLinkActive]="['navigation__active']" data-toggle="tooltip" [title]="'SIDE_MENU_BAR.SHARE_ADMIN' | translate:param">
+            <a [routerLink]="['/manage', 'shares']">
+              <span [innerHTML]="'SIDE_MENU_BAR.SHARE_ADMIN' | translate:param"></span>
+            </a>
+          </li>
+          <!-- GROUP -->
+          <li id="lnk-groups" [routerLinkActive]="['navigation__active']">
+            <a *ngIf="isEnableGroups" [routerLink]="['/manage', 'groups']" (click)="getType( 'all_groups')" data-toggle="tooltip"
+              [title]="'SIDE_MENU_BAR.GROUPS' | translate: param">
+              <span [innerHTML]="'SIDE_MENU_BAR.GROUPS' | translate:param"></span>
+            </a>
+          </li>
+          <!-- TENANT -->
+          <li id="lnk-tenant" *ngIf="isTenantUserManagement" [routerLinkActive]="['navigation__active']" data-toggle="tooltip" [title]="'SIDE_MENU_BAR.TENANT' | translate:param">
+            <a [routerLink]="['/manage', 'tenant']">
+              <span [innerHTML]="'SIDE_MENU_BAR.TENANT' | translate:param"></span>
+            </a>
+          </li>
+          <!-- PROFILE -->
+          <li id="lnk-profile" [routerLinkActive]="['navigation__active']">
+            <a [routerLink]="['/settings']" data-toggle="tooltip" [title]="'SIDE_MENU_BAR.PROFILE' | translate: param">
+              <span [innerHTML]="'SIDE_MENU_BAR.PROFILE' | translate:param"></span>
+            </a>
+          </li>
+          <!-- Meetings -->
+          <!-- <li [routerLinkActive]="['navigation__active']">
+            <a *ngIf="isEnableMeetings" [routerLink]="['/meetings']" data-toggle="tooltip" [title]="'SIDE_MENU_BAR.MEETINGS' | translate:param">
+              <span [innerHTML]="'SIDE_MENU_BAR.MEETINGS' | translate:param"></span>
+            </a>
+          </li> -->
+          <!-- Meeting server -->
+          <li id="lnk-meeting-server" [routerLinkActive]="['navigation__active']">
+            <a *ngIf="isEnableMeetings" [routerLink]="['/manage', 'meeting-servers']" data-toggle="tooltip" [title]="'SIDE_MENU_BAR.BBB_SERVERS' | translate: param">
+              <span [innerHTML]="'SIDE_MENU_BAR.BBB_SERVERS' | translate:param"></span>
+            </a>
+          </li>
+        </ul>
+      </li>
+
+      <!-- ADMIN -->
+      <li *ngIf="menuAccess.adminArea && isAdminArea" class="navigation__sub" data-toggle="tooltip" title="Admin"
+        [routerLinkActive]="['navigation__sub--active']">
+        <a data-toggle="tooltip" class="dropdown-toggle" [title]="'SIDE_MENU_BAR.SYSTEM_ADMIN' | translate:param">
+          <i class="fas fa-cogs"></i>
+          <span [innerHTML]="'SIDE_MENU_BAR.SYSTEM_ADMIN' | translate:param"></span>
+        </a>
+        <ul class="navigation">
+          <!-- SETTINGS -->
+          <li [routerLinkActive]="['navigation__active']" data-toggle="tooltip" [title]="'SIDE_MENU_BAR.SETTINGS' | translate:param">
+            <a [routerLink]="['/admin', 'settings']">
+              <span [innerHTML]=" 'SIDE_MENU_BAR.SETTINGS' | translate:param"></span>
+            </a>
+          </li>
+
+          <!-- DEVICES -->
+          <li [routerLinkActive]="['navigation__active']" data-toggle="tooltip" [title]="'SIDE_MENU_BAR.DEVICES' | translate:param">
+            <a [routerLink]="['/admin', 'devices']">
+              <span [innerHTML]="'SIDE_MENU_BAR.DEVICES' | translate:param"></span>
+            </a>
+          </li>
+          <!-- <li class="navigation__sub child-navigation" [routerLinkActive]="['navigation__sub--active']
+          " data-toggle="tooltip" title=" 'SIDE_MENU_BAR.DEVICES' | translate: param">
+            <a>{{ 'SIDE_MENU_BAR.DEVICES' | translate:param }}</a>
+            <ul class="navigation">
+              <li [routerLinkActive]="['navigation__active']" data-toggle="tooltip" [title]="
+            'SIDE_MENU_BAR.DESKTOPS' | translate: param">
+                <a [routerLink]="['/admin', 'devices', 'desktops']">{{ 'SIDE_MENU_BAR.DESKTOPS' | translate: param }}</a>
+              </li>
+              <li [routerLinkActive]="['navigation__active']" data-toggle="tooltip" [title]="
+            'SIDE_MENU_BAR.MOBILES' | translate: param">
+                <a [routerLink]="['/admin', 'devices', 'mobiles']">{{ 'SIDE_MENU_BAR.MOBILES' | translate: param }}</a>
+              </li>
+            </ul>
+          </li> -->
+          <li class="navigation__sub child-navigation" [routerLinkActive]="['navigation__sub--active']" data-toggle="tooltip"
+            [title]=" 'SIDE_MENU_BAR.FOLDERS' | translate: param">
+            <a *ngIf="isEnabledFolderManager" [routerLink]="['/admin', 'folders']" data-toggle="tooltip" [title]="'SIDE_MENU_BAR.ALL_LIB' | translate: param"
+              [routerLinkActive]="['navigation__active']">
+              <span [innerHTML]="'SIDE_MENU_BAR.FOLDERS' | translate: param"></span>
+            </a>
+          </li>
+          <li class="navigation__sub child-navigation" [routerLinkActive]="['navigation__active']" data-toggle="tooltip"
+            [title]=" 'SIDE_MENU_BAR.USERS' | translate: param">
+            <a [routerLink]="['/admin', 'users', 'all']">
+              <span [innerHTML]="'SIDE_MENU_BAR.USERS' | translate: param"></span>
+            </a>
+            <!-- <a>
+              <span [innerHTML]="'SIDE_MENU_BAR.USERS' | translate: param"></span>
+            </a>
+            <ul class="navigation">
+              <li [routerLinkActive]="['navigation__active']" data-toggle="tooltip" [title]="'SIDE_MENU_BAR.DATABASE' | translate: param">
+                <a [routerLink]="['/admin', 'users', 'all']">
+                  <span [innerHTML]="'SIDE_MENU_BAR.DATABASE' | translate: param"></span>
+                </a>
+              </li>
+              <li [routerLinkActive]="['navigation__active']" data-toggle="tooltip" [title]=" 'SIDE_MENU_BAR.ADMINS' | translate: param">
+                <a [routerLink]="['/admin', 'users', 'admins']">
+                  <span [innerHTML]="'SIDE_MENU_BAR.ADMINS' | translate: param"></span>
+                </a>
+              </li>
+            </ul> -->
+          </li>
+          <!-- DEVICES -->
+          <li [routerLinkActive]="['navigation__active']" data-toggle="tooltip" [title]="'SIDE_MENU_BAR.GROUPS' | translate:param">
+            <a *ngIf="isEnableGroups" [routerLink]="['/admin', 'groups']">
+              <span [innerHTML]="'SIDE_MENU_BAR.GROUPS' | translate:param"></span>
+            </a>
+          </li>
+          <li [routerLinkActive]="['navigation__active']" data-toggle="tooltip" [title]="'SIDE_MENU_BAR.PUBLIC_SHARES' | translate:param">
+            <a [routerLink]="['/admin', 'shares']">
+              <span [innerHTML]="'SIDE_MENU_BAR.PUBLIC_SHARES' | translate:param"></span>
+            </a>
+          </li>
+          <li [routerLinkActive]="['navigation__active']" data-toggle="tooltip" [title]="'SIDE_MENU_BAR.SYSTEM_NOTIFICATIONS' | translate:param">
+            <a [routerLink]="['/admin', 'sysnotifications']">
+              <span [innerHTML]="'SIDE_MENU_BAR.SYSTEM_NOTIFICATIONS' | translate:param"></span>
+            </a>
+          </li>
+          <li [routerLinkActive]="['navigation__active']" data-toggle="tooltip">
+            <a *ngIf="isEnableMeetings" [routerLink]="['/admin', 'meetings']">
+              <span>{{ 'SIDE_MENU_BAR.MEETINGS' | translate }}</span>
+            </a>
+          </li>
+          <li [routerLinkActive]="['navigation__active']" data-toggle="tooltip">
+            <a *ngIf="isEnableMeetings" [routerLink]="['/admin', 'meeting-servers']">
+              <span>{{ 'SIDE_MENU_BAR.BBB_SERVERS' | translate }}</span>
+            </a>
+          </li>
+          <li *ngIf="isGetAvaiableFeatures.multi_tenancy" [routerLinkActive]="['navigation__active']" data-toggle="tooltip"
+            [title]="'SIDE_MENU_BAR.INSTITUTIONS' | translate:param">
+            <a [routerLink]="['/admin', 'tenants']">
+              <span [innerHTML]="'SIDE_MENU_BAR.INSTITUTIONS' | translate:param"></span>
+            </a>
+          </li>
+          <li *ngIf="isTrafficTracking" [routerLinkActive]="['navigation__active']">
+            <a [routerLink]="['/admin', 'traffic']">
+              <span [innerHTML]="'SIDE_MENU_BAR.TRAFFIC' | translate:param"></span>
+            </a>
+          </li>
+          <li *ngIf="isEnableVirusScan" [routerLinkActive]="['navigation__active']">
+            <a [routerLink]="['/admin', 'virus-scan']">
+              <span [innerHTML]="'SIDE_MENU_BAR.VIRUS_SCAN' | translate:param"></span>
+            </a>
+          </li>
+          <li [routerLinkActive]="['navigation__active']">
+            <a [routerLink]="['/admin', 'email-change-request']">
+              <span [innerHTML]="'SIDE_MENU_BAR.EMAIL_CHANGE_REQUEST' | translate:param"></span>
+            </a>
+          </li>
+          <li *ngIf="isEnableAditLog" [routerLinkActive]="['navigation__active']">
+            <a [routerLink]="['/admin', 'auditlog']">
+              <span [innerHTML]="'SIDE_MENU_BAR.AUDIT_LOG' | translate:param"></span>
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</aside>

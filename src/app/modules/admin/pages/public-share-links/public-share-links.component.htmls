@@ -1,0 +1,100 @@
+<header class="content__title">
+  <h1 [innerHTML]="'ADMIN.PUBLIC_SHARES.TITLE.LINK_LIST' | translate"></h1>
+  <small [innerHTML]="'ADMIN.PUBLIC_SHARES.SUBTITLE.LINK_LIST' | translate"></small>
+</header>
+
+<div class="card">
+  <div class="card-block">
+    <div class="data-table__header d-flex justify-content-betwwen">
+      <div class="form-group data-table__filter">
+        <input [placeholder]="'SEARCHS.ALL_COLUMNS' | translate" class="form-control" (keyup)="onSearchFilterChange($event)" />
+        <i class="form-group__bar"></i>
+      </div>
+      <div class="row-selector">
+        <app-row-selector (changed)="onPerPageChanged($event)"></app-row-selector>
+      </div>
+    </div>
+
+    <ng-container *ngIf="!isProcessing">
+      <table class="table table-sm table-hover" *ngIf="linkListFromAPI.length !== 0 && linkListForDisplay.length !== 0">
+        <thead>
+          <tr>
+            <th width="20%" class="sortable" (click)="triggerSort('name')">{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_HEADERS.NAME'
+              |
+              translate
+              }}
+              <ng-container *ngIf="sortConfig.column==='name'">
+                <i *ngIf="sortConfig.mode==='asc'" class="fal fa-sort-amount-up sort-icon"></i>
+                <i *ngIf="sortConfig.mode==='desc'" class="fal fa-sort-amount-down sort-icon"></i>
+              </ng-container>
+            </th>
+            <th width="20%" class="sortable" (click)="triggerSort('token')">{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_HEADERS.TOKEN'
+              |
+              translate
+              }}
+              <ng-container *ngIf="sortConfig.column==='token'">
+                <i *ngIf="sortConfig.mode==='asc'" class="fal fa-sort-amount-up sort-icon"></i>
+                <i *ngIf="sortConfig.mode==='desc'" class="fal fa-sort-amount-down sort-icon"></i>
+              </ng-container>
+            </th>
+            <th width="15%" class="sortable" (click)="triggerSort('owner')">{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_HEADERS.OWNER'
+              |
+              translate
+              }}
+              <ng-container *ngIf="sortConfig.column==='owner'">
+                <i *ngIf="sortConfig.mode==='asc'" class="fal fa-sort-amount-up sort-icon"></i>
+                <i *ngIf="sortConfig.mode==='desc'" class="fal fa-sort-amount-down sort-icon"></i>
+              </ng-container>
+            </th>
+            <th width="10%" class="sortable" (click)="triggerSort('created_at')">{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_HEADERS.CREATE_AT'
+              |
+              translate
+              }}
+              <ng-container *ngIf="sortConfig.column==='created_at'">
+                <i *ngIf="sortConfig.mode==='asc'" class="fal fa-sort-amount-up sort-icon"></i>
+                <i *ngIf="sortConfig.mode==='desc'" class="fal fa-sort-amount-down sort-icon"></i>
+              </ng-container>
+            </th>
+            <th width="10%" class="sortable" (click)="triggerSort('count')">{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_HEADERS.COUNT'
+              |
+              translate
+              }}
+              <ng-container *ngIf="sortConfig.column==='count'">
+                <i *ngIf="sortConfig.mode==='asc'" class="fal fa-sort-amount-up sort-icon"></i>
+                <i *ngIf="sortConfig.mode==='desc'" class="fal fa-sort-amount-down sort-icon"></i>
+              </ng-container>
+            </th>
+            <th width="15%">{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_HEADERS.ACTIONS' |
+              translate
+              }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let link of linkListForDisplay; let index=index" (mouseover)="hoveredIndex=index" (mouseleave)="hoveredIndex=-1">
+            <td>{{ link.obj_name }}</td>
+            <td>{{ link.token }}</td>
+            <td>
+              <a [routerLink]="['/admin', 'users', 'info', link.username ]">{{ link.username }}</a>
+            </td>
+            <td>{{ link.ctime | amDateFormat:'YYYY-MM-DD HH:mm:ss' }}</td>
+            <td>{{ link.view_cnt }}</td>
+            <td>
+              <ng-container *ngIf="hoveredIndex===index">
+                <i data-toggle="tooltip" [title]="'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TOOLTIPS.VISIT_LINK' | translate"
+                  class="fal fa-lg fa-external-link actions__item" (click)="visitLink(link)"></i>
+                <i data-toggle="tooltip" [title]="'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TOOLTIPS.REMOVE_SHARE_LINK' | translate"
+                  class="fal fa-lg fa-trash-alt actions__item" (click)="openRemoveLinkModal(link)"></i>
+              </ng-container>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </ng-container>
+
+    <app-processing *ngIf="isProcessing"></app-processing>
+  </div>
+</div>
+
+<div class="data-table__footer">
+  <pagination [itemsPerPage]="pagination.itemsPerPage" [totalItems]="linkListFromAPI.length" (pageChanged)="pageChanged($event)"></pagination>
+</div>

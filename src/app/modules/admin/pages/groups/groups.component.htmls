@@ -1,0 +1,120 @@
+<header class="content__title">
+  <h1 [innerHTML]="'ADMIN.GROUPS.TITLE.GROUP_LIST' | translate"></h1>
+  <small [innerHTML]="'ADMIN.GROUPS.SUBTITLE.GROUP_LIST' | translate"></small>
+</header>
+
+<div class="card">
+  <div class="card-block">
+    <div class="data-table__header d-flex justify-content-betwwen">
+      <div class="form-group" *ngIf="currentUserPermission.can_manage_group !== false">
+        <button (click)="openCreateGroupModal()" class="btn btn-secondary waves-effect btn--icon-text">
+          {{'LIST_GROUPS.BTN_CREATE_NEW_GROUP' | translate}}</button>
+      </div>
+      <div class="form-group">
+        <button (click)="exportGroups()" class="btn btn-secondary waves-effect btn--icon-text" style="margin-right: 25px">
+          {{'BUTTONS.EXPORT_EXCEL' | translate}}</button>
+      </div>
+      <div class="form-group data-table__filter">
+        <input [placeholder]="'SEARCHS.ALL_COLUMNS' | translate" class="form-control" (keyup)="onSearchFilterChange($event)" />
+        <i class="form-group__bar"></i>
+      </div>
+      <div class="row-selector">
+        <app-row-selector (changed)="onPerPageChanged($event)"></app-row-selector>
+      </div>
+    </div>
+    <!-- List view -->
+    <ng-container *ngIf="!isProcessing">
+      <table class="table table-hover" *ngIf="groupList.length !== 0 && groupListFromAPI.length !== 0">
+        <thead>
+          <tr>
+            <th class="sortable" (click)="triggerSort('name')" width="20%">
+              {{'ADMIN.GROUPS.LIST_GROUPS.TABLE_HEADERS.GROUP_NAME' | translate }}
+              <ng-container *ngIf="sortConfig.column==='name'">
+                <i *ngIf="sortConfig.mode==='asc'" class="fal fa-sort-amount-up sort-icon"></i>
+                <i *ngIf="sortConfig.mode==='desc'" class="fal fa-sort-amount-down sort-icon"></i>
+              </ng-container>
+
+            </th>
+            <th class="sortable" width="20%" (click)="triggerSort('owner')">
+              {{'ADMIN.GROUPS.LIST_GROUPS.TABLE_HEADERS.OWNER' | translate }}
+              <ng-container *ngIf="sortConfig.column==='owner'">
+                <i *ngIf="sortConfig.mode==='asc'" class="fal fa-sort-amount-up sort-icon"></i>
+                <i *ngIf="sortConfig.mode==='desc'" class="fal fa-sort-amount-down sort-icon"></i>
+              </ng-container>
+            </th>
+            <th class="sortable" width="10%" (click)="triggerSort('members_count')">
+              {{'ADMIN.GROUPS.LIST_GROUPS.TABLE_HEADERS.NUMBER_OF_MEMBERS' | translate }}
+              <ng-container *ngIf="sortConfig.column==='members_count'">
+                <i *ngIf="sortConfig.mode==='asc'" class="fal fa-sort-amount-up sort-icon"></i>
+                <i *ngIf="sortConfig.mode==='desc'" class="fal fa-sort-amount-down sort-icon"></i>
+              </ng-container>
+            </th>
+            <th class="sortable" width="10%" (click)="triggerSort('repos_count')">
+              {{'ADMIN.GROUPS.LIST_GROUPS.TABLE_HEADERS.NUMBER_OF_FOLDERS' | translate }}
+              <ng-container *ngIf="sortConfig.column==='repos_count'">
+                <i *ngIf="sortConfig.mode==='asc'" class="fal fa-sort-amount-up sort-icon"></i>
+                <i *ngIf="sortConfig.mode==='desc'" class="fal fa-sort-amount-down sort-icon"></i>
+              </ng-container>
+            </th>
+            <th class="sortable" width="20%" (click)="triggerSort('created_at')">
+              {{'ADMIN.GROUPS.LIST_GROUPS.TABLE_HEADERS.CREATED_AT' | translate }}
+              <ng-container *ngIf="sortConfig.column==='created_at'">
+                <i *ngIf="sortConfig.mode==='asc'" class="fal fa-sort-amount-up sort-icon"></i>
+                <i *ngIf="sortConfig.mode==='desc'" class="fal fa-sort-amount-down sort-icon"></i>
+              </ng-container>
+            </th>
+            <th>{{'ADMIN.GROUPS.LIST_GROUPS.TABLE_HEADERS.ACTIONS' | translate }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let group of groupList; let index=index" (mouseover)="hoveredIndex=index" (mouseleave)="hoveredIndex=-1">
+            <td>
+              <span><a [routerLink]="['/admin','groups',group.id,'management']">{{ group.name }}</a></span>
+            </td>
+            <td>
+              <a [routerLink]="['/admin','users','info',group.owner]">
+                {{ group.owner.nick_name ? group.owner.nick_name : group.owner.email}}
+              </a>
+            </td>
+            <td>
+              {{ group.members_count }}
+            </td>
+            <td>
+              {{ group.repos_count }}
+            </td>
+            <td>{{ group.created_at | date:'dd.MM.yyyy hh:mm:ss' }}</td>
+            <td>
+              <ng-container *ngIf="hoveredIndex === index">
+                <i *ngIf="currentUserPermission.can_manage_group !== false" data-toggle="tooltip" [title]="'GROUP_MANAGEMENT.BUTTON_GROUP.RENAME_GROUP' | translate" class="fal fa-lg fa-pencil-alt actions__item"
+                  (click)="openModalRenameGroup(group)"></i>
+                <i *ngIf="currentUserPermission.can_manage_group !== false" data-toggle="tooltip" [title]="'GROUP_MANAGEMENT.BUTTON_GROUP.TRANSFER_GROUP' | translate" class="fal fa-lg fa-exchange-alt actions__item"
+                  (click)="openModalTransferGroup(group)"></i>
+                <i data-toggle="tooltip" [title]="'GROUP_MANAGEMENT.BUTTON_GROUP.OPEN_FOLDER' | translate" class="fal fa-lg fa-folder actions__item"
+                  [routerLink]="['/admin','groups',group.id,'folders']"></i>
+                <i *ngIf="currentUserPermission.can_manage_group !== false" data-toggle="tooltip" [title]="'GROUP_MANAGEMENT.BUTTON_GROUP.MANAGER_GROUP' | translate" class="fal fa-lg fa-users actions__item"
+                  [routerLink]="['/admin','groups',group.id,'management']"></i>
+                <i *ngIf="currentUserPermission.can_manage_group !== false" data-toggle="tooltip" [title]="'GROUP_MANAGEMENT.BUTTON_GROUP.REMOVE_GROUP' | translate" class="fal fa-lg fa-trash-alt actions__item"
+                  (click)="openModalRemoveGroup(group)"></i>
+              </ng-container>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <!-- No group yet -->
+      <app-empty-item *ngIf="groupList.length === 0 && groupListFromAPI.length === 0" [messageTitle]="'ADMIN.GROUPS.MESSAGES.NO_GROUP_ADDED_TITLE' | translate: params"
+        [messageSub]="'ADMIN.GROUPS.MESSAGES.NO_GROUP_ADDED_SUBTITLE' | translate: params"></app-empty-item>
+      <!-- No search result -->
+      <app-empty-item *ngIf="groupList.length === 0 && groupListFromAPI.length !== 0" [messageTitle]="'ADMIN.GROUPS.MESSAGES.NO_GROUP_FOUND_TITLE' | translate: params"
+        [messageSub]="'ADMIN.GROUPS.MESSAGES.NO_GROUP_FOUND_SUBTITLE' | translate: params"></app-empty-item>
+    </ng-container>
+
+    <app-processing *ngIf="isProcessing"></app-processing>
+  </div>
+</div>
+
+<div class="data-table__footer">
+  <pagination [itemsPerPage]="pagination.itemsPerPage" [totalItems]="pagination.totalResult" (pageChanged)="pageChanged($event)"></pagination>
+</div>
+
+<app-admin-transfer-group *ngIf="isModalOpen.transferGroup" [groupInfo]="currentGroupInfo" (onTransferGroupSuccess)="transferGroupSuccess()"></app-admin-transfer-group>
+<app-admin-remove-group *ngIf="isModalOpen.removeGroup" [groupInfo]="currentGroupInfo" (onRemoveGroupSuccess)="onRemoveGroupSuccess()"></app-admin-remove-group>

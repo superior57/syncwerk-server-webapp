@@ -1,0 +1,31 @@
+.modal-dialog {
+  max-width: 400px;
+  .modal-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #0067b3;
+
+    .modal-title-name {
+      font-weight: bold;
+    }
+  }
+}
+
+.form-group:not(.form-group--float) label {
+  font-size: 1rem;
+}
+
+.form-group {
+  padding-top: 10px;
+  &:first-child {
+    padding-top: 0px;
+  }
+  .toggle-switch {
+    margin-left: 20px;
+    margin-top: -6px;
+  }
+}
+
+.error-msg {
+  margin-top: -25px;
+}

@@ -1,0 +1,175 @@
+<div *ngIf="!isProcessing">
+  <div class="header-snapshot">
+    <div class="title__header">
+      <h1 class="d-flex align-items-center" data-toggle="tooltip" title="Back">
+        <i class="fal fa-caret-circle-left fa-hc-fw icon-back-folders" (click)="backPage()"></i>
+      </h1>
+
+      <div class="title-snapshot">
+        <span data-toggle="tooltip" title="{{ repoName }}" class="reponame">{{ repoName | CutStringAny: 40: 25: 10 }}</span>
+        <span class="snapshot" [innerHTML]="'TITLE_PAGE.SNAPSHOT' | translate"></span> ({{(resDataCurrentCommit.ctime |
+        amFromUnix) | amDateFormat: 'YYYY-MM-DD HH:mm:ss'}})
+      </div>
+    </div>
+    <span style="display: block;" class="caption-modification">
+      <span [innerHTML]="'SNAPSHOT.DESC' | translate: params"></span>
+    </span>
+    <div class="info-snapshot">
+      <span data-toggle="tooltip" title="{{ resDataCurrentCommit.desc }}" class="info-item">{{
+        resDataCurrentCommit['desc'] | CutStringAny: 80: 65: 10 }}</span> |
+      <span class="info-adjusted">
+        <!-- image avatar -->
+        <div *ngIf="isDefaultAvatar === false" class="avatar_frame">
+          <img class="user__img" src="{{ userInfo.avatar_url }}" alt="{{ userInfo.username }}">
+        </div>
+        <div *ngIf="isDefaultAvatar === true" class="avatar_frame">
+          <span class="user__avatar"><i class="fal fa-user"></i></span>
+        </div>
+        <a (click)="openUserSetting()">{{ userInfo.username }}</a>
+      </span>
+      <span data-toggle="tooltip" title="{{(resDataCurrentCommit.ctime | amFromUnix) | amDateFormat:'ddd, D MMM YYYY HH:mm:ss ZZ'}}">{{(resDataCurrentCommit.ctime
+        | amFromUnix)| amTimeAgo}}</span>
+    </div>
+  </div>
+
+  <!-- Breadcrumbs and Actions -->
+  <div class="toolbar">
+    <div class="toolbar__label">
+      <app-breadcrumbs [titleBreadcrumbs]=" 'SNAPSHOT.CURRENT_PATH' | translate" [breadcrumbs]="breadcrumbs"
+        (sendDataBreadcrumbs)="handleNavigateBreadcrumbs($event)"></app-breadcrumbs>
+    </div>
+    <div class="actions">
+      <button *ngIf="allowRestoreSnapshot" type="button" style="margin-left: 15px;" class="btn btn-info btn--icon-text waves-effect"
+        (click)="folderRestoreConfirm()">
+        <i class="zmdi zmdi-time-restore-setting"></i>
+        <span [innerHTML]="'BUTTONS.RESTORE' | translate"></span>
+      </button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-block">
+      <!-- start search  -->
+      <div class="data-table__header d-flex justify-content-betwwen fl--custom">
+        <div class="form-group data-table__filter">
+          <input class="form-control" *ngIf="config.filtering" [placeholder]="'SEARCHS.ALL_COLUMNS' | translate: params"
+            [(ngModel)]="config.filtering.filterString" (keyup.enter)="changeTable(config)" />
+          <i class="form-group__bar"></i>
+        </div>
+        <div class="row-selector">
+          <select2 class="select2-per-page" [data]="perPageSelectData" [options]="perPageSelectOptions" (valueChanged)="onPerPageChanged($event)"></select2>
+        </div>
+      </div>
+      <!-- end search -->
+      <table *ngIf="listFiles.length > 0" class="table table-hover mb-0">
+        <thead>
+          <tr>
+            <th>
+              <span [innerHTML]="'TABLE.COLUMNS.NAME' | translate"></span>
+            </th>
+            <th style="width: 15%">
+              <span [innerHTML]="'TABLE.COLUMNS.SIZE' | translate"></span>
+            </th>
+            <th style="width: 15%">
+              <span [innerHTML]="'TABLE.COLUMNS.OPERATIONS' | translate"></span>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let r of listFilesDisplay; let index=index" (mouseover)="hoveredIndex=index" (mouseleave)="hoveredIndex=-1">
+            <td>
+              <div class="row">
+                <div class="col-12 col-md-8">
+                  <!-- icon folder -->
+                  <div *ngIf="!r.obj_id" class="name-icon" (click)="openFolder(r.obj_name)">
+                    <i class="fas fa-folder fa-fw" style="font-size: 2.5rem"></i>
+                  </div>
+                  <!-- icon file -->
+                  <ng-container *ngIf="r.obj_id">
+                    <div class="name-icon" (click)="openFilePreview(r)">
+                      <!-- Not image -->
+                      <ng-container *ngIf="!r.isImage">
+                        <div class="file-icon">
+                          <i class="{{ r.obj_name | customFileIcon }}" id="icon--custom--listview"></i>
+                        </div>
+                      </ng-container>
+                      <!-- Image -->
+                      <ng-container *ngIf="r.isImage">
+                        <!-- Load failed -->
+                        <ng-container *ngIf="r.imgError">
+                          <div class="file-icon">
+                            <i class="{{ r.obj_name | customFileIcon }}" id="icon--custom--listview"></i>
+                          </div>
+                        </ng-container>
+                        <!-- Load success -->
+                        <ng-container *ngIf="!r.imgError">
+                          <img (error)="setErrorImg(index)" class="file-icon" src="{{ r.obj_name | fileIconPath: false: currentRepo: pathData + r.obj_name: 48: r.obj_id }}">
+                        </ng-container>
+                      </ng-container>
+                    </div>
+                  </ng-container>
+                  <!-- name file or folder -->
+                  <a (click)="r.obj_id ? openFilePreview(r) : openFolder(r.obj_name)" class="tb-name" data-toggle="tooltip"
+                    [title]="r.obj_name">{{ r.obj_name |
+                    splice_length: 15 }}</a>
+                </div>
+              </div>
+            </td>
+            <td>
+              <div *ngIf="r.file_size >= 0">{{r.file_size | customFileSize}}</div>
+            </td>
+            <!-- action button -->
+            <td>
+              <!-- restore -->
+              <span *ngIf="index === hoveredIndex && allowRestoreSnapshot" class="action" (click)="restoreSnapshot(resDataCurrentCommit.id, r)"
+                data-toggle="tooltip" [title]="'TOOLTIPS.RESTORE' | translate">
+                <i class="zmdi zmdi-time-restore-setting fa-hc-2x"></i>
+              </span>
+              <!-- download -->
+              <span *ngIf="r.obj_id && index === hoveredIndex" class="action" (click)="downloadSnapshot(r.obj_id, r.obj_name)"
+                data-toggle="tooltip" [title]="'TOOLTIPS.DOWNLOAD' | translate">
+                <i class="fal fa-download fa-hc-2x"></i>
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <!-- empty item -->
+      <app-empty-item *ngIf="listFiles.length === 0" [messageTitle]="'View Snapshot is empty'" [messageSub]="'Please give us the idea'"></app-empty-item>
+    </div>
+  </div>
+
+  <!-- next and previous button -->
+  <div align="right">
+    <button (click)="prevPage()" [disabled]="page.page<=1" class="btn btn-info btn--icon-text waves-effect">
+      <i class="zmdi zmdi-arrow-back"></i>
+      <span [innerHTML]="'BUTTONS.PREV' | translate: params"></span>
+    </button>
+    <button (click)="nextPage()" [disabled]="!more" class="btn btn-info btn--icon-text waves-effect">
+      <i class="zmdi zmdi-arrow-forward"></i>
+      <span [innerHTML]="'BUTTONS.NEXT' | translate: params"></span>
+    </button>
+  </div>
+  <!-- end next and previous -->
+</div>
+
+<!-- restore folder confirm modal -->
+<div class="modal fade" id="restore-folder-confirm-modal" tabindex="-1">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" [innerHTML]="'MODALS.TITLES.RESTORE_FOLDER' | translate"></h3>
+      </div>
+      <div class="modal-body">
+        <div>
+          <div [innerHTML]="'MODALS.VERIFY_QUESTIONS.RESTORE_FOLDER' | translate"></div>
+          <span class="modal-warning" [innerHTML]="'MODALS.WARNINGS.RESTORE_FOLDER' | translate"></span>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success btn--icon-text waves-effect" (click)="restoreFolder()" [innerHTML]="'BUTTONS.YES' | translate"></button>
+        <button type="button" class="btn btn-secondary btn--icon-text waves-effect" data-dismiss="modal" [innerHTML]="'BUTTONS.NO' | translate"></button>
+      </div>
+    </div>
+  </div>
+</div>

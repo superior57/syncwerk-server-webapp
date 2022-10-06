@@ -1,0 +1,98 @@
+<div *ngIf="ListFolders.length > 0" class="row lightbox photos">
+  <div class="col-xl-3 col-md-4 col-lg-3 col-sm-6 col-xs-12" *ngFor="let r of ListFolders; let index=index"
+    (mouseover)="hoveredIndex=index" (mouseleave)="hoveredIndex=-1">
+    <div class="lightbox__item photos__item text-center">
+      <!-- Start Row Action -->
+      <div *ngIf="index==hoveredIndex && r.type === 'repo'">
+        <div class="dropup actions__item grid-menu-button">
+          <span data-placement="right" data-toggle="tooltip" [title]="'TOOLTIPS.MORE_OPERATIONS' | translate: params">
+            <!-- <button data-toggle="dropdown" class="btn btn-secondary waves-effect" style="width: 31px;">
+              <i class="fal fa-ellipsis-v"></i>
+            </button> -->
+              <i data-toggle="dropdown" class="fal fa-ellipsis-v btn btn-secondary waves-effect btn--custom" style="width: 31px;"></i>
+            <div class="dropdown-menu dropdown-menu-right z-11">
+              <a [routerLink]="" role="button" class="dropdown-item" (click)="rename = index" (click)="clickOnNameChange()" [innerHTML]="'BUTTONS.RENAME' | translate: params"></a>
+              <a [routerLink]="" role="button" class="dropdown-item" (click)="changeDesc(r)" [innerHTML]="'BUTTONS.EDIT_DESCRIPTION' | translate: params"></a>
+              <a [routerLink]="" role="button" class="dropdown-item" (click)="transferFolder(r,index)" [innerHTML]="'BUTTONS.TRANSFER' | translate: params"></a>
+              <a [routerLink]="" role="button" class="dropdown-item" *ngIf="r.type==='repo'" (click)="historySetting(r,index)" [innerHTML]="'BUTTONS.HISTORY_SETTING' | translate: params"></a>
+              <a [routerLink]="" role="button" class="dropdown-item" *ngIf="!r.encrypted" (click)="viewShareLinks(r,index)" [innerHTML]="'BUTTONS.SHARE_LINKS' | translate: params"></a>
+              <a [routerLink]="" role="button" class="dropdown-item" *ngIf="r.encrypted" (click)="changePassword(r,index)" [innerHTML]="'BUTTONS.CHANGE_PASSWORD' | translate: params"></a>
+              <a [routerLink]="" role="button" class="dropdown-item" (click)="viewDetails(r)" [innerHTML]="'BUTTONS.DETAILS' | translate: params"></a>
+              <a [routerLink]="" role="button" class="dropdown-item" (click)="copyInternalLinkToClipboard(r)" [innerHTML]="'BUTTONS.COPY_INTERNAL_LINK' | translate: params"></a>
+            </div>
+          </span>
+
+          <!-- BUTTON SHARE -->
+          <button *ngIf="isEnabledShareButton" (click)="shareFolder(r,index)" class="btn btn-secondary waves-effect btn--custom" style="padding: 8.5px; width: 31px;"
+            data-toggle="tooltip" [title]="'TOOLTIPS.SHARE' | translate: params">
+            <i class="fal fa-share-alt"></i>
+          </button>
+
+          <!-- BUTTON DELETE -->
+          <button (click)="removeFolder(r,index)" data-target="#remove-folder-modal" class="btn btn-secondary waves-effect btn--custom"
+            style="padding: 8.5px; width: 31px;" data-toggle="tooltip" [title]="'TOOLTIPS.DELETE' | translate: params">
+            <i class="fal fa-trash-alt"></i>
+          </button>
+        </div>
+      </div>
+      <!-- End Row Action -->
+
+      <!-- Leave Share With Me -->
+      <div *ngIf="index==hoveredIndex && r.type === 'srepo'" class="dropup actions__item grid-menu-button">
+        <button class="btn btn-secondary waves-effect" data-toggle="tooltip" [title]="'TOOLTIPS.LEAVE_SHARE' | translate: params"
+          style="padding: 8.5px; width: 31px;" (click)="leaveShare(r)">
+          <i class="fal fa-trash-alt"></i>
+        </button>
+      </div>
+
+      <!-- UnShare Group -->
+      <div *ngIf="index===hoveredIndex && groupList" class="dropup actions__item grid-menu-button">
+        <button *ngIf="(isStaff || r.share_from_me)" class="btn btn-secondary waves-effect" (click)="unShare(r)"
+          data-toggle="tooltip" [title]="'TOOLTIPS.UNSHARE' | translate: params" style="padding: 8.5px; width: 31px;">
+          <i class="fal fa-trash-alt"></i>
+        </button>
+      </div>
+
+      <!-- UNSHARE SHARED WITH GROUP -->
+      <div *ngIf="index===hoveredIndex && r.type === 'grepo'" class="dropup actions__item grid-menu-button">
+        <button (click)="unSharedWithGroup(r)" class="btn btn-secondary waves-effect" data-toggle="tooltip" [title]="'TOOLTIPS.UNSHARE' | translate: params"
+          style="padding: 8.5px; width: 31px;">
+          <i class="fal fa-trash-alt"></i>
+        </button>
+      </div>
+
+      <!-- UnShare Organization -->
+      <div *ngIf="index===hoveredIndex && typeRepo === 'org'" class="dropup actions__item grid-menu-button">
+        <button class="btn btn-secondary waves-effect" (click)="unShareOrg(r)" data-toggle="tooltip" [title]="'TOOLTIPS.UNSHARE' | translate: params"
+          style="padding: 8.5px; width: 31px;">
+          <i class="fal fa-trash-alt"></i>
+        </button>
+      </div>
+
+      <div class="center-img" style="font-size: 100px; " [ngStyle]="{'height': rangeHeightPx} ">
+        <i class="fas fa-folder fa-fw" style="text-align: center; cursor: pointer;" (click)="openFolder(r.id,r.encrypted)"
+          style="transition: all 0.5s " [ngStyle]="{ 'transform': 'scale(' + rangeTransformScale + ')'} "></i>
+        <i *ngIf="r.encrypted" class="fal fa-key grid-folder-lock" (click)="openFolder(r.id,r.encrypted)"
+          data-toggle="tooltip" [title]="'TOOLTIPS.ENCRYPTED_FOLDER' | translate: params"></i>
+        <i *ngIf="r.permission === 'r'" class="fal fa-eye grid-read-only" [ngClass]="{'second-lock':r.encrypted}"
+          (click)="openFolder(r.id,r.encrypted)" data-toggle="tooltip" [title]="'TOOLTIPS.READ_ONLY_FOLDER' | translate: params"></i>
+      </div>
+
+      <div class="tb-name-grid">
+        <a *ngIf="rename != index" data-toggle="tooltip" data-title="{{r.name}}">
+          {{ r.name }}
+        </a>
+        <div class=" tb-name-input form-group" style="margin-top: -8px;" *ngIf="rename == index">
+          <input #renameInput type="text" class="form-control text-center" value={{r.name}} (keyup.esc)="rename = -1"
+            (keyup.enter)="changeName($event, index)" (keypress)="onKeyPress($event)" (focusout)="rename = -1"
+            maxlength="225">
+          <i class="form-group__bar"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-unshare-modal *ngIf="openUnshareModal" [type]="'Folder'" [name]="currentItem.name" [data]="currentItem.id"
+  (UnshareCallBack)="unshareCallBack($event)"></app-unshare-modal>
+<app-modal-edit-desc *ngIf="isOpenModal.change_desc" [dataItem]="currentItem" (changed)="onReload()"></app-modal-edit-desc>

@@ -1,0 +1,300 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <textarea rows="1" [(ngModel)]="kanbanService.selectedTask.title" spellcheck="false"
+      [placeholder]="'KANBAN.PAGES.TASK_TITLE' | translate" class="form-control task-title"></textarea>
+    <span (click)="closeModal()" class="fal fa-close"></span>
+  </div>
+  <perfect-scrollbar style="max-height: 80vh;">
+    <div class="modal-body row">
+      <div class="task-details col-8">
+        <div class="description">
+          <h4><span class="fal fa-edit"></span> {{'KANBAN.MODALS.DESCRIPTION' | translate}}</h4>
+          <span class="no-text" (click)="editDescription()" *ngIf="!isEditingDescription && !kanbanService.selectedTask.description">
+            {{'KANBAN.MODALS.ADD_DESCRIPTION' | translate}}
+          </span>
+          <div id="taskDescriptionEditorReadOnly" (click)="editDescription()"></div>
+          <div id="taskDescriptionEditor"></div>
+          <div *ngIf="isEditingDescription" class="action-buttons d-flex justify-content-end mt-2">
+            <button (click)="cancelEditor()" type="button"
+              class="btn btn-clear btn--icon-text waves-effect shadow-none">
+              <span [innerHTML]="'BUTTONS.CANCEL' | translate"></span>
+            </button>
+            <button (click)="saveDescription()" type="button" class="btn btn-success btn--icon-text waves-effect ml-2">
+              <!-- <i class="fal fa-refresh fa-spin" style="margin-right: 5px;"></i> -->
+              <span [innerHTML]="'BUTTONS.SAVE' | translate"></span>
+            </button>
+          </div>
+
+        </div>
+        <div class="file-attachments">
+          <h4><span class="fal fa-paperclip"></span>{{ 'KANBAN.MODALS.ATTACHMENTS' | translate }}</h4>
+          <span  *ngIf="loadingAttachments" class="fal fa-spinner fa-spin"></span>
+          <p *ngIf="!kanbanService.selectedTask.attachments?.length && !loadingAttachments" class="no-attachment">{{'KANBAN.MODALS.NO_ATTACHMENTS'  | translate}}.</p>
+          <div class="attachment-container">
+            <div class="attachment" *ngFor="let attachment of kanbanService.selectedTask.attachments">
+              <span class="fal fa-close close" #popupControl="bs-popover" [popover]="deleteAttachmentPopUp" [outsideClick]="true"
+            popoverTitle="{{'KANBAN.MODALS.DELETE_ATTACHMENT' | translate}}" (click)="selectedAttachment = attachment" placement="bottom"></span>
+	      <a target=_blank class="d-flex justify-content-center" href="{{ attachment.image }}" [ngSwitch]="attachment.title | customFileIcon">
+		<img *ngSwitchCase="'fal fa-image'" class="attachment-img w-100" [src]="attachment.image" onError="this.src = '../../../../../assets/images/tile_'+ getFileExtension(attachment.image) +'.png'" alt="">
+		<i *ngSwitchDefault class="attachment-img {{ attachment.title | customFileIcon }}" style="display: inline-block; font-size: 64px; line-height: 128px"></i>
+	      </a>
+              <span class="attachment-name">{{attachment.title}}</span>
+            </div>
+            <ng-template #deleteAttachmentPopUp>
+            <p [innerHTML]="'KANBAN.MODALS.CONFIRM_DELETE_ATTACHMENT' | translate"></p>
+            <div class="d-flex justify-content-between mt-2">
+              <button (click)="popupControl.hide()" type="button" class="btn btn-danger btn--icon-text waves-effect">
+                <span [innerHTML]="'BUTTONS.NO' | translate"></span>
+              </button>
+              <button (click)="deleteAttachment()" type="button" class="btn btn-success btn--icon-text waves-effect">
+                <i *ngIf="isProcessing" class="fal fa-refresh fa-spin" style="margin-right: 5px;"></i>
+                <span [innerHTML]="'BUTTONS.YES' | translate"></span>
+              </button>
+            </div>
+          </ng-template>
+          </div>
+
+        </div>
+        <div class="task-list">
+          <h4><span class="fal fa-check-square"></span>{{'KANBAN.MODALS.TASKS' | translate}}</h4>
+          <ul class="list-group w-75">
+            <ng-container *ngIf="kanbanService.selectedTask.todos">
+              <li *ngFor="let todo of kanbanService.selectedTask.todos; let i = index" class="list-group-item">
+                <input (change)="updateTodo(i, todo)" type="checkbox" [checked]="todo.completed"
+                  class="pull-left cursor-pointer">
+                <span>{{todo.title}}</span>
+                <div class="ml-auto cursor-pointer">
+                  <span (click)="deleteTodo(i, todo)" class="fal fa-trash mr-4"></span>
+                </div>
+              </li>
+            </ng-container>
+            <li (click)="showAddTodo = !showAddTodo" class="list-group-item cursor-pointer add-task">
+              <span> {{'KANBAN.MODALS.ADD_TASK' | translate}} <i class="fal fa-plus"></i></span>
+            </li>
+          </ul>
+
+          <form class="add-task-form" *ngIf="showAddTodo" (submit)="addTodo()">
+            <input
+              [(ngModel)]="todoTitle"
+              [ngModelOptions]="{standalone: true}"
+              placeholder="Enter task" class="form-control" />
+            <button type=submit [disabled]="!todoTitle"
+              class="btn btn-primary">{{'KANBAN.MODALS.ADD_TASK' | translate}}</button>
+          </form>
+        </div>
+
+        <div class="task-activities">
+          <div>
+            <tabset>
+              <tab disabled="true" [heading]="'KANBAN.MODALS.ACTIVITY' | translate">
+              </tab>
+              <tab [heading]="'PREVIEW.COMMENTS' | translate" active="true">
+                <div class="add-comment-form mb-3">
+                  <textarea rows="3" [(ngModel)]="comment" [placeholder]="'PREVIEW.ADD_COMMENT' | translate" class="form-control"></textarea>
+                  <button [disabled]="!comment" (click)="addComment()"
+                    class="btn btn-primary">{{'KANBAN.MODALS.ADD_COMMENT' | translate}}</button>
+                </div>
+                <ul class="comments-list">
+                  <li *ngFor="let comment of kanbanService.selectedTask.comments; let i = index" class="comment d-flex">
+                    <a *ngIf="comment.owner.owner_id; else noAvatar" class="pull-left" href="#">
+                      <img class="avatar" [src]="comment.owner.avatar_url" alt="avatar">
+                    </a>
+                    <ng-template #noAvatar>
+                      <a class="no-avatar">
+                        <span>{{comment?.owner?.name.charAt(0)}}</span>
+                      </a>
+                    </ng-template>
+                    <div class="comment-body">
+                      <div class="comment-heading">
+                        <h4 class="user">{{comment?.owner?.name || comment?.author?.email}}</h4>
+                        <h5 class="time">{{comment?.created_at | amDateFormat:"L - LT:ss"}}</h5>
+                      </div>
+                      <div class="d-flex align-items-center">
+                        <div class="comment-content">{{comment.comment}}</div>
+                        <span (click)="deleteComment(i, comment)" *ngIf="comment?.owner_id === userInfo.email"
+                          class="fal fa-trash ml-auto cursor-pointer mt-2"></span>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </tab>
+              <tab [heading]="'TOOLTIPS.HISTORY' | translate">
+                <ul class="comments-list">
+                  <li class="comment" *ngFor="let history of kanbanService.selectedTask.history; let i = index">
+                    <a class="pull-left" href="#">
+                      <img class="avatar" [src]="history.owner.avatar_url" alt="avatar">
+                    </a>
+                    <div class="comment-body">
+                      <div class="comment-heading">
+                        <h4 class="user">{{history.owner.name}}</h4>
+                        <p class="pl-2 audit">{{history.audit}} <span class="time pl-2">{{history?.created_at | amDateFormat:"L - LT:ss"}}</span> </p>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </tab>
+            </tabset>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="task-actions col-4">
+        <h4><span class="fal fa-user"></span> {{'KANBAN.MODALS.ASSIGNEE' | translate}}</h4>
+        <div class="btn-group" dropdown>
+          <div dropdownToggle class="assignee d-flex align-items-center dropdown-toggle">
+            <span *ngIf="kanbanService.selectedTask.assignee.owner_id" class="assignee-name text-capitalize">
+                <img *ngIf="kanbanService.selectedTask.assignee.avatar_url" class="avatar" [src]="kanbanService.selectedTask.assignee.avatar_url" alt="avatar">
+                <span *ngIf="!kanbanService.selectedTask.assignee.avatar_url" class="no-image">{{kanbanService.selectedTask.assignee.owner_id.charAt(0)}}</span>
+                {{kanbanService.selectedTask.assignee.owner_id}}
+              </span>
+            <span *ngIf="!kanbanService.selectedTask.assignee">Select assignee</span>
+          </div>
+          <ng-container *ngIf="kanbanService.selectedProject?.members?.length">
+            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu members-dropdown" role="menu"
+              aria-labelledby="button-basic">
+              <li *ngFor="let member of kanbanService.selectedProject?.members" role="menuitem"
+                class="d-flex justify-content-start align-items-center">
+                <input (change)="assignTask(member)" type="checkbox" class="pull-left">
+                <span>
+                  <!-- <img class="avatar" [src]="member.owner.avatar_url" alt="avatar"> -->
+                  <span *ngIf="!member.avatar_url" class="no-image">{{member.user_id.charAt(0)}}</span>
+                  {{member.user_id}}
+                  </span>
+              </li>
+            </ul>
+          </ng-container>
+        </div>
+
+        <div class="due-date">
+          <h4> <span class="fal fa-calendar"></span> {{'KANBAN.MODALS.DUE_DATE' | translate}}</h4>
+          <input type="text" (bsValueChange)="setDate($event)"
+            [value]="kanbanService.selectedTask.due_date ? (kanbanService.selectedTask.due_date | amDateFormat:'L') : '' " placeholder="Set due date"
+            bsDatepicker [bsConfig]="datepickerConfig">
+        </div>
+
+        <div class="attach-file">
+          <h4> <span class="fas fa-folder"></span> {{'KANBAN.MODALS.FILES' | translate}}</h4>
+          <div class="subscribe">{{'KANBAN.MODALS.ATTACH_FILE' | translate}} <span
+              class="fal fa-upload pull-right"></span>
+            <input *ngIf="!uploadingFile" type="file"id="file" (change)="attachFile($event.target.files)">
+            <span *ngIf="uploadingFile" class="fal fa-spinner fa-spin"></span>
+          </div>
+        </div>
+
+        <div class="color-code mt-2">
+          <h4> <span class="fal fa-th-large"></span> {{'KANBAN.MODALS.COLOR_CODE' | translate}}</h4>
+          <div class="btn-group" dropdown>
+            <div dropdownToggle class="task-color d-flex align-items-center">
+              <span [ngStyle]="{backgroundColor: kanbanService.selectedTask.color[0]?.color}" class="color-hex"></span>
+              <span class="color-name">{{kanbanService.selectedTask.color[0].color}}</span>
+            </div>
+            <div id="dropdown-basic" *dropdownMenu class="dropdown-menu members-dropdown" role="menu"
+              aria-labelledby="button-basic">
+              <div role="menuitem" class="d-flex color-picker">
+                <span (click)="setColor(color.hex)" *ngFor="let color of colorCodes" class="color-option cursor-pointer"
+                  [ngStyle]="{backgroundColor: color.hex}"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="actions">
+          <h4> <span class="fal fa-cog"></span> {{'KANBAN.MODALS.ACTIONS' | translate}}</h4>
+          <div class="delete-button" #popupControl="bs-popover" [popover]="deleteTaskPopUp" [outsideClick]="true"
+            popoverTitle="{{'KANBAN.MODALS.DELETE_TASK' | translate}}" placement="bottom">
+            {{'KANBAN.MODALS.DELETE_TASK' | translate}}<span class="fal fa-trash pull-right"></span> </div>
+          <div
+            *ngIf="!isSubscribed()"
+            (click)="subscribe()"
+            class="subscribe">{{'KANBAN.MODALS.SUBSCRIBE' | translate}} <span class="fal fa-rss pull-right"></span>
+          </div>
+          <div
+            *ngIf="isSubscribed()"
+            (click)="unsubscribe()"
+            class="subscribe">{{'KANBAN.MODALS.UNSUBSCRIBE' | translate}} <span class="fal fa-rss pull-right"></span>
+          </div>
+
+          <ng-template #deleteTaskPopUp>
+            <p [innerHTML]="'KANBAN.MODALS.CONFIRM_DELETE_TASK' | translate"></p>
+            <div class="d-flex justify-content-between mt-2">
+              <button (click)="popupControl.hide()" type="button" class="btn btn-danger btn--icon-text waves-effect">
+                <span [innerHTML]="'BUTTONS.NO' | translate"></span>
+              </button>
+              <button (click)="deleteTask()" type="button" class="btn btn-success btn--icon-text waves-effect">
+                <i *ngIf="isProcessing" class="fal fa-refresh fa-spin" style="margin-right: 5px;"></i>
+                <span [innerHTML]="'BUTTONS.YES' | translate"></span>
+              </button>
+            </div>
+          </ng-template>
+        </div>
+
+        <div class="move">
+          <h4> <span class="fal fa-share"></span> {{'KANBAN.MODALS.MOVE' | translate}}</h4>
+          <div class="btn-group" dropdown>
+            <div dropdownToggle class="board-name d-flex align-items-center dropdown-toggle cursor-pointer">
+              <span>{{currentBoard[0]?.board_name}}</span>
+            </div>
+            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu members-dropdown" role="menu"
+              aria-labelledby="button-basic">
+              <li *ngFor="let board of boards" (click)="moveTask(board)" role="menuitem"
+                class="d-flex justify-content-between align-items-center cursor-pointer">
+                <span> {{board.board_name}}</span>
+                <span *ngIf="board.id === boardId" class="fal fa-check"></span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="tags">
+          <h4> <span class="fal fa-tag"></span> {{'KANBAN.PAGES.TAGS' | translate}}</h4>
+          <tag-input [(ngModel)]="newTag" (onAdd)="onTagAdded($event)"
+                     [placeholder]="'Add a Tag'| translate">
+            <tag-input-dropdown [zIndex]="1100" [(autocompleteItems)]="tags" [displayBy]="'title'">
+              <ng-template let-item="item" let-index="index">
+                <div [ngStyle]="{'background-color': '#' + item.color, 'margin': '-0.3em -1.25rem', 'padding-left': '16px', color: fgColor(item.color)}">
+                  {{ item.title }}
+                </div>
+              </ng-template>
+            </tag-input-dropdown>
+          </tag-input>
+          <div class="tagsList mt-2">
+            <ng-container *ngFor="let tag of kanbanService.selectedTask.tags; let i = index">
+              <span
+                [ngClass]="{shakeItem: tag.value}"
+                *ngIf="!editingTag || editingTag.id != tag.id"
+                [ngStyle]="{'background-color': '#' + tag.color, color: fgColor(tag.color)}"
+                class="tagItem d-inline-flex align-items-center justify-content-between animated fadeIn m-1 border py-1">
+                <span class="fal fa-close ml-2 cursor-pointer" *ngIf="!isProcessing && tag.title" (click)="removeTag(i)"></span>
+                <a class="mx-2" >{{tag.title}}</a>
+                <span class="fal fa-edit mr-2 cursor-pointer" (click)="editTag(i)"></span>
+              </span>
+              <fieldset *ngIf="tag.id && editingTag?.id == tag.id" class="p-2 m-0">
+                <input [(ngModel)]="editingTag.title" placeholder="Tag Title">
+                <div class="m-1">
+                  <div class="color-code">
+                    <div class="btn-group" dropdown>
+                      <div dropdownToggle class="task-color d-flex align-items-center">
+                        <span [ngStyle]="{backgroundColor: '#' + editingTag.color}" class="color-hex"></span>
+                        <span class="color-name">#{{editingTag.color}}</span>
+                      </div>
+                      <div id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu">
+                        <div role="menuitem" class="d-flex color-picker">
+                          <span (click)="setTagColor(color.hex)" *ngFor="let color of colorCodes" class="color-option cursor-pointer" [ngStyle]="{backgroundColor: color.hex}"></span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <button class="btn btn-primary"   (click)="saveTag()">Save</button>
+                <button class="btn btn-secondary" (click)="cancelTagEdit()">Cancel</button>
+              </fieldset>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+  </perfect-scrollbar>
+  <div class="modal-footer">
+  </div>
+</div>

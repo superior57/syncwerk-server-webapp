@@ -1,0 +1,421 @@
+<!-- <header class="header preview">
+
+  <div class="header__logo hidden-sm-down" *ngIf="!editMode">
+    <div class="file-header">
+      <strong data-toggle="tooltip" title="{{ fileDetails.filename }}" class="filename">{{ fileName }}</strong>
+      <a *ngIf="fileDetails.is_starred" (click)="removeFileStarred()">
+        <i class="fal fa-star fa-hc-2x"></i>
+      </a>
+      <a *ngIf="!fileDetails.is_starred" (click)="markFileStarred()">
+        <i class="fal fa-star-outline fa-hc-2x"></i>
+      </a>
+    </div>
+    <div>
+      <a class="detail-link" (click)="goToProfile()">
+        <strong>{{ fileDetails.current_commit.name }}</strong>
+      </a>
+      <span [innerHTML]="'PREVIEW.UPDATED' | translate"></span> {{ fileDetails.current_commit.time |
+      amLocale:choosenLanguage | amTimeAgo }}
+      <span *ngIf="showCodeMirrorPreview || showMarkdownPreview">,
+        <a class="detail-link" (click)="goToDiff()" [innerHTML]="'PREVIEW.DETAIL' | translate"></a>
+      </span>
+    </div>
+  </div>
+
+
+  <div class="header__logo hidden-sm-down" *ngIf="editMode">
+    <nav class="breadcrumb">
+      <span class="breadcrumb-title" [innerHTML]="'PREVIEW.CURRENT_PATH' | translate">:</span>
+      <a *ngFor="let path of fileDetails.zipped, let index=index" class="breadcrumb-item" (click)="openItem(path, index)">
+        {{ path[0] }}
+      </a>
+    </nav>
+  </div>
+
+  <ul class="top-nav" *ngIf="!editMode">
+    <li>
+      <a data-toggle="tooltip" [title]="'PREVIEW.OPEN_PARENT' | translate" (click)="openParrentFolder()">
+        <i class="fas fa-folder fa-fw"></i>
+      </a>
+    </li>
+    <li>
+      <a data-toggle="tooltip" [title]="'TOOLTIPS.SHARE' | translate" (click)="openShareModal()">
+        <i class="fal fa-share-alt"></i>
+      </a>
+    </li>
+    <li>
+      <a (click)="viewFileHistory()" data-toggle="tooltip" [title]="'TOOLTIPS.SHARE' | translate">
+        <i class="zmdi zmdi-time-restore"></i>
+      </a>
+    </li>
+    <li *ngIf="showHeaderEditButton">
+      <a data-toggle="tooltip" [title]="'TOOLTIPS.EDIT' | translate" (click)="turnOnEditMode()">
+        <i class="fal fa-pen"></i>
+      </a>
+    </li>
+    <li>
+      <a data-toggle="tooltip" [title]="'TOOLTIPS.DOWNLOAD' | translate" (click)="downloadFile()">
+        <i class="fal fa-download"></i>
+      </a>
+    </li>
+    <li>
+      <a data-toggle="tooltip" data-ma-action="aside-open" data-ma-target="#file-comment" [title]="'TOOLTIPS.COMMENT' | translate"
+        (click)="loadFileComments()">
+        <i class="fal fa-comments-alt"></i>
+      </a>
+    </li>
+    <li>
+      <a data-toggle="tooltip" [title]="'TOOLTIPS.DELETE' | translate" (click)="openDeleteFilePreviewModal()">
+        <i class="fal fa-trash-alt"></i>
+      </a>
+    </li>
+  </ul>
+
+  <ul class="top-nav" *ngIf="editMode">
+    <li>
+      <button class="btn btn-primary btn--icon-text waves-effect" (click)="saveFile()">
+        <span [innerHTML]="'BUTTONS.SAVE' | translate"></span>
+      </button>
+    </li>
+    <li>
+      <button type="button" class="btn btn-danger btn--icon-text waves-effect" (click)="cancel()">
+        <span [innerHTML]="'BUTTONS.SAVE' | translate"></span>
+      </button>
+    </li>
+  </ul>
+
+</header> -->
+
+<section class="content content--full">
+
+  <div class="header__logo hidden-sm-down">
+    <div>
+      <strong data-toggle="tooltip" title="{{ fileDetails.filename }}" class="filename">{{ fileName }}</strong>
+      <a *ngIf="fileDetails.is_starred" (click)="removeFileStarred()">
+        <i class="fal fa-star fa-hc-2x"></i>
+      </a>
+      <a *ngIf="!fileDetails.is_starred" (click)="markFileStarred()">
+        <i class="fal fa-star-outline fa-hc-2x ico--custom"></i>
+      </a>
+    </div>
+    <div>
+      <a class="detail-link" (click)="goToProfile()">
+        <strong>{{ fileDetails.current_commit.name }}</strong>
+      </a>
+      <span [innerHTML]="'PREVIEW.UPDATED' | translate"></span> {{ fileDetails.current_commit.time |
+      amLocale:choosenLanguage | amTimeAgo }}
+      <span *ngIf="showCodeMirrorPreview || showMarkdownPreview">,
+        <a class="detail-link" (click)="goToDiff()" [innerHTML]="'PREVIEW.DETAIL' | translate"></a>
+      </span>
+    </div>
+  </div>
+
+  <!-- <div class="header__logo hidden-sm-down" *ngIf="editMode">
+    <nav class="breadcrumb">
+      <span class="breadcrumb-title" [innerHTML]="'PREVIEW.CURRENT_PATH' | translate">:</span>
+      <a *ngFor="let path of fileDetails.zipped, let index=index" class="breadcrumb-item" (click)="openItem(path, index)">
+        {{ path[0] }}
+      </a>
+    </nav>
+  </div> -->
+
+  <ul class="top-nav option__preview" *ngIf="!editMode">
+    <li *ngIf="fileDetails.file_locked">
+      <a (click)="unlockFile()" data-toggle="tooltip" [title]="'TOOLTIPS.UNLOCK' | translate">
+        <i class="fal fa-lock fa-lg"></i>
+      </a>
+    </li>
+    <li *ngIf="!fileDetails.file_locked">
+      <a (click)="lockFile()" data-toggle="tooltip" [title]="'TOOLTIPS.LOCK' | translate">
+        <i class="fal fa-lock-open fa-lg"></i>
+      </a>
+    </li>
+    <li>
+      <a (click)="viewFileHistory()" data-toggle="tooltip" [title]="'TOOLTIPS.HISTORY' | translate">
+        <i class="zmdi zmdi-time-restore"></i>
+      </a>
+    </li>
+    <li>
+      <a data-toggle="tooltip" [title]="'TOOLTIPS.SHARE' | translate" (click)="openShareModal()">
+        <i class="fal fa-share-alt"></i>
+      </a>
+    </li>
+    <li *ngIf="showHeaderEditButton">
+      <a data-toggle="tooltip" [title]="'TOOLTIPS.EDIT' | translate" (click)="turnOnEditMode()">
+        <i class="fal fa-pen"></i>
+      </a>
+    </li>
+    <li>
+      <a data-toggle="tooltip" [title]="'TOOLTIPS.DOWNLOAD' | translate" (click)="downloadFile()">
+        <i class="fal fa-download"></i>
+      </a>
+    </li>
+    <li>
+      <a data-toggle="tooltip" data-ma-action="aside-open" data-ma-target="#file-comment" [title]="'TOOLTIPS.COMMENT' | translate"
+        (click)="loadFileComments()">
+        <i class="fal fa-comments-alt"></i>
+      </a>
+    </li>
+    <li>
+      <a data-toggle="tooltip" [title]="'TOOLTIPS.DELETE' | translate" (click)="openDeleteFilePreviewModal()">
+        <i class="fal fa-trash-alt"></i>
+      </a>
+    </li>
+  </ul>
+
+  <ul class="top-nav option__edit" *ngIf="editMode">
+    <li>
+      <button class="btn btn-primary btn--icon-text waves-effect" (click)="saveFile()">
+        <span [innerHTML]="'BUTTONS.SAVE' | translate"></span>
+      </button>
+    </li>
+    <li>
+      <button type="button" class="btn btn-danger btn--icon-text waves-effect" (click)="cancel()">
+        <span [innerHTML]="'BUTTONS.SAVE' | translate"></span>
+      </button>
+    </li>
+  </ul>
+
+  <header class="content__title" *ngIf="showCodeMirrorPreview || showMarkdownPreview">
+    <div class="actions">
+      <div class="form-group form-group--select form-inline">
+        <label class="mr-2" [innerHTML]="'PREVIEW.ENCODING' | translate">:</label>
+        <div class="select">
+          <!-- <select [(ngModel)]="fileDetails.encoding" class="form-control">
+            <option *ngFor="let encOpt of fileDetails.file_encoding_list" [selected]="fileDetails.encoding === encOpt">{{ encOpt }}</option>
+          </select> -->
+          <select2 [data]="select2Encode" [options]="encodeOptions" [value]="fileDetails.encoding" [width]="120"></select2>
+        </div>
+      </div>
+    </div>
+  </header>
+  <!-- Download button -->
+  <div class="card card__download text-center" *ngIf="showDownloadButton">
+    <div class="card-block">
+      <div class="row">
+        <div class="col-sm-12">
+          <button class="btn btn-primary btn--icon-text waves-effect" (click)="downloadFile()">
+            <i class="fal fa-download"></i>
+            <span [innerHTML]="'BUTTONS.DOWNLOAD' | translate"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Preview area -->
+  <div class="card card__preview" *ngIf="showCodeMirrorPreview">
+    <div class="card-block">
+      <div class="row">
+        <div class="col-sm-12" *ngIf="!editMode">
+          <ngx-codemirror [(ngModel)]="fileDetails.file_content" [options]="codeMirrorConfig.previewMode">
+          </ngx-codemirror>
+        </div>
+        <div class="col-sm-12" *ngIf="editMode">
+          <ngx-codemirror [(ngModel)]="fileDetails.file_content" [options]="codeMirrorConfig.editMode">
+          </ngx-codemirror>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Mark down preview -->
+  <div class="card card__preview" *ngIf="showMarkdownPreview">
+    <div class="card-block">
+      <div class="row">
+        <div class="col-sm-12" *ngIf="!editMode">
+          <markdown [data]="fileDetails.file_content">
+
+          </markdown>
+        </div>
+        <div class="col-sm-12 markdown-editor" *ngIf="editMode">
+          <td-text-editor [(ngModel)]="fileDetails.file_content" [options]="markdownEditorConfig"></td-text-editor>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card card-preview" *ngIf="showHTMLPreview">
+    <div class="card-block">
+      <div class="col-sm-12" *ngIf="!editMode">
+        <div [innerHTML]="fileDetails.file_content">
+        </div>
+      </div>
+      <div class="col-sm-12 markdown-editor" *ngIf="editMode">
+        <div [innerHTML]="fileDetails.file_content" id="htmlEditor">
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Image preview -->
+  <div class="img-action-previous" *ngIf="showImagePreview && fileDetails.img_prev !== null">
+    <a (click)="changeImage(fileDetails.img_prev)">
+      <i class="fal fa-chevron-left fa-hc-4x"></i>
+    </a>
+  </div>
+  <div class="img-action-next" *ngIf="showImagePreview && fileDetails.img_next !== null">
+    <a (click)="changeImage(fileDetails.img_next)">
+      <i class="fal fa-chevron-right fa-hc-4x"></i>
+    </a>
+  </div>
+  <div class="row" *ngIf="showImagePreview">
+    <div class="col-md-12 image-preview" *ngIf="!isProcessing">
+      <img [src]="fileDetails.thumbnail" alt="">
+    </div>
+    <app-processing *ngIf="isProcessing"></app-processing>
+  </div>
+  <!-- PDF preview -->
+  <div class="card card__preview" *ngIf="showPDFPreview">
+    <div class="card-block">
+      <div class="row">
+        <div class="col-sm-12">
+          <pdf-viewer [src]="fileDetails.raw_path" [render-text]="false" (after-load-complete)="onPDFLoadingComplete($event)"></pdf-viewer>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Audio player -->
+  <div class="card" *ngIf="showAudioPreview">
+    <div class="card-block">
+      <div class="row">
+        <div class="col-sm-12">
+          <vg-player style="height: 50px;">
+            <vg-controls>
+              <vg-play-pause></vg-play-pause>
+              <vg-time-display vgProperty="current" vgFormat="mm:ss"></vg-time-display>
+              <vg-scrub-bar [vgSlider]="false" [vgFor]="my-media">
+                <vg-scrub-bar-current-time [vgFor]="my-media"></vg-scrub-bar-current-time>
+                <!-- <vg-scrub-bar-buffering-time [vgFor]="my-media"></vg-scrub-bar-buffering-time> -->
+              </vg-scrub-bar>
+              <vg-time-display vgProperty="total" vgFormat="mm:ss"></vg-time-display>
+              <vg-mute></vg-mute>
+              <vg-volume></vg-volume>
+              <vg-fullscreen></vg-fullscreen>
+            </vg-controls>
+
+            <audio #media [vgMedia]="media" id="my-media" preload="auto">
+              <source [src]="fileDetails.raw_path">
+            </audio>
+          </vg-player>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- video player -->
+  <div class="card" *ngIf="showVideoPreview">
+    <div class="card-block">
+      <div class="row">
+        <div class="col-sm-12">
+          <vg-player>
+            <vg-controls>
+              <vg-play-pause></vg-play-pause>
+              <vg-time-display vgProperty="current" vgFormat="mm:ss"></vg-time-display>
+              <vg-scrub-bar [vgSlider]="false" [vgFor]="my-media">
+                <vg-scrub-bar-current-time [vgFor]="my-media"></vg-scrub-bar-current-time>
+                <!-- <vg-scrub-bar-buffering-time [vgFor]="my-media"></vg-scrub-bar-buffering-time> -->
+              </vg-scrub-bar>
+              <vg-mute></vg-mute>
+              <vg-volume></vg-volume>
+              <vg-fullscreen></vg-fullscreen>
+            </vg-controls>
+            <video #myMedia [vgMedia]="myMedia" id="my-video" preload="auto">
+              <source [src]="fileDetails.raw_path" type="video/mp4">
+            </video>
+          </vg-player>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- office preview -->
+  <div class="card office-preview" *ngIf="showOfficePreview">
+    <div id="officePreviewPlaceholder"></div>
+  </div>
+
+</section>
+
+
+<aside id="file-comment" class="chat">
+  <div class="messages">
+    <div class="messages__body">
+      <div class="messages__header">
+        <div class="toolbar toolbar--inner mb-0">
+          <div class="toolbar__label">
+            <strong [innerHTML]="'PREVIEW.COMMENTS' | translate"></strong>
+          </div>
+        </div>
+      </div>
+      <div class="messages__content scrollbar-macosx">
+        <div class="todo">
+          <div class="listview listview--hover">
+            <div *ngFor="let comment of fileComments" class="listview__item">
+              <label class="custom-control todo__item">
+                <a [routerLink]="['/user','profile' , comment.user_email]">
+                  <span class="custom-control--char__helper">
+                    <img [src]="comment.avatar_url" class="messages__avatar" alt="">
+                  </span>
+                </a>
+                <div class="todo__info">
+                  <small>
+                    <strong>{{ comment.user_name }}</strong>
+                  </small>
+                  <span>{{ comment.comment }}</span>
+                  <small data-toggle="tooltip" title="{{ comment.created_at }}">
+                    <i class="zmdi zmdi-time"></i> {{ comment.created_at | amTimeAgo }}
+                  </small>
+                </div>
+              </label>
+              <div class="actions listview__actions">
+                <div class="dropdown actions__item">
+                  <i class="fal fa-ellipsis-v" data-toggle="dropdown"></i>
+                  <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item dropdown-item--icon" (click)="replyComment(comment)">
+                      <i class="fal fa-reply fa-hc-lg"></i>
+                      <span [innerHTML]="'BUTTONS.REPLY' | translate"></span>
+                    </a>
+                    <a class="dropdown-item dropdown-item--icon" *ngIf="deleteCommentPermission(comment.user_email)"
+                      (click)="deleteComment(comment)">
+                      <i class="fal fa-trash-alt fa-hc-lg"></i>
+                      <span [innerHTML]="'BUTTONS.DELETE' | translate"></span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="messages__reply">
+        <textarea id="commentBox" [(ngModel)]="currentComment" class="messages__reply__text" [placeholder]="'PREVIEW.ADD_COMMENT' | translate"></textarea>
+        <button class="btn btn-success btn--icon messages__reply__btn waves-effect" (click)="addFileComment()">
+          <i class="zmdi zmdi-mail-send"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<div class="modal fade" id="remove-file-preview-modal" tabindex="-1">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left" [innerHTML]="'PREVIEW.DELETE_FILE' | translate"></h5>
+      </div>
+      <div class="modal-body">
+        <div>
+          <div [innerHTML]="'MODALS.VERIFY_QUESTIONS.DELETE' | translate">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger btn--icon-text waves-effect" (click)="deleteFilePreview()">
+          <span [innerHTML]="'BUTTONS.YES' | translate"></span>
+        </button>
+        <button type="button" class="btn btn-secondary btn--icon-text waves-effect" data-dismiss="modal">
+          <span [innerHTML]="'BUTTONS.NO' | translate"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-share-modal *ngIf="typeModal === 'share'" [shareItem]="currentShareItem"></app-share-modal>

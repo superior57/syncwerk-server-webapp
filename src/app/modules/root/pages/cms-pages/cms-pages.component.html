@@ -1,0 +1,26 @@
+<header>
+  <div class="login__block__header__custom">
+    <a data-toggle="tooltip" [title]="logoTooltip" [routerLink]="'/'"><img [src]="logoURL" height="30rem" alt=""></a>
+    <div class="select__languages">
+      <select2 [data]="select2TranslateData" [options]="translateOptions" [value]="choosenLanguage" [width]="88"
+        (valueChanged)="switchLanguage($event)"></select2>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+  <header class="content__title">
+    <h1>{{ cmsTitle }}</h1>
+  </header>
+
+  <div class="card">
+    <div class="card-block">
+      <div *ngIf="!isProcessing" [innerHTML]="cmsContent.file_content" routeTransformer></div>
+      <app-processing *ngIf="isProcessing"></app-processing>
+    </div>
+  </div>
+</div>
+
+<div class="footer ft--custom">
+  <app-footer></app-footer>
+</div>

@@ -1,0 +1,56 @@
+.m-btn-back {
+  margin-right: 0.625rem;
+}
+.notseen {
+	font-weight: bold;
+}
+.more-button {
+	text-align: center;
+  border-top: 1px solid #f3f3f3;
+  padding-top:15px
+}
+.notification__img {
+  width: 3rem;
+  height: 3rem;
+  //border-radius: 50%;
+  vertical-align: top;
+}
+.notif-link {
+  color:#0067b3;
+  cursor: pointer;
+}
+.modification {
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 25px;
+  font-weight: bold;
+}
+.content__title .actions {
+  right: 1.5rem;
+  top: 1.4rem;
+}
+
+:host ::ng-deep span.folder-name {
+  color: #0067b3;
+  word-break: break-all;
+}
+:host ::ng-deep span.file-name {
+  color: #0067b3;
+  word-break: break-all;
+}
+:host ::ng-deep span.group-name {
+  color: #0067b3;
+  word-break: break-all;
+}
+a.card__profile {
+  background: #cecece;
+  padding: 6px 12px;
+  //border-radius: 50%;
+  color: #fff;
+  font-size: 20px;
+  box-sizing: border-box;
+}
+
+td.avatar__noti {
+  padding: 1rem 0.5rem !important;
+}

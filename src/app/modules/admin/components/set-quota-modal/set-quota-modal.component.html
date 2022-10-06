@@ -1,0 +1,26 @@
+<div class="modal fade" id="set-quota-modal" tabindex="-1">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" [innerHTML]="'MODALS.TITLES.SET_USER_STORAGE_LIMIT' | translate"></h3>
+      </div>
+      <div class="modal-body">
+        <div class="input-group">
+          <div class="form-group">
+            <input type="number" min="0" class="form-control" [(ngModel)]="quotaInMB">
+            <i class="form-group__bar"></i>
+          </div>
+          <span class="input-group-addon">MB</span>
+        </div>
+        <div>
+          <small [innerHTML]="'MODALS.TIPS.SET_USER_STORAGE_LIMIT' | translate"></small>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success waves-effect" (click)="setQuota()">
+          <span [innerHTML]="'BUTTONS.SUBMIT' | translate"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

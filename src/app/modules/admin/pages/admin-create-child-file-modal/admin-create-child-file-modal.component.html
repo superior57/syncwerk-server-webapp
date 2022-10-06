@@ -1,0 +1,34 @@
+<div class="modal fade" id="admin-modal-create-child-file" tabindex="-1">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h5 class="modal-title pull-left custom-title">
+          <span *ngIf="createType === 'File'">{{'CREATE_FILE_FOLDER_MODAL.NEW_FILE' | translate}}</span>
+          <span *ngIf="createType === 'Folder'">{{'CREATE_FILE_FOLDER_MODAL.NEW_FOLDER' | translate}}</span>
+          <span *ngIf="createType !== 'File' && createType !=='Folder'">{{'CREATE_FILE_FOLDER_MODAL.NEW' | translate}}
+            {{createType}} {{'CREATE_FILE_FOLDER_MODAL.FILE' | translate}}</span>
+        </h5>
+
+      </div>
+      <!-- Modal Body -->
+      <div class="modal-body">
+        <div class="form-group">
+          <label [innerHTML]="'FORMS.INPUTS.NAME' | translate"></label>
+          <input #name type="text" class="form-control input-mask" [(ngModel)]="dirName" maxlength="255" id="name"
+            required (keyup.enter)="create()">
+          <i class="form-group__bar"></i>
+        </div>
+        <p class="error-msg">{{errors}}</p>
+        <p class="sub-error-msg">{{ subError }}</p>
+      </div>
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success btn--icon-text waves-effect" (click)="create()">
+          <span [innerHTML]="'BUTTONS.CREATE' | translate"></span>
+        </button>
+        <button type="button" class="btn btn-secondary btn--icon-text waves-effect" (click)="closeModal()" [innerHTML]="'CREATE_FILE_FOLDER_MODAL.CLOSE_MODAL' | translate"></button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,176 @@
+<header class="content__title">
+  <h1 [innerHTML]="'WIKIS.WIKI_LIST.TITLE' | translate"></h1>
+  <small [innerHTML]="'WIKIS.WIKI_LIST.SUBTITLE' | translate"></small>
+  <div class="actions list-grid-custom">
+    <div class="range__size">
+      <input *ngIf="!isListView" type="range" min="100" max="160" class="sliderr" [(ngModel)]="rangeSizeGrid" (ngModelChange)="onChangeRangeSizeGrid($event)" />
+    </div>
+    <div class="list__grid__button">
+      <app-list-grid-button (onChangeViewMode)="onChangeViewMode($event)"></app-list-grid-button>
+    </div>
+  </div>
+</header>
+
+<div class="card">
+  <div class="card-block">
+    <div class="data-table__header d-flex justify-content-betwwen fl--custom">
+      <div class="form-group">
+        <div class="dropdown">
+          <button class="btn btn-secondary waves-effect btn--icon-text mr-25px" data-toggle="dropdown" aria-expanded="false">
+            {{'WIKIS.WIKI_LIST.BUTTONS.ADD_WIKI' | translate}}
+          </button>
+          <div class="dropdown-menu" x-placement="top-start">
+            <a (click)="openCreateNewWikiModal()" class="dropdown-item">{{'WIKIS.WIKI_LIST.BUTTONS.NEW_WIKI' |
+              translate}}</a>
+            <a (click)="openCreateWikiFromExistingFolderModal()" class="dropdown-item">{{'WIKIS.WIKI_LIST.BUTTONS.CHOOSE_FOLDER_AS_WIKI'
+              | translate}}</a>
+          </div>
+        </div>
+      </div>
+      <div class="form-group data-table__filter">
+        <input [placeholder]="'SEARCHS.ALL_COLUMNS' | translate" class="form-control" (keyup)="onSearchFilterChange($event)" />
+        <i class="form-group__bar"></i>
+      </div>
+      <div class="row-selector">
+        <app-row-selector (changed)="onPerPageChanged($event)"></app-row-selector>
+      </div>
+    </div>
+
+
+    <ng-container *ngIf="!isProcessing">
+
+      <!-- LIST VIEW -->
+      <div *ngIf="isListView === true">
+        <table class="table table-sm table-hover" *ngIf="wikiListFromAPI.length !== 0 && wikiListForDisplay.length !== 0">
+          <thead>
+            <tr>
+              <th class="sortable" (click)="triggerSort('name')" width="30%">
+                {{'WIKIS.WIKI_LIST.HEADERS.NAME' | translate }}
+                <ng-container *ngIf="sortConfig.column==='name'">
+                  <i *ngIf="sortConfig.mode==='asc'" class="fal fa-sort-amount-up sort-icon"></i>
+                  <i *ngIf="sortConfig.mode==='desc'" class="fal fa-sort-amount-down sort-icon"></i>
+                </ng-container>
+              </th>
+              <th class="sortable d-none d-lg-table-cell" (click)="triggerSort('owner')" width="30%">
+                {{'WIKIS.WIKI_LIST.HEADERS.OWNER' | translate }}
+                <ng-container *ngIf="sortConfig.column==='owner'">
+                  <i *ngIf="sortConfig.mode==='asc'" class="fal fa-sort-amount-up sort-icon"></i>
+                  <i *ngIf="sortConfig.mode==='desc'" class="fal fa-sort-amount-down sort-icon"></i>
+                </ng-container>
+              </th>
+              <th class="sortable d-none d-lg-table-cell" (click)="triggerSort('last_update')" width="20%">
+                {{'WIKIS.WIKI_LIST.HEADERS.LAST_UPDATE' | translate }}
+                <ng-container *ngIf="sortConfig.column==='last_update'">
+                  <i *ngIf="sortConfig.mode==='asc'" class="fal fa-sort-amount-up sort-icon"></i>
+                  <i *ngIf="sortConfig.mode==='desc'" class="fal fa-sort-amount-down sort-icon"></i>
+                </ng-container>
+              </th>
+              <th>{{'WIKIS.WIKI_LIST.HEADERS.ACTIONS' | translate }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let wiki of wikiListForDisplay; let index=index">
+              <tr (mouseover)="hoveredIndex=index" (mouseleave)="hoveredIndex=-1">
+                <td class="wiki__name__custom d-flex">
+                  <i class="fal fa-book fa-2x text-center ico-gray" [routerLink]="['/wikis', wiki.slug]"></i>
+                  <a [routerLink]="['/wikis', wiki.slug]" class="wiki--name">{{ wiki.name }}</a>
+                </td>
+                <td class="d-none d-lg-table-cell">
+                  <a [routerLink]="['/user', 'profile', wiki.owner]">{{ wiki.owner }}</a>
+                </td>
+                <td class="d-none d-lg-table-cell">
+                  {{ wiki.updated_at | amDateFormat:'YYYY-MM-DD HH:mm:ss' }}
+                </td>
+                <td class="d-none d-lg-table-cell">
+                  <ng-container *ngIf="hoveredIndex === index">
+                    <i data-toggle="tooltip" [title]="'WIKIS.WIKI_LIST.BUTTONS.RENAME_WIKI' | translate" class="fal fa-lg fa-pencil-alt actions__item"
+                      (click)="openRenameWikiModal(wiki)"></i>
+                    <i data-toggle="tooltip" [title]="'WIKIS.WIKI_LIST.BUTTONS.REMOVE_WIKI' | translate" class="fal fa-lg fa-trash-alt actions__item"
+                      (click)="openRemoveWikiModal(wiki)"></i>
+                  </ng-container>
+                </td>
+                <td class="d-sm-table-cell d-md-table-cell d-lg-none">
+                  <a [href]="'#wiki-'+index" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="share-0">
+                    <i data-toggle="tooltip" title="Details" class="fal fa-2x fa-ellipsis-v actions__item"></i>
+                  </a>
+                </td>
+              </tr>
+
+              <!-- Collapse details of share link for sm display -->
+              <tr class="d-sm-table-row d-md-table-row d-lg-none share-details-row">
+                <td colspan="10">
+                  <div class="collapse" [id]="'wiki-'+index">
+                    <div class="share-details">
+                      <div>
+                        <span>
+                          <strong>{{'WIKIS.WIKI_LIST.HEADERS.OWNER' | translate }}: </strong>
+                          {{ wiki.owner }} </span>
+                      </div>
+                      <div>
+                        <span>
+                          <strong>{{'WIKIS.WIKI_LIST.HEADERS.LAST_UPDATE' | translate }}: </strong>
+                          {{ wiki.updated_at | amDateFormat:'YYYY-MM-DD HH:mm:ss' }} </span>
+                      </div>
+                      <div class="actions">
+                        <i data-toggle="tooltip" [title]="'WIKIS.WIKI_LIST.BUTTONS.RENAME_WIKI' | translate" class="fal fa-lg fa-pencil-alt actions__item"
+                          (click)="openRenameWikiModal(wiki)"></i>
+                        <i data-toggle="tooltip" [title]="'WIKIS.WIKI_LIST.BUTTONS.REMOVE_WIKI' | translate" class="fal fa-lg fa-trash-alt actions__item"
+                          (click)="openRemoveWikiModal(wiki)"></i>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+      <!-- END LISTVIEW -->
+
+      <!-- GRID VIEW -->
+      <div *ngIf="isListView!==true">
+        <div class="row lightbox photos">
+          <div *ngFor="let wiki of wikiListForDisplay; let index=index" class="col-xl-3 col-lg-3 col-sm-4 col-12">
+            <div class="card grid--view">
+              <button class="btn btn-secondary waves-effect btn--custom" data-toggle="tooltip" [title]="'WIKIS.WIKI_LIST.BUTTONS.RENAME_WIKI' | translate"
+                (click)="openRenameWikiModal(wiki)">
+                <i class="fal fa-lg fa-pencil-alt ico--custom"></i>
+              </button>
+              <button class="btn btn-secondary waves-effect btn--custom--second" data-toggle="tooltip" [title]="'WIKIS.WIKI_LIST.BUTTONS.REMOVE_WIKI' | translate"
+                (click)="openRemoveWikiModal(wiki)">
+                <i class="fal fa-lg fa-trash-alt ico--custom"></i>
+              </button>
+              <div class="center-img" style="font-size: 100px; " [ngStyle]="{'height': rangeHeightPx} ">
+                <i class="fal fa-book text-center fa-gray" [routerLink]="['/wikis', wiki.slug]" style="transition: all 0.5s "
+                  [ngStyle]="{ 'transform': 'scale(' + rangeTransformScale + ')'} "></i>
+              </div>
+              <div class="card-body">
+                <strong><a [routerLink]="['/wikis', wiki.slug]" class="a--direct">{{ wiki.name }}</a></strong>
+                <small><a [routerLink]="['/user', 'profile', wiki.owner]" class="a--direct owner">{{ wiki.owner }}</a></small>
+                <p class="text-center">{{ wiki.updated_at | amDateFormat:'YYYY-MM-DD HH:mm:ss' }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- END GRID VIEW -->
+
+      <!-- EMPTY ITEM -->
+      <app-empty-item *ngIf="wikiListForDisplay.length === 0 && wikiListFromAPI.length !== 0" [messageTitle]="'WIKIS.WIKI_LIST.NO_WIKI_FOUND_TITLE' | translate: params"
+        [messageSub]="'WIKIS.WIKI_LIST.NO_WIKI_FOUND_SUBTITLE' | translate: params"></app-empty-item>
+      <app-empty-item *ngIf="wikiListForDisplay.length === 0 && wikiListFromAPI.length === 0" [messageTitle]="'WIKIS.WIKI_LIST.NO_WIKI_TITLE' | translate: params"
+        [messageSub]="'WIKIS.WIKI_LIST.NO_WIKI_SUBTITLE' | translate: params"></app-empty-item>
+    </ng-container>
+
+
+
+    <app-processing *ngIf="isProcessing"></app-processing>
+  </div>
+</div>
+
+<div class="data-table__footer">
+  <div class="footer__wrapper">
+    <pagination [itemsPerPage]="pagination.itemsPerPage" [boundaryLinks]="true" [maxSize]="maxSize" [totalItems]="wikiListFromAPI.length"
+      (pageChanged)="pageChanged($event)"></pagination>
+  </div>
+</div>

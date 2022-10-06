@@ -1,0 +1,129 @@
+<header class="header">
+  <div class="navigation-trigger hidden-xl-up" data-ma-action="aside-open" data-ma-target=".sidebar">
+    <div class="navigation-trigger__inner">
+      <i class="navigation-trigger__line"></i>
+      <i class="navigation-trigger__line"></i>
+      <i class="navigation-trigger__line"></i>
+    </div>
+  </div>
+
+  <div class="header__logo hidden-sm-down">
+    <h1>
+      <a data-toggle="tooltip" [title]="logoTooltip" routerLink="/">
+        <img class="header-logo" [src]="logoURL" alt="" (error)="logoErrorHandler($event)">
+      </a>
+    </h1>
+  </div>
+
+  <!-- <form class="search">
+      <div class="search__inner">
+          <input type="text" class="search__text" placeholder="Search for people, files, documents...">
+          <i class="zmdi zmdi-search search__helper" data-ma-action="search-close"></i>
+      </div>
+  </form> -->
+
+  <ul class="top-nav">
+    <li dropdown class="d-sm-inline-block">
+      <a dropdownToggle [ngClass]="{'top-nav__notify' : unseen !== 0, 'top-nav': unseen === 0}"><i
+          class="fal fa-bell"></i></a>
+      <div #notif_dropdown *dropdownMenu class="dropdown-menu dropdown-menu-right dropdown-menu--block" role="menu">
+        <div class="listview listview--hover">
+          <div class="listview__header" [innerHTML]="'HEADER.NOTIFICATIONS' | translate">
+            <div class="actions">
+              <a href="" class="actions__item fal fa-check-all" data-ma-action="notifications-clear" #notif_mark></a>
+            </div>
+          </div>
+          <div class="scrollable-menu scrollbar-macosx">
+            <div *ngFor="let n of notif; let index = index">
+              <div *ngIf="n">
+                <div [ngClass]="{'listview__item': true, 'notseen': !n.seen, 'border-top': index!==0}">
+                  <a routerLink="/user/profile/{{n.msg_from ? n.msg_from.email : n.to_user}}">
+                    <img src="{{notificationAvatar(n)}}" class="listview__img" alt="">
+                  </a>
+                  <div class="listview__content">
+                    <div *ngIf="n.msg_type==='repo_share'" (click)="markRead(n)"
+                      [routerLink]="['/folders', n.detail.repo_id]">
+                      <a
+                        [innerHTML]="'HEADER.NOTI_REPO_SHARE' | translate: {titleName: n.msg_from.name, folderName: n.detail.repo_name } "></a>
+                    </div>
+                    <div *ngIf="n.msg_type==='file_comment'" (click)="markRead(n)"
+                      (click)="openFilePreview(n.detail.repo_id, n.detail.file_path)">
+                      <a
+                        [innerHTML]="'HEADER.NOTI_FILE_COMMENT' | translate: {fileName: n.detail.file_name, userName: n.msg_from.name }">
+                      </a>
+                    </div>
+                    <div *ngIf="n.msg_type==='add_user_to_group'" (click)="markRead(n)"
+                      [routerLink]="['/files','groups', n.detail.group_id]">
+                      <a
+                        [innerHTML]="'HEADER.NOTI_ADD_USER_TO_GROUP' | translate: {userName: n.msg_from.name, groupName: n.detail.group_name}"></a>
+                    </div>
+                    <div *ngIf="n.msg_type==='repo_share_to_group'" (click)="markRead(n)"
+                      [routerLink]="['/files','groups', n.detail.group_id]">
+                      <a
+                        [innerHTML]="'HEADER.NOTI_SHARE_TO_GROUP' | translate: {userName: n.msg_from.name, folderName: n.detail.repo_name, groupName: n.detail.group_name}"></a>
+                    </div>
+
+                    <div *ngIf="n.msg_type==='group_msg'">
+                      <div *ngIf="n.msg_from; else msg_unknown" (click)="markRead(n)"
+                        [routerLink]="['/files','groups', n.detail.group_id]">
+                        <a
+                          [innerHTML]="'HEADER.NOTI_POSTER_DISCUSSION' | translate:{userName: n.msg_from.name, groupName: n.detail.group_name, messText: n.detail.message}"></a>
+                      </div>
+                      <ng-template #msg_unknown>
+                        <div (click)="markRead(n)" [routerLink]="['/files','groups', n.detail.group_id]">
+                          <a
+                            [innerHTML]="'HEADER.NOTI_POSTER_DISCUSSION_UNKNOW' | translate: {groupName: n.detail.group_name, messText: detail.message}"></a>
+                        </div>
+                      </ng-template>
+                    </div>
+                    <div *ngIf="n.msg_type==='file_uploaded'">
+                      <div *ngIf="n.detail.repo_id">
+                        <div (click)="markRead(n)" [routerLink]="n.detail.routerLink">
+                          <a
+                            [innerHTML]="'HEADER.NOTI_FILE_UPLOADED' | translate: {fileName: n.detail.file_name, folderName:  n.detail.name}">
+                          </a>
+                        </div>
+                      </div>
+                      <div *ngIf="!n.detail.repo_id">
+                        <div (click)="markRead(n)" [routerLink]="['n.detail.file_name']">
+                          <a
+                            [innerHTML]="'HEADER.NOTI_FILE_UPLOADED_UNKNOW' | translate: {fileName: n.detail.file_name}"></a>
+                        </div>
+                      </div>
+                      <!-- <div *ngIf="n.detail.repo_id !== 'undefined'" ; else upload_unknown (click)="markRead(n)"
+                        [routerLink]="['/folders',n.detail.repo_id]">
+                        <a
+                          [innerHTML]="'HEADER.NOTI_FILE_UPLOADED' | translate: {fileName: n.detail.file_name, folderName:  n.detail.name}"></a>
+                      </div>
+                      <ng-template #upload_unknown>
+
+                      </ng-template> -->
+                    </div>
+                    <div class="notif__time">
+                      <i class="zmdi zmdi-time">&nbsp;</i>
+                      <span [innerHTML]="n.mtime_relative | date:'yyyy-MM-dd HH:mm:ss'"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="notif.length === 0" class="listview__item justify-content-center"
+            [innerHTML]="'HEADER.YOU_HAVE_NO_NOTIFICATIONS' | translate"></div>
+          <!-- <a routerLink="/notification/list" class="view-more" [innerHTML]="'HEADER.SEE_ALL_NOTIFICATIONS' | translate"></a> -->
+          <a routerLink="/notifications" class="view-more" [innerHTML]="'HEADER.SEE_ALL_NOTIFICATIONS' | translate"></a>
+        </div>
+      </div>
+    </li>
+    <li dropdown class="d-sm-inline-block">
+      <a routerLink="/settings" dropdownToggle="">
+        <i *ngIf="userAvtUrl === ''" class="fal fa-user-alt"></i>
+        <img *ngIf="userAvtUrl !== ''" [src]="userAvtUrl" class="user-avatar" />
+      </a>
+    </li>
+    <li dropdown class="d-sm-inline-block" (click)="logout()">
+      <a><i class="fal fa-sign-out"></i></a>
+    </li>
+  </ul>
+</header>

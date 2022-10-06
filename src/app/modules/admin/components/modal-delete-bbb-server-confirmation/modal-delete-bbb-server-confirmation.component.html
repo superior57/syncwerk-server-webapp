@@ -1,0 +1,25 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h5 class="modal-title pull-left">
+      <span>
+        <strong>
+          <span>{{'BBB_SERVERS.MODALS.DELETE_MEETING_SERVER_TITLE' | translate}}</span> &nbsp; <code>{{ selectedBBBServer.setting_name }}</code>
+        </strong>
+      </span>
+    </h5>
+  </div>
+  <div class="modal-body">
+    <div [innerHTML]="'BBB_SERVERS.MODALS.DELETE_MEETING_SERVER_CONFIRM_MESSAGE' | translate"></div>
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" [disabled]="isProcessing ? true : false" class="btn btn-danger btn--icon-text waves-effect"
+      (click)="deleteBBBServer()">
+      <i *ngIf="isProcessing" class="fal fa-refresh fa-spin" style="margin-right: 5px;"></i>
+      <span [innerHTML]="'BUTTONS.YES' | translate"></span>
+    </button>
+    <button type="button" class="btn btn-secondary btn--icon-text waves-effect" (click)="closeModal()">
+      <span [innerHTML]="'BUTTONS.NO' | translate"></span>
+    </button>
+  </div>
+</div>

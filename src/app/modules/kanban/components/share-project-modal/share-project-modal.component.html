@@ -1,0 +1,203 @@
+<!-- vi:set sw=2: -->
+<div class="modal-header">
+  <h4 class="modal-title">
+    <span class="h5">
+      <span [innerHTML]="'MODAL_SHARE.TITLE' | translate"></span>
+      <strong> {{ selectedProject.project_name }}</strong>
+    </span>
+  </h4>
+</div>
+<div class="modal-body">
+  <div class="content-share-modal">
+    <tabset [vertical]="true" type="pills" class="d-flex">
+    <!-- SHARE LINK TAB -->
+    <tab [heading]="'MODAL_SHARE.NAVIGATIONS.DOWNLOAD_LINK' | translate ">
+    <form #folderForm="ngForm">
+      <div class="p-2">
+        <p [innerHTML]="'MODAL_SHARE.DIRECT_DOWNLOAD_LINK_DESCRIPTION' | translate"></p>
+        <app-share-password-protect
+          *ngIf="!data && !isLoading"
+          (GenerateAction)="generateShareLink($event)"></app-share-password-protect>
+        <div *ngIf="data">
+          <p [innerHTML]="'MODAL_SHARE.LINK' | translate: params"></p>
+          <div>
+            <textarea
+              autosize
+              #copyLinkDownload
+              data-toggle="tooltip"
+              class="input-custom" readonly
+              value="{{ data ? getLink() : '' }}"
+              [ngxClipboard]="copyLinkDownload" (click)="submitCopy()"
+              [title]="'TOOLTIPS.COPY_TO_CLIPBOARD' | translate: params"></textarea>
+            <button
+              type="button"
+              data-toggle="tooltip"
+              [ngxClipboard]="copyLinkDownload" (click)="submitCopy()"
+              class="btn btn-info btn--icon-text waves-effect btn--custom"
+              [title]="'TOOLTIPS.COPY_TO_CLIPBOARD' | translate: params">
+              <span [innerHTML]="'BUTTONS.COPY' | translate: params"></span>
+            </button>
+          </div>
+          <div *ngIf="data.expire_date">
+            <p>
+            <span [innerHTML]="'MODAL_SHARE.EXPIRE_DATE' | translate: param"></span> {{ data.expire_date }}</p>
+          </div>
+          <div class="btn-demo" *ngIf="!isSendMail">
+            <button type="button" class="btn btn-success btn--icon-text waves-effect mg-r4px" (click)="openFormSend()">
+              <span [innerHTML]="'BUTTONS.SEND' | translate: params"></span>
+            </button>
+            <button type="button" class="btn btn-danger btn--icon-text waves-effect mg-r4px" (click)="deleteLink()">
+              <span [innerHTML]="'BUTTONS.REMOVE' | translate: params"></span>
+            </button>
+          </div>
+        </div>
+        <!-- Send Email -->
+        <app-share-send-share-link *ngIf="isSendMail" type="download" [data]="data" (closeSend)="cancelSendEmail()"></app-share-send-share-link>
+      </div>
+    </form>
+    </tab>
+    <!-- SHARE TO USER TAB -->
+    <tab [heading]="'MODAL_SHARE.NAVIGATIONS.SHARE_TO_USER' | translate "><div class="p-2">
+      <div class="card-block card-share">
+        <p class="modal__description" [innerHTML]="'MODAL_SHARE.SHARE_TO_USER_DESCRIPTION' | translate"></p>
+        <div class="wrapper">
+          <strong [innerHTML]="'TABLE.COLUMNS.USER' | translate">
+          </strong>
+	  <p class="notice"><small>{{ 'SEARCHS.NOTICE_INPUT_UNSER' | translate }}</small></p>
+          <span>
+            <tag-input [placeholder]="'+ ' + ('ADMIN.SETTINGS.COLLAPSES.USER' | translate)" [secondaryPlaceholder]="(ENABLE_GLOBAL_ADDRESSBOOK ? 'SEARCHS.USER' : 'SEARCHS.USER_NO_ADDRESSBOOK') | translate" [allowDupes]="false" [(ngModel)]="userListForShare" [onlyFromAutocomplete]="false" (keyup.enter)="onUserNameEnter()" (onAdd)="onItemAdded($event)" [clearOnBlur]="false" [addOnPaste]="true">
+              <tag-input-dropdown [appendToBody]="false" [autocompleteObservable]="ENABLE_GLOBAL_ADDRESSBOOK ? autocompleteUserList : null" [matchingFn]="autoCompleteMatching">
+                <ng-template let-item="item" let-index="index">
+                  <div class="row">
+                    <div class="col-md-2">
+                      <div class="user-avt">
+                        <img [src]="item.templateData.avatar_url" />
+                      </div>
+                    </div>
+                    <div class="col-md-10">
+                      <div class="user-detail">
+                        <strong>{{ item.templateData.name }}</strong>
+                      </div>
+                      <div class="user-detail">
+                        ({{ item.templateData.email }})
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
+              </tag-input-dropdown>
+            </tag-input>
+          </span>
+          <div class="d-flex fl--custom">
+            <div class="wrapper__permission">
+              <strong class="tb-permission" [innerHTML]="'TABLE.COLUMNS.PERMISSION' | translate">
+              </strong>
+              <span>
+                <select2 [data]="shareTypes" [options]="options" [value]="permission" [cssImport]="true" [width]="128" (valueChanged)="changedSettingPermission($event)"></select2>
+              </span>
+            </div>
+          </div>
+          <div>
+            <ng-container *ngIf="userListForShare.length <= 0">
+              <button [disabled]="userListForShare.length <= 0" type="button" class="btn btn-info waves-effect btn--custom" (click)="submitShareToUser()" data-toggle="tooltip" [title]="'SEARCHS.NOTICE_INPUT_UNSER' | translate">
+                <span [innerHTML]="'BUTTONS.SUBMIT' | translate"></span>
+              </button>
+            </ng-container>
+            <ng-container *ngIf="userListForShare.length > 0">
+              <button  type="button" class="btn btn-info waves-effect btn--custom" (click)="submitShareToUser()">
+                <span [innerHTML]="'BUTTONS.SUBMIT' | translate"></span>
+              </button>
+            </ng-container>
+          </div>
+          <div class="clearfix">
+          </div>
+          <p class="error-msg">{{ errorMessage }}</p>
+          <ng-container *ngFor="let data of listUserShared; let index=index">
+            <div class="d-flex fl--custom">
+              <div class="name-wrapper--custom">
+                <strong [innerHTML]="'TABLE.COLUMNS.USER' | translate">
+                </strong>
+                <p class="info--name" data-toggle="tooltip" [title]="data.user_id">{{data.user_id | splice_length: 25}}</p>
+              </div>
+              <div class="tb-permission--custom">
+                <p class="permission__title--custom">{{ 'TABLE.COLUMNS.PERMISSION' | translate }}</p>
+                <select2 [data]="shareTypes" [options]="options" [value]="data.permission" [cssImport]="true" [width]="128" (valueChanged)="changedUserPermissionData($event,index)"></select2>
+              </div>
+              <div class="button--customz">
+                <button type="button" class="btn btn-danger btn--icon-text waves-effect btn--custom" (click)="deleteUserShared(index,data)">
+                  <i class="fal fa-trash-alt"></i>
+                </button>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+    </tab>
+    <!-- SHARE TO GROUP TAB -->
+    <tab [heading]="'MODAL_SHARE.NAVIGATIONS.SHARE_TO_GROUP' | translate "><div class="p-2">
+      <div class="card-block card-share">
+        <p class="modal__description" [innerHTML]="'MODAL_SHARE.SHARE_TO_GROUP_DESCRIPTION' | translate"></p>
+        <div>
+          <p class="p__per">{{ 'TABLE.COLUMNS.GROUP' | translate }}</p>
+          <span>
+            <tag-input
+              #groupAutoComplete
+              id="groupAutoComplete" [placeholder]="'+ ' + ('ADMIN.SETTINGS.COLLAPSES.GROUP' | translate)"
+              [secondaryPlaceholder]="'SEARCHS.GROUP' | translate" [allowDupes]="false" [(ngModel)]="groupListForShare"
+              [onlyFromAutocomplete]="false" (keyup.enter)="onGroupNameEnter()" (onAdd)="onItemAdded($event)">
+              <tag-input-dropdown [matchingFn]="autoCompleteMatching" [appendToBody]="false" [autocompleteObservable]="autocompleteGroupList">
+                <ng-template let-item="item" let-index="index">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div>
+                        <strong>{{ item.group.name }}</strong>
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
+              </tag-input-dropdown>
+            </tag-input>
+          </span>
+          <div class="wrapper__pemission">
+            <p class="p__per">{{ 'TABLE.COLUMNS.PERMISSION' | translate }}</p>
+            <div class="d-flex">
+              <select2 [data]="shareTypes" [options]="options" [value]="permission" [cssImport]="true" [width]="155"
+                 (valueChanged)="changedSettingPermission($event)"></select2>
+              <button type="button" class="btn btn-success btn--custom" [disabled]="groupListForShare.length <= 0" (click)="shareToGroups()">
+                <span [innerHTML]="'BUTTONS.SUBMIT' | translate"></span>
+              </button>
+            </div>
+          </div>
+          <div class="clearfix">
+          </div>
+          <p class="error-msg">{{ errorMessage }}</p>
+          <ng-container *ngFor="let data of groupShareds; let index=index">
+            <div class="d-flex fl--custom">
+              <div class="gr__title__wrapper">
+                <strong class="group__name">{{ 'TABLE.COLUMNS.GROUP' | translate }}</strong>
+                <span class="name--custom">{{ (data.group_info.name) | splice_length: 25 }}</span>
+              </div>
+              <div class="gr__per__wrapper">
+                <strong class="group__permission">{{ 'TABLE.COLUMNS.PERMISSION' | translate }}</strong>
+                <span class="span__wrapper__select">
+                  <select2 [data]="shareTypes" [options]="options" [value]="data.permission" [cssImport]="true" [width]="155" (valueChanged)="changedGroupPermissionData($event,index)"></select2>
+                </span>
+              </div>
+              <div class="gr__btn__wrapper">
+                <button class="btn btn-danger btn--icon-text waves-effect" (click)="deleteGroupShared(index,data)">
+                  <i class="fal fa-trash-alt"></i>
+                </button>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div></tab>
+    </tabset>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" (click)="bsModalRef.hide()" class="btn btn-link">
+    <span [innerHTML]="'BUTTONS.CLOSE' | translate"></span>
+  </button>
+</div>

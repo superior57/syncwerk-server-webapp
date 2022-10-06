@@ -1,0 +1,158 @@
+<div *ngIf="dataProfiles">
+  <!-- AVATAR -->
+  <h4 class="card-block__title mb-4" [innerHTML]="'USERADMIN_INFO.PROFILE.AVATAR' | translate: params"></h4>
+  <div *ngIf="dataProfiles.common_info.is_default_avatar" class="card__profile">
+    <i class="fal fa-user"></i>
+  </div>
+  <div *ngIf="!dataProfiles.common_info.is_default_avatar">
+    <img *ngIf="dataProfiles.common_info" width="100px" src="{{ dataProfiles.common_info.avatar_url }}" alt="{{ getDetailUserInfo.email }}"
+      class="img-avatar mb-2dot3">
+  </div>
+  <br>
+
+  <!-- EMAIL -->
+  <h4 class="card-block__title mb-4" [innerHTML]="'USERADMIN_INFO.PROFILE.EMAIL' | translate: params"></h4>
+  <p class="mb-2dot3">{{ dataProfiles.email }}</p>
+  <br>
+
+  <!-- NAME -->
+  <h4 class="card-block__title mb-4" [innerHTML]="'USERADMIN_INFO.PROFILE.NAME' | translate: params"></h4>
+  <p *ngIf="display !== 'name'" class="vertical-item mb-2dot3">
+    {{ dataProfiles.profile && dataProfiles.profile.nickname ? dataProfiles.profile.nickname : '--' }}
+    <i *ngIf="currentUserPermission.can_manage_user !== false" class="actions__item fal fa-pen" data-toggle="tooltip" [title]="'TOOLTIPS.EDIT' | translate: params" (click)="changeDisplay('name')"></i>
+  </p>
+  <div *ngIf="display === 'name'" class="row input-name">
+    <div class="col-sm-2">
+      <div class="form-group">
+        <input #name type="text" class="form-control" [(ngModel)]="model.name" #name="ngModel" (keyup.enter)="submitEditProfile()">
+        <i class="form-group__bar"></i>
+      </div>
+    </div>
+    <div class="col-sm-2">
+      <div *ngIf="!isProcessing">
+        <button class="btn btn-success waves-effect" (click)="submitEditProfile()">
+          <i class="fal fa-check"></i>
+        </button>
+        <button class="btn btn-danger waves-effect" (click)="changeDisplay('')">
+          <i class="fal fa-times"></i>
+        </button>
+      </div>
+      <div *ngIf="isProcessing">
+        <button class="btn btn-info waves-effect">
+          <i class="fal fa-sync-alt fa-spin"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+  <br />
+
+  <!-- LOGIN_ID -->
+  <h4 class="card-block__title mb-4" [innerHTML]="'USERADMIN_INFO.PROFILE.LOGIN_ID' | translate: params"></h4>
+  <p *ngIf="display !== 'login_id'" class="vertical-item mb-2dot3">
+    {{ dataProfiles.profile && dataProfiles.profile.login_id ? dataProfiles.profile.login_id : '--' }}
+    <i *ngIf="currentUserPermission.can_manage_user !== false" class="actions__item fal fa-pen" data-toggle="tooltip" [title]="'TOOLTIPS.EDIT' | translate: params" (click)="changeDisplay('login_id')"></i>
+  </p>
+  <div *ngIf="display === 'login_id'" class="row">
+    <div class="col-sm-2">
+      <div class="form-group">
+        <input #loginID type="text" class="form-control" [(ngModel)]="model.login_id" #loginID="ngModel" (keyup.enter)="submitEditProfile()">
+        <i class="form-group__bar"></i>
+      </div>
+    </div>
+    <div class="col-sm-2">
+      <button class="btn btn-success waves-effect" (click)="submitEditProfile()">
+        <i class="fal fa-check"></i>
+      </button>
+      <button class="btn btn-danger waves-effect" (click)="changeDisplay('')">
+        <i class="fal fa-times"></i>
+      </button>
+    </div>
+  </div>
+  <br />
+
+  <!-- DEPARTMENT -->
+  <h4 class="card-block__title mb-4" [innerHTML]="'USERADMIN_INFO.PROFILE.DEPARTMENT' | translate: params"></h4>
+  <p *ngIf="display !== 'department'" class="vertical-item mb-2dot3">
+    {{ dataProfiles.d_profile && dataProfiles.d_profile.department ? dataProfiles.d_profile.department : '--' }}
+    <i *ngIf="currentUserPermission.can_manage_user !== false" class="actions__item fal fa-pen" data-toggle="tooltip" [title]="'TOOLTIPS.EDIT' | translate: params" (click)="changeDisplay('department')"></i>
+  </p>
+  <div *ngIf="display === 'department'" class="row">
+    <div class="col-sm-2">
+      <div class="form-group">
+        <input #department type="text" class="form-control" [(ngModel)]="model.department" #department="ngModel"
+          (keyup.enter)="submitEditProfile()">
+        <i class="form-group__bar"></i>
+      </div>
+    </div>
+    <div class="col-sm-2">
+      <button class="btn btn-success waves-effect" (click)="submitEditProfile()">
+        <i class="fal fa-check"></i>
+      </button>
+      <button class="btn btn-danger waves-effect" (click)="changeDisplay('')">
+        <i class="fal fa-times"></i>
+      </button>
+    </div>
+  </div>
+  <br />
+
+  <!-- SPACE USED / QUOTA -->
+  <h4 class="card-block__title mb-4">
+    <span [innerHTML]="'USERADMIN_INFO.PROFILE.SPACE_USED' | translate: params"></span> /
+    <span [innerHTML]="'USERADMIN_INFO.PROFILE.QUOTA' | translate: params"></span>
+  </h4>
+  <p *ngIf="display !== 'storage'" class="vertical-item mb-2dot3">
+    {{ dataProfiles.space_usage | customFileSize }} / {{ dataProfiles.space_quota === -2 ? '--' :
+    dataProfiles.space_quota |
+    customFileSize }}
+    <i *ngIf="currentUserPermission.can_manage_user !== false" class="actions__item fal fa-pen" data-toggle="tooltip" [title]="'TOOLTIPS.EDIT' | translate: params" (click)="changeDisplay('storage')"></i>
+  </p>
+  <div *ngIf="display === 'storage'" class="row">
+    <div class="col-sm-1">
+      {{ dataProfiles.space_usage | customFileSize }} /
+    </div>
+    <div class="col-sm-2">
+      <div class="input-group">
+        <div class="form-group">
+          <input #quota type="number" min="0" class="form-control" [(ngModel)]="model.quota" #quota="ngModel"
+            (keyup.enter)="submitEditProfile()">
+          <i class="form-group__bar"></i>
+        </div>
+        <span class="input-group-addon">MB</span>
+      </div>
+    </div>
+    <div class="col-sm-2">
+      <button class="btn btn-success waves-effect" (click)="submitEditProfile()">
+        <i class="fal fa-check"></i>
+      </button>
+      <button class="btn btn-danger waves-effect" (click)="changeDisplay('')">
+        <i class="fal fa-times"></i>
+      </button>
+    </div>
+  </div>
+  <br />
+
+  <!-- MAX MEETINGS -->
+  <h4 class="card-block__title mb-4" [innerHTML]="'USERADMIN_INFO.PROFILE.MAX_MEETINGS' | translate: params"></h4>
+  <p *ngIf="display !== 'max_meetings'" class="vertical-item mb-2dot3">
+    {{ dataProfiles.p_setting && dataProfiles.p_setting.max_meetings ? dataProfiles.p_setting.max_meetings : '--' }}
+    <i *ngIf="currentUserPermission.can_manage_user !== false" class="actions__item fal fa-pen" data-toggle="tooltip" [title]="'TOOLTIPS.EDIT' | translate: params" (click)="changeDisplay('max_meetings')"></i>
+  </p>
+  <div *ngIf="display === 'max_meetings'" class="row">
+    <div class="col-sm-2">
+      <div class="form-group">
+        <input #max_meetings type="text" class="form-control" [(ngModel)]="model.max_meetings" #max_meetings="ngModel"
+          (keyup.enter)="submitEditProfile()">
+        <i class="form-group__bar"></i>
+      </div>
+    </div>
+    <div class="col-sm-2">
+      <button class="btn btn-success waves-effect" (click)="submitEditProfile()">
+        <i class="fal fa-check"></i>
+      </button>
+      <button class="btn btn-danger waves-effect" (click)="changeDisplay('')">
+        <i class="fal fa-times"></i>
+      </button>
+    </div>
+  </div>
+  <br />
+</div>

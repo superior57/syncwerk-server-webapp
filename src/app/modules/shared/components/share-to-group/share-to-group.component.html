@@ -1,0 +1,60 @@
+<div class="card-block card-share">
+  <p class="modal__description" [innerHTML]="'MODAL_SHARE.SHARE_TO_GROUP_DESCRIPTION' | translate"></p>
+  <div>
+    <p class="p__per">{{ 'TABLE.COLUMNS.GROUP' | translate }}</p>
+    <span>
+      <tag-input #groupAutoComplete id="groupAutoComplete" [placeholder]="'+ ' + ('ADMIN.SETTINGS.COLLAPSES.GROUP' | translate)"
+        [secondaryPlaceholder]="'SEARCHS.GROUP' | translate" [allowDupes]="false" [(ngModel)]="groupListForShare"
+        [onlyFromAutocomplete]="false" (keyup.enter)="onEnter()" (onAdd)="onItemAdded($event)">
+        <tag-input-dropdown [matchingFn]="autocompleteGroupMatching" [appendToBody]="false" [autocompleteObservable]="autocompleteGroupList">
+          <ng-template let-item="item" let-index="index">
+            <div class="row">
+              <div class="col-md-12">
+                <div>
+                  <strong>{{ item.group.name }}</strong>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </tag-input-dropdown>
+      </tag-input>
+    </span>
+
+    <div class="wrapper__pemission">
+      <p class="p__per">{{ 'TABLE.COLUMNS.PERMISSION' | translate }}</p>
+      <div class="d-flex">
+        <select2 [data]="exampleData" [options]="options" [value]="permission" [cssImport]="true" [width]="155"
+          (valueChanged)="changedSettingPermission($event)"></select2>
+        <button type="button" class="btn btn-success btn--custom" [disabled]="groupListForShare.length <= 0" (click)="shareToGroups()">
+          <span [innerHTML]="'BUTTONS.SUBMIT' | translate"></span>
+        </button>
+      </div>
+    </div>
+
+    <div class="clearfix">
+    </div>
+
+    <p class="error-msg">{{ errorMessage }}</p>
+
+    <ng-container *ngFor="let data of groupShareds; let index=index">
+      <div class="d-flex fl--custom">
+        <div class="gr__title__wrapper">
+          <strong class="group__name">{{ 'TABLE.COLUMNS.GROUP' | translate }}</strong>
+          <span class="name--custom">{{ (data.group_info.name) | splice_length: 25 }}</span>
+        </div>
+        <div class="gr__per__wrapper">
+          <strong class="group__permission">{{ 'TABLE.COLUMNS.PERMISSION' | translate }}</strong>
+          <span class="span__wrapper__select">
+            <select2 [data]="exampleData" [options]="options" [value]="data.permission" [cssImport]="true" [width]="155"
+              (valueChanged)="changedPermissionData($event,index)"></select2>
+          </span>
+        </div>
+        <div class="gr__btn__wrapper">
+          <button class="btn btn-danger btn--icon-text waves-effect" (click)="deleteGroupShared(index,data)">
+            <i class="fal fa-trash-alt"></i>
+          </button>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>

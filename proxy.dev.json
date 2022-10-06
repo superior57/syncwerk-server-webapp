@@ -1,0 +1,15 @@
+{
+  "/api3/": {
+    "target": "https://syncwerk.cloud",
+    "logLevel": "debug",
+    "changeOrigin": true,
+    "cookieDomainRewrite": ""
+  },
+
+  "/media/": {
+    "target": "https://syncwerk.cloud",
+    "logLevel": "debug",
+    "changeOrigin": true,
+    "cookieDomainRewrite": ""
+  }
+}

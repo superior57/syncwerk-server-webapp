@@ -1,0 +1,64 @@
+<div [hidden]="isHidden" >
+  <div class="card" mwlResizable [enableGhostResize]="true" [resizeEdges]="{bottom: false, right: false, top: true, left: false}"
+  [ngStyle]="{'height': showBody ? uploadPopupHeightInPx + 'px' : '3rem'}" (resizeEnd)="onResizeEnd($event)">
+    <div class="card-header">
+      <h2 class="card-title" [innerHTML]="'UPLOAD_PROCESS.TITLE' | translate"></h2>
+      <div class="actions">
+        <a *ngIf="showBody" class="actions__item fal fa-chevron-down" (click)="showBody=false"></a>
+        <a *ngIf="!showBody" class="actions__item fal fa-chevron-up" (click)="showBody=true"></a>
+        <a *ngIf="showCloseButton" class="actions__item fal fa-times" (click)="close()"></a>
+      </div>
+      <hr>
+    </div>
+
+    <perfect-scrollbar *ngIf="showBody" id="upload-file-list">
+      <div class="card-block">
+        <table class="table table-sm mb-0">
+          <tbody>
+            <tr *ngFor="let file of uploadFileListForShowing; let index=index">
+              <td width="50%">{{ file.relativePath | CutStringAny: 40 : 35 : 0}}</td>
+              <td width="30%">
+                <div>{{ file.size | customFileSize }}</div>
+                <div *ngIf="file.status?.toLowerCase() === 'uploading'">
+                  <div>
+                    <span [innerHTML]="'UPLOAD_PROCESS.UPLOADING' | translate"></span>
+                    <span> ... ETA: {{ file.eta}}</span>
+                  </div>
+                  <div class="progress">
+                    <div class="progress-bar" role="progressbar" [ngStyle]="{'width': file.processPercentage + '%'}"
+                      aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div *ngIf="!file.status || file.status?.toLowerCase() === 'uploading'">
+                  <button class="btn btn-danger btn--icon waves-effect" (click)="cancelUpload(file)">
+                    <i class="fal fa-times"></i>
+                  </button>
+                </div>
+                <div *ngIf="file.status?.toLowerCase() === 'completed'">
+                  <div [innerHTML]="'UPLOAD_PROCESS.COMPLETED' | translate"></div>
+                </div>
+                <div *ngIf="file.status?.toLowerCase() === 'canceled'">
+                  <div [innerHTML]="'UPLOAD_PROCESS.CANCELED' | translate"></div>
+                </div>
+                <div *ngIf="file.status?.toLowerCase() === 'saving'">
+                  <div [innerHTML]="'UPLOAD_PROCESS.SAVING' | translate"></div>
+                </div>
+                <div *ngIf="file.status?.toLowerCase() === 'error'">
+                  <div class="text-danger" [innerHTML]="file.errorMessage ? file.errorMessage : ('UPLOAD_PROCESS.ERROR' | translate)"></div>
+                </div>
+                <div *ngIf="file.status?.toLowerCase() === 'filesizetoolargeerror'">
+                  <div class="text-danger" [innerHTML]="'ADMIN.USERS.MODALS.MODAL_UPLOAD_FILE.FILE_UPLOAD_LARGE' | translate:{maxSize:file.maxUploadSizeAllowed}"></div>
+                </div>
+                <div *ngIf="file.status?.toLowerCase() === 'outofquotaerror'">
+                  <div class="text-danger" [innerHTML]="'ADMIN.USERS.MODALS.MODAL_UPLOAD_FILE.OUT_OF_QUOTA' | translate"></div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </perfect-scrollbar>
+  </div>
+</div>

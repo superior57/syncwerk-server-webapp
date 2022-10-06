@@ -1,0 +1,23 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h3 class="modal-title">
+      <strong>{{ 'ADMIN.INSTITUTIONS.MODALS.UPDATE_QUOTA_TITLE' | translate }}</strong>
+    </h3>
+  </div>
+  <div class="modal-body">
+    <div class="form-group">
+      <input appFocus [(ngModel)]="tenantQuota" class="form-control" type="number" min="0" />
+      <i class="form-group__bar"></i>
+    </div>
+    <small>{{ 'ADMIN.INSTITUTIONS.MODALS.UPDATE_QUOTA_TIP_1' | translate }}</small>
+    <br />
+    <small>{{ 'ADMIN.INSTITUTIONS.MODALS.UPDATE_QUOTA_TIP_2' | translate }}</small>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-success btn--icon-text waves-effect" (click)="updateTenantQuota()" [disabled]="isProcessing ? 'disabled' : ''">
+      <i *ngIf="isProcessing" class="fal fa-refresh fa-spin" style="margin-right: 5px;"></i>
+      <span [innerHTML]="'BUTTONS.SUBMIT' | translate"></span>
+    </button>
+  </div>
+</div>

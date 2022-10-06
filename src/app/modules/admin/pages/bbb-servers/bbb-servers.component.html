@@ -1,0 +1,120 @@
+<header class="content__title">
+  <h1>
+    {{'BBB_SERVERS.TITLE' | translate}}
+  </h1>
+  <small>{{'BBB_SERVERS.SUBTITLE' | translate}}</small>
+</header>
+
+<div class="card">
+  <div class="card-block">
+    <div class="data-table__header d-flex justify-content-betwwen fl--custom">
+      <div class="form-group">
+        <button (click)="openAddBBBServerModal()" class="btn btn-secondary waves-effect btn--icon-text mr-25px">
+          {{'BBB_SERVERS.BUTTON.ADD_NEW' | translate}}</button>
+      </div>
+      <div class="form-group data-table__filter">
+        <input [placeholder]="'BBB_SERVERS.FILTER_PLACEHOLDER' | translate" class="form-control"
+          (keyup)="onSearchFilterChange($event)" />
+        <i class="form-group__bar"></i>
+      </div>
+      <div class="row-selector">
+        <app-row-selector (changed)="onPerPageChanged($event)"></app-row-selector>
+      </div>
+    </div>
+
+    <ng-container *ngIf="!isProcessing">
+      <table class="table table-hover"
+        *ngIf="BBBServerListFromAPI.length !== 0 && BBBServerListForDisplay.length !== 0">
+        <thead>
+          <tr>
+            <th>{{'BBB_SERVERS.TABLE_HEADERS.SERVER_NAME' | translate}}</th>
+            <th class="d-none d-lg-table-cell">{{'BBB_SERVERS.TABLE_HEADERS.SERVER_URL' | translate}}</th>
+            <th class="d-none d-lg-table-cell">{{'BBB_SERVERS.TABLE_HEADERS.CREATED_BY' | translate}}</th>
+            <th class="d-none d-lg-table-cell">{{'BBB_SERVERS.TABLE_HEADERS.CREATED_ON' | translate}}</th>
+            <th class="">{{'BBB_SERVERS.TABLE_HEADERS.NUMBER_OF_CREATED_MEETINGS' | translate}}
+            </th>
+            <th>{{'BBB_SERVERS.TABLE_HEADERS.ACTIONS' | translate}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let server of BBBServerListForDisplay; let index=index">
+            <tr (mouseover)="hoveredIndex=index" (mouseleave)="hoveredIndex=-1">
+              <td>
+                {{server.setting_name}}
+              </td>
+              <td class="d-none d-lg-table-cell">
+                {{server.bbb_server}}
+              </td>
+              <td class="d-none d-lg-table-cell">
+                {{server.user_id}}
+              </td>
+              <td class="d-none d-lg-table-cell">
+                {{server.created_at | date:'yyyy-MM-dd HH:mm:ss'}}
+              </td>
+              <td class="">
+                {{server.number_of_meetings}}
+              </td>
+              <td class="d-none d-lg-table-cell">
+                <i [title]="'TOOLTIPS.EDIT' | translate" (click)="openEditBBBServerModal(server)"
+                  class="fal fa-pen actions__item"></i>
+                <i [title]="'TOOLTIPS.DELETE' | translate" (click)="openDeleteBBBServerConfirmationModal(server)"
+                  class="fal fa-trash actions__item"></i>
+              </td>
+              <td class="d-sm-table-cell d-md-table-cell d-lg-none">
+                <a [href]="'#bbb-server-'+index" data-toggle="collapse" role="button" aria-expanded="false"
+                  aria-controls="share-0">
+                  <i data-toggle="tooltip" title="Details" class="fal fa-2x fa-ellipsis-v actions__item"></i>
+                </a>
+              </td>
+            </tr>
+            <!-- Collapse details of share link for sm display -->
+            <tr class="d-sm-table-row d-md-table-row d-lg-none share-details-row">
+              <td colspan="10">
+                <div class="collapse" [id]="'bbb-server-'+index">
+                  <div class="share-details">
+                    <div>
+                      <span>
+                        <strong>{{'BBB_SERVERS.TABLE_HEADERS.SERVER_URL' | translate}}: </strong>
+                        {{server.bbb_server}} </span>
+                    </div>
+                    <div>
+                      <span>
+                        <strong>{{'BBB_SERVERS.TABLE_HEADERS.CREATED_BY' | translate}}: </strong>
+                        {{server.user_id}} </span>
+                    </div>
+                    <div>
+                      <span>
+                        <strong>{{'BBB_SERVERS.TABLE_HEADERS.CREATED_ON' | translate}}: </strong>
+                        {{server.created_at | date:'yyyy-MM-dd HH:mm:ss'}} </span>
+                    </div>
+                    <div class="actions">
+                      <i [title]="'TOOLTIPS.EDIT' | translate" (click)="openEditBBBServerModal(server)"
+                        class="fal fa-pen actions__item"></i>
+                      <i [title]="'TOOLTIPS.DELETE' | translate" (click)="openDeleteBBBServerConfirmationModal(server)"
+                        class="fal fa-trash actions__item"></i>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+      <!-- EMPTY ITEM -->
+      <app-empty-item *ngIf="BBBServerListForDisplay.length === 0 && BBBServerListFromAPI.length !== 0"
+        [messageTitle]="'BBB_SERVERS.MESSAGES.NO_FOUND' | translate"
+        [messageSub]="'BBB_SERVERS.MESSAGES.CREATE_SUB' | translate"></app-empty-item>
+      <app-empty-item *ngIf="BBBServerListForDisplay.length === 0 && BBBServerListFromAPI.length === 0"
+        [messageTitle]="'BBB_SERVERS.MESSAGES.NO_CREATE' | translate"
+        [messageSub]="'BBB_SERVERS.MESSAGES.CREATE_SUB' | translate"></app-empty-item>
+    </ng-container>
+    <app-processing *ngIf="isProcessing"></app-processing>
+  </div>
+</div>
+
+<div class="data-table__footer">
+  <div class="footer__wrapper">
+    <pagination [itemsPerPage]="pagination.itemsPerPage" [boundaryLinks]="true" [maxSize]="maxSize"
+      [totalItems]="BBBServerListFromAPI.length" (pageChanged)="pageChanged($event)"></pagination>
+  </div>
+</div>

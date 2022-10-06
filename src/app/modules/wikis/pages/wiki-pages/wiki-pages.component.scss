@@ -1,0 +1,118 @@
+.content__title {
+    h1 {
+        text-transform: uppercase;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        .back-btn {
+        font-size: 1.7rem;
+        margin-right: 5px;
+        cursor: pointer;
+        }
+    }
+}
+
+.card-block {
+    min-height: calc(100vh - 300px);
+}
+
+.page-list {
+    border-right: 1px solid rgba(0, 0, 0, 0.05);
+    h5 {
+        float: left;
+    }
+    .actions {
+        float: right;
+        i {
+            cursor: pointer;
+        }
+    }
+    hr {
+        margin-top: 2rem;
+    }
+}
+
+.page-list-item {
+    padding: 1rem 1rem 1rem 0rem;
+    cursor: pointer;
+    .page-title {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+    a {
+        font-weight: 500;
+        i {
+            margin-right: 10px;
+        }
+    }
+    &:hover {
+        background: rgba(0, 0, 0, 0.05);
+    }
+}
+
+.preview-area {
+    .preview-header {
+        text-align: left;
+    }
+    .preview-actions {
+        text-align: right;
+        .actions {
+            margin-left: 10px;
+        }
+    }
+}
+
+@media (max-width: 767px){
+  .page-list{
+    border-right: 0px;
+  }
+
+  .btn{
+    margin-bottom: 10px;
+  }
+
+  .card-block{
+    padding: 1.1rem;
+  }
+
+  p.des--p {
+    word-break: break-all;
+  }
+
+  .page-list-item{
+    position: relative;
+  }
+
+  .dropdown-menu {
+      position: absolute;
+      left: -130px;
+  }
+
+  .wrapper__item {
+    height: 142px;
+    padding: 10px 22px;
+    overflow: scroll;
+    margin-bottom: 12px;
+    border: 1px solid #e2e2e2;
+  }
+}
+
+:host ::ng-deep td-text-editor div .editor-toolbar {
+  // z-index: 11 !important;
+  top: 72px !important;
+}
+
+:host ::ng-deep td-text-editor div .CodeMirror-wrap, .editor-preview-side {
+  margin-top: 72px;
+}
+
+:host ::ng-deep td-text-editor div .editor-preview-side {
+  margin-top: 72px;
+}
+
+.wrapper__text__editor {
+  margin-top: -48px;
+}
+
+

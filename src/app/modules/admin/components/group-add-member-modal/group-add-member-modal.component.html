@@ -1,0 +1,50 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h5 class="modal-title pull-left">
+      <span>
+        <strong>
+          <span [innerHTML]="'ADMIN.GROUPS.MODALS.ADD_GROUP_MEMBER' | translate"></span>
+        </strong>
+      </span>
+    </h5>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-9">
+        <div class="form-group">
+          <tag-input [maxItems]="10" placeholder="+ User" secondaryPlaceholder="{{'MODALS.TRANSFER.TYPE_TO_SEARCH_USER' | translate}}"
+            [allowDupes]="false" [(ngModel)]="membersToAdd" [onlyFromAutocomplete]="false">
+            <tag-input-dropdown [matchingFn]="autoCompleteUserListMatching" [appendToBody]="false" [autocompleteObservable]="ENABLE_GLOBAL_ADDRESSBOOK ? autocompleteUserList : null">
+              <ng-template let-item="item" let-index="index">
+                <div class="row">
+                  <!-- <div class="col-md-2">
+                          <div class="user-avt">
+                            <img [src]="item.templateData.avatar_url" />
+                          </div>
+                        </div> -->
+                  <div class="col-md-10">
+                    <div class="user-detail">
+                      <strong>{{ item.display }}</strong>
+                    </div>
+                    <div class="user-detail">
+                      ({{ item.templateData.email }})
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+            </tag-input-dropdown>
+          </tag-input>
+
+          <br>
+          <p class="notice">{{ 'SEARCHS.NOTICE_INPUT_UNSER' | translate }}</p>
+
+        </div>
+      </div>
+      <div class="col-md-3">
+        <button type="button" class="btn btn-block btn-info waves-effect" (click)="addMember()">
+          <span [innerHTML]="'ADMIN.GROUPS.MODALS.ADD_GROUP_MEMBER_BUTTON' | translate"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

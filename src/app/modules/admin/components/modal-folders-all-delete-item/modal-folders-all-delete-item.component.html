@@ -1,0 +1,21 @@
+<div class="modal fade" id="modal-folders-all-delete-item" tabindex="-1">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" [innerHTML]="'MODALS.TITLES.DELETE_FOLDER' | translate: params"></h3>
+      </div>
+      <div class="modal-body" [innerHTML]="'MODALS.VERIFY_QUESTIONS.DELETE_FOLDER' | translate: params">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger btn--icon-text waves-effect" (click)="submitDeleteFolder()"
+          [disabled]="isProcessing ? 'disabled' : ''">
+          <i *ngIf="isProcessing" class="fal fa-refresh fa-spin" style="margin-right: 5px;"></i>
+          <span [innerHTML]="'BUTTONS.YES' | translate: params"></span>
+        </button>
+        <button type="button" class="btn btn-secondary btn--icon-text waves-effect" data-dismiss="modal">
+          <span [innerHTML]="'BUTTONS.NO' | translate: params"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

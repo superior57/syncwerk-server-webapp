@@ -1,0 +1,23 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h5 class="modal-title pull-left">
+      <span>
+        <strong>
+          <span>{{'ADMIN.EMAIL_CHANGES.MODALS.REMOVE_REQUEST_TITLE' | translate}}</span>
+        </strong>
+      </span>
+    </h5>
+  </div>
+  <div class="modal-body">
+    <span [innerHTML]="'ADMIN.EMAIL_CHANGES.MODALS.REMOVE_REQUEST_CONFIRMATION' | translate:selectedRequest"></span>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger btn--icon-text waves-effect" (click)="removeRequest()">
+      <i *ngIf="isProcessing" class="fal fa-refresh fa-spin" style="margin-right: 5px;"></i>
+      <span [innerHTML]="'BUTTONS.YES' | translate"></span>
+    </button>
+    <button type="button" class="btn btn-secondary btn--icon-text waves-effect" (click)="closeModal()">
+      <span [innerHTML]="'BUTTONS.NO' | translate"></span>
+    </button>
+  </div>
+</div>

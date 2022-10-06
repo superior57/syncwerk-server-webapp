@@ -1,0 +1,32 @@
+<div class="margin-top-10px">
+  <form>
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="form-group" [ngClass]="{'has-danger':(emailFormControl.hasError('pattern') || emailFormControl.hasError('required')) && (emailFormControl.touched || isErrorSend)  }">
+          <label [innerHTML]="'MODAL_SHARE.SEND_LINK.SEND_TO' | translate"></label>
+          <input class="form-control input-mask input-protect" [(ngModel)]="sendMailData.email" name="email" [formControl]="emailFormControl"
+            [ngClass]="{'form-control-danger':(emailFormControl.hasError('pattern') || emailFormControl.hasError('required')) && (emailFormControl.touched || isErrorSend)  }">
+          <i class="form-group__bar"></i>
+        </div>
+      </div>
+    </div>
+    <div class="error-msg" *ngIf="emailFormControl.hasError('pattern') && (emailFormControl.touched || isErrorSend)" [innerHTML]="'MODAL_SHARE.SEND_LINK.PLEASE_ENTER_A_VALID_EMAIL_ADDRESS' | translate"></div>
+    <div class="error-msg" *ngIf="emailFormControl.hasError('required') && (emailFormControl.touched || isErrorSend)" [innerHTML]="'MODAL_SHARE.SEND_LINK.EMAIL_IS_REQUIRED' | translate"></div>
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label [innerHTML]="'MODAL_SHARE.SEND_LINK.MESSAGE_OPTIONAL' | translate"></label>
+          <textarea class="form-control" rows="5" [(ngModel)]="sendMailData.message" name="message"></textarea>
+          <i class="form-group__bar"></i>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <button class="btn btn-primary btn--icon-text waves-effect mg-r4px" (click)="sendEmail(emailFormControl.value,sendMailData.message)">
+    <span [innerHTML]="'BUTTONS.SEND' | translate"></span>
+  </button>
+  <button class="btn btn-danger btn--icon-text waves-effect mg-r4px" (click)="cancelSendEmail()">
+    <span [innerHTML]="'BUTTONS.CANCEL' | translate"></span>
+  </button>
+</div>

@@ -1,0 +1,70 @@
+<div class="modal-content" id="modal-bbb-setting">
+  <div class="modal-header">
+    <h5 class="modal-title">
+      <span *ngIf="!isEditMode">{{ 'BBB_SERVERS.MODALS.ADD_SERVER_TITLE' | translate }}</span>
+      <span *ngIf="isEditMode">{{ 'BBB_SERVERS.MODALS.EDIT_SERVER_TITLE' | translate }}</span>
+    </h5>
+  </div>
+  <div class="tab-content">
+    <form autocomplete="off">
+      <div class="modal-body">
+        <div class="form-group input">
+          <label>{{ 'BBB_SERVERS.MODALS.SERVER_NAME' | translate }} (*)</label>
+          <input type="text" class="form-control" [(ngModel)]="bbb_form.bbbServerName" name="bbbServerName">
+          <i class="form-group__bar"></i>
+        </div>
+        <div class="form-group input" *ngIf="!isEditMode">
+          <label>{{ 'BBB_SERVERS.MODALS.OWNER' | translate }}</label>
+          <input type="text" class="form-control" [(ngModel)]="bbb_form.serverOwner" name="bbbServerOwner" [placeholder]="'BBB_SERVERS.MODALS.OWNER_PLACEHOLDER' | translate">
+          <i class="form-group__bar"></i>
+        </div>
+        <div class="form-group input" *ngIf="isEditMode">
+          <label>{{ 'BBB_SERVERS.MODALS.OWNER' | translate }}</label>
+          <div>{{ bbb_form.serverOwner }}</div>
+        </div>
+        <div class="form-group input">
+          <label>{{ 'BBB_SERVERS.MODALS.SERVER_ADDRESS' | translate }} (*)</label>
+          <input type="text" class="form-control" [(ngModel)]="bbb_form.bbbServer" name="bbbServerURL">
+          <i class="form-group__bar"></i>
+        </div>
+        <div class="form-group input">
+          <label>{{ 'BBB_SERVERS.MODALS.SECRET_KEY' | translate }} (*)</label>
+          <input type="password" class="form-control" [(ngModel)]="bbb_form.bbbServerSecret" name="bbbServerSecret">
+          <i class="form-group__bar"></i>
+        </div>
+        <div class="form-group input-group">
+          <div class="form-group form-group">
+            <label>{{ 'BBB_SERVERS.MODALS.LIVE_STREAM_TOKEN' | translate }}</label>
+            <input type="text" class="form-control" [(ngModel)]="bbb_form.liveStreamToken" name="liveStreamToken">
+            <i class="form-group__bar"></i>
+          </div>
+          <span class="input-group-addon cursor-pointer" (click)="generatePin()">
+            <i class="fal fa-magic"></i>
+          </span>
+        </div>
+        <div class="form-group input">
+          <label>{{ 'BBB_SERVERS.MODALS.LIVE_STREAM_SERVER' | translate }}</label>
+          <input type="text" class="form-control" [(ngModel)]="bbb_form.liveStreamServer" name="liveStreamServer">
+          <i class="form-group__bar"></i>
+        </div>
+      </div>
+    </form>
+    <div class="modal-footer">
+      <button *ngIf="!isEditMode" type="button" class="btn btn-success btn--icon-text waves-effect"
+        (click)="addBBBServer()">{{ 'BBB_SERVERS.BUTTON.ADD_SERVER' | translate }}</button>
+        <button *ngIf="isEditMode" type="button" class="btn btn-success btn--icon-text waves-effect"
+        (click)="editBBBServer()">{{ 'BBB_SERVERS.BUTTON.EDIT_SERVER' | translate }}</button>
+      <button (click)="testBBBConnection()" class="btn btn-success btn-test-connection">
+        <span *ngIf="isTestingBBBConnection">
+          <i class="fal fa-circle-notch fa-spin"></i>
+        </span>
+        <span *ngIf="!isTestingBBBConnection">
+          {{ 'BBB_SERVERS.BUTTON.TEST_CONNECTION' | translate }}
+        </span>
+      </button>
+      <button type="button" class="btn btn-secondary btn--icon-text waves-effect" data-dismiss="modal"
+        aria-label="Close" (click)="closeModal()">{{
+        'BUTTONS.CLOSE' | translate }}</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,168 @@
+<header class="content__title">
+  <h1 [innerHTML]="'ADMIN.VIRUS.TITLE.VIRUS_HEADER'| translate"></h1>
+  <small [innerHTML]="'ADMIN.VIRUS.TITLE.VIRUS_SUB_HEADER'| translate"></small>
+</header>
+<div class="card">
+  <div class="card-block">
+    <div *ngIf="!isProcessing">
+      <div class="data-table__header d-flex justify-content-between fl--custom">
+        <div class="form-group data-table__filter">
+          <input [placeholder]="'SEARCHS.ALL_COLUMNS' | translate" class="form-control" (keyup)="onSearchFilterChange($event)" />
+          <i class="form-group__bar"></i>
+        </div>
+        <div class="row-selector">
+          <app-row-selector (changed)="onPerPageChanged($event)"></app-row-selector>
+        </div>
+      </div>
+
+      <div class="data-table">
+        <table class="table table-hover mb-0">
+          <thead>
+            <tr>
+              <th (click)="triggerSort('repo_name')" width="10%">
+                {{ 'ADMIN.VIRUS.TITLE.VIRUS_FOLDER' | translate }}
+                <ng-container *ngIf="sortConfig.column==='repo_name'" class="d-none d-lg-table-cell">
+                  <i *ngIf="sortConfig.mode==='asc'" class="fal fa-sort-amount-up sort-icon d-none d-lg-table-cell"></i>
+                  <i *ngIf="sortConfig.mode==='desc'" class="fal fa-sort-amount-down sort-icon d-none d-lg-table-cell"></i>
+                </ng-container>
+              </th>
+              <th (click)="triggerSort('repo_owner')" width="15%" class="d-none d-lg-table-cell">
+                {{ 'ADMIN.VIRUS.TITLE.VIRUS_OWNER' | translate }}
+                <ng-container *ngIf="sortConfig.column==='repo_owner'" class="d-none d-lg-table-cell">
+                  <i *ngIf="sortConfig.mode==='asc'" class="fal fa-sort-amount-up sort-icon d-none d-lg-table-cell"></i>
+                  <i *ngIf="sortConfig.mode==='desc'" class="fal fa-sort-amount-down sort-icon d-none d-lg-table-cell"></i>
+                </ng-container>
+              </th>
+              <th (click)="triggerSort('commit_id')" width="25%" class="d-none d-lg-table-cell">
+                {{ 'ADMIN.VIRUS.TITLE.VIRUS_FILE_COMMIT_ID' | translate }}
+                <ng-container *ngIf="sortConfig.column==='commit_id'" class="d-none d-lg-table-cell">
+                  <i *ngIf="sortConfig.mode==='asc'" class="fal fa-sort-amount-up sort-icon d-none d-lg-table-cell"></i>
+                  <i *ngIf="sortConfig.mode==='desc'" class="fal fa-sort-amount-down sort-icon d-none d-lg-table-cell"></i>
+                </ng-container>
+              </th>
+              <th (click)="triggerSort('infected_file_path')" width="20%" class="d-none d-lg-table-cell">
+                {{ 'ADMIN.VIRUS.TITLE.VIRUS_FILE' | translate }}
+                <ng-container *ngIf="sortConfig.column==='infected_file_path'" class="d-none d-lg-table-cell">
+                  <i *ngIf="sortConfig.mode==='asc'" class="fal fa-sort-amount-up sort-icon d-none d-lg-table-cell"></i>
+                  <i *ngIf="sortConfig.mode==='desc'" class="fal fa-sort-amount-down sort-icon d-none d-lg-table-cell"></i>
+                </ng-container>
+              </th>
+              <th (click)="triggerSort('detected_at')" width="10%" class="d-none d-lg-table-cell">
+                {{ 'ADMIN.VIRUS.TITLE.VIRUS_FILE_DETECTED_AT' | translate }}
+                <ng-container *ngIf="sortConfig.column==='detected_at'" class="d-none d-lg-table-cell">
+                  <i *ngIf="sortConfig.mode==='asc'" class="fal fa-sort-amount-up sort-icon d-none d-lg-table-cell"></i>
+                  <i *ngIf="sortConfig.mode==='desc'" class="fal fa-sort-amount-down sort-icon d-none d-lg-table-cell"></i>
+                </ng-container>
+              </th>
+              <th (click)="triggerSort('is_handled')" width="10%" class="d-none d-lg-table-cell">
+                {{ 'ADMIN.VIRUS.TITLE.VIRUS_OPERATIONS' | translate }}
+                <ng-container *ngIf="sortConfig.column==='is_handled'" class="d-none d-lg-table-cell">
+                  <i *ngIf="sortConfig.mode==='asc'" class="fal fa-sort-amount-up sort-icon d-none d-lg-table-cell"></i>
+                  <i *ngIf="sortConfig.mode==='desc'" class="fal fa-sort-amount-down sort-icon d-none d-lg-table-cell"></i>
+                </ng-container>
+              </th>
+              <th width="5%" class="d-sm-table-cell d-md-table-cell d-lg-none">{{'ADMIN.GROUPS.LIST_GROUPS.TABLE_HEADERS.ACTIONS'
+                | translate }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let items of listVirusDataDisplay, let index = index">
+              <tr>
+                <td>
+                  {{ items.repo_name }}
+                  <span class="d-sm-table-cell d-md-table-cell d-lg-none"> {{ items.infected_file_path }}</span>
+                </td>
+                <td class="d-none d-lg-table-cell">{{ items.repo_owner }}</td>
+                <td class="d-none d-lg-table-cell">{{ items.commit_id }}</td>
+                <td class="d-none d-lg-table-cell">{{ items.infected_file_path }}</td>
+                <td class="d-none d-lg-table-cell">{{ items.detected_at | amDateFormat:'YYYY-MM-DD HH:mm:ss' }}</td>
+                <td class="d-none d-lg-table-cell" *ngIf="items.is_handled">
+                  <span *ngIf="!items.is_false_positive" class="sp--custom">{{ 'ADMIN.VIRUS.TITLE.VIRUS_SUCCESS_STATE'|
+                    translate }}</span>
+                  <span *ngIf="items.is_false_positive" class="sp--custom">{{ 'ADMIN.VIRUS.TITLE.VIRUS_FALSE_POSITIVE'|
+                    translate }}</span>
+                </td>
+                <td class="d-none d-lg-table-cell" *ngIf="!items.is_handled">
+                  <i class="actions__item fal fa-trash-alt ico--custom" (click)="onHandleVirusFile(items)" data-toggle="tooltip"
+                    [title]="'TOOLTIPS.DELETE' | translate: params"></i>
+                  <i class="actions__item fal fa-check-circle ico--custom" (click)="markFileAsFalsePositive(items)"
+                    data-toggle="tooltip" [title]="'TOOLTIPS.MARK_AS_FALSE_POSITIVE' | translate: params"></i>
+                </td>
+                <td class="d-sm-table-cell d-md-table-cell d-lg-none">
+                  <a [href]="'#virus-'+index" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="share-0">
+                    <i data-toggle="tooltip" title="Details" class="fal fa-2x fa-ellipsis-v actions__item"></i>
+                  </a>
+                </td>
+              </tr>
+              <!-- Collapse details of share link for sm display -->
+              <tr class="d-sm-table-row d-md-table-row d-lg-none share-details-row">
+                <td colspan="10">
+                  <div class="collapse" [id]="'virus-'+index">
+                    <div class="share-details">
+                      <div>
+                        <span>
+                          <strong>{{ 'ADMIN.VIRUS.TITLE.VIRUS_OWNER' | translate }}: </strong>
+                          {{ items.repo_owner }}
+                        </span>
+                      </div>
+                      <div>
+                        <span>
+                          <strong>{{ 'ADMIN.VIRUS.TITLE.VIRUS_FOLDER' | translate }}: </strong>
+                          {{ items.repo_name }}
+                        </span>
+                      </div>
+                      <div>
+                        <span>
+                          <strong>{{ 'ADMIN.VIRUS.TITLE.VIRUS_FILE_COMMIT_ID' | translate }}: </strong>
+                          {{ items.commit_id }}
+                        </span>
+                      </div>
+                      <div>
+                        <span>
+                          <strong>{{ 'ADMIN.VIRUS.TITLE.VIRUS_FILE' | translate }} </strong>
+                          {{ items.infected_file_path }} </span>
+                      </div>
+                      <div>
+                        <span>
+                          <strong>{{ 'ADMIN.VIRUS.TITLE.VIRUS_FILE_DETECTED_AT' | translate }}: </strong>
+                          {{ items.detected_at | amDateFormat:'YYYY-MM-DD HH:mm:ss' }}
+                        </span>
+                      </div>
+                      <div>
+                        <strong *ngIf="!items.is_handled"> {{ 'ADMIN.GROUPS.LIST_GROUPS.TABLE_HEADERS.ACTIONS'|
+                          translate }}: </strong>
+                        <strong *ngIf="items.is_handled"> {{ 'ADMIN.VIRUS.TITLE.VIRUS_HANDLE_STATUS'| translate }}:
+                        </strong>
+                        <span *ngIf="items.is_handled" class="sp--custom">
+                          <span *ngIf="!items.is_false_positive" class="sp--custom">{{
+                            'ADMIN.VIRUS.TITLE.VIRUS_SUCCESS_STATE'|
+                            translate }}</span>
+                          <span *ngIf="items.is_false_positive" class="sp--custom">{{
+                            'ADMIN.VIRUS.TITLE.VIRUS_FALSE_POSITIVE'|
+                            translate }}</span>
+                        </span>
+                        <i *ngIf="!items.is_handled" class="actions__item fal fa-trash-alt" (click)="onHandleVirusFile(items)"
+                          data-toggle="tooltip" [title]="'TOOLTIPS.DELETE' | translate: params"></i>
+                        <i *ngIf="!items.is_handled" class="actions__item fal fa-check-circle" (click)="markFileAsFalsePositive(items)"
+                          data-toggle="tooltip" [title]="'TOOLTIPS.MARK_AS_FALSE_POSITIVE' | translate: params"></i>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+    <app-processing *ngIf="isProcessing"></app-processing>
+  </div>
+</div>
+
+<div class="data-table__footer">
+  <div class="wrapper__footer">
+    <pagination [itemsPerPage]="pagination.itemsPerPage" [boundaryLinks]="true" [maxSize]="maxSize" [totalItems]="pagination.totalResult"
+      (pageChanged)="pageChanged($event)"></pagination>
+  </div>
+</div>

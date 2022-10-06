@@ -1,0 +1,60 @@
+<div class="modal fade" id="copy-move-modal" tabindex="-1">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <header class="content__title font-size-content" *ngIf="dataCopyMove">
+          <h1>
+            <strong>
+              <ng-container *ngIf="typeOperation === 'copy'">
+                <div *ngIf="!dataCopyMove.length" [innerHTML]="'MODAL_COPY_MOVE.COPY_SINGLE_ITEM' | translate: {itemName: dataCopyMove.name.length >= 20 ? dataCopyMove.name.slice(0, 19) + '...' : dataCopyMove.name}">
+                </div>
+                <ng-container *ngIf="dataCopyMove.length > 0">
+                  <div *ngIf="dataCopyMove.length == 1" [innerHTML]="'MODAL_COPY_MOVE.COPY_SINGLE_ITEM' | translate: {itemName: dataCopyMove[0].name.length >= 20 ? dataCopyMove[0].name.slice(0, 19) + '...' : dataCopyMove[0].name}">
+                  </div>
+                  <div *ngIf="dataCopyMove.length > 1" [innerHTML]="'MODAL_COPY_MOVE.COPY_MULTIPLE_ITEMS' | translate: {numberOfOtherItems: dataCopyMove.length - 1, itemName: dataCopyMove[0].name.length >= 20 ? dataCopyMove[0].name.slice(0, 19) + '...' : dataCopyMove[0].name}">
+                  </div>
+                </ng-container>
+              </ng-container>
+              <ng-container *ngIf="typeOperation === 'move'">
+                <div *ngIf="!dataCopyMove.length" [innerHTML]="'MODAL_COPY_MOVE.MOVE_SINGLE_ITEM' | translate: {itemName: dataCopyMove.name.length >= 20 ? dataCopyMove.name.slice(0, 19) + '...' : dataCopyMove.name}">
+                </div>
+                <ng-container *ngIf="dataCopyMove.length > 0">
+                  <div *ngIf="dataCopyMove.length == 1" [innerHTML]="'MODAL_COPY_MOVE.MOVE_SINGLE_ITEM' | translate: {itemName: dataCopyMove[0].name.length >= 20 ? dataCopyMove[0].name.slice(0, 19) + '...' : dataCopyMove[0].name}">
+                  </div>
+                  <div *ngIf="dataCopyMove.length > 1" [innerHTML]="'MODAL_COPY_MOVE.MOVE_MULTIPLE_ITEMS' | translate: {numberOfOtherItems: dataCopyMove.length - 1, itemName: dataCopyMove[0].name.length >= 20 ? dataCopyMove[0].name.slice(0, 19) + '...' : dataCopyMove[0].name}">
+                  </div>
+                </ng-container>
+              </ng-container>
+            </strong>
+          </h1>
+        </header>
+      </div>
+      <div class="modal-body">
+        <div class="tree-demo-app">
+          <div class="tree-container tree-container--with-controls">
+            <div class="tree-content">
+              <tree #treeCurrentFolder [tree]="currentFolder" (nodeSelected)="onNodeSelected($event)" (nodeExpanded)="onNodeExpanded($event)"
+                (nodeCollapsed)="onNodeCollapsed($event)" [settings]="settings">
+              </tree>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success btn--icon-text waves-effect" (click)="submitCopyFileFolder()">
+          <div *ngIf="typeOperation === 'copy'">
+            <i *ngIf="isProcessing" class="fal fa-sync-alt fa-spin"></i> {{ 'MODAL_COPY_MOVE.BTN_COPY' |
+            translate }}
+          </div>
+          <div *ngIf="typeOperation === 'move'">
+            <i *ngIf="isProcessing" class="fal fa-sync-alt fa-spin"></i> {{ 'MODAL_COPY_MOVE.BTN_MOVE' |
+            translate }}
+          </div>
+        </button>
+        <button type="button" class="btn btn-secondary btn--icon-text waves-effect" data-dismiss="modal">{{
+          'MODAL_COPY_MOVE.BTN_CANCEL' | translate }}</button>
+      </div>
+    </div>
+  </div>
+</div>

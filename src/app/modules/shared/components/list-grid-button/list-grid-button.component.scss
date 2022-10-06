@@ -1,0 +1,9 @@
+.btn {
+  &:first-child {
+    margin-left: 0px;
+  }
+  margin-left: 5px;
+}
+.actions__item.active {
+  color: #0067b3;
+}

@@ -1,0 +1,14 @@
+<div *ngIf="!isPageNotFound">
+  <app-share-link-audit *ngIf="hasAudit" [token]="token" [typeShareLink]="'f'" (sendDataAuditSuccess)="receiveDataAuditSuccess($event)"></app-share-link-audit>
+  <app-password-share-link *ngIf="hasPasswordProtected" [token]="token" [type]="'f'" (sendDataPassProtectedSuccess)="receiveDataPassProtectedSuccess($event)"></app-password-share-link>
+
+  <main *ngIf="(!hasAudit && dataDownload) || (!hasPasswordProtected && dataDownload)" class="main"
+    [attr.data-ma-theme]="maTheme">
+    <app-share-link-preview [fileDetails]="dataDownload"></app-share-link-preview>
+  </main>
+</div>
+<div class="footer--custom">
+  <app-footer></app-footer>
+</div>
+
+<app-page-not-found *ngIf="isPageNotFound"></app-page-not-found>

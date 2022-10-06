@@ -1,0 +1,56 @@
+<div class="modal" id="share-modal" tabindex="-1">
+  <div class="modal-dialog modal-lg md--custom">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">
+          <span [innerHTML]="'MODAL_SHARE.TITLE' | translate: params"></span>
+          <span class="modal-title-name">{{ shareItem.name }}</span>
+        </h5>
+      </div>
+      <div class="modal-body">
+        <aside class="share-menu">
+          <div class="scrollbar-inner">
+            <ul class="navigation">
+              <li class="share-li" [ngClass]="{'share-li-active':currentContentTab === 0}" (click)="changeTab(0)" *ngIf="isDownloadLink && isEnabledPubliclShare">
+                <p class="cusor-p" [innerHTML]="'MODAL_SHARE.NAVIGATIONS.DOWNLOAD_LINK' | translate: params"></p>
+              </li>
+              <li class="share-li" [ngClass]="{'share-li-active':currentContentTab === 1}" (click)="changeTab(1)" *ngIf="isUploadLink && isEnabledPubliclShare">
+                <p class="cusor-p" [innerHTML]="'MODAL_SHARE.NAVIGATIONS.UPLOAD_LINK' | translate: params"></p>
+              </li>
+              <li class="share-li" [ngClass]="{'share-li-active':currentContentTab === 2}" (click)="changeTab(2)" *ngIf="isShareUser && isEnabledInternalShare">
+                <p class="cusor-p" [innerHTML]="'MODAL_SHARE.NAVIGATIONS.SHARE_TO_USER' | translate: params"></p>
+              </li>
+              <li class="share-li" [ngClass]="{'share-li-active':currentContentTab === 3}" (click)="changeTab(3)" *ngIf="isShareGroup && isEnabledInternalShare">
+                <p class="cusor-p" [innerHTML]="'MODAL_SHARE.NAVIGATIONS.SHARE_TO_GROUP' | translate: params"></p>
+              </li>
+              <li class="share-li" [ngClass]="{'share-li-active':currentContentTab === 4}" (click)="changeTab(4)" *ngIf="isShareAll && isEnabledPubliclShare">
+                <p class="cusor-p" [innerHTML]="'MODAL_SHARE.NAVIGATIONS.SHARE_TO_ALL' | translate: params"></p>
+              </li>
+            </ul>
+          </div>
+        </aside>
+        <div class="content-share-modal">
+          <form #folderForm="ngForm">
+            <app-share-download-link *ngIf="isEnabledPubliclShare" [hidden]="currentContentTab !== 0" [id]="shareItem.repoID" [Path]="shareItem.path"
+              (rmLink)="removeDownloadLink()"></app-share-download-link>
+            <app-share-upload-link *ngIf="isEnabledPubliclShare" [hidden]="currentContentTab !== 1" [id]="shareItem.repoID" [Path]="shareItem.path"
+              (rmLink)="removeUploadLink()"></app-share-upload-link>
+            <app-share-to-user *ngIf="shareItem.type !== 'file' && isEnabledInternalShare" [hidden]="currentContentTab !== 2" [repoID]="shareItem.repoID"
+              [path]="shareItem.path" [emailOwner]="shareItem.owner"></app-share-to-user>
+            <app-share-to-group *ngIf="isEnabledInternalShare"  [hidden]="currentContentTab !== 3" [id]="shareItem.repoID" [Path]="shareItem.path"
+              (dfGroup)="deleteGroupShare($event)"></app-share-to-group>
+            <app-share-to-all *ngIf="isShareAll && isEnabledPubliclShare" [hidden]="currentContentTab !== 4"  [repoID]="shareItem.repoID" ></app-share-to-all>
+          </form>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-link" data-dismiss="modal">
+          <span [innerHTML]="'BUTTONS.CLOSE' | translate: params"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-modal-delete-remove *ngIf="showRequired" [typeDelete]="typeShare === 'user' ? 'Share To User' : (typeShare === 'group' ? 'Share To Group' : (typeShare === 'download' ? 'Share Download Link' : (typeShare === 'upload' ? 'Share Upload Link' : '')))"
+  [itemName]="nameDelete" (submitDeleteItem)="onSubmitDeleteItem()"></app-modal-delete-remove>

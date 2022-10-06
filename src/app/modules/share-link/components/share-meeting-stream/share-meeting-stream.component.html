@@ -1,0 +1,63 @@
+<header class="header">
+  <h1>
+    <a data-toggle="tooltip" [title]="logoTooltip" routerLink="/">
+      <img class="logo-image" height="30rem" [src]="logoURL" alt="" (error)="logoErrorHandler($event)">
+    </a>
+  </h1>
+  <div class="header__logo hidden-sm-down">
+    <strong class="filename">Meeting Stream</strong>
+  </div>
+  <div class="clear-both"></div>
+  <select2 class="header-language" [data]="select2TranslateData" [options]="translateOptions" [value]="choosenLanguage"
+    (valueChanged)="switchLanguage($event)"></select2>
+</header>
+
+<div class="card">
+  <div class="card-block">
+    <div class="row">
+      <div *ngIf="feedbackEnabled" class="col-3">
+        <form novalidate [formGroup]="feedbackForm" (submit)="submitFeedback()">
+            <div class="form-group input">
+              <label>{{ 'MEETING.FORM.FEEDBACK_USERNAME' | translate }}</label>
+              <input type="text" class="form-control" formControlName="username">
+              <i class="form-group__bar"></i>
+            </div>
+            <div class="form-group input">
+              <label>{{ 'MEETING.FORM.FEEDBACK_EMAIL' | translate }}</label>
+              <input type="text" class="form-control" formControlName="email">
+              <i class="form-group__bar"></i>
+            </div>
+            <div class="form-group">
+              <label>{{'MEETING.FORM.FEEDBACK_MESSAGE' | translate}}</label>
+              <textarea formControlName="message" class="form-control" rows="5"></textarea>
+              <i class="form-group__bar"></i>
+            </div>
+            <button type="button" class="btn btn-success btn--icon-text waves-effect" (click)="submitFeedback()"
+              [disabled]="isProcessing ? 'disabled' : ''">
+              <i *ngIf="isProcessing" class="fal fa-refresh fa-spin" style="margin-right: 5px;"></i>
+              <span>{{'BUTTONS.SUBMIT' | translate}}</span>
+            </button>
+        </form>
+      </div>
+      <div class="col-9">
+        <div class="videoWrapper">
+          <video id="my-player" class="video-js" controls preload="auto" width="100%">
+            <p class="vjs-no-js">
+              To view this video please enable JavaScript, and consider upgrading to a
+              web browser that
+              <a href="http://videojs.com/html5-video-support/" target="_blank">
+                supports HTML5 video
+              </a>
+            </p>
+          </video>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer--custom">
+  <app-footer></app-footer>
+</div>
+
+<app-page-not-found *ngIf="isPageNotFound"></app-page-not-found>

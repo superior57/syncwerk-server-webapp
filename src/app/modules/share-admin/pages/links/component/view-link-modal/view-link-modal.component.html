@@ -1,0 +1,22 @@
+<div class="modal fade" id="view-link-modal" tabindex="-1">
+  <div class="modal-dialog" style="max-width: 650px">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title pull-left">{{ type === 'download-link' ? ('MODAL_SHARE.NAVIGATIONS.DOWNLOAD_LINK' | translate) : ('MODAL_SHARE.NAVIGATIONS.UPLOAD_LINK'
+          | translate) }}</h2>
+      </div>
+      <div class="modal-body">
+        <div>
+          <input type="text" #copyLinkShare class="input-custom" value="{{ link }}" readonly [ngxClipboard]="copyLinkShare" (click)="copyClipboard()"
+            data-toggle="tooltip" title="Copy to clipboard">
+          <button (click)="copyClipboard()" type="button" class="btn btn-info waves-effect" data-toggle="tooltip" title="Copy to clipboard"
+            [ngxClipboard]="copyLinkShare">
+            <i class="fal fa-clipboard"></i> {{ 'BUTTONS.COPY' | translate }}</button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn--icon-text waves-effect" data-dismiss="modal">{{ 'BUTTONS.CLOSE' | translate }}</button>
+      </div>
+    </div>
+  </div>
+</div>

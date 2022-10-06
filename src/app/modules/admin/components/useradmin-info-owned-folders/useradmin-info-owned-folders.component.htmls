@@ -1,0 +1,69 @@
+<table *ngIf="dataOwnedRepos.length > 0" class="table table-hover mb-0">
+  <thead>
+    <tr>
+      <th>
+        <span [innerHTML]="'USERADMIN_INFO.OWNED_LIBS.TABLE.NAME' | translate: params"></span>
+      </th>
+      <th width="15%">
+        <span [innerHTML]="'USERADMIN_INFO.OWNED_LIBS.TABLE.SIZE' | translate: params"></span>
+      </th>
+      <th width="15%">
+        <span [innerHTML]="'USERADMIN_INFO.OWNED_LIBS.TABLE.LAST_UPDATE' | translate: params"></span>
+      </th>
+      <th *ngIf="currentUserPermission.can_manage_folder !== false" width="10%">
+        <span [innerHTML]="'USERADMIN_INFO.OWNED_LIBS.TABLE.OPERATIONS' | translate: params"></span>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of dataOwnedRepos; let index = index" (mouseover)="hoveredIndex=index" (mouseleave)="hoveredIndex=-1">
+      <td class="tb-name">
+        <ng-container *ngIf="enableViewRepo">
+          <div class="vertical-items" [routerLink]="['/admin','folders', item.id]">
+            <div class="icon-folder">
+              <!-- <a [routerLink]="['/folders', item.id]" > -->
+              <i class="fas fa-folder fa-fw tb-row-folder"></i>
+              <i *ngIf="item.encrypted" class="fal fa-key tb-row-folder-lock" data-toggle="tooltip"
+                [title]="'TOOLTIPS.ENCRYPTED_FOLDER' | translate: params"></i>
+              <!-- </a> -->
+            </div>
+            <span class="text-ellipsis" data-toggle="tooltip" title="{{ item.name }}">{{ item.name }}</span>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="!enableViewRepo">
+            <div class="vertical-items">
+              <div class="icon-folder">
+                <!-- <a [routerLink]="['/folders', item.id]" > -->
+                <i class="fas fa-folder fa-fw tb-row-folder"></i>
+                <i *ngIf="item.encrypted" class="fal fa-key tb-row-folder-lock" data-toggle="tooltip"
+                  [title]="'TOOLTIPS.ENCRYPTED_FOLDER' | translate: params"></i>
+                <!-- </a> -->
+              </div>
+              <span class="text-ellipsis" data-toggle="tooltip" title="{{ item.name }}">{{ item.name }}</span>
+            </div>
+        </ng-container>
+      </td>
+      <td>
+        {{ item.size | customFileSize }}
+      </td>
+      <td>
+        <span data-toggle="tooltip" title="{{ (item.last_modify | amFromUnix) | amDateFormat: 'ddd, D MMM YYYY HH:mm:ss ZZ' }}">{{
+          (item.last_modify | amFromUnix) | amDateFormat:'YYYY-MM-DD HH:mm:ss' }}</span>
+      </td>
+      <td *ngIf="currentUserPermission.can_manage_folder !== false" class="tb-action">
+        <div *ngIf="hoveredIndex === index">
+          <i class="actions__item fal fa-trash-alt fa-hc-1dot5" data-toggle="tooltip" [title]="'TOOLTIPS.DELETE' | translate: params"
+            (click)="deleteItem(item)"></i>
+          <i class="actions__item fal fa-exchange-alt fa-hc-1dot5" data-toggle="tooltip" [title]="'TOOLTIPS.TRANSFER' | translate: params"
+            (click)="transferItem(item)"></i>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<app-empty-item *ngIf="dataOwnedRepos.length === 0" [messageTitle]="'USERADMIN_INFO.OWNED_LIBS.EMPTY_ITEM.MSG_TITLE' | translate: params"></app-empty-item>
+
+<app-modal-delete-remove *ngIf="isOpenModal.delete" [typeDelete]="'Folder'" [itemName]="currentItem.name"
+  (submitDeleteItem)="onSubmitDeleteItem()"></app-modal-delete-remove>
+<app-transfer-folder-modal *ngIf="isOpenModal.transfer" [type]="'default'" [itemName]="currentItem.name" (transfered)="onSubmitTransferItem($event)"></app-transfer-folder-modal>

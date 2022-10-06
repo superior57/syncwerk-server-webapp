@@ -1,0 +1,41 @@
+.modal__share{
+  .modal__header {
+      width: 100%;
+      padding: 2rem 2rem 0.5rem 2rem;
+  }
+  .modal__content {
+      width: 100%;
+      padding: 0.5rem 2rem 2rem 2rem;
+      height: 20rem;
+      overflow-y: overlay;
+  }
+  .modal__footer.text-right {
+      width: 100%;
+      padding: 0rem 2rem 2rem 1rem;
+      button.btn-info{
+        margin-right: 2px;
+        i.far.fa-share-alt {
+            margin-right: 4px;
+        }
+      }
+  }
+}
+:host ::ng-deep tree-internal {
+  .tree {
+    li {
+      div {
+        white-space: nowrap!important;
+        i.fal.fa-folder {
+          font-size: 1.2rem;
+          color: gray;
+          margin-right: 7px;
+        }
+      }
+    }
+  }
+}
+
+
+:host ::ng-deep .group-name {
+  color: #e10032;
+}

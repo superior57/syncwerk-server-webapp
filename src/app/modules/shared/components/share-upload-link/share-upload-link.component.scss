@@ -1,0 +1,49 @@
+.input-custom {
+  width: 80%;
+  border: 0px;
+  cursor: pointer;
+  background-color: #f3f3f3;
+  height: 2.3em;
+  vertical-align: middle;
+  resize: none;
+  padding: 0.4em 0;
+}
+
+.btn-demo {
+	margin-top: 20px;
+}
+
+.mg-r4px {
+  margin-right: 4px;
+}
+.mg-t7px{
+  margin-top: 7px;
+}
+.mg-b7px{
+  margin-bottom: 7px;
+}
+
+.btn--custom {
+  margin: 9px 4px;
+}
+
+@media (max-width:476px){
+  .share__upload__link {
+      width: 100%;
+      margin: 60px 20px;
+  }
+  button.btn.btn-info.waves-effect.mg-t7px {
+      margin: 0px 4px;
+  }
+}
+
+@media (max-width:414px){
+  .input-custom{
+    width: 100%;
+    height: auto;
+  }
+}
+
+
+
+

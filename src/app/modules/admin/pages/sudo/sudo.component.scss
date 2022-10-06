@@ -1,0 +1,22 @@
+.card-title {
+    font-size: 1.25rem;
+    font-weight: 400;
+    line-height: 140%;
+    margin-top: -.35rem;
+}
+
+.form-group {
+    margin-top: 1rem;
+}
+
+.actions {
+    text-align: right;
+}
+.app__sudo {
+  width: calc(100vw - 20vw);
+  margin: 0px calc(100vw - 80vw);
+  @media (max-width:500px) {
+    width: calc(100vw - 10vw);
+    margin: 0px calc(100vw - 90vw);
+  }
+}

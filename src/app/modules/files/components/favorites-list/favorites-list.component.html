@@ -1,0 +1,133 @@
+<div class="card">
+  <div class="card-block">
+    <div *ngIf="!isProcessing">
+      <div class="data-table__header d-flex justify-content-betwwen fl--custom">
+        <div class="form-group data-table__filter">
+          <input *ngIf="config.filtering" [placeholder]="'SEARCHS.ALL_COLUMNS' | translate: params" [(ngModel)]="config.filtering.filterString"
+            class="form-control" (keyup)="changeTable(config)" />
+          <i class="form-group__bar"></i>
+        </div>
+        <div class="row-selector">
+          <app-row-selector (changed)="onPerPageChanged($event)"></app-row-selector>
+        </div>
+      </div>
+
+      <div *ngIf="listFavoriteDisplay.length > 0" class="data-table">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <!-- <th *ngFor="let column of columns" [class]="column.class" [width]="column.width" (click)="column.sort!==false ? sortColumn(column, config) : ''">
+                <span [innerHTML]="column.title | translate"></span>
+                <ng-container>
+                  <i *ngIf="column.sort==='asc'" class="fal fa-sort-amount-up sort-icon float-right icon--custom"></i>
+                  <i *ngIf="column.sort==='desc'" class="fal fa-sort-amount-down sort-icon float-right icon--custom"></i>
+                </ng-container>
+              </th> -->
+              <th *ngFor="let column of columns" [class]="column.class" [width]="column.width" (click)="triggerSort(column.name)">
+                <span [innerHTML]="column.title | translate"></span>
+                <ng-container *ngIf="sortConfig.column===column.name">
+                  <i *ngIf="sortConfig.mode==='asc'" class="fal fa-sort-amount-up sort-icon float-right icon--custom"></i>
+                  <i *ngIf="sortConfig.mode==='desc'" class="fal fa-sort-amount-down sort-icon float-right icon--custom"></i>
+                </ng-container>
+              </th>
+              <th width="10%">
+                <span [innerHTML]="'TABLE.COLUMNS.ACTIONS' | translate: params"></span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let item of listFavoriteDisplay; let index=index">
+              <tr (mouseover)="hoveredIndex=index" (mouseleave)="hoveredIndex=-1" [ngClass]="{'hl':index==hoveredIndex}">
+                <td class="vertical-items">
+                  <div class="tb-icons">
+                    <a (click)="isEnabledFilePreview && openFilePreview(item)">
+                      <img *ngIf="!item.imgError || (item.imgError && item.imgError != 1)" (error)="setErrorImg(index)"
+                        class="file-icon" src="{{ item.file_name | customFileIcon: false: item.link_img }}">
+                      <div *ngIf="(item.imgError && item.imgError === 1 ) ">
+                        <i class="{{ item.file_name | customFileIcon }}" id="icon--custom--listview"></i>
+                      </div>
+                    </a>
+                  </div>
+                  <div class="tb-name vertical-items">
+                    <a (click)="isEnabledFilePreview && openFilePreview(item)" class="name" data-toggle="tooltip" title="{{ item.file_name }}">{{
+                      item.file_name | splice_length:65 }}</a>
+                  </div>
+                </td>
+                <td class="d-none d-lg-table-cell">{{ item.size | customFileSize }}</td>
+                <td class="d-none d-lg-table-cell">
+                  <span data-toggle="tooltip" title="{{ item.mtime * 1000 | date: 'EEEE, d MMM yyyy - HH:mm:ss Z' }}">{{
+                    item.mtime * 1000 | date: 'dd.MM.yyyy - HH:mm:ss' }}</span>
+                </td>
+                <td class="cut-string-in-a-line d-none d-lg-table-cell" data-toggle="tooltip" title="{{ item.repo_name }}">
+                  <a [routerLink]="[ '/folders', item.repo_id ]">{{ item.repo_name | splice_length:65 }}</a>
+                </td>
+                <td class="d-none d-lg-table-cell">
+                  <a *ngIf="hoveredIndex===index" data-toggle="tooltip" [title]="'FAVORITE.UNSTAR_TOOLTIP' | translate:params"
+                    (click)="handleOpenModal('remove', item)">
+                    <i class="actions__item fal fa-trash-alt green-color-hover"></i>
+                  </a>
+                </td>
+                <td class="d-sm-table-cell d-md-table-cell d-lg-none">
+                  <a [href]="'#fav-'+index" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="share-0">
+                    <i data-toggle="tooltip" title="Details" class="fal fa-2x fa-ellipsis-v actions__item"></i>
+                  </a>
+                </td>
+              </tr>
+
+              <!-- Collapse details of share link for sm display -->
+              <tr class="d-sm-table-row d-md-table-row d-lg-none share-details-row">
+                <td colspan="10">
+                  <div class="collapse" [id]="'fav-'+index">
+                    <div class="share-details">
+                      <div>
+                        <span>
+                          <strong>{{ 'TABLE.COLUMNS.SIZE' | translate}}: </strong>
+                          {{ item.size | customFileSize }}
+                        </span>
+                      </div>
+                      <div>
+                        <span>
+                          <strong>{{ 'TABLE.COLUMNS.LAST_UPDATE' | translate}}: </strong>
+                          <span data-toggle="tooltip" title="{{ item.mtime * 1000 | date: 'EEEE, d MMM yyyy - HH:mm:ss Z' }}">{{
+                            item.mtime * 1000 | date: 'dd.MM.yyyy - HH:mm:ss' }}</span>
+                        </span>
+
+                      </div>
+                      <div>
+                        <span>
+                          <strong>{{ 'TABLE.COLUMNS.SHARED_FOLDER' | translate}}: </strong>
+                          <a [routerLink]="[ '/folders', item.repo_id ]" class="folder__name">{{
+                            item.repo_name | splice_length:65
+                            }}</a>
+                        </span>
+                      </div>
+                      <div class="actions">
+                        <a data-toggle="tooltip" [title]="'FAVORITE.UNSTAR_TOOLTIP' | translate:params" (click)="handleOpenModal('remove', item)">
+                          <i class="actions__item fal fa-trash-alt green-color-hover"></i>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+
+        <app-modal-delete-remove *ngIf="isOpenModal.remove" [typeDelete]="'Favorite'" [isDeleteModal]="false"
+          [itemName]="currentItemFavorite.file_name" (submitRemoveItem)="onRemoveItem()"></app-modal-delete-remove>
+      </div>
+
+      <app-empty-item *ngIf="listFavoriteDisplay.length === 0 && this.listFavorites.length === 0" [messageTitle]="'FAVORITE.NO_STARRED_FILE_HEADER' | translate:params"
+        [messageSub]="'FAVORITE.NO_STARRED_FILE_DESCRIPTION' | translate:params"></app-empty-item>
+      <app-empty-item *ngIf="listFavoriteDisplay.length === 0 && this.listFavorites.length !== 0" [messageTitle]="'FAVORITE.FILTER_FILE_NOT_FOUND' | translate:params"
+        [messageSub]="'FAVORITE.FILTER_SUB_FILE_NOT_FOUND' | translate:params"></app-empty-item>
+    </div>
+
+    <app-processing *ngIf="isProcessing"></app-processing>
+  </div>
+</div>
+
+<pagination *ngIf="config.paging" [(ngModel)]="page.page" [totalItems]="page.totalResult" [itemsPerPage]="page.itemsPerPage"
+  [maxSize]="maxSize" [boundaryLinks]="true" [rotate]="false" (pageChanged)="changeTable(config, $event)" (numPages)="numPages = $event">
+</pagination>

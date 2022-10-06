@@ -1,0 +1,79 @@
+<header>
+  <div class="login__block__header__custom">
+    <a data-toggle="tooltip" [title]="logoTooltip" [routerLink]="'/'"><img [src]="logoURL" (error)="logoErrorHandler($event)"
+        height="30rem" alt=""></a>
+    <div class="select__languages">
+      <select2 [data]="select2TranslateData" [options]="translateOptions" [value]="choosenLanguage" [width]="88"
+        (valueChanged)="switchLanguage($event)"></select2>
+    </div>
+  </div>
+</header>
+
+<div class="login">
+  <div class="login__title">
+    <h3>{{ 'SIGNUP.TITLE' | translate}}</h3>
+  </div>
+  <!-- Register -->
+  <div class="login__block active" id="l-login">
+    <!-- Header -->
+    <!-- Start Form -->
+    <div *ngIf="showLoginForm" class="signupForm" (keyup.enter)="submitRegister()">
+      <div class="login__block__body">
+        <!-- email -->
+        <div class="form-group form-group--float form-group--centered" [ngClass]="{'has-danger': error.type === 'email_error'}">
+          <input type="email" class="form-control input-center" [ngClass]="{'form-control--active': emailModel.value}"
+            [(ngModel)]="model.email" #emailModel="ngModel" #email required>
+          <label [innerHTML]="'SIGNUP.EMAIL' | translate:param"></label>
+          <i class="form-group__bar"></i>
+        </div>
+        <div *ngIf="error.type === 'email_error'" class="error-msg">{{ error.message }}</div>
+
+        <!-- password -->
+        <div class="form-group form-group--float form-group--centered" [ngClass]="{'has-danger': error.type === 'password_error'}">
+          <input type="password" class="form-control input-center" [ngClass]="{'form-control--active': passwordModel.value}"
+            [(ngModel)]="model.password" #passwordModel="ngModel" #password required>
+          <label [innerHTML]="'SIGNUP.PASSWORD' | translate:param"></label>
+          <i class="form-group__bar"></i>
+        </div>
+        <div *ngIf="error.type === 'password_error'" class="error-msg">{{ error.message }}</div>
+
+        <!-- confirm password -->
+        <div class="form-group form-group--float form-group--centered" [ngClass]="{'has-danger': error.type === 'confirm_password_error'}">
+          <input type="password" class="form-control input-center" [ngClass]="{'form-control--active': confirmPasswordModel.value}"
+            [(ngModel)]="model.confirm_password" #confirmPasswordModel="ngModel" #confirmPassword required>
+          <label [innerHTML]="'SIGNUP.CONFIRM_PASSWORD' | translate:param"></label>
+          <i class="form-group__bar"></i>
+        </div>
+        <div *ngIf="error.type === 'confirm_password_error'" class="error-msg last">{{ error.message }}</div>
+        <div class="form-group form-group--float form-group--centered text-left">
+          <input class="terms" [(ngModel)]="model.terms" required name="terms" type="checkbox">
+          <span *ngIf="choosenLanguage==='en'" class="terms" [innerHTML]="setting.REGISTER_PAGE_TERM_AND_CONDITION_CHECKBOX_TEXT_EN">
+          </span>
+          <span *ngIf="choosenLanguage==='de'" class="terms" [innerHTML]="setting.REGISTER_PAGE_TERM_AND_CONDITION_CHECKBOX_TEXT_DE">
+          </span>
+        </div>
+        <div *ngIf="error.type === 'terms'" class="error-msg">{{ error.message }}</div>
+        <div class="row">
+          <div class="col">
+            <button [disabled]="isProcessing" (click)="submitRegister()" class="btn btn--icon-text btn-success">
+              <i *ngIf="!isProcessing" class="fa" aria-hidden="true"></i>
+              <i *ngIf="isProcessing" class="fa"></i>
+              <span [innerHTML]="'BUTTONS.SUBMIT' | translate"></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="successful-message" *ngIf="showRegisterSuccessfulMessage">
+      <span>{{ registerSuccessfulMessage }}</span>
+    </div>
+    <!-- End Form -->
+  </div>
+  <div class="login_block_register">
+    <a routerLink="/login" [innerHTML]="'SIGNUP.ALREADY_HAVE_ACCOUNT' | translate:param" class="register__a"></a>
+    <a routerLink="/forgot-password" [innerHTML]="'SIGNUP.FORGOT_PASSWORD' | translate:param"></a>
+  </div>
+  <div class="footer ft--custom">
+    <app-footer></app-footer>
+  </div>
+</div>

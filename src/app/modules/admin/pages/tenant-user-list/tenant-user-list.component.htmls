@@ -1,0 +1,87 @@
+<header class="content__title">
+  <h1>
+    <i class="fal fa-caret-circle-left fa-hc-fw back-btn" [routerLink]="['/admin', 'tenants']"></i>
+    <strong>{{ tenantDetails.name }}</strong> {{'ADMIN.INSTITUTIONS.TITLE.INSTITUTION_USER_LIST' | translate}}
+  </h1>
+  <small>{{'ADMIN.INSTITUTIONS.SUBTITLE.INSTITUTION_USER_LIST' | translate}}</small>
+</header>
+
+<div class="card">
+  <div class="card-block">
+    <div class="data-table__header d-flex justify-content-betwwen">
+      <div class="form-group">
+        <button (click)="openAddUserToTenantModal()" class="btn btn-secondary waves-effect btn--icon-text mr-25px">
+          {{'ADMIN.INSTITUTIONS.LIST_INSTITUTION_USERS.BUTTONS.ADD_NEW_MEMBERS' | translate}}</button>
+      </div>
+      <div class="form-group data-table__filter">
+        <input [placeholder]="'SEARCHS.ALL_COLUMNS' | translate" class="form-control" (keyup)="onSearchFilterChange($event)" />
+        <i class="form-group__bar"></i>
+      </div>
+      <div class="row-selector">
+        <app-row-selector (changed)="onPerPageChanged($event)"></app-row-selector>
+      </div>
+    </div>
+
+    <ng-container *ngIf="!isProcessing">
+      <table class="table table-hover" *ngIf="userListFromAPI.length !== 0 && userListForDisplay.length !== 0">
+        <thead>
+          <th width="30%">{{'ADMIN.INSTITUTIONS.LIST_INSTITUTION_USERS.TABLE_HEADERS.EMAIL' |
+            translate
+            }}</th>
+          <th width="10%">{{'ADMIN.INSTITUTIONS.LIST_INSTITUTION_USERS.TABLE_HEADERS.STATUS' |
+            translate
+            }}</th>
+          <th width="15%">{{'ADMIN.INSTITUTIONS.LIST_INSTITUTION_USERS.TABLE_HEADERS.SPACE_USED' |
+            translate
+            }}</th>
+          <th width="25%">{{'ADMIN.INSTITUTIONS.LIST_INSTITUTION_USERS.TABLE_HEADERS.CREATED_AT' |
+            translate
+            }} / {{'ADMIN.INSTITUTIONS.LIST_INSTITUTION_USERS.TABLE_HEADERS.LAST_LOGIN' |
+            translate
+            }}</th>
+          <th width="20%"></th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of userListForDisplay; let index=index" (mouseover)="hoveredIndex=index" (mouseleave)="hoveredIndex=-1">
+            <td>
+              <a [routerLink]="['/admin', 'users', 'info', user.email]">{{ user.email }}</a>
+            </td>
+            <td>
+              <span *ngIf="user.is_active">{{'ADMIN.INSTITUTIONS.LIST_INSTITUTION_USERS.TABLE_VALUES.USER_STATUS_ACTIVE'
+                |
+                translate
+                }}</span>
+              <span *ngIf="!user.is_active">{{'ADMIN.INSTITUTIONS.LIST_INSTITUTION_USERS.TABLE_VALUES.USER_STATUS_INACTIVE'
+                |
+                translate
+                }}</span>
+            </td>
+            <td>{{ user.usage | customFileSize }}</td>
+            <td>
+              {{ (user.ctime / 1000) | amDateFormat:'YYYY-MM-DD HH:mm:ss' }}
+              /
+              {{ user.last_login ? (user.last_login | amDateFormat:'YYYY-MM-DD HH:mm:ss') : '--' }}
+            </td>
+            <td>
+              <ng-container *ngIf="hoveredIndex === index">
+                <i *ngIf="!user.is_tenant_admin" class="fal fa-lg fa-crown actions__item" data-toggle="tooltip"
+                  [title]=" 'ADMIN.INSTITUTIONS.LIST_INSTITUTION_USERS.TOOLTIPS.PROMOTE_TO_ADMIN' | translate" (click)="toggleAdminStatus(user)"></i>
+                <i *ngIf="user.is_tenant_admin" class="fal fa-lg fa-crown actions__item" data-toggle="tooltip"
+                  [title]=" 'ADMIN.INSTITUTIONS.LIST_INSTITUTION_USERS.TOOLTIPS.REVOKE_ADMIN' | translate" (click)="toggleAdminStatus(user)"></i>
+                <i data-toggle="tooltip" [title]="'ADMIN.INSTITUTIONS.LIST_INSTITUTION_USERS.TOOLTIPS.REMOVE_USER' | translate"
+                  class="fal fa-lg fa-trash-alt actions__item" (click)="openRemoveTenantMembersModal(user)"></i>
+              </ng-container>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </ng-container>
+
+    <app-processing *ngIf="isProcessing"></app-processing>
+
+  </div>
+</div>
+
+<div class="data-table__footer">
+  <pagination [itemsPerPage]="pagination.itemsPerPage" [totalItems]="userListFromAPI.length" (pageChanged)="pageChanged($event)"></pagination>
+</div>

@@ -1,0 +1,20 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h3 class="modal-title">
+      <strong>{{ 'WIKIS.WIKI_PAGES.MODALS.WIKI_PAGE_REMOVE_TITLE' | translate }}</strong>
+    </h3>
+  </div>
+  <div class="modal-body">
+    <div [innerHTML]="'WIKIS.WIKI_PAGES.MODALS.WIKI_PAGE_REMOVE_CONFIRMATION' | translate:selectedPage"></div>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-success btn--icon-text waves-effect" (click)="removeWikiPage()" [disabled]="isProcessing ? 'disabled' : ''">
+      <i *ngIf="isProcessing" class="fal fa-refresh fa-spin" style="margin-right: 5px;"></i>
+      <span [innerHTML]="'BUTTONS.YES' | translate"></span>
+    </button>
+    <button type="button" class="btn btn-danger btn--icon-text waves-effect" (click)="closeModal()" [disabled]="isProcessing ? 'disabled' : ''">
+        <span [innerHTML]="'BUTTONS.NO' | translate"></span>
+      </button>
+  </div>
+</div>

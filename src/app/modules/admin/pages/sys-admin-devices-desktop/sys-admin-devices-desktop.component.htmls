@@ -1,0 +1,63 @@
+<header class="content__title">
+  <h1>
+    {{ 'TITLE_PAGE.DEVICES' | translate: params }}
+    <i class="fal fa-chevron-right"></i>
+    {{ 'TITLE_PAGE.DESKTOPS' | translate: params }}
+  </h1>
+</header>
+
+<div class="card">
+  <div class="card-block">
+    <div *ngIf="!isProcessing">
+      <div class="data-table__header d-flex justify-content-between">
+        <div class="form-group data-table__filter">
+          <input *ngIf="config.filtering" [placeholder]="'SEARCHS.ALL_COLUMNS' | translate: params" [(ngModel)]="config.filtering.filterString"
+            class="form-control" (keyup)="changeTable(config)" />
+          <i class="form-group__bar"></i>
+        </div>
+        <select2 class="select2-per-page" [data]="perPageSelectData" [options]="perPageSelectOptions" [value]="page.itemsPerPage"
+          (valueChanged)="onPerPageChanged($event)"></select2>
+      </div>
+
+      <div *ngIf="listDeviceDesktopDisplay.length > 0" class="data-table">
+        <table class="table table-hover mb-0">
+          <thead>
+            <tr>
+              <th *ngFor="let column of columns" [width]="column.width" [ngClass]="{'cursor-text': column.sort===false}" (click)="column.sort!==false ? sortColumn(column, config) : ''">
+                {{ column.title | translate: params }}
+                <i class="fal fa-hc-lg float-right" [ngClass]="{'zmdi-sort-amount-asc': column.sort==='asc', 'zmdi-sort-amount-desc': column.sort==='desc'}"></i>
+              </th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let desktop of listDeviceDesktopDisplay; let index = index" (mouseover)="hoveredIndex=index" (mouseleave)="hoveredIndex=-1">
+              <td class="tb-user">{{ desktop.user }}</td>
+              <td>{{ desktop.platform }} / {{ desktop.client_version }}</td>
+              <td>{{ desktop.device_name }}</td>
+              <td>{{ desktop.last_login_ip }}</td>
+              <td>
+                <span data-toggle="tooltip" title="{{ desktop.last_accessed | date: 'EEEE, d MMM yyyy - HH:mm:ss Z' }}">{{ desktop.last_accessed | date: 'dd.MM.yyyy - HH:mm:ss' }}</span>
+              </td>
+              <td>
+                <i *ngIf="index === hoveredIndex" class="fal fa-trash-alt fa-hc-1dot5 cursor-pointer" (click)="handleModalUnlink(desktop)"
+                  data-toggle="tooltip" [title]="'TOOLTIPS.UNLINK' | translate: params"></i>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <app-unlink-device-modal *ngIf="openModalUnlink" [dataDevices]="currentDeviceDesktop" (removed)="onReloadList()"></app-unlink-device-modal>
+      </div>
+      <app-empty-item *ngIf="listDeviceDesktopDisplay.length === 0" [messageTitle]="'ADMIN.DEVICES.EMPTY_ITEM.DESKTOPS.TITLE' | translate: params"></app-empty-item>
+    </div>
+  </div>
+
+  <app-processing *ngIf="isProcessing"></app-processing>
+</div>
+
+<div *ngIf="!isProcessing && listDeviceDesktopDisplay.length > 0" class="data-table__footer">
+  <pagination *ngIf="config.paging" [(ngModel)]="page.page" [totalItems]="length" [itemsPerPage]="page.itemsPerPage" [maxSize]="maxSize"
+    [boundaryLinks]="true" [rotate]="false" (pageChanged)="changeTable(config, $event)" (numPages)="numPages = $event">
+  </pagination>
+</div>

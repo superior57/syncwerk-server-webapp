@@ -1,0 +1,130 @@
+<!-- vi:set sw=2: -->
+<div *ngIf="!isPageNotFound">
+  <app-share-link-audit
+    *ngIf="hasAudit"
+    [token]="token"
+    [typeShareLink]="'k'"
+    (sendDataAuditSuccess)="receiveDataAuditSuccess($event)"></app-share-link-audit>
+  <app-password-share-link
+    *ngIf="hasPasswordProtected"
+    [token]="token"
+    [type]="'k'"
+    (sendDataPassProtectedSuccess)="receiveDataPassProtectedSuccess($event)"></app-password-share-link>
+  <main *ngIf="kanBanService.selectedProject">
+    <app-secondary-header></app-secondary-header>
+    <section class="content content--full">
+      <div class="content__title">
+	<h1> 
+	  {{kanBanService.selectedProject?.project_name}}
+	</h1>
+	<small [innerHTML]="'KANBAN.PAGES.MANAGE_PROJECT_SUBTITLE' | translate"></small>
+	<div class="actions list-grid-custom">
+	  <div class="list__grid__button">
+	    <app-list-grid-button
+	      (onChangeViewMode)="toggleView($event)"></app-list-grid-button>
+	  </div>
+	</div>
+      </div>
+      <div class="card">
+	<div class="card-header">
+	  <div class="actions" style="margin-right: 12px" *ngIf="maxSizeZip">
+	    <div></div>
+	  </div>
+	</div>
+	<!-- GRID VIEW -->
+	<div class="card-block" *ngIf="!isListView && kanBanService.selectedProject">
+	  <!-- BOARDS -->
+	  <div *ngFor="let board of kanBanService.filteredBoards; let i = index" class="boards">
+	    <div class="board">
+	      <div class="board-header">
+		<span class="__name">{{board.board_name}}</span>
+	      </div>
+	      <div class="board-content">
+		<div *ngFor="let task of board.kanban_tasks;"
+		   [ngStyle]="{'border-left': '3px solid ' + task.color[0].color}"
+		   class="__card"
+		   (click)="openManageTaskModal(task, board.id)"
+		   ondrop="event.preventDefault()">
+		  <div class="card-labels">
+		    <ng-container *ngFor="let tag of task.tags">
+		      <span *ngIf="tag.title" [ngStyle]="{'background-color': '#' + tag.color}">{{tag.title}}</span>
+		    </ng-container>
+		  </div>
+		  <span class="task-name">{{task.title}}</span>
+		  <div class="bottom-card">
+		    <span *ngIf="task.due_date" class="task-due-date"><i class="fal fa-calendar"></i>
+		      {{ task.due_date | amDateFormat:'L' }}</span>
+		    <span class="task-files"><i class="fal fa-paperclip"></i> {{task.num_attachments}} files</span>
+		    <div *ngIf="task.assignee.owner_id" class="member ml-auto p-0" tooltip="{{task.assignee.owner_id}}" container="body" placement="top">
+		      <img *ngIf="task.assignee.avatar_url"  class="member-avatar" [src]="task.assignee.avatar_url"  alt="" onError="this.src = '../../../../../assets/images/placeholder-profile.png'">
+		      <i class="fas fa-user-circle" style="font-size: 20px;"></i>
+		    </div>
+		  </div>
+		</div>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	<!-- END GRIDVIEW -->
+	<!-- LIST VIEW -->
+	<div *ngIf="isListView && kanBanService.selectedProject" class="boards-container-list-views" >
+	  <div class="board-container-list">
+	    <div *ngFor="let board of kanBanService.filteredBoards; let i = index" class="board">
+	      <div class="board">
+		<div class="board-header">
+		  <div class="task-details" data-toggle="collapse" [attr.data-target]="'#collapseBasic'+i"  [attr.aria-expanded]="true" aria-controls="collapseBasic">
+		    <span class="task-name"> {{board.board_name}} </span>
+		    <span class="fal fa-chevron-down toggle-icon"></span>
+		  </div>
+		  <div class="actions">
+		  </div>
+		</div>
+		<div #c [attr.id]="'collapseBasic' + i" class="board-content board-tasks collapse show __card" isAnimated="true">
+		  <div
+		    *ngFor="let task of board.kanban_tasks;"
+		    class="boards-container-list-views__task"
+		    [ngStyle]="{'border-left': task.color[0].color === '#ffffff' ? '1px solid #f4f4f6' : '3px solid ' + task.color[0].color}"
+		    (click)="openManageTaskModal(task, board.id)" ondrop="event.preventDefault()">
+		    <div class="task-description">
+		      <span>{{task.title}}</span>
+		    </div>
+		    <div class="task-labels justify-content-center">
+		      <ng-container *ngFor="let tag of task.tags | slice:0:4;">
+			<span
+			  *ngIf="tag.title"
+			  class="label"
+			  [ngStyle]="{'background-color': '#' + tag.color}">{{tag.title}}</span>
+		      </ng-container>
+		    </div>
+		    <div class="due-date align-items-center justify-content-center">
+		      <span *ngIf="task.due_date" class="task-due-date">
+			<i class="fal fa-calendar"></i>
+			{{ task.due_date | amDateFormat:'L' }}
+		      </span>
+		      <span class="task-files"><i class="fal fa-paperclip"></i>
+			{{task.num_attachments}} files</span>
+		    </div>
+		    <div *ngIf="task.assignee.owner_id" tooltip="{{task.assignee.owner_id}}" class="member align-items-end justify-content-end m-0 p-0">
+		      <img
+			*ngIf="task.assignee.avatar_url"
+			class="member-avatar"
+			[src]="task.assignee.avatar_url"
+			alt=""
+			onError="this.src = '../../../../../assets/images/placeholder-profile.png'">
+		      <i class="fas fa-user-circle" style="font-size: 20px;"></i>
+		    </div>
+		  </div>
+		</div>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	<!-- END LIST VIEW  -->
+      </div>
+    </section>
+  </main>
+</div>
+<app-page-not-found *ngIf="isPageNotFound"></app-page-not-found>
+<div class="footer--custom">
+  <app-footer></app-footer>
+</div>

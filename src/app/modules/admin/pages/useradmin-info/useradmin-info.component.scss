@@ -1,0 +1,22 @@
+h3 {
+  margin-bottom: 2.1rem;
+}
+
+@media (max-width: 436px){
+  .tab-container--green{
+    ul{
+      li{
+        a.nav-link{
+          padding: .5rem .5rem;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 400px){
+  .card-block {
+    padding: 2.1rem .6rem !important;
+  }
+}
+

@@ -1,0 +1,81 @@
+.profile__img__setting {
+    width: 130px;
+    max-width: 130px;
+    border-radius: 65px;
+    @media (max-width: 700px) {
+      width: 100px;
+      max-width: 100px;
+    }
+    @media (max-width: 485px) {
+      width: 70px;
+      max-width: 70px;
+    }
+}
+
+.profile__img__edit{
+  top: 0px;
+  border-radius: 0;
+  @media (max-width:700px) {
+    left:22px !important;
+  }
+  @media (max-width: 485px) {
+    top:3px !important;
+  }
+}
+
+.fa-camera:before {
+  content: "\f030";
+  position: absolute;
+  top: 6px;
+  left: 7px;
+}
+
+.profile__img__delete {
+  top: 30px !important;
+  cursor: pointer;
+  @media (max-width: 485px) {
+    top:35px !important;
+  }
+}
+.card__profile {
+  width: 10rem;
+  background: #cecece;
+  height: 10rem;
+  //border-radius: 50%;
+  text-align: center;
+  padding: 0px;
+  font-size: 7rem;
+  color: #fff;
+  @media (max-width: 700px) {
+    width: 7rem;
+    height: 7rem;
+    font-size: 3rem;
+    line-height: 7rem;
+  }
+  @media (max-width: 485px) {
+    width: 5rem;
+    height: 5rem;
+    font-size: 2rem;
+    line-height: 5rem;
+  }
+}
+
+.email-change-request-status__ {
+  &expired {
+    color: #e10032;
+  }
+  &waiting {
+    color: #0067b3;
+  }
+  &wait-admin {
+    color: #32c787;
+  }
+}
+
+.request-btn {
+  button {
+    margin-right: 1rem;
+    margin-bottom: 1rem;
+  }
+
+}

@@ -1,0 +1,142 @@
+.icon-tb-name {
+  display: inline-block;
+  width: 45px;
+  justify-content: center;
+  .icon-folder {
+    font-size: 35px;
+  }
+  .icon-file {
+    max-width: 35px;
+    max-height: 35px;
+    margin: 0px 20px 0px -3px;
+  }
+}
+.icon--custom {
+  margin-left: -8px;
+}
+
+tr{
+  @media (min-width: 991px) {
+    height: 70px;
+  }
+  // padding: 35px 0px;
+  td {
+    vertical-align: middle;
+    .item-name {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: calc(100vw - 60vw);
+        @media (max-width: 400px) {
+          width: calc(100vw - 77vw);
+        }
+    }
+  }
+}
+
+:host ::ng-deep {
+  app-empty-item .card {
+    margin-bottom: 0;
+  }
+  pagination ul.pagination {
+    justify-content: flex-end;
+  }
+}
+
+.data-table__footer {
+  padding: 0 2.1rem;
+}
+
+.data-table__filter {
+  margin-right: 30px;
+  width: 100%;
+  max-width: 100%;
+}
+#icon--custom--listview{
+  font-size: 30px;
+}
+
+.encrypt {
+  display: none;
+}
+
+.content__title {
+  h1 {
+    text-transform: inherit;
+    .icon-back-folders {
+      font-size: 1.7rem;
+      margin-right: 5px;
+      cursor: pointer;
+    }
+  }
+}
+
+.dropdown-margin {
+  margin-top: 35px;
+}
+
+.wrapper__list__buttons {
+  flex: 0 0 14vh;
+  margin-top: 4px;
+}
+
+i.fal.fa-2x.fa-ellipsis-v.actions__item {
+  color: #000;
+  width: 2.5rem;
+  height: 2.5rem;
+  background: #fefefe;
+  line-height: 2.5rem;
+  margin-right: 7px;
+}
+
+.share-details-row {
+  padding: 0px;
+  td {
+    padding: 0px;
+    .share-details {
+      padding: 0.75rem 1rem;
+      border: solid 1px lightgrey;
+      text-align: left;
+      .actions {
+        margin-top: 1rem;
+        .actions__item {
+          width: auto;
+          margin-right: 10px;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width:991px){
+  .fl--custom{
+    flex-wrap: wrap;
+      .row__selector {
+        position: absolute;
+        right: 25px;
+        top: 27px;
+    }
+    .data-table__filter {
+        margin: 12px 0px 0px 0px !important;
+        width: 100%;
+    }
+  }
+  tr{
+    &:hover{
+      background-color: #efefef;
+    }
+    th{
+      &:last-child{
+        text-align: right;
+      }
+    }
+    td{
+      .share-details:hover {
+          background: #fff;
+      }
+      &:last-child{
+        text-align: right;
+      }
+    }
+  }
+}
+

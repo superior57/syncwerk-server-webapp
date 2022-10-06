@@ -1,0 +1,208 @@
+<header class="content__title">
+  <h1>
+    <strong>{{ tenantDetails.name }}</strong> {{'ADMIN.INSTITUTIONS.TITLE.INSTITUTION_USER_LIST' | translate}}
+  </h1>
+  <small>{{'ADMIN.INSTITUTIONS.SUBTITLE.INSTITUTION_USER_LIST' | translate}}</small>
+</header>
+
+<div class="card">
+  <div class="card-block">
+    <div class="data-table__header d-flex justify-content-betwwen fl--custom">
+      <div class="dropdown">
+        <button class="btn btn-secondary waves-effect btn--icon-text mr-25px" data-toggle="dropdown" aria-expanded="false">
+          {{'ADMIN.INSTITUTIONS.LIST_INSTITUTION_USERS.BUTTONS.ADD_NEW_MEMBERS' | translate}}
+        </button>
+
+        <div class="dropdown-menu" x-placement="top-start">
+          <a (click)="openModalAddNewUser()" class="dropdown-item">
+            {{'ADMIN.INSTITUTIONS.LIST_INSTITUTION_USERS.BUTTONS.ADD_NEW_USER' | translate}}</a>
+          <a (click)="openAddUserToTenantModal()" class="dropdown-item">
+            {{'ADMIN.INSTITUTIONS.LIST_INSTITUTION_USERS.BUTTONS.ADD_EXISTING_USER' | translate}}</a>
+        </div>
+      </div>
+      <!-- <div class="form-group">
+        <button *ngIf="tenantDetails.permission.edit_bbb_setting" class="btn btn-secondary waves-effect btn--icon-text mr-25px" (click)="openTenantBBBSettingModal()">
+          Update BBB Setting
+        </button>
+      </div> -->
+      <div class="form-group data-table__filter">
+        <input [placeholder]="'SEARCHS.ALL_COLUMNS' | translate" class="form-control" (keyup)="onSearchFilterChange($event)" />
+        <i class="form-group__bar"></i>
+      </div>
+      <div class="row-selector">
+        <app-row-selector (changed)="onPerPageChanged($event)"></app-row-selector>
+      </div>
+    </div>
+
+    <ng-container *ngIf="!isProcessing">
+      <table class="table table-hover" *ngIf="userListFromAPI.length !== 0 && userListForDisplay.length !== 0">
+        <thead>
+          <th width="20%">{{'ADMIN.INSTITUTIONS.LIST_INSTITUTION_USERS.TABLE_HEADERS.EMAIL' |
+            translate
+            }}</th>
+          <th class="d-none d-lg-table-cell" width="10%">{{'ADMIN.INSTITUTIONS.LIST_INSTITUTION_USERS.TABLE_HEADERS.STATUS'
+            |
+            translate
+            }}</th>
+          <th class="d-none d-lg-table-cell" width="10%">{{'ADMIN.INSTITUTIONS.LIST_INSTITUTION_USERS.TABLE_HEADERS.MAX_MEETINGS'
+            |
+            translate
+            }}</th>
+          <th class="d-none d-lg-table-cell" width="15%">{{'ADMIN.INSTITUTIONS.LIST_INSTITUTION_USERS.TABLE_HEADERS.SPACE_USED'
+            |
+            translate
+            }}</th>
+          <th class="d-none d-lg-table-cell" width="25%">{{'ADMIN.INSTITUTIONS.LIST_INSTITUTION_USERS.TABLE_HEADERS.CREATED_AT'
+            |
+            translate
+            }} / {{'ADMIN.INSTITUTIONS.LIST_INSTITUTION_USERS.TABLE_HEADERS.LAST_LOGIN' |
+            translate
+            }}</th>
+          <th width="5%">{{'ADMIN.GROUPS.LIST_GROUPS.TABLE_HEADERS.ACTIONS'
+            | translate }}</th>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let user of userListForDisplay; let index=index">
+            <tr (mouseover)="hoveredIndex=index" (mouseleave)="hoveredIndex=-1">
+              <td>
+                <a [routerLink]="['/user', 'profile', user.email]">{{ user.email }}</a>
+              </td>
+              <td class="d-none d-lg-table-cell">
+                <ng-container *ngIf="!user.isEdit">
+                  <span *ngIf="user.is_active">{{'ADMIN.INSTITUTIONS.LIST_INSTITUTION_USERS.TABLE_VALUES.USER_STATUS_ACTIVE'
+                    |
+                    translate
+                    }}</span>
+                  <span *ngIf="!user.is_active">{{'ADMIN.INSTITUTIONS.LIST_INSTITUTION_USERS.TABLE_VALUES.USER_STATUS_INACTIVE'
+                    |
+                    translate
+                    }}</span>
+                  <span style="cursor: pointer;" *ngIf="index===hoveredIndex && user.email !== currentLoginUser.email && !user.is_staff"
+                    (click)="setEditMode(user, 'status')">
+                    <i class="fal fa-pen"></i>
+                  </span>
+                </ng-container>
+                <ng-container *ngIf="user.isEdit && user.editMode==='status'">
+                  <select2 [data]="statusSelectData" [options]="options" [value]="user.is_active" [cssImport]="true"
+                    [width]="105" (valueChanged)="changeUserStatus(user, $event)">
+                  </select2>
+                </ng-container>
+              </td>
+              <td class="d-none d-lg-table-cell">
+                  {{ user.max_meetings || '-' }}
+                  <span style="cursor: pointer;" *ngIf="index===hoveredIndex && user.email !== currentLoginUser.email && !user.is_staff"
+                    (click)="openEditMaxNumberOfMeetingModal(user)">
+                    <i class="fal fa-pen"></i>
+                  </span>
+              </td>
+              <td class="d-none d-lg-table-cell">{{ user.usage | customFileSize }}</td>
+              <td class="d-none d-lg-table-cell">
+                {{ (user.ctime / 1000) | amDateFormat:'YYYY-MM-DD HH:mm:ss' }}
+                /
+                {{ user.last_login ? (user.last_login | amDateFormat:'YYYY-MM-DD HH:mm:ss') : '--' }}
+              </td>
+              <td class="d-none d-lg-table-cell">
+                <ng-container *ngIf="hoveredIndex === index && user.email !== currentLoginUser.email">
+                  <i *ngIf="!user.is_tenant_admin && !user.is_staff" class="fal fa-lg fa-crown actions__item"
+                    data-toggle="tooltip" [title]=" 'ADMIN.INSTITUTIONS.LIST_INSTITUTION_USERS.TOOLTIPS.PROMOTE_TO_ADMIN' | translate"
+                    (click)="toggleAdminStatus(user)"></i>
+                  <i *ngIf="user.is_tenant_admin" class="fas fa-lg fa-crown actions__item" data-toggle="tooltip"
+                    [title]=" 'ADMIN.INSTITUTIONS.LIST_INSTITUTION_USERS.TOOLTIPS.REVOKE_ADMIN' | translate" (click)="toggleAdminStatus(user)"></i>
+                  <i data-toggle="tooltip" [title]="'ADMIN.INSTITUTIONS.LIST_INSTITUTION_USERS.TOOLTIPS.REMOVE_USER' | translate"
+                    class="fal fa-lg fa-trash-alt actions__item" (click)="openRemoveTenantMembersModal(user)"></i>
+                </ng-container>
+              </td>
+              <td class="d-sm-table-cell d-md-table-cell d-lg-none">
+                <a [href]="'#tenant-'+index" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="share-0">
+                  <i data-toggle="tooltip" title="Details" class="fal fa-2x fa-ellipsis-v actions__item"></i>
+                </a>
+              </td>
+            </tr>
+
+            <!-- Collapse details of share link for sm display -->
+            <tr class="d-sm-table-row d-md-table-row d-lg-none share-details-row">
+              <td colspan="10">
+                <div class="collapse" [id]="'tenant-'+index">
+                  <div class="share-details">
+                    <div>
+                      <span>
+                        <strong>{{'ADMIN.INSTITUTIONS.LIST_INSTITUTION_USERS.TABLE_HEADERS.STATUS'
+                          |
+                          translate
+                          }}: </strong>
+                      </span>
+                      <ng-container *ngIf="!user.isEdit">
+                        <span *ngIf="user.is_active">{{'ADMIN.INSTITUTIONS.LIST_INSTITUTION_USERS.TABLE_VALUES.USER_STATUS_ACTIVE'
+                          |
+                          translate
+                          }}</span>
+                        <span *ngIf="!user.is_active">{{'ADMIN.INSTITUTIONS.LIST_INSTITUTION_USERS.TABLE_VALUES.USER_STATUS_INACTIVE'
+                          |
+                          translate
+                          }}</span>
+                        <span style="cursor: pointer;" *ngIf="user.email !== currentLoginUser.email && !user.is_staff"
+                          (click)="setEditMode(user, 'status')">
+                          <i class="fal fa-pen"></i>
+                        </span>
+                      </ng-container>
+                      <ng-container *ngIf="user.isEdit && user.editMode==='status'">
+                        <select2 [data]="statusSelectData" [options]="options" [value]="user.is_active" [cssImport]="true"
+                          [width]="105" (valueChanged)="changeUserStatus(user, $event)">
+                        </select2>
+                      </ng-container>
+
+                    </div>
+                    <div>
+                      <span>
+                        <strong>{{'ADMIN.INSTITUTIONS.LIST_INSTITUTION_USERS.TABLE_HEADERS.SPACE_USED'
+                          |
+                          translate
+                          }}:</strong>
+                        {{ user.usage | customFileSize }}</span>
+                    </div>
+                    <div>
+                      <span>
+                        <strong>{{'ADMIN.INSTITUTIONS.LIST_INSTITUTION_USERS.TABLE_HEADERS.CREATED_AT'
+                          |
+                          translate
+                          }} / {{'ADMIN.INSTITUTIONS.LIST_INSTITUTION_USERS.TABLE_HEADERS.LAST_LOGIN' |
+                          translate
+                          }}:</strong>
+                        {{ (user.ctime / 1000) | amDateFormat:'YYYY-MM-DD HH:mm:ss' }}
+                        /
+                        {{ user.last_login ? (user.last_login | amDateFormat:'YYYY-MM-DD HH:mm:ss') : '--' }}
+                      </span>
+                    </div>
+                    <div>
+                      <ng-container *ngIf="user.email !== currentLoginUser.email">
+                        <i *ngIf="!user.is_tenant_admin && !user.is_staff" class="fal fa-lg fa-crown actions__item"
+                          data-toggle="tooltip" [title]=" 'ADMIN.INSTITUTIONS.LIST_INSTITUTION_USERS.TOOLTIPS.PROMOTE_TO_ADMIN' | translate"
+                          (click)="toggleAdminStatus(user)"></i>
+                        <i *ngIf="user.is_tenant_admin" class="fas fa-lg fa-crown actions__item" data-toggle="tooltip"
+                          [title]=" 'ADMIN.INSTITUTIONS.LIST_INSTITUTION_USERS.TOOLTIPS.REVOKE_ADMIN' | translate"
+                          (click)="toggleAdminStatus(user)"></i>
+                        <i data-toggle="tooltip" [title]="'ADMIN.INSTITUTIONS.LIST_INSTITUTION_USERS.TOOLTIPS.REMOVE_USER' | translate"
+                          class="fal fa-lg fa-trash-alt actions__item" (click)="openRemoveTenantMembersModal(user)"></i>
+                      </ng-container>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </ng-container>
+
+        </tbody>
+      </table>
+    </ng-container>
+
+    <app-processing *ngIf="isProcessing"></app-processing>
+
+  </div>
+</div>
+
+<div class="data-table__footer">
+  <div class="wrapper__footer">
+    <pagination [itemsPerPage]="pagination.itemsPerPage" [boundaryLinks]="true" [maxSize]="maxSize" [totalItems]="userListFromAPI.length"
+      (pageChanged)="pageChanged($event)"></pagination>
+  </div>
+</div>

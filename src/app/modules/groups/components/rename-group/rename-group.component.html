@@ -1,0 +1,30 @@
+<div class="modal fade" id="group-rename" tabindex="-1">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">
+          <span>
+            <strong>
+              <span [innerHTML]="'MODALS.TITLES.RENAME_GROUP_TO' | translate"></span>
+            </strong>
+          </span>
+        </h5>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-8">
+            <div class="form-group">
+              <input #renameInput type="text" class="form-control" [(ngModel)]="newGroupName" (keyup.enter)="renameGroup()">
+              <i class="form-group__bar"></i>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <button type="button" class="btn btn-block btn-info waves-effect" (click)="renameGroup()">
+              <span [innerHTML]="'BUTTONS.RENAME' | translate"></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

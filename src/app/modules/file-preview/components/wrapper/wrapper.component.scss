@@ -1,0 +1,21 @@
+.content {
+  width: 50%;
+  margin: 0 auto;
+  &__title {
+  	display: flex;
+    padding-left: 0rem;
+  }
+}
+.key-icon {
+  width: 80px;
+  height: 80px;
+  margin-right: 15px;
+  position: relative;
+}
+
+.error-msg {
+  margin-top: -25px;
+}
+.section__preview {
+  background: #fff;
+}

@@ -1,0 +1,115 @@
+<div class="card-block card-share">
+  <p class="modal__description" [innerHTML]="'MODAL_SHARE.SHARE_TO_USER_DESCRIPTION' | translate"></p>
+  <div class="wrapper">
+    <strong [innerHTML]="'TABLE.COLUMNS.USER' | translate">
+    </strong>
+    <p class="notice">{{ 'SEARCHS.NOTICE_INPUT_UNSER' | translate }}</p>
+    <span>
+      <tag-input [placeholder]="'+ ' + ('ADMIN.SETTINGS.COLLAPSES.USER' | translate)" [secondaryPlaceholder]="(ENABLE_GLOBAL_ADDRESSBOOK ? 'SEARCHS.USER' : 'SEARCHS.USER_NO_ADDRESSBOOK') | translate"
+        [allowDupes]="false" [(ngModel)]="userListForShare" [onlyFromAutocomplete]="false" (keyup.enter)="onEnter()"
+        (onAdd)="onItemAdded($event)" [clearOnBlur]="false" [addOnPaste]="true">
+        <tag-input-dropdown [appendToBody]="false" [autocompleteObservable]="ENABLE_GLOBAL_ADDRESSBOOK ? autocompleteUserList : null"
+          [matchingFn]="autoCompleteUserListMatching">
+          <ng-template let-item="item" let-index="index">
+            <div class="row">
+              <div class="col-md-2">
+                <div class="user-avt">
+                  <img [src]="item.templateData.avatar_url" />
+                </div>
+              </div>
+              <div class="col-md-10">
+                <div class="user-detail">
+                  <strong>{{ item.templateData.name }}</strong>
+                </div>
+                <div class="user-detail">
+                  ({{ item.templateData.email }})
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </tag-input-dropdown>
+      </tag-input>
+    </span>
+
+    <div class="d-flex fl--custom">
+      <div class="wrapper__permission">
+        <strong class="tb-permission" [innerHTML]="'TABLE.COLUMNS.PERMISSION' | translate">
+        </strong>
+        <span>
+          <select2 [data]="exampleData" [options]="options" [value]="permission" [cssImport]="true" [width]="128"
+            (valueChanged)="changedSettingPermission($event)"></select2>
+        </span>
+      </div>
+      <div class="wrapper__history">
+        <strong class="history--custom">{{ 'TABLE.COLUMNS.HISTORY_PERMISSION' | translate }}</strong>
+        <div class="checkbox">
+          <label><input [(ngModel)]="viewHistory" type="checkbox" name="setPermission">
+            {{'PERMISSIONS.VIEW_HISTORY' | translate}}</label>
+        </div>
+        <div class="checkbox">
+          <label><input [(ngModel)]="viewSnapshot" type="checkbox" name="setPermission">{{'PERMISSIONS.VIEW_SNAPSHOT'
+            | translate}}</label>
+        </div>
+        <div class="checkbox">
+          <label><input [(ngModel)]="restoreSnapshot" type="checkbox" name="setPermission">{{'PERMISSIONS.RESTORE_SNAPSHOT'
+            | translate}}</label>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <ng-container *ngIf="userListForShare.length <= 0">
+        <button [disabled]="userListForShare.length <= 0" type="button" class="btn btn-info waves-effect btn--custom"
+          (click)="submitShareToUser()" data-toggle="tooltip" [title]="'SEARCHS.NOTICE_INPUT_UNSER' | translate">
+          <span [innerHTML]="'BUTTONS.SUBMIT' | translate"></span>
+        </button>
+      </ng-container>
+      <ng-container *ngIf="userListForShare.length > 0">
+        <button  type="button" class="btn btn-info waves-effect btn--custom"
+          (click)="submitShareToUser()">
+          <span [innerHTML]="'BUTTONS.SUBMIT' | translate"></span>
+        </button>
+      </ng-container>
+
+    </div>
+
+    <div class="clearfix">
+    </div>
+
+    <p class="error-msg">{{ errorMessage }}</p>
+    <ng-container *ngFor="let data of listUserShared; let index=index">
+      <div class="d-flex fl--custom">
+        <div class="name-wrapper--custom">
+          <strong [innerHTML]="'TABLE.COLUMNS.USER' | translate">
+          </strong>
+          <p class="info--name" data-toggle="tooltip" [title]="data.user_info.nickname">{{ 'ADMIN.INFO.NICK_NAME' |
+            translate }}: {{ (data.user_info.nickname) | splice_length: 25 }}</p>
+          <p class="info--name" data-toggle="tooltip" [title]="data.user_info.name">{{ 'ADMIN.INFO.INFO_NAME' |
+            translate }}: {{data.user_info.name | splice_length: 25}}</p>
+        </div>
+
+        <div class="tb-permission--custom">
+          <!-- <strong class="tb-permission" [innerHTML]="'TABLE.COLUMNS.PERMISSION' | translate">
+              </strong> -->
+          <p class="permission__title--custom">{{ 'TABLE.COLUMNS.PERMISSION' | translate }}</p>
+          <select2 [data]="exampleData" [options]="options" [value]="data.permission" [cssImport]="true" [width]="128"
+            (valueChanged)="changedPermissionData($event,index)"></select2>
+        </div>
+
+        <div class="permission--custom">
+          <p class="history__title--custom">{{ 'TABLE.COLUMNS.HISTORY_PERMISSION' | translate }}</p>
+          {{ data.allow_view_history ? ('PERMISSIONS.VIEW_HISTORY' | translate) + ', ' : ''}}
+          {{ data.allow_view_snapshot ? ('PERMISSIONS.VIEW_SNAPSHOT' | translate) + ', ' : ''}}
+          {{ data.allow_restore_snapshot ? ('PERMISSIONS.RESTORE_SNAPSHOT' | translate) : ''}}
+        </div>
+
+        <div class="button--customz">
+          <button type="button" class="btn btn-danger btn--icon-text waves-effect btn--custom" (click)="deleteUserShared(index,data)">
+            <i class="fal fa-trash-alt"></i>
+          </button>
+        </div>
+
+      </div>
+    </ng-container>
+  </div>
+</div>

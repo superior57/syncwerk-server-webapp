@@ -1,0 +1,174 @@
+// .form-control.input-center.ng-dirty.ng-touched.ng-invalid:focus,
+// .form-control.input-center.ng-pristine.ng-invalid.ng-touched:focus,
+// .form-control.input-center.ng-pristine.ng-invalid:focus,
+// .form-control.input-center.ng-touched.ng-dirty.ng-valid.form-control--active
+// {
+//   padding-top: 26px;
+// }
+
+// .form-group.form-group--float.form-group--centered.input {
+//   padding-top: 0px;
+// }
+
+.form-group--float .form-control:focus ~ label,
+.form-group--float .form-control.form-control--active ~ label,
+.form-group--float > label {
+  font-size: .95rem;
+  color: lightgray
+}
+.error-msg.last {
+  padding-bottom: 26px;
+}
+
+.successful-message {
+  margin-top: 1rem;
+}
+
+.login{
+  flex-direction: column;
+  min-height: 90vh;
+  height: 0;
+}
+
+.login__block{
+  @media (max-width:360px) {
+    max-width: 295px !important;
+  }
+}
+
+.login__block__header {
+  img.img--custom{
+    margin: 0px auto;
+    width: auto;
+    height: auto;
+    border-radius: 0px;
+    box-shadow: none;
+    transform: scale(.7);
+  }
+}
+.login_block_register {
+  display: flex;
+  width: 25rem;
+  margin-top:10px;
+  a{
+    color: #707070;
+    &.register__a{
+      &:after{
+        content: '|';
+        margin: 0px 6px;
+      }
+    }
+    &:hover{
+      color: #0067b3;
+    }
+  }
+
+  @media (max-width:375px) {
+    margin-bottom: 150px;
+  }
+
+  @media (max-width:360px) {
+    width: 22rem !important;
+    margin-bottom: 150px;
+  }
+}
+
+.login__block__header__custom {
+  background: #0067b3;;
+  height: 72px;
+  padding: 12px 20px;
+  display: flex;
+  flex-direction: row;
+  line-height: 42px;
+  img.img--custom{
+    margin-left: 0px;
+    border-radius: 0px;
+    border: none;
+    width: 200px;
+    height: 50px;
+    box-shadow: none;
+  }
+}
+:host ::ng-deep select2 .select2-container--default .select2-selection--single .select2-selection__rendered {
+  color: #fff;
+ }
+ :host ::ng-deep select2 .select2-container--default .select2-selection--single:before{
+   transform: rotate(45deg);
+   top: 15px;
+ }
+ :host ::ng-deep select2  span{
+   width: 80px;
+ }
+ :host ::ng-deep select2 .select2-container--default .select2-selection--single{
+  border-bottom: 0px solid transparent !important;
+}
+:host ::ng-deep select2 .select2-container--default .select2-selection--single .select2-selection__rendered{
+  padding:  14px 14px;
+}
+ :host ::ng-deep select2 span.select2-dropdown.select2-dropdown--below {
+   min-width: 106px !important;
+ }
+
+ .select__languages {
+  position: absolute;
+  top: 12px;
+  right: 20px;
+}
+ .login__title {
+  width: 25.5rem;
+  display: inline-block;
+  margin-bottom: 9px;
+   h3 {
+       font-size: 1.5rem;
+       color: #636c72;
+       text-transform: uppercase;
+       font-weight: 400;
+   }
+   @media (max-width:360px) {
+    width: 22.5rem !important;
+  }
+ }
+ .footer {
+  width: 100%;
+  margin-top: 7%;
+}
+
+.login__block__body{
+  h5{
+    color: #707070;
+  }
+}
+.footer.ft--custom {
+  width: 100%;
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  padding: 0rem 1rem 1rem;
+}
+
+.login{
+  min-height: 90vh;
+}
+button.btn.btn--icon-text.btn-success {
+  width: 100%;
+}
+span.terms {
+  margin-left: 10px;
+}
+input.terms{
+  box-shadow: 0px 0px 0px rgba(0,0,0,0.2) !important;
+}
+.form-group--centered, .form-group--centered .form-control{
+  text-align: left;
+  vertical-align: middle;
+}
+.form-group--float .form-control ~ label {
+  font-size: 0.95rem;
+  bottom: 34px;
+  width: 100%;
+  color:#636c72 !important;
+}
+
+.form-control {
+  box-shadow: 0px 0px 0px rgba(0,0,0,0.2) !important;
+}

@@ -1,0 +1,34 @@
+<div class="data-table">
+  <div class="data-table__header">
+    <div class="form-group data-table__filter">
+      <input *ngIf="config.filtering" placeholder="Filter all columns" [(ngModel)]="config.filtering.filterString" class="form-control"
+        (keyup)="onChangeTable(config)" />
+      <i class="form-group__bar"></i>
+    </div>
+  </div>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th *ngFor="let column of columns" [width]="column.width" (click)="column.sort!==false ? sortByColumn(column) : ''">
+          {{ column.title }}
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let row of rows; let index=index" (mouseover)="hoveredIndex=index" (mouseleave)="hoveredIndex=-1">
+        <td *ngFor="let column of columns">
+          <div [innerHTML]="row[column.name]"></div>
+          <i *ngIf="column.name==='operations' && index===hoveredIndex" class="actions__item fal fa-trash-alt fa-hc-1dot5 cursor-pointer"
+            (click)="deleteItemFoldersAll(item)" data-toogle="tooltip" [title]="'TOOLTIPS.DELETE' | translate: params"></i>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="data-table__footer">
+    <pagination *ngIf="config.paging" [(ngModel)]="page" [totalItems]="length" [itemsPerPage]="itemsPerPage" [maxSize]="maxSize"
+      [boundaryLinks]="true" [rotate]="false" (pageChanged)="onChangeTable(config, $event)" (numPages)="numPages = $event">
+    </pagination>
+  </div>
+</div>

@@ -1,0 +1,61 @@
+<header class="content__title">
+  <h1>
+    <span [innerHTML]="'TITLE_PAGE.SHARES' | translate:params"></span>
+  </h1>
+  <small [innerHTML]="'SUB_TITLE_PAGE.SHARES' | translate"></small>
+  <div class="actions list-grid-custom">
+    <div class="range__size">
+        <input *ngIf="!isListView" type="range" min="100" max="160" class="slider" [(ngModel)]="rangeSizeGrid" />
+    </div>
+    <div class="list__grid__button">
+        <app-list-grid-button (onChangeViewMode)="onChangeViewMode($event)"></app-list-grid-button>
+    </div>
+  </div>
+</header>
+
+<div class="card">
+  <div class="card-block">
+    <div *ngIf="!isProcessing">
+      <!-- FILTER -->
+      <div class="data-table__header d-flex justify-content-between fl--custom">
+        <div class="form-group data-table__filter">
+          <input *ngIf="config.filtering" [placeholder]="'SEARCHS.ALL_COLUMNS' | translate: params" [(ngModel)]="config.filtering.filterString"
+            class="form-control" (keyup)="changeTable(config)" />
+          <i class="form-group__bar"></i>
+        </div>
+        <div class="row__selector">
+          <app-row-selector (changed)="onPerPageChanged($event)"></app-row-selector>
+        </div>
+      </div>
+
+      <div *ngIf="listSharedFolderDisplay.length > 0">
+        <app-share-admin-listview *ngIf="isListView" [listShares]="listSharedFolderDisplay" [columns]="columns"
+          (sorted)="sortColumn($event, config)" (openModal)="onOpenModal($event)" (changedPermission)="onChangePermission($event)"></app-share-admin-listview>
+        <app-share-admin-gridview *ngIf="!isListView" [listShares]="listSharedFolderDisplay" [columns]="columns"
+          (openModal)="onOpenModal($event)" [rangeSize]="rangeSizeGrid"></app-share-admin-gridview>
+        <app-share-modal *ngIf="isOpenModal.share" [shareItem]="currentSharesItem"></app-share-modal>
+        <app-view-link-modal *ngIf=" isOpenModal.view " [link]="currentSharesItem " [type]="currentSharesItem.type "></app-view-link-modal>
+        <app-unshare-modal *ngIf="isOpenModal.unshare " [type]=" 'Folder' " [name]="currentSharesItem.repo_name
+          "
+          [data]="currentSharesItem " (UnshareCallBack)="onUnshareItem($event) "></app-unshare-modal>
+        <app-modal-delete-remove *ngIf="isOpenModal.remove " [isDeleteModal]="false " [typeDelete]=" 'Share Item'
+          "
+          [itemName]="currentSharesItem.obj_name " (submitRemoveItem)="onRemoveItem() "></app-modal-delete-remove>
+      </div>
+
+      <app-empty-item *ngIf="listSharedFolderDisplay.length===0 && this.listShares.length === 0" [messageTitle]="
+          'EMPTY_ITEMS.MSG_TITLES.SHARES_FOLDER' | translate: params "
+        [messageSub]=" 'EMPTY_ITEMS.MSG_SUB_TITLES.SHARES_FOLDER' | translate: params "></app-empty-item>
+      <app-empty-item *ngIf="listSharedFolderDisplay.length===0 && this.listShares.length !== 0" [messageTitle]="
+        'EMPTY_ITEMS.MSG_TITLES.SHARES_NOT_FOUND' | translate: params "
+        [messageSub]=" 'EMPTY_ITEMS.MSG_SUB_TITLES.SHARES_NOT_FOUND' | translate: params "></app-empty-item>
+    </div>
+
+    <app-processing *ngIf="isProcessing "></app-processing>
+  </div>
+</div>
+
+<pagination *ngIf="!isProcessing && config.paging && listSharedFolderDisplay.length> 0" [(ngModel)]="page.page"
+  [totalItems]="length" [itemsPerPage]="page.itemsPerPage" [maxSize]="maxSize" [boundaryLinks]="true" [rotate]="false"
+  (pageChanged)="changeTable(config, $event)" (numPages)="numPages = $event">
+</pagination>

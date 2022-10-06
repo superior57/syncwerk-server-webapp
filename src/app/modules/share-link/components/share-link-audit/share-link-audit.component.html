@@ -1,0 +1,49 @@
+<!-- <select2 class="float-right" [data]="select2TranslateData" [options]="translateOptions" [value]="choosenLanguage" (valueChanged)="switchLanguage($event)"></select2> -->
+
+<header>
+  <div class="login__block__header__custom">
+    <a data-toggle="tooltip" [title]="logoTooltip" [routerLink]="'/'"><img [src]="logoURL" (error)="logoErrorHandler($event)"
+        height="30rem" alt=""></a>
+    <div class="select__languages">
+      <select2 [data]="select2TranslateData" [options]="translateOptions" [value]="choosenLanguage" [width]="88"
+        (valueChanged)="switchLanguage($event)"></select2>
+    </div>
+  </div>
+</header>
+
+
+<div class="login d-flex">
+  <!-- Login -->
+  <div class="login__title">
+    <h3>{{'SHARE_LINK.AUDIT.HEADER' | translate}}</h3>
+  </div>
+  <div class="login__block active" id="l-login">
+    <div class="login__block__body" (keyup.enter)="!isSendCode ? submitSendCode() : submitCheckCodeAudit()">
+      <p class="mt-4" [innerHTML]="'SHARE_LINK.AUDIT.SUB_HEADER' | translate: params"></p>
+      <div class="form-group text-left" [ngClass]="{'has-danger': errorMessages.email }">
+        <label [innerHTML]="'FORMS.INPUTS.EMAIL' | translate: params"></label>
+        <input #email type="text" class="form-control input-mask input-center" [ngClass]="{ 'form-control-danger': errorMessages.email }"
+          [(ngModel)]="model.email" name="email" #email="ngModel" required autofocus="true">
+        <i class="form-group__bar"></i>
+      </div>
+      <p *ngIf="errorMessages.email" class="msg_error">{{ errorMessages.email }}</p>
+      <button (click)="submitSendCode()" [attr.disabled]="isLoading ? 'disabled' : null" type="button" class="btn btn-success active waves-effect code-mb btn--custom"
+        role="button">
+        <span *ngIf="!isLoading" [innerHTML]="'BUTTONS.GET_CODE' | translate: params"></span>
+        <span *ngIf="isLoading"><i class="fas fa-circle-notch fa-spin"></i></span>
+      </button>
+      <!-- <img *ngIf="isLoading" [src]="logoURL" alt="Logo" style="width: 30px; margin-top: -10px;"> -->
+      <div class="form-group text-left" [ngClass]="{'has-danger': errorMessages.code }">
+        <label [innerHTML]="'FORMS.INPUTS.VERIFICATION_CODE' | translate: params"></label>
+        <input #code type="text" class="form-control input-mask input-center" [ngClass]="{ 'form-control-danger': errorMessages.code }"
+          [(ngModel)]="model.code" name="code" #code="ngModel" required autofocus="true">
+        <i class="form-group__bar"></i>
+      </div>
+      <p class="msg_error" *ngIf="errorMessages.code">{{ errorMessages.code }}</p>
+
+      <button (click)="submitCheckCodeAudit()" class="btn btn-success btn--icon waves-effect btn--custom">
+        <i class="fal fa-chevron-right"></i>
+      </button>
+    </div>
+  </div>
+</div>

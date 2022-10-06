@@ -1,0 +1,62 @@
+<div class="modal-content--custom">
+  <div class="modal-header">
+    <h3 class="modal-title">
+      <strong>{{ 'ADMIN.SETTINGS.CMS.MODAL.FILE_CHOOSER.TITLE' | translate }}</strong>
+    </h3>
+  </div>
+
+  <div class="modal-body">
+    <div class="form-group">
+      <input [placeholder]="'SEARCHS.FILE' | translate" class="form-control" (keyup)="onSearchFilterChange($event)" />
+      <i class="form-group__bar"></i>
+    </div>
+    <ng-container *ngIf="!processes.isLoadingFileList">
+      <table class="table table-sm">
+        <thead>
+          <tr>
+            <th width="10%"></th>
+            <th width="40%">{{ 'ADMIN.SETTINGS.CMS.MODAL.FILE_CHOOSER.TABLE_HEADERS.FILE_NAME' | translate }}</th>
+            <th width="50%">{{ 'ADMIN.SETTINGS.CMS.MODAL.FILE_CHOOSER.TABLE_HEADERS.PATH' | translate }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let file of fileListForDisplay; let index=index">
+            <td>
+              <label class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" [checked]="file.selected"
+                  (change)="selectFile(file, $event)">
+                <span class="custom-control-indicator"></span>
+              </label>
+            </td>
+            <td class="text-ellipsis" [title]="file.name">{{ file.name }}</td>
+            <td class="text-ellipsis" [title]="file.repo.name+file.parent_dir">{{ file.repo.name }}{{ file.parent_dir }}
+            </td>
+            <!-- <td>{{ (folder.mtime | amFromUnix) | amTimeAgo }}</td> -->
+          </tr>
+        </tbody>
+      </table>
+    </ng-container>
+    <app-processing *ngIf="processes.isLoadingFileList"></app-processing>
+    <div class="data-table__footer">
+      <div class="footer__wrapper">
+        <pagination *ngIf="!processes.isLoadingFileList" [boundaryLinks]="true" [maxSize]="maxSize"
+          [itemsPerPage]="pagination.itemsPerPage" [totalItems]="fileListFromAPI.length"
+          (pageChanged)="pageChanged($event)"></pagination>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-success btn--icon-text waves-effect" (click)="submitFiles()"
+      [disabled]="processes.isProcessingChangingSetting ? 'disabled' : ''">
+      <i *ngIf="processes.isProcessingChangingSetting" class="fal fa-circle-notch fa-spin"
+        style="margin-right: 5px;"></i>
+      <span [innerHTML]="'BUTTONS.SUBMIT' | translate"></span>
+    </button>
+    <button type="button" class="btn btn-secondary btn--icon-text waves-effect" (click)="closeModal()">
+      <span [innerHTML]="'BUTTONS.CLOSE' | translate"></span>
+    </button>
+  </div>
+
+</div>

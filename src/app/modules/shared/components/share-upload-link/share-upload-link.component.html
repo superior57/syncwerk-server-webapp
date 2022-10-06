@@ -1,0 +1,26 @@
+<div class="share__upload__link">
+  <p [innerHTML]="'MODAL_SHARE.GENERATE_TEXT' | translate"></p>
+  <!-- Checkbox password protection -->
+  <app-share-password-protect *ngIf="!isData" [Expiration]="false" (GenerateAction)="generateUploadLink($event)"></app-share-password-protect>
+  <div *ngIf="isData && isLoading">
+    <p [innerHTML]="'MODAL_SHARE.LINK' | translate"></p>
+    <div>
+      <textarea autosize class="input-custom" #copyLinkShare value="{{ data ? getLink() : '' }}" readonly
+        [ngxClipboard]="copyLinkShare" (click)="submitCopy()" data-toggle="tooltip" [title]="'TOOLTIPS.COPY_TO_CLIPBOARD' | translate"></textarea>
+      <button [ngxClipboard]="copyLinkShare" (click)="submitCopy()" type="button" class="btn btn-info waves-effect mg-t7px btn--custom"
+        data-toggle="tooltip" [title]="'TOOLTIPS.COPY_TO_CLIPBOARD' | translate">
+        <span [innerHTML]="'BUTTONS.COPY' | translate"></span>
+      </button>
+    </div>
+    <!-- {{getLink()}} -->
+    <div class="btn-demo" *ngIf="!isSendMail">
+      <button type="button" class="btn btn-success waves-effect mg-r4px" (click)="openFormSend()">
+        <span [innerHTML]="'BUTTONS.SEND' | translate"></span>
+      </button>
+      <button type="button" class="btn btn-danger waves-effect mg-r4px" (click)="deleteLink()">
+        <span [innerHTML]="'BUTTONS.REMOVE' | translate"></span>
+      </button>
+    </div>
+  </div>
+  <app-share-send-share-link *ngIf="isSendMail" type="upload" [data]="data" (closeSend)="cancelSendEmail()"></app-share-send-share-link>
+</div>

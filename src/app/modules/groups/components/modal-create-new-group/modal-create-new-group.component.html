@@ -1,0 +1,34 @@
+<div class="modal fade" id="modal-create-new-group" tabindex="-1">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h3 class="modal-title">
+          <span [innerHTML]="'CREATE_NEW_GROUP.MODAL_TITLE' | translate:param"></span>
+        </h3>
+      </div>
+      <!-- Modal Body -->
+      <div class="modal-body">
+        <form action="" (keyup.enter)="create()">
+          <div class="form-group" [ngClass]="{'has-danger': errorMessage !== ''}">
+            <label [innerHTML]="'CREATE_NEW_GROUP.LABEL_GROUP_NAME' | translate:param"></label>
+            <input #name [(ngModel)]="modelGroups.name" #name="ngModel" name="name" type="text" class="form-control input-mask" [ngClass]="{'form-control-danger': errorMessage!==''}"
+              maxlength="255" required>
+            <i class="form-group__bar"></i>
+          </div>
+          <p class="error-msg">{{ errorMessage }}</p>
+        </form>
+      </div>
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success btn--icon-text waves-effect" (click)="create()">
+          <i *ngIf="isProcessing" class="fal fa-sync-alt fa-spin"></i>
+          <span [innerHTML]="'CREATE_NEW_GROUP.MODAL_CREATE' | translate:param"></span>
+        </button>
+        <button type="button" class="btn btn-secondary btn--icon-text waves-effect" data-dismiss="modal">
+          <span [innerHTML]="'CREATE_NEW_GROUP.MODAL_CLOSE' | translate:param"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

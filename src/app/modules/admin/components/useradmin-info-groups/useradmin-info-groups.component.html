@@ -1,0 +1,79 @@
+<table *ngIf="listGroups.length > 0" class="table table-hover mb-0">
+  <thead>
+    <tr>
+      <th>
+        <span [innerHTML]="'USERADMIN_INFO.GROUPS.TABLE.NAME' | translate: params"></span>
+      </th>
+      <th width="10%" class="d-none d-lg-table-cell">
+        <span [innerHTML]="'USERADMIN_INFO.GROUPS.TABLE.ROLE' | translate: params"></span>
+      </th>
+      <th width="15%" class="d-none d-lg-table-cell">
+        <span [innerHTML]="'USERADMIN_INFO.GROUPS.TABLE.CREATED_AT' | translate: params"></span>
+      </th>
+      <th *ngIf="currentUserPermission.can_manage_group !== false" width="10%">
+        <span [innerHTML]="'USERADMIN_INFO.GROUPS.TABLE.OPERATIONS' | translate: params"></span>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <ng-container *ngFor="let item of listGroups; let index = index">
+      <tr (mouseover)="hoveredIndex=index" (mouseleave)="hoveredIndex=-1">
+        <td class="tb-name">
+          <div class="vertical-items">
+            <i class="fal fa-users icon-group"></i>
+            <span class="text-ellipsis cursor-pointer">{{ item.group_name }}</span>
+          </div>
+        </td>
+        <td class="d-none d-lg-table-cell">{{ item.role }}</td>
+        <td class="d-none d-lg-table-cell">
+          <span data-toggle="tooltip" title="{{ this.Math.round(item.timestamp / 1000) | amDateFormat: 'ddd, D MMM YYYY HH:mm:ss ZZ' }}">{{
+            this.Math.round(item.timestamp / 1000) | amDateFormat:'YYYY-MM-DD HH:mm:ss' }}</span>
+        </td>
+        <td *ngIf="currentUserPermission.can_manage_group !== false" class="tb-operations d-none d-lg-table-cell">
+          <div *ngIf="index === hoveredIndex">
+            <i data-toggle="tooltip" [title]="'TOOLTIPS.REMOVE' | translate: params" class="actions__item fal fa-trash-alt"
+              (click)="deleteItem(item)"></i>
+          </div>
+        </td>
+        <td class="d-sm-table-cell d-md-table-cell d-lg-none">
+          <a [href]="'#groups-'+index" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="share-0">
+            <i data-toggle="tooltip" title="Details" class="fal fa-2x fa-ellipsis-v actions__item"></i>
+          </a>
+        </td>
+      </tr>
+
+      <!-- Collapse details of share link for sm display -->
+      <tr class="d-sm-table-row d-md-table-row d-lg-none share-details-row">
+        <td colspan="10">
+          <div class="collapse" [id]="'groups-'+index">
+            <div class="share-details">
+              <div>
+                <span>
+                  <strong>{{ 'USERADMIN_INFO.GROUPS.TABLE.ROLE' | translate}}: </strong>
+                  {{ item.role }}
+                </span>
+              </div>
+              <div>
+                <span>
+                  <strong>{{ 'USERADMIN_INFO.GROUPS.TABLE.CREATED_AT' | translate}}: </strong>
+                  <span data-toggle="tooltip" title="{{ this.Math.round(item.timestamp / 1000) | amDateFormat: 'ddd, D MMM YYYY HH:mm:ss ZZ' }}">{{
+                    this.Math.round(item.timestamp / 1000) | amDateFormat:'YYYY-MM-DD HH:mm:ss' }}</span>
+                </span>
+
+              </div>
+              <div class="actions">
+                <i data-toggle="tooltip" [title]="'TOOLTIPS.REMOVE' | translate: params" class="actions__item fal fa-trash-alt"
+                  (click)="deleteItem(item)"></i>
+              </div>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </ng-container>
+  </tbody>
+</table>
+
+<app-empty-item *ngIf="listGroups.length === 0" [messageTitle]="'USERADMIN_INFO.GROUPS.EMPTY_ITEM.MSG_TITLE' | translate: params"></app-empty-item>
+
+<app-modal-delete-remove *ngIf="isOpenModal.delete" [typeDelete]="'Group'" [itemName]="currentItem.group_name"
+  (submitDeleteItem)="onSubmitDeleteItem()"></app-modal-delete-remove>

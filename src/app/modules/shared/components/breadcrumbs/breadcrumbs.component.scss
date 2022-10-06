@@ -1,0 +1,12 @@
+.breadcrumb {
+  border-bottom: 0;
+  .breadcrumb-item {
+    font-size: 1rem;
+    font-weight: bold;
+    a {
+      &:hover {
+        color: #0067b3;
+      }
+    }
+  }
+}

@@ -1,0 +1,39 @@
+<div class="modal fade" id="add-admins-modal" tabindex="-1">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" [innerHTML]="'ADMIN.USERS.MODALS.ADD_ADMINS' | translate"></h3>
+      </div>
+      <div class="modal-body">
+        <tag-input [placeholder]="'+ ' + ('ADMIN.SETTINGS.COLLAPSES.USER' | translate)" [secondaryPlaceholder]="'SEARCHS.USER' | translate"
+          [allowDupes]="false" [(ngModel)]="adminListForAdd" [onlyFromAutocomplete]="false">
+          <tag-input-dropdown [matchingFn]="autoCompleteUserListMatching" [appendToBody]="false" [autocompleteObservable]="ENABLE_GLOBAL_ADDRESSBOOK ? autocompleteUserList : null">
+            <ng-template let-item="item" let-index="index">
+              <div class="row">
+                <div class="col-md-2">
+                  <div class="user-avt">
+                    <img [src]="item.templateData.avatar_url" />
+                  </div>
+                </div>
+                <div class="col-md-10">
+                  <div class="user-detail">
+                    <strong>{{ item.templateData.name }}</strong>
+                  </div>
+                  <div class="user-detail">
+                    ({{ item.templateData.email }})
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+          </tag-input-dropdown>
+        </tag-input>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success btn--icon-text waves-effect" (click)="addAdmins()" [disabled]="isProcessing ? 'disabled' : ''">
+          <i *ngIf="isProcessing" class="fal fa-refresh fa-spin" style="margin-right: 5px;"></i>
+          <span [innerHTML]="'BUTTONS.SUBMIT' | translate"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

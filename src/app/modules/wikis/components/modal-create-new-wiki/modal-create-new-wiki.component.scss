@@ -1,0 +1,13 @@
+.modal-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #0067b3;
+}
+.modal-content {
+  /* margin: 0px auto; */
+  width: 88vw;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

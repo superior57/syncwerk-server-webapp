@@ -1,0 +1,86 @@
+<header class="content__title">
+  <h1>
+    <i class="fal fa-caret-circle-left fa-hc-fw back-btn" [routerLink]="['/wikis']"></i>
+    <strong>{{ wikiInfo.name}}</strong>
+    {{ 'WIKIS.WIKI_PAGES.TITLE' | translate }}
+  </h1>
+  <small [innerHTML]="'WIKIS.WIKI_PAGES.SUBTITLE' | translate"></small>
+</header>
+
+<div class="card">
+  <div class="card-block">
+    <div class="row flex-grow-1">
+      <div class="col-3 page-list">
+        <h5>{{ 'WIKIS.WIKI_PAGES.PAGE_LIST.PAGES_TITLE' | translate }}</h5>
+        <div class="actions">
+          <i (click)="openAddWikiPageModal()" class="fal fa-plus" data-toggle="tooltip" [title]="'WIKIS.WIKI_PAGES.PAGE_LIST.ACTION_ADD_PAGE' | translate"></i>
+        </div>
+        <hr>
+        <ng-container *ngIf="processes.gettingWikiInfo === false">
+          <ng-container *ngIf="wikiInfo.pages && wikiInfo.pages.length > 0">
+            <div (click)="previewPage(page)" data-toggle="tooltip" [title]="page.name" *ngFor="let page of wikiInfo.pages; let index=index" (mouseover)="hoveredIndex=index" (mouseleave)="hoveredIndex=-1">
+              <div class="row page-list-item">
+                <div class="col-10 page-title">
+                  <a>
+                    <i class="fal fa-file-alt fa-2x"></i>
+                    <span>{{ page.name }}</span>
+                  </a>
+                </div>
+                <div class="col-2">
+                  <div *ngIf="hoveredIndex===index" class="dropdown">
+                    <button class="btn btn-secondary waves-effect btn--icon-text mr-25px" data-toggle="dropdown" aria-expanded="false">
+                      <i class="fal fa-ellipsis-v"></i>
+                    </button>
+                    <div class="dropdown-menu" x-placement="top-start">
+                      <div (click)="openRenameWikiPageModal(page)" class="dropdown-item">{{ 'WIKIS.WIKI_PAGES.PAGE_LIST.ACTION_RENAME' | translate }}</div>
+                      <div (click)="openRemovePageModal(page)" class="dropdown-item">{{ 'WIKIS.WIKI_PAGES.PAGE_LIST.ACTION_REMOVE' | translate }}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- <div class="page-list-item">
+                <a class="d-inline">
+                  <i class="fal fa-file-alt fa-2x"></i>
+                  <span>{{ page.name }}</span>
+                </a>
+              </div>
+              <i class="fal fa-ellipsis-v d-inline"></i> -->
+            </div>
+            
+          </ng-container>
+          <ng-container *ngIf="wikiInfo.pages && wikiInfo.pages.length <= 0">
+            <span>{{ 'WIKIS.WIKI_PAGES.PAGE_LIST.NO_PAGE_YET' | translate }}</span>
+          </ng-container>
+        </ng-container>
+      </div>
+      <div class="col-9 preview-area">
+        <ng-container *ngIf="selectedPage">
+          <div class="row">
+            <div class="col-8 preview-header">
+              <h5>{{ selectedPage.name }}</h5>
+              <p>{{ 'WIKIS.WIKI_PAGES.PAGE_LIST.LAST_MODIFY_TITLE' | translate }} {{ selectedPage.last_modifier }} {{ 'WIKIS.WIKI_PAGES.PAGE_LIST.LAST_MODIFY_AT' | translate }} {{ selectedPage.updated_at | amDateFormat: 'dd.mm.YYYY - HH:mm:ss' }}</p>
+            </div>
+            <div class="col-4 preview-actions">
+              <button (click)="enableEditMode()" *ngIf="!editMode" class="btn btn-secondary btn--icon-text">
+                {{ 'WIKIS.WIKI_PAGES.PAGE_LIST.ACTION_EDIT_PAGE' | translate }}
+              </button>
+              <button (click)="disableEditMode()" *ngIf="editMode" class="btn btn-danger btn--icon-text actions">
+                {{ 'WIKIS.WIKI_PAGES.PAGE_LIST.ACTION_CANCEL' | translate }}
+              </button>
+              <button (click)="savePage()" *ngIf="editMode" class="btn btn-primary btn--icon-text actions">
+                {{ 'WIKIS.WIKI_PAGES.PAGE_LIST.ACTION_SAVE_PAGE' | translate }}
+              </button>
+            </div>
+          </div>
+          <ng-container *ngIf="editMode">
+            <td-text-editor [(ngModel)]="pageInfo.file_content" [options]="markdownEditorConfig"></td-text-editor>
+          </ng-container>
+          <ng-container *ngIf="!editMode">
+            <markdown [data]="pageInfo.file_content">
+            </markdown>
+          </ng-container>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>

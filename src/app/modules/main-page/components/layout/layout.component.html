@@ -1,0 +1,26 @@
+<main *ngIf="!isPageNotFound" class="main" [attr.data-ma-theme]="maTheme">
+  <!-- <div class="page-loader" [ngClass]="{'hide':isHide}">
+    <div class="page-loader__spinner">
+      <svg viewBox="25 25 50 50">
+        <circle cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" />
+      </svg>
+    </div>
+  </div> -->
+  <!-- Header o -->
+  <app-header></app-header>
+  <app-side-menu-bar [UserInfo]="userInfo"></app-side-menu-bar>
+  <section class="content">
+    <div *ngIf="currentSysNotification && isSystemNotificationShow" class="sys-notification alert alert-warning alert-dismissible">
+      <button type="button" class="close" data-dismiss="alert" (click)="closeNotification()" aria-label="Close">
+        <span aria-hidden="true">×</span>
+      </button>
+      <span [innerHTML]="currentSysNotification.message"></span>
+    </div>
+    <router-outlet></router-outlet>
+  </section>
+  <app-footer></app-footer>
+  <app-upload-process-popup></app-upload-process-popup>
+  <!-- <app-zip-progress></app-zip-progress> -->
+</main>
+
+<app-page-not-found *ngIf="isPageNotFound"></app-page-not-found>

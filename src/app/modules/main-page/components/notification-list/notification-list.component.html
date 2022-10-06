@@ -1,0 +1,138 @@
+<!-- Start Title Notices -->
+<header class="content__title">
+  <h1 [innerHTML]="'HEADER.NOTIFICATIONS' | translate"></h1>
+
+  <!-- actions -->
+  <div class="actions">
+    <a class="actions__item fal fa-check-double" (click)="markAllSeen()" data-toggle="tooltip"
+      [title]="'HEADER.MARK_AS_READED' | translate"></a>
+    <!-- <a class="actions__item fal fa-trash-alt" (click)="handleOpenModal('clear-all')"></a> -->
+  </div>
+  <small [innerHTML]="'NOTIFICATIONS.DESC' | translate"></small>
+</header>
+<!-- End Title Notices -->
+
+<div class="card">
+  <div class="card-block">
+    <div *ngIf="notificationList && notificationList.length > 0">
+      <!-- Start Notification List -->
+      <table class="table mb-0">
+        <thead>
+          <tr>
+            <th></th>
+            <th>
+              <span [innerHTML]="'TABLE.COLUMNS.MESSAGE' | translate"></span>
+            </th>
+            <th>
+              <span [innerHTML]="'TABLE.COLUMNS.TIME' | translate"></span>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let notif of notificationList;" [ngClass]="{'notseen': !notif.seen}">
+            <td class="avatar__noti" *ngIf="notif.msg_from">
+              <a *ngIf="!notif.msg_from.is_default_avatar" routerLink="/user/profile/{{notif.msg_from.email}}">
+                <img src="{{notificationAvatar(notif)}}" class="notification__img" alt="">
+              </a>
+              <a *ngIf="notif.msg_from.is_default_avatar" routerLink="/user/profile/{{notif.msg_from.email}}"
+                class="card__profile">
+                <i class="fal fa-user"></i>
+              </a>
+            </td>
+            <td class="avatar__noti" *ngIf="!notif.msg_from">
+              <a routerLink="/user/profile/{{notif.to_user}}" class="card__profile">
+                <i class="fal fa-user"></i>
+              </a>
+            </td>
+            <td class="detail__noti">
+              <div *ngIf="notif.msg_type==='repo_share'" (click)="markRead(notif.seen, notif.id)"
+                [routerLink]="['/files', 'shared-files', notif.detail.repo_id]" class="detail__noti__elm">
+                <a
+                  [innerHTML]="'HEADER.NOTI_REPO_SHARE' | translate: {titleName: notif.msg_from.name, folderName: notif.detail.repo_name } "></a>
+              </div>
+              <div *ngIf="notif.msg_type==='file_comment'" (click)="markRead(notif.seen, notif.id)"
+                (click)="openFilePreview(notif.detail.repo_id, notif.detail.file_path)" class="detail__noti__elm">
+                <a
+                  [innerHTML]="'HEADER.NOTI_FILE_COMMENT' | translate: {fileName: notif.detail.file_name, userName: notif.msg_from.name }">
+                </a>
+              </div>
+              <div *ngIf="notif.msg_type==='add_user_to_group'" (click)="markRead(notif.seen, notif.id)"
+                [routerLink]="['/files','groups', notif.detail.group_id]" class="detail__noti__elm">
+                <a
+                  [innerHTML]="'HEADER.NOTI_ADD_USER_TO_GROUP' | translate: {userName: notif.msg_from.name, groupName: notif.detail.group_name}"></a>
+              </div>
+              <div *ngIf="notif.msg_type==='repo_share_to_group'" (click)="markRead(notif.seen, notif.id)"
+                [routerLink]="['/files','groups',notif.detail.group_id]" class="detail__noti__elm">
+                <a
+                  [innerHTML]="'HEADER.NOTI_SHARE_TO_GROUP' | translate: {userName: notif.msg_from.name, folderName: notif.detail.repo_name, groupName: notif.detail.group_name}"></a>
+              </div>
+              <div *ngIf="notif.msg_type==='group_msg'">
+                <div *ngIf="notif.msg_from; else msg_unknown" (click)="markRead(notif.seen, notif.id)"
+                  [routerLink]="['/files','groups',notif.detail.group_id]" class="detail__noti__elm">
+                  <a
+                    [innerHTML]="'HEADER.NOTI_POSTER_DISCUSSION' | translate:{userName: notif.msg_from.name, groupName: notif.detail.group_name, messText: notif.detail.message}"></a>
+                </div>
+                <ng-template #msg_unknown>
+                  <div (click)="markRead(notif.seen, notif.id)"
+                    [routerLink]="['/files','groups', notif.detail.group_id]" class="detail__noti__elm">
+                    <a
+                      [innerHTML]="'HEADER.NOTI_POSTER_DISCUSSION_UNKNOW' | translate: {groupName: notif.detail.group_name, messText: detail.message}"></a>
+                  </div>
+                </ng-template>
+              </div>
+              <div *ngIf="notif.msg_type==='file_uploaded'">
+                <div *ngIf="notif.detail.repo_id">
+                  <div (click)="markRead(notif.seen, notif.id)" [routerLink]="notif.detail.routerLink"
+                    class="detail__noti__elm">
+                    <a
+                      [innerHTML]="'HEADER.NOTI_FILE_UPLOADED' | translate: {fileName: notif.detail.file_name, folderName:  notif.detail.uploaded_to}">
+                    </a>
+                  </div>
+                </div>
+                <div *ngIf="!notif.detail.repo_id">
+                  <div (click)="markRead(notif.seen, notif.id)" [routerLink]="[notif.detail.file_name]"
+                    class="detail__noti__elm">
+                    <a
+                      [innerHTML]="'HEADER.NOTI_FILE_UPLOADED_UNKNOW' | translate: {fileName: notif.detail.file_name}"></a>
+                  </div>
+                </div>
+                <!-- <div *ngIf="notif.detail.repo_id !== 'undefined'" ; else upload_unknown
+                  (click)="markRead(notif.seen, notif.id)" [routerLink]="['/folders',notif.detail.repo_id]"
+                  class="detail__noti__elm">
+                  <a
+                    [innerHTML]="'HEADER.NOTI_FILE_UPLOADED' | translate: {fileName: notif.detail.file_name, folderName:  notif.detail.name}"></a>
+                </div> -->
+                <!-- <ng-template #upload_unknown>
+                  <div (click)="markRead(notif.seen, notif.id)" [routerLink]="[notif.detail.file_name]"
+                    class="detail__noti__elm">
+                    <a
+                      [innerHTML]="'HEADER.NOTI_FILE_UPLOADED_UNKNOW' | translate: {fileName: notif.detail.file_name}"></a>
+                  </div>
+                </ng-template> -->
+              </div>
+            </td>
+            <td class="time__noti">
+              <div [innerHTML]="notif.mtime_relative | date:'yyyy-MM-dd HH:mm:ss'"></div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <!-- End Notification List -->
+
+      <!-- load more button -->
+      <div class="more-button">
+        <button *ngIf="total > notificationList.length" class="btn btn-info btn--icon-text waves-effect"
+          (click)="loadMore()">
+          <i class="fal fa-chevron-down"></i>
+          <span [innerHTML]="'BUTTONS.LOAD_MORE' | translate"></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- empty item -->
+    <app-modal-delete-remove *ngIf="isOpenModal.clear_all" [typeDelete]="'All Notification'"
+      (submitDeleteItem)="onClearAll()"></app-modal-delete-remove>
+    <app-empty-item *ngIf="!processing && (!notificationList || (notificationList && notificationList.length === 0))"
+      [messageTitle]="'HEADER.YOU_HAVE_NO_NOTIFICATIONS' | translate"></app-empty-item>
+  </div>
+</div>

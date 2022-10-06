@@ -1,0 +1,17 @@
+<div class="modal__share">
+  <div class="modal__header">
+    <p class="modal__header__title" [innerHTML]="'MODAL_SHARE.SHARE_MODAL_TITLE' | translate: { groupName: folderNameDisplay ? folderNameDisplay : '' }"></p>
+  </div>
+  <div class="modal__content">
+    <tree #treeCurrentFolder [tree]="currentFolder" (nodeSelected)="onNodeSelected($event)" (nodeExpanded)="onNodeExpanded($event)"
+      (nodeCollapsed)="onNodeCollapsed($event)" [settings]="settings">
+    </tree>
+  </div>
+  <div class="modal__footer text-right">
+    <button type="button" class="btn btn-info" (click)="onShareExistingFolder()"> <i class="fal fa-share-alt"></i>{{
+      'BUTTONS.SHARE' | translate }}</button>
+    <button type="button" class="btn btn-secondary btn--icon-text waves-effect" (click)="onCloseModal()">{{
+      'BUTTONS.CANCEL' | translate
+      }}</button>
+  </div>
+</div>

@@ -1,0 +1,6 @@
+.modal.show .modal-dialog {
+  @media (max-width: 575px) {
+    margin: 20px auto;
+    width: 90%;
+  }
+}

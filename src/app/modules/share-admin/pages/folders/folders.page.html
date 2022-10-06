@@ -1,0 +1,77 @@
+<div *ngIf="dataSharedFolders.length > 0">
+  <!-- FILTER -->
+  <div class="data-table__header d-flex justify-content-between">
+    <div class="form-group data-table__filter">
+      <input *ngIf="config.filtering" [placeholder]="'SEARCHS.ALL_COLUMNS' | translate: params" [(ngModel)]="config.filtering.filterString"
+        class="form-control" (keyup)="changeTable(config)" />
+      <i class="form-group__bar"></i>
+    </div>
+    <div class="row-selector">
+      <label>
+        {{ 'FORMS.INPUTS.SHOW' | translate: params }}
+        <select2 class="select2-per-page" [data]="perPageSelectData" [options]="perPageSelectOptions" [value]="page.itemsPerPage"
+          (valueChanged)="onPerPageChanged($event)"></select2>
+      </label>
+    </div>
+  </div>
+
+  <table class="table table-hover" class="table table-hover mb-0">
+    <thead>
+      <tr>
+        <th *ngFor="let column of columns" [width]="column.width" class="cursor-pointer" (click)="column.sort!==false ? sortColumn(column, config) : ''">
+          {{ column.title | translate }}
+          <i class="fal fa-hc-lg float-right" [ngClass]="{'zmdi-sort-amount-asc': column.sort==='asc', 'zmdi-sort-amount-desc': column.sort==='desc'}"></i>
+        </th>
+        <th width="15%">{{ 'TABLE.COLUMNS.ACTIONS' | translate: params }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let r of listSharedFolderDisplay; let i = index" (mouseover)="hoveredIndex=i" (mouseleave)="hoveredIndex=-1">
+        <td class="hover-color tb-name">
+          <div class="vertical-items">
+            <i class="fas fa-folder fa-fw folder-icon" (click)="navigateRepo(r.repo_id)"></i>
+            <i *ngIf="r.encrypted" class="fal fa-key tb-row-folder-lock" data-toggle="tooltip" [title]="'TOOLTIPS.ENCRYPTED_FOLDER' | translate: params"></i>
+            <i *ngIf="r.share_permission === 'r' && !r.encrypted" class="fal fa-eye tb-row-folder-read-only" data-toggle="tooltip"
+              [title]="'TOOLTIPS.READ_ONLY_FOLDER' | translate: params" (click)="navigateRepo(r.repo_id)"></i>
+            <div class="item-color-hover row-icon name" data-toggle="tooltip" title="{{ r.repo_name }}">
+              <a (click)="navigateRepo(r.repo_id)">{{ r.repo_name }} </a>
+            </div>
+          </div>
+        </td>
+        <td>
+          {{ r.share_type }}
+        </td>
+        <td class="hover-color tb-name">
+          <div class="name" data-toggle="tooltip" [title]="r.share_type==='personal' ? r.user_email : (r.share_type==='group' ? r.group_name : '')">
+            {{ r.share_to }}
+          </div>
+        </td>
+        <td>
+          <span *ngIf="editPermissionIndex===-1 || editPermissionIndex!==i">{{ r.share_permission === 'rw' ? 'Read-Write' : 'Read-Only' }}</span>
+          <i *ngIf="i===hoveredIndex && editPermissionIndex===-1" class="fal fa-pen fa-hc-fw fa-hc-1dot5x" (click)="this.editPermissionIndex=i"
+            data-toggle="tooltip" [title]="'TOOLTIPS.EDIT_PERMISSION' | translate: params"></i>
+          <select2 (focusout)="onFocusOut()" *ngIf="editPermissionIndex===i" [data]="exampleData" [options]="options" [value]="r.share_permission"
+            [cssImport]="true" [width]="120" (valueChanged)="changedSettingPermission(r.share_type, $event, r)"></select2>
+        </td>
+        <td>
+          <div [ngClass]="{ 'show' : i===hoveredIndex }" class="action">
+            <i class="fal fa-trash-alt fa-hc-1dot5x" (click)="unshareSharedFolder(r)" data-toggle="tooltip" [title]="'TOOLTIPS.UNSHARE' | translate: params"
+              data-placement="bottom"></i>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- PAGINATION -->
+  <div class="data-table__footer">
+    <pagination *ngIf="config.paging" [(ngModel)]="page.page" [totalItems]="length" [itemsPerPage]="page.itemsPerPage" [maxSize]="maxSize"
+      [boundaryLinks]="true" [rotate]="false" (pageChanged)="changeTable(config, $event)" (numPages)="numPages = $event">
+    </pagination>
+  </div>
+
+  <app-unshare-modal *ngIf="isOpenUnshareModal" [type]="'Folder'" [name]="itemCurrent.repo_name" [data]="itemCurrent" (UnshareCallBack)="unshareCallBack($event)"></app-unshare-modal>
+</div>
+
+<app-empty-item *ngIf="dataSharedFolders.length === 0" [messageTitle]="'EMPTY_ITEMS.MSG_TITLES.SHARES_FOLDER' | translate: params"
+  [messageSub]="'EMPTY_ITEMS.MSG_SUB_TITLES.SHARES_FOLDER' | translate: params"></app-empty-item>

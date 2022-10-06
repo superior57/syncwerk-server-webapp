@@ -1,0 +1,163 @@
+<header class="content__title">
+  <h1 [innerHTML]="'TITLE_PAGE.DEVICES' | translate: params"></h1>
+  <small [innerHTML]="'ADMIN.DEVICES.DESC' | translate: params"></small>
+</header>
+
+<div class="card">
+  <div class="card-block">
+    <div *ngIf="!isProcessing">
+      <div class="data-table__header d-flex justify-content-between fl--custom">
+        <div class="form-group data-table__filter">
+          <input *ngIf="config.filtering" [placeholder]="'SEARCHS.ALL_COLUMNS' | translate: params" [(ngModel)]="config.filtering.filterString"
+            class="form-control" (keyup)="changeTable(config)" />
+          <i class="form-group__bar"></i>
+        </div>
+        <div class="row-selector">
+          <app-row-selector (changed)="onPerPageChanged($event)"></app-row-selector>
+        </div>
+        <!-- <select2 class="select2-per-page" [data]="perPageSelectData" [options]="perPageSelectOptions" (valueChanged)="onPerPageChanged($event)"></select2> -->
+      </div>
+
+      <div *ngIf="listDeviceDisplay.length > 0" class="data-table">
+        <table class="table table-hover mb-0">
+          <thead>
+            <tr>
+              <th *ngFor="let column of columns" [class]="column.class" [width]="column.width" [ngClass]="{'cursor-text': column.sort===false}"
+                (click)="column.sort!==false ? sortColumn(column, config) : ''">
+                <span [innerHTML]="column.title | translate: params"></span>
+                <!-- <i class="fal fa-hc-lg float-right" [ngClass]="{'zmdi-sort-amount-asc': column.sort==='asc', 'zmdi-sort-amount-desc': column.sort==='desc'}"></i> -->
+                <ng-container>
+                  <i *ngIf="column.sort==='asc'" class="fal fa-sort-amount-up sort-icon float-right ico--custom"></i>
+                  <i *ngIf="column.sort==='desc'" class="fal fa-sort-amount-down sort-icon float-right ico--custom"></i>
+                </ng-container>
+              </th>
+              <th width="10%">{{ 'LIST_GROUPS.TABLE_HEADERS.ACTIONS' | translate}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let device of listDeviceDisplay; let index = index">
+              <tr (mouseover)="hoveredIndex=index" (mouseleave)="hoveredIndex=-1">
+                <td class="d-none d-lg-table-cell">
+                  <div class="d-flex">
+                    <div *ngIf="device.platform === 'android'" class="text-left" data-toggle="tooltip" [title]="device.last_login_ip">
+                      <i class="fab fa-android sm--size"></i>
+                    </div>
+                    <div *ngIf="device.platform === 'ios'" class="text-left">
+                      <i class="fab fa-app-store-ios sm--size"></i>
+                    </div>
+                    <div *ngIf="device.platform === 'windows'" class="text-left">
+                      <i class="fab fa-windows sm--size"></i>
+                    </div>
+                    <div *ngIf="device.platform === 'linux'" class="text-left">
+                      <i class="fab fa-linux sm--size"></i>
+                    </div>
+                    <div *ngIf="device.platform === 'mac'" class="text-left">
+                      <i class="fab fa-apple sm--size"></i>
+                    </div>
+                    <div *ngIf="device.platform !== 'mac' && device.platform !== 'linux' && device.platform !== 'android' && device.platform !== 'windows' && device.platform !== 'ios'"
+                      class="text-left">
+                      <i class="fas fa-question-circle sm--size"></i>
+                    </div>
+                    <span class="platform-name">{{ device.platform }} / {{ device.client_version }}</span>
+                  </div>
+                </td>
+                <td class="tb-user">{{ device.user }}</td>
+                <td class="d-none d-lg-table-cell">{{ device.device_name }}</td>
+                <td class="d-none d-lg-table-cell">{{ device.last_login_ip }}</td>
+                <td class="d-none d-lg-table-cell">
+                  <span data-toggle="tooltip" title="{{ device.last_accessed | date: 'EEEE, d MMM yyyy - HH:mm:ss Z' }}">{{
+                    device.last_accessed | date: 'dd.MM.yyyy - HH:mm:ss' }}</span>
+                </td>
+                <td class="d-none d-lg-table-cell">
+                  <i *ngIf="index === hoveredIndex" class="fal fa-trash-alt fa-hc-1dot5 cursor-pointer" (click)="handleModalUnlink(device)"
+                    data-toggle="tooltip" [title]="'TOOLTIPS.UNLINK' | translate: params"></i>
+                </td>
+                <td class="d-sm-table-cell d-md-table-cell d-lg-none">
+                  <a [href]="'#device-'+index" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="share-0">
+                    <i data-toggle="tooltip" title="Details" class="fal fa-2x fa-ellipsis-v actions__item"></i>
+                  </a>
+                </td>
+              </tr>
+
+              <!-- Collapse details of share link for sm display -->
+              <tr class="d-sm-table-row d-md-table-row d-lg-none share-details-row">
+                <td colspan="10">
+                  <div class="collapse" [id]="'device-'+index">
+                    <div class="share-details">
+                      <div>
+                        <span>
+                          <strong>{{'TABLE.COLUMNS.PLATFORM_VERSION'
+                            | translate}}: </strong> </span>
+                        <div class="d-flex">
+                          <div *ngIf="device.platform === 'android'" class="text-left" data-toggle="tooltip" [title]="device.last_login_ip">
+                            <i class="fab fa-android sm--size"></i>
+                          </div>
+                          <div *ngIf="device.platform === 'ios'" class="text-left">
+                            <i class="fab fa-app-store-ios sm--size"></i>
+                          </div>
+                          <div *ngIf="device.platform === 'windows'" class="text-left">
+                            <i class="fab fa-windows sm--size"></i>
+                          </div>
+                          <div *ngIf="device.platform === 'linux'" class="text-left">
+                            <i class="fab fa-linux sm--size"></i>
+                          </div>
+                          <div *ngIf="device.platform === 'mac'" class="text-left">
+                            <i class="fab fa-apple sm--size"></i>
+                          </div>
+                          <div *ngIf="device.platform !== 'mac' && device.platform !== 'linux' && device.platform !== 'android' && device.platform !== 'windows' && device.platform !== 'ios'"
+                            class="text-left">
+                            <i class="fas fa-question-circle sm--size"></i>
+                          </div>
+                          <span class="platform-name">{{ device.platform }} / {{ device.client_version }}</span>
+                        </div>
+                      </div>
+                      <div>
+                        <span>
+                          <strong>{{'TABLE.COLUMNS.DEVICE_NAME'
+                            | translate}}: </strong>
+                          {{ device.device_name }} </span>
+                      </div>
+                      <div>
+                        <span>
+                          <strong>{{'TABLE.COLUMNS.IP'
+                            | translate}}: </strong>
+                          {{ device.last_login_ip }} </span>
+                      </div>
+                      <div>
+                        <span>
+                          <strong>{{'TABLE.COLUMNS.LAST_ACCESS'
+                            | translate}}: </strong>
+                          <span data-toggle="tooltip" title="{{ device.last_accessed | date: 'EEEE, d MMM yyyy - HH:mm:ss Z' }}">{{device.last_accessed
+                            | date: 'dd.MM.yyyy - HH:mm:ss' }} </span></span>
+                      </div>
+
+                      <div class="actions">
+                        <i class="fal fa-trash-alt fa-hc-1dot5 cursor-pointer" (click)="handleModalUnlink(device)"
+                          data-toggle="tooltip" [title]="'TOOLTIPS.UNLINK' | translate: params"></i>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+
+        <!-- <app-unlink-device-modal *ngIf="openModalUnlink" [dataDevices]="currentDevice" (removed)="onReloadList()"></app-unlink-device-modal> -->
+        <app-modal-unlink-device *ngIf="openModalUnlink" [device]="currentDevice" (unlinked)="onReloadList()"></app-modal-unlink-device>
+      </div>
+      <app-empty-item *ngIf="listDeviceDisplay.length === 0 && this.listDevice.devices.length === 0" [messageTitle]="'ADMIN.DEVICES.EMPTY_ITEM.MOBILES.TITLE' | translate: params"></app-empty-item>
+      <app-empty-item *ngIf="listDeviceDisplay.length === 0 && this.listDevice.devices.length !==0 " [messageTitle]="'ADMIN.DEVICES.EMPTY_ITEM.MOBILES.DEVICE_NOT_FOUND' | translate: params"
+        [messageSub]="'ADMIN.DEVICES.EMPTY_ITEM.MOBILES.DEVICE_SUB_NOT_FOUND' | translate: params"></app-empty-item>
+
+    </div>
+
+    <app-processing *ngIf="isProcessing"></app-processing>
+  </div>
+</div>
+
+<div *ngIf="!isProcessing && listDeviceDisplay.length > 0" class="data-table__footer">
+  <pagination *ngIf="config.paging" [(ngModel)]="page.page" [totalItems]="length" [itemsPerPage]="page.itemsPerPage"
+    [maxSize]="maxSize" [boundaryLinks]="true" [rotate]="false" (pageChanged)="changeTable(config, $event)" (numPages)="numPages = $event">
+  </pagination>
+</div>

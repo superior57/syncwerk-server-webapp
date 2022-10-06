@@ -1,0 +1,125 @@
+.gray_bg{
+  background-color: #f3f3f4;
+  height:100vh;
+}
+
+.msg_error{
+  margin-top: -25px;
+  text-align: left;
+  color: #e10032;
+}
+.forgot-password {
+  width: 130px;
+  margin: 0 auto;
+  padding-bottom: 6px;
+  cursor: pointer;
+}
+
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px white inset;
+}
+
+.margin-lr {
+	margin-left: 15px;
+	margin-right: 15px;
+}
+
+.code-mb {
+  margin-bottom: 1rem;
+}
+
+.login__block__header {
+  font-weight: bold;
+}
+
+select2 {
+  position: absolute;
+  top: 1rem;
+  right: 3rem;
+}
+
+.login__block__header__custom {
+  background: #0067b3;;
+  height: 72px;
+  padding: 12px 20px;
+  display: flex;
+  flex-direction: row;
+  line-height: 42px;
+  position: relative;
+  img.img--custom{
+    margin-left: 0px;
+    border-radius: 0px;
+    border: none;
+    width: 200px;
+    height: 50px;
+    box-shadow: none;
+  }
+}
+.alert-custom{
+  margin: 0px;
+  position: relative;
+}
+
+
+header{
+  position: relative;
+  background: #0067b3;
+}
+
+:host ::ng-deep select2 .select2-container--default .select2-selection--single .select2-selection__rendered {
+  color: #fff;
+  background: #0067b3;
+ }
+ :host ::ng-deep select2 .select2-container--default .select2-selection--single:before{
+   transform: rotate(45deg);
+   top: 15px;
+ }
+ :host ::ng-deep select2 .select2-container--default .select2-selection--single{
+   border-bottom: 0px solid transparent !important;
+ }
+ :host ::ng-deep select2 .select2-container--default .select2-selection--single .select2-selection__rendered{
+   padding:  14px 14px;
+ }
+ :host ::ng-deep select2  span{
+   width: 80px;
+ }
+ :host select2 ::ng-deep span#select2-5vko-container {
+   padding-left: 12px;
+ }
+
+ .select__languages {
+  //  position: absolute;
+  //  top: 12px;
+  //  right: 20px;
+ }
+
+
+ .login{
+  flex-direction: column;
+  min-height: 90vh;
+  height: 0;
+
+  .btn--custom{
+    width: 100%;
+    height: 34px;
+    border-radius: 0px;
+  }
+
+
+  .login__title {
+    width: 25.5rem;
+    display: inline-block;
+    margin-bottom: 9px;
+    h3 {
+        font-size: 1.5rem;
+        color: #636c72;
+        text-transform: uppercase;
+        font-weight: 400;
+    }
+  }
+}
+
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px white inset;
+}
+

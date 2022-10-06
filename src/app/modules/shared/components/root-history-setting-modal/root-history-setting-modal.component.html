@@ -1,0 +1,43 @@
+<div class="modal fade" id="history-setting-modal" tabindex="-1">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          <span class="modal-title-name">{{ (Folder ? Folder.name : '') | splice_length: 20 }}</span> {{ 'HISTORY.SETTING.TITLE' | translate }}
+        </h5>
+      </div>
+      <div class="modal-body">
+        <alert type="danger" *ngIf="disabledByAdmin || disableEditHistoryLimit">
+          {{ 'HISTORY.SETTING.DISABLED' | translate }}
+        </alert>
+        <label class="custom-control custom-radio">
+          <input id="radio1" name="radio" type="radio" [disabled]="disabledByAdmin || disableEditHistoryLimit" class="custom-control-input" [checked]="option == -1" (change)="option=-1">
+          <span class="custom-control-indicator"></span>
+          <span class="custom-control-description">{{ 'HISTORY.SETTING.KEEP_HISTORY' | translate }}</span>
+        </label>
+        <div class="clearfix mb-2"></div>
+        <label class="custom-control custom-radio">
+          <input type="radio" name="radio" class="custom-control-input" [disabled]="disabledByAdmin || disableEditHistoryLimit" [checked]="option == 0" (change)="option=0">
+          <span class="custom-control-indicator"></span>
+          <span class="custom-control-description">{{ 'HISTORY.SETTING.DONT_KEEP_HISTORY' | translate }}</span>
+        </label>
+        <div class="clearfix mb-2"></div>
+        <label class="custom-control custom-radio custom-option">
+          <input type="radio" name="radio" class="custom-control-input" [disabled]="disabledByAdmin || disableEditHistoryLimit" [checked]="option > 0" (change)="option=1">
+          <span class="custom-control-indicator"></span>
+          <div class="custom-option" [ngClass]="{'has-danger':dayErrorMessage !== ''}">
+            <span class="left-option">{{ 'HISTORY.SETTING.ONLY_KEEP' | translate }} </span>
+            <input type="text" class="form-control form-control-sm history-period" [value]="keep_days" (keypress)="keyPress($event)"
+              [disabled]="disabledByAdmin || disableEditHistoryLimit" [(ngModel)]="keep_days">
+            <span> {{ 'HISTORY.SETTING.DAYS' | translate }}</span>
+          </div>
+        </label>
+        <p class="error-msg">{{ dayErrorMessage }}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success btn--icon-text waves-effect" [disabled]="disabledByAdmin || disableEditHistoryLimit" (click)="setHistoryLimit()">{{ 'BUTTONS.SAVE_CHANGE' | translate }}</button>
+        <button type="button" class="btn btn btn-secondary waves-effect" data-dismiss="modal">{{ 'BUTTONS.CLOSE' | translate }}</button>
+      </div>
+    </div>
+  </div>
+</div>

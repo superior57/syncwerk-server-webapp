@@ -1,0 +1,247 @@
+<header class="content__title">
+  <h1>
+    <span [innerHTML]="'TITLE_PAGE.AUDIT_LOG' | translate"></span>
+  </h1>
+  <small [innerHTML]="'ADMIN.AUDIT_LOG.DESC_AUDIT_LOG' | translate"></small>
+</header>
+
+<div class="card custom-card">
+  <div class="card-block">
+    <!-- begin isProcessing -->
+    <div *ngIf="!isProcessing">
+
+      <!-- begin header -->
+      <div class="data-table__header d-flex justify-content-between fl--custom">
+        
+        <div class="data-table_buttons actions" *ngIf="currentUserPermission.can_manage_user !== false">
+          <div class="wrapper__btn">
+            <button class="btn btn-secondary waves-effect btn--icon-text btn--custom" data-toggle="tooltip" [title]="'BUTTONS.CSV_EXPORT' | translate: params"
+            (click)="export($event)">
+              {{'BUTTONS.CSV_EXPORT' | translate}}
+            </button>
+            <button class="btn btn-secondary waves-effect btn--icon-text btn--custom" data-toggle="tooltip" [title]="'BUTTONS.CLEAR_LOGS' | translate: params"
+              (click)="openDeleteConfirmModal()">
+              {{'BUTTONS.CLEAR_LOGS' | translate}}
+            </button>
+            <button class="btn btn-secondary waves-effect btn--icon-text btn--custom" data-toggle="tooltip" [title]="'BUTTONS.REFRESH_LOGS' | translate: params"
+              (click)="refreshLogs()">
+              {{'BUTTONS.REFRESH_LOGS' | translate}}
+            </button>
+
+            <button type="button" (click)="showFormSearch()" class="btn btn-secondary waves-effect btn--icon-text btn--custom btn-filter">
+              <span class="text-filter">{{'BUTTONS.FILTERS' | translate}}</span>
+              <i class="fa fa-arrow-up" aria-hidden="true" *ngIf="isShowFormSearch"></i>
+              <i class="fa fa-arrow-down" aria-hidden="true" *ngIf="!isShowFormSearch"></i>
+            </button>
+          </div>
+        </div>
+        <div class="row-selector">
+          <app-row-selector [isShowAll]="false" (changed)="onPerPageChanged($event)"></app-row-selector>
+        </div>
+      </div>
+      <!-- end header -->
+
+
+      <div *ngIf="errorForm.isError" class="alert alert-danger">
+        {{ errorForm.errorMessageDate }}
+        <span *ngIf="errorForm.errorMessageDate"><br/></span>
+        {{ errorForm.errorMessageIp }}
+     </div>
+      <div class="search-audit" *ngIf="isShowFormSearch">
+        <form class="form-inline form-search" [formGroup]="searchAuditLogForm" (ngSubmit)="onSearch(searchAuditLogForm.value)">
+          <div class="field">
+            <input type="text" id="name" formControlName="name" placeholder=" " maxlength="255">
+            <label for="name" [innerHTML]="'ADMIN.AUDIT_LOG.TABLE.NAME' | translate"> </label>
+          </div>
+
+          <div class="field custom-field-start-date">
+            <input type="date" name="startDate" id="startDate" placeholder=" " formControlName="startDate">
+            <label for="startDate" [innerHTML]="'ADMIN.AUDIT_LOG.SEARCH.START_DATE' | translate"></label>
+          </div>
+
+          <div class="field custom-field-end-date">
+            <input type="date" name="endDate" id="endDate" placeholder=" " formControlName="endDate">
+            <label for="endDate" [innerHTML]="'ADMIN.AUDIT_LOG.SEARCH.END_DATE' | translate"></label>
+          </div>
+          
+          <div class="field">              
+            <input type="text" id="ip" placeholder=" " formControlName="ip" class="custom-input" maxlength="15"
+            >
+            <label for="ip" [innerHTML]="'ADMIN.AUDIT_LOG.TABLE.IP/DEVICE' | translate"></label>
+          </div>
+
+          <div class="field">              
+            <input type="text" id="device_name" placeholder=" " formControlName="device_name" class="custom-input" maxlength="15"
+            >
+            <label for="device_name" [innerHTML]="'ADMIN.AUDIT_LOG.TABLE.DEVICE_NAME' | translate"></label>
+          </div>
+
+          <div class="field">
+            <input type="text" id="folder" placeholder=" " formControlName="folder" maxlength="255">
+            <label for="folder" [innerHTML]="'ADMIN.AUDIT_LOG.TABLE.FOLDER' | translate"></label>
+          </div>
+
+          <div class="field custom-field">
+            <input type="text" id="folder_id" placeholder=" " formControlName="folder_id" maxlength="255">
+            <label for="folder_id" [innerHTML]="'ADMIN.AUDIT_LOG.TABLE.FOLDER_ID' | translate"></label>
+          </div>
+
+          <div class="field custom-field">
+            <input type="text" id="subfolder" placeholder=" " formControlName="subfolder" maxlength="255">
+            <label for="subfolder" [innerHTML]="'ADMIN.AUDIT_LOG.TABLE.SUB_FOLDER' | translate"></label>
+          </div>
+
+          <div class="field-dropdown">
+            <label for="action" [innerHTML]="'ADMIN.AUDIT_LOG.TABLE.ACTIONS' | translate"></label>
+            <select class="form-control custom-select" formControlName="action">
+              <option></option>
+              <option *ngFor="let action of listAction" [ngValue]="action">
+                {{ action }}
+              </option>
+            </select>
+          </div>
+          
+          <div class="field-dropdown">
+            <label for="action" [innerHTML]="'ADMIN.AUDIT_LOG.TABLE.PERMISSION' | translate">Permission</label>
+            <select class="form-control custom-select" formControlName="permissions">
+              <option></option>
+              <option *ngFor="let permission of listPermission" [ngValue]="permission">
+                {{ permission }}
+              </option>
+            </select>
+          </div>
+
+          <div class="field custom-field">
+            <input type="text" id="recipient" placeholder=" " formControlName="recipient" maxlength="255">
+            <label for="recipient" [innerHTML]="'ADMIN.AUDIT_LOG.TABLE.RECIPIENT' | translate"></label>
+          </div>
+
+          <div class="group-btn col-12">
+            <button type="submit" class="btn btn-secondary waves-effect btn--icon-text btn--custom btn-form-search"><i class="fa fa-search" aria-hidden="true"></i> {{'BUTTONS.SEARCH' | translate}}</button>
+            <button type="button" (click)="resetForm()" class="btn btn-secondary waves-effect btn--icon-text btn--custom btn-form-search">
+              <i class="fa fa-times" aria-hidden="true"></i>
+              {{'BUTTONS.CLEAR_SEARCH_INFO' | translate}}
+            </button>
+          </div>
+        </form>
+      </div>
+      <!-- begin table -->
+      <div class="data-table">
+        <table class="table table-hover mb-0">
+          <thead>
+            <tr class="header-table">
+              <th *ngFor="let column of columns" [class]="column.class" [width]="column.width" [ngClass]="{'cursor-text': column.sort===false}">
+                {{ column.title }}
+                <ng-container>
+                  <i *ngIf="column.sort ==='asc'" class="fal fa-sort-amount-up sort-icon"></i>
+                  <i *ngIf="column.sort ==='desc'" class="fal fa-sort-amount-down sort-icon"></i>
+                </ng-container>
+              </th>
+              <th class="d-sm-table-row d-md-table-row d-lg-none">{{'ADMIN.GROUPS.LIST_GROUPS.TABLE_HEADERS.ACTIONS' | translate }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let auditlog of auditLogListDisplay | paginate: page; let index = index">
+              <tr (mouseenter)="hoverIndex=index" (mouseleave)="hoverIndex=-1">
+                <td>
+                  <div>
+                    <span class="cursor-pointer tb-email" [routerLink]="['/admin', 'users', 'info', auditlog.name?.length ? auditlog.name : '-']" >{{ auditlog.name?.length ? auditlog.name : '-'  }}</span>
+                  </div>
+                </td>
+                <td class="d-none d-lg-table-cell">
+                  <span>{{ auditlog.updated_at | amFromUtc | amLocal | amDateFormat:'YYYY-MM-DD HH:mm:ss' }}</span>
+                </td>
+                <td class="d-none d-lg-table-cell">
+                  <span>{{ auditlog.ip_address?.length ? auditlog.ip_address : '-'  }}</span>
+                </td>
+                <td class="d-none d-lg-table-cell">
+                  <span>{{ auditlog.device_name?.length ? auditlog.device_name : '-'  }}</span>
+                </td>
+                <td class="d-none d-lg-table-cell">
+                  <span>{{ auditlog.folder?.length ? auditlog.folder : '-'  }}</span>
+                </td>
+                <td class="d-none d-lg-table-cell">
+                  <span>{{ auditlog.folder_id?.length ? auditlog.folder_id : '-'  }}</span>
+                </td>
+                <td class="d-none d-lg-table-cell">
+                  <span>{{ auditlog.sub_folder_file?.length ? auditlog.sub_folder_file : '-'  }}</span>
+                </td>
+                <td class="d-none d-lg-table-cell"><span>{{ auditlog.action_type?.length ? auditlog.action_type : '-'  }}</span>
+                </td>
+                <td class="d-none d-lg-table-cell"><span>{{ auditlog.recipient?.length ? auditlog.recipient : '-'  }}</span></td>
+                <td class="d-none d-lg-table-cell">
+                  <span>{{ auditlog.permissions?.length ? auditlog.permissions : '-'  }}</span>
+                </td>
+                <td class="d-sm-table-cell d-md-table-cell d-lg-none">
+                  <a [href]="'#auditlog-'+index" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="share-0">
+                    <i data-toggle="tooltip" title="Details" class="fal fa-2x fa-ellipsis-v actions__item"></i>
+                  </a>
+                </td>
+              </tr>
+
+              <!-- Collapse details of share link for sm display -->
+              <tr class="d-sm-table-row d-md-table-row d-lg-none share-details-row">
+                <td colspan="10" class="break-word">
+                  <div class="collapse" [id]="'auditlog-'+index">
+                    <div class="share-details">
+                      <div>
+                        <span>
+                          {{ auditlog.updated_at }}
+                        </span>
+                      </div>
+                      <div>
+                        <span>
+                          {{ auditlog.ip_address }}
+                        </span>
+                      </div>
+                      <div>
+                        <span>
+                          {{ auditlog.folder }}
+                        </span>
+                      </div>
+                      <div>
+                        <span>
+                          {{ auditlog.sub_folder_file }}
+                        </span>
+                      </div>
+                      <div>
+                        <span>
+                          {{ auditlog.action_type }}
+                        </span>
+                      </div>
+                      <div>
+                        <span>
+                          {{ auditlog.recipient }}
+                        </span>
+                      </div>
+                      <div>
+                        <span>
+                          {{ auditlog.permissions }}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+      <!-- end table -->
+
+    </div>
+    <!-- end isProcessing -->
+
+    <!-- EMPTY ITEM -->
+    <app-empty-item *ngIf="auditLogListDisplay.length === 0" [messageTitle]="('ADMIN.AUDIT_LOG.SEARCH.AUDIT_LOG_NOT_FOUND') | translate: params"
+    [messageSub]="('ADMIN.AUDIT_LOG.SEARCH.AUDIT_LOG_SUB_NOT_FOUND') | translate: params"></app-empty-item>
+
+    <app-delete-auditlog-confirm-modal *ngIf="isModelDelete" (onDeleteSuccess)="onAuditLogDeleteSuccess($event)"></app-delete-auditlog-confirm-modal>
+  </div>
+</div>
+
+<div *ngIf="!isProcessing" class="data-table__footer">
+  <pagination *ngIf="config.paging" [(ngModel)]="page.currentPage" [totalItems]="page.totalItems" [itemsPerPage]="page.itemsPerPage"
+    [maxSize]="maxSize" [boundaryLinks]="true" [rotate]="false" (pageChanged)="pageChanged($event)" (numPages)="numPages = $event">
+  </pagination>
+</div>

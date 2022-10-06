@@ -1,0 +1,39 @@
+.modal-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #0067b3;
+}
+
+.verify-question {
+  margin-bottom: 1rem;
+}
+.input-group-append {
+  cursor: pointer;
+}
+
+.input-group-text {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: .6rem 1rem;
+  font-size: 1rem;
+  font-weight: 400;
+  color: #495057;
+  text-align: center;
+  background-color: #FFF;
+  border: 1px solid #eceff1;
+  border-radius: 0;
+}
+
+@media (max-width:575px){
+  .modal.show .modal-dialog {
+    width: 90%;
+    margin: auto calc(100vw - 97vw);
+    .modal-content {
+      margin-top: 20px;
+    }
+  }
+}

@@ -1,0 +1,101 @@
+<header class="content__title">
+  <h1 class="d-flex align-items-center" data-toggle="tooltip">
+    <!-- <i *ngIf="typeRepo.includes('mine')" class="fal fa-caret-circle-left fa-hc-fw icon-back-folders" [routerLink]="['/folders']"></i>
+    <i *ngIf="typeRepo.includes('group--')" class="fal fa-caret-circle-left fa-hc-fw icon-back-folders" [routerLink]="['/files', 'groups']"></i> -->
+    <i class="fal fa-caret-circle-left fa-hc-fw icon-back-folders" (click)="goBack()"></i>
+    {{'DELETED_FOLDERS.TITLE' | translate: params}}
+  </h1>
+  <span [innerHTML]="'DELETED_FOLDERS.TIP' | translate: params"></span>
+</header>
+
+<!-- <div class="toolbar">
+  <div class="toolbar__label">
+    <ol class="breadcrumb" style="border: none;padding-bottom:0px">
+      <small class="card-subtitle">
+        <span [innerHTML]="'DELETED_FOLDERS.TIP' | translate: params"></span>
+      </small>
+    </ol>
+  </div>
+</div> -->
+
+<div class="card" *ngIf="!isProcessing">
+  <div class="card-block">
+    <div class="data-table__header d-flex justify-content-betwwen">
+      <div class="form-group data-table__filter">
+        <input (keyup)="onSearchFilterChange($event)" [placeholder]="'SEARCHS.ALL_COLUMNS' | translate: params" class="form-control" />
+        <i class="form-group__bar"></i>
+      </div>
+    </div>
+    <table class="table table-hover mb-0" *ngIf="resData && resData.data && resData.data.length > 0">
+      <thead>
+        <tr>
+          <th (click)="sortAction('sortName')" class="sort-cursor">
+            <span [innerHTML]="'DELETED_FOLDERS.TABLE.NAME' | translate: params"></span>
+            <i *ngIf="typeSort === 'sortName'" class="zmdi" [ngClass]="{ 'zmdi-chevron-down': isSortNameAtoZ, 'zmdi-chevron-up': !isSortNameAtoZ }"></i>
+          </th>
+          <th (click)="sortAction('sortLastUpdate')" class="sort-cursor d-none d-lg-table-cell">
+            <span [innerHTML]="'DELETED_FOLDERS.TABLE.DELETED_TIME' | translate: params"></span>
+            <i *ngIf="typeSort === 'sortLastUpdate'" class="zmdi" [ngClass]="{ 'zmdi-chevron-down': isSortTimestampAtoZ, 'zmdi-chevron-up': !isSortTimestampAtoZ }"></i>
+          </th>
+          <th class="text-center">
+            <span [innerHTML]="'DELETED_FOLDERS.TABLE.OPERATIONS' | translate: params"></span>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let item of itemsForDisplay; let index=index">
+          <tr (mouseover)="hoveredIndex=index" (mouseleave)="hoveredIndex=-1">
+            <td scope="row">
+              <div class="icon-folder">
+                <span>
+                  <i class="fas fa-folder fa-fw tb-row-folder"></i>
+                  <i class="fal fa-lock tb-row-folder-lock" *ngIf="item.encrypted"></i>
+                </span>
+              </div>
+              <div class="tb-name">{{item.repo_name | splice_length: 65}}</div>
+            </td>
+            <td class="d-none d-lg-table-cell">{{item.del_time | amTimeAgo}}</td>
+            <td class="d-none d-lg-table-cell text-center" style="padding-top: 0px;padding-bottom: 0px;width:25%">
+              <button class="btn btn-secondary waves-effect btn--custom" style="margin-top: 8px;" (click)="restoreFolder(item.repo_id)"
+                *ngIf="index==hoveredIndex">
+                <i class="fal fa-redo"></i>
+                <span [innerHTML]="'BUTTONS.RESTORE' | translate: params"></span>
+              </button>
+            </td>
+            <td class="d-sm-table-cell d-md-table-cell d-lg-none">
+              <a [href]="'#delete-'+index" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="share-0">
+                <i data-toggle="tooltip" title="Details" class="fal fa-2x fa-ellipsis-v actions__item"></i>
+              </a>
+            </td>
+          </tr>
+
+          <!-- Collapse details of share link for sm display -->
+          <tr class="d-sm-table-row d-md-table-row d-lg-none share-details-row">
+            <td colspan="10">
+              <div class="collapse" [id]="'delete-'+index">
+                <div class="share-details">
+                  <div>
+                    <span>
+                      <strong>{{'DELETED_FOLDERS.TABLE.DELETED_TIME'
+                        | translate}}: </strong>
+                      {{item.del_time | amTimeAgo}} </span>
+                  </div>
+                  <div class="actions">
+                    <button class="btn btn-secondary waves-effect btn--custom" style="margin-top: 8px;" (click)="restoreFolder(item.repo_id)">
+                      <i class="fal fa-redo"></i>
+                      <span [innerHTML]="'BUTTONS.RESTORE' | translate: params"></span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+    <app-empty-item *ngIf="itemsForDisplay.length === 0 && this.resData.data.length === 0" [messageTitle]="'DELETED_FOLDERS.EMPTY_ITEM.MSG_TITLE' | translate: params"></app-empty-item>
+    <app-empty-item *ngIf="itemsForDisplay.length === 0 && this.resData.data.length !== 0" [messageTitle]="'DELETED_FOLDERS.EMPTY_ITEM.MSG_SEARCH_NOT_FOUND' | translate: params"
+      [messageSub]="'DELETED_FOLDERS.EMPTY_ITEM.MSG_SEARCH_NOT_FOUND_SUB' | translate: params"></app-empty-item>
+  </div>
+</div>
+<app-processing *ngIf="isProcessing"></app-processing>

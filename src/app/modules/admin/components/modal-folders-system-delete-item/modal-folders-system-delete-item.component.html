@@ -1,0 +1,26 @@
+<div class="modal fade" id="modal-folders-system-delete-item" tabindex="-1">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">
+          <span [innerHTML]="'MODALS.TITLES.DELETE' | translate"></span>
+          <span class="title" *ngIf="dataItem.data_item.is_file" [innerHTML]="'TYPE_FILES.FILE' | translate"></span>
+          <span class="title" *ngIf="!dataItem.data_item.is_file" [innerHTML]="'TYPE_FILES.FOLDER' | translate"></span>
+        </h3>
+      </div>
+      <div class="modal-body">
+        <span [innerHTML]="'MODAL_DELETE_FILE.VERIFICATION_QUESTION' | translate"></span>
+        <span class="hight-light-text">{{ dataItem.data_item.obj_name | splice_length: 15 }}</span>?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger btn--icon-text waves-effect" (click)="submitDelete()" [disabled]="isProcessing ? 'disabled' : ''">
+          <i *ngIf="isProcessing" class="fal fa-refresh fa-spin" style="margin-right: 5px;"></i>
+          <span [innerHTML]="'BUTTONS.YES' | translate"></span>
+        </button>
+        <button type="button" class="btn btn-secondary btn--icon-text waves-effect" data-dismiss="modal">
+          <span [innerHTML]="'BUTTONS.NO' | translate"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

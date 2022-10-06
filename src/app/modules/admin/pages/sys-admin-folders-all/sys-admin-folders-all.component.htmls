@@ -1,0 +1,119 @@
+<header class="content__title">
+  <h1>
+    <span [innerHTML]="'TITLE_PAGE.ALL' | translate: params"></span>
+    <span [innerHTML]="'TITLE_PAGE.FOLDERS' | translate: params"></span>
+
+  </h1>
+  <small [innerHTML]="'ADMIN.FOLDERS.ALL.DESC' | translate: params"></small>
+</header>
+
+<div class="card">
+  <div class="card-block">
+    <div *ngIf="!isProcessing">
+      <div class="data-table__header d-flex justify-content-between">
+        <div class="data-table_buttons actions">
+          <button *ngIf="currentUserPermission.can_manage_folder !== false" (click)="handleOpenModal('create')" class="btn btn-secondary waves-effect btn--icon-text mr-25px"
+            data-toggle="tooltip" [title]="'BUTTONS.CREATE_NEW_FOLDER' | translate: params">
+            {{'BUTTONS.CREATE_NEW_FOLDER' | translate: params}}
+          </button>
+        </div>
+        <div class="form-group data-table__filter">
+          <input *ngIf="config.filtering" [placeholder]="'SEARCHS.ALL_COLUMNS' | translate: params" [(ngModel)]="config.filtering.filterString"
+            class="form-control" (keyup)="changeTable(config)" />
+          <i class="form-group__bar"></i>
+        </div>
+        <select2 class="select2-per-page" [data]="perPageSelectData" [options]="perPageSelectOptions" (valueChanged)="onPerPageChanged($event)"></select2>
+        <div class="form__direct__link">
+          <a [routerLink]="['/admin', 'folders', 'trash']" data-toggle="tooltip" [title]="'SIDE_MENU_BAR.TRASH_LIB' | translate: param"
+            class="a--direct">
+          </a>
+          <a [routerLink]="['/admin', 'folders', 'system']" data-toggle="tooltip" [title]="'SIDE_MENU_BAR.TEMPLATES' | translate: param"
+            class="a--direct">
+            <i class="fal fa-table" aria-hidden="true"></i>
+          </a>
+
+        </div>
+      </div>
+      <div *ngIf="rows.length > 0" class="data-table">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th *ngFor="let column of columns" [width]="column.width" (click)="column.sort!==false ? sortColumn(column, config) : ''">
+                <span [innerHTML]="column.title | translate: params"></span>
+                <!-- <i class="fal fa-hc-lg float-right" [ngClass]="{'zmdi-sort-amount-asc': column.sort==='asc', 'zmdi-sort-amount-desc': column.sort==='desc'}"></i> -->
+                <ng-container>
+                  <i *ngIf="column.sort==='asc'" class="fal fa-sort-amount-up sort-icon float-right icon--custom"></i>
+                  <i *ngIf="column.sort==='desc'" class="fal fa-sort-amount-down sort-icon float-right icon--custom"></i>
+                </ng-container>
+              </th>
+              <th width="15%" class="cursor-text" *ngIf="currentUserPermission.can_manage_folder !== false">
+                <span [innerHTML]="'TABLE.COLUMNS.ACTIONS' | translate: params"></span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of rows; let index=index" (mouseover)="hoveredIndex=index" (mouseleave)="hoveredIndex=-1">
+              <td class="tb-name">
+                <span class="icon-folder" [ngClass]="{'cursor-pointer': enableViewRepo}" (click)="openFolders(row)">
+                  <!-- (click)="enableViewRepo ? openFolders(row) : ''" -->
+                  <i class="fas fa-folder fa-fw tb-row-folder"></i>
+                  <i *ngIf="row.encrypted" class="fal fa-key tb-row-folder-lock" data-toggle="tooltip"
+                    [title]="'TOOLTIPS.ENCRYPTED_FOLDER' | translate: params"></i>
+                </span>
+                <div *ngIf="enableViewRepo" class="folder__desc">
+                  <span class="name-folder link" [ngClass]="{'cursor-pointer': enableViewRepo}" (click)="enableViewRepo ? openFolders(row) : ''">{{
+                    row.name }}</span>
+                  <small class="name-folder name__lib--custom" [ngClass]="{'cursor-pointer': enableViewRepo}" (click)="enableViewRepo ? openFolders(row) : ''">{{
+                    row.description | splice_length: 85 }}</small>
+                </div>
+                <div *ngIf="!enableViewRepo" class="folder__desc">
+                  <span class="name-folder" [ngClass]="{'cursor-pointer': enableViewRepo}" (click)="enableViewRepo ? openFolders(row) : ''">{{
+                    row.name }}</span>
+                  <small class="name-folder name__lib--custom" [ngClass]="{'cursor-pointer': enableViewRepo}" (click)="enableViewRepo ? openFolders(row) : ''">{{
+                    row.description | splice_length: 85 }}</small>
+                </div>
+
+              </td>
+              <td>{{ row.files_and_size }}</td>
+              <td>{{ row.id }}</td>
+              <td>
+                <span [routerLink]="['/admin', 'users', 'info', row.owner]" class="cursor-pointer tb-owner">{{
+                  row.owner }}</span>
+              </td>
+              <td class="tb-operations" *ngIf="currentUserPermission.can_manage_folder !== false">
+                <div *ngIf="index===hoveredIndex">
+                  <i class="actions__item fal fa-trash-alt cursor-pointer" (click)="deleteItemFoldersAll(row)"
+                    data-toogle="tooltip" [title]="'TOOLTIPS.DELETE' | translate: params"></i>
+                  <i class="actions__item far fa-exchange cursor-pointer" (click)="transferItemFoldersAll(row)"
+                    data-toogle="tooltip" [title]="'TOOLTIPS.TRANSFER' | translate: params"></i>
+                  <i class="actions__item fal fa-share-alt cursor-pointer" (click)="shareItemFoldersAll(row)"
+                    data-toogle="tooltip" [title]="'TOOLTIPS.SHARE' | translate: params"></i>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <app-empty-item *ngIf="rows.length === 0 && this.listRepos.length === 0" [messageTitle]="'ADMIN.FOLDERS.ALL.EMPTY_ITEM.MSG_TITLE' | translate: params"
+        [messageSub]="'ADMIN.FOLDERS.ALL.EMPTY_ITEM.MSG_SUB_TITLE' | translate: params"></app-empty-item>
+      <app-empty-item *ngIf="rows.length === 0 && this.listRepos.length !==0 " [messageTitle]="'ADMIN.FOLDERS.ALL.EMPTY_ITEM.MSG_NOT_FOUND' | translate: params"
+        [messageSub]="'ADMIN.FOLDERS.ALL.EMPTY_ITEM.MSG_SUB_NOT_FOUND' | translate: params"></app-empty-item>
+
+      <app-modal-folders-all-delete-item *ngIf="isOpenModal.delete" [dataFolder]="currentItem" (deleted)="onDeletedReload($event)"></app-modal-folders-all-delete-item>
+      <app-transfer-folder-modal *ngIf="isOpenModal.transfer" [type]="'sys-admin'" [dataTransfer]="currentItem"
+        (transfered)="onTransferedReload($event)"></app-transfer-folder-modal>
+      <app-shares-folders-all-modal *ngIf="isOpenModal.share" [shareItem]="currentShareItem"></app-shares-folders-all-modal>
+      <app-modal-folders-all-create-new *ngIf="isOpenModal.create" (created)="onCreatedReload($event)"></app-modal-folders-all-create-new>
+    </div>
+
+    <app-processing *ngIf="isProcessing"></app-processing>
+  </div>
+</div>
+
+<div class="data-table__footer">
+  <pagination *ngIf="!isProcessing && config.paging && listRepos.length > 0" [(ngModel)]="page.page" [totalItems]="length"
+    [itemsPerPage]="page.itemsPerPage" [maxSize]="maxSize" [boundaryLinks]="true" [rotate]="false" (pageChanged)="changeTable(config, $event)"
+    (numPages)="numPages = $event">
+  </pagination>
+</div>

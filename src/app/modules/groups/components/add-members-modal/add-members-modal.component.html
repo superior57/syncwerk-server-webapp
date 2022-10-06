@@ -1,0 +1,70 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <ul class="nav nav-tabs nav-fill" role="tablist">
+      <li class="nav-item">
+        <a class="nav-link active show" data-toggle="tab" href="#add-member" role="tab" aria-selected="true">{{'GROUP_MANAGEMENT.ADD_MEMBERS_MODAL.ADD_MEMBERS_TAB_TITLE'
+          | translate}}</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#import-member" role="tab" aria-selected="false">{{'GROUP_MANAGEMENT.ADD_MEMBERS_MODAL.IMPORT_MEMBERS_TAB_TITLE'
+          | translate}}</a>
+      </li>
+    </ul>
+  </div>
+  <div class="tab-content">
+    <div class="tab-pane fade active show" id="add-member" role="tabpanel">
+      <div class="modal-body">
+        <p class="notice">{{ 'SEARCHS.NOTICE_INPUT_UNSER' | translate }}</p>
+        <!-- <p>{{'GROUP_MANAGEMENT.ADD_MEMBERS_MODAL.ADD_MEMBERS_TAB_SUBTITLE' | translate}}</p> -->
+        <tag-input placeholder="+ User" secondaryPlaceholder="{{'MODALS.TRANSFER.TYPE_TO_SEARCH_USER' | translate}}"
+          [allowDupes]="false" [(ngModel)]="memberListToAdd" [onlyFromAutocomplete]="false">
+          <tag-input-dropdown [matchingFn]="autoCompleteUserListMatching" [appendToBody]="false" [autocompleteObservable]="ENABLE_GLOBAL_ADDRESSBOOK ? autocompleteUserList : null">
+            <ng-template let-item="item" let-index="index">
+              <div class="row">
+                <div class="col-md-2">
+                  <div class="user-avt">
+                    <img [src]="item.templateData.avatar_url" />
+                  </div>
+                </div>
+                <div class="col-md-10">
+                  <div class="user-detail">
+                    <strong>{{ item.templateData.name }}</strong>
+                  </div>
+                  <div class="user-detail">
+                    ({{ item.templateData.email }})
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+          </tag-input-dropdown>
+        </tag-input>
+      </div>
+      <div class="modal-footer">
+        <button [disabled]="isProcessing" (click)="addGroupMembers()" type="button" class="btn btn-success btn--icon-text waves-effect">
+          <i *ngIf="isProcessing" class="fal fa-circle-o-notch fa-spin"></i>
+          {{'GROUP_MANAGEMENT.ADD_MEMBERS_MODAL.ADD_BTN' | translate}}
+        </button>
+        <button (click)="bsModalRef.hide()" type="button" class="btn btn-secondary btn--icon-text waves-effect">
+          {{'GROUP_MANAGEMENT.ADD_MEMBERS_MODAL.CANCEL_BTN' | translate}}
+        </button>
+      </div>
+    </div>
+
+    <div class="tab-pane fade" id="import-member" role="tabpanel">
+      <div class="modal-body">
+        <p>{{'GROUP_MANAGEMENT.ADD_MEMBERS_MODAL.IMPORT_MEMBERS_TAB_SUBTITLE' | translate}}</p>
+        <input appInputFileLabel type="file" name="file" id="csv-file-selector" accept=".csv" pattern="*.csv" class="inputfile"
+          (change)="onFileChange($event)" />
+      </div>
+      <div class="modal-footer">
+        <button [disabled]="isProcessing" (click)="importGroupMembers()" type="button" class="btn btn-success btn--icon-text waves-effect">
+          <i *ngIf="isProcessing" class="fal fa-circle-o-notch fa-spin"></i>
+          {{'GROUP_MANAGEMENT.ADD_MEMBERS_MODAL.IMPORT_BTN' | translate}}
+        </button>
+        <button (click)="bsModalRef.hide()" type="button" class="btn btn-secondary btn--icon-text waves-effect">
+          {{'GROUP_MANAGEMENT.ADD_MEMBERS_MODAL.CANCEL_BTN' | translate}}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

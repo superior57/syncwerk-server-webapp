@@ -1,0 +1,26 @@
+.hight-light-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+  font-weight: bold;
+  padding: 0px 5px;
+  color: #e10032;
+}
+
+.modal-md {
+  max-width: 420px;
+
+  .modal-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #0067b3;
+  }
+
+  .modal-body {
+    font-size: 14px;
+  }
+}
+
+span.title {
+  padding: 0px 4px;
+}

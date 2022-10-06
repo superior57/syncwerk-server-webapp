@@ -1,0 +1,58 @@
+<div class="modal fade" id="details-modal" data-backdrop="static" tabindex="-1">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          <span class="modal-title-name">{{ (Data ? Data.name : '')}}</span>
+          <span [innerHTML]="'TABLE.COLUMNS.TITLE' | translate"></span>
+        </h5>
+      </div>
+      <div class="modal-body">
+        <aside class="asside-left">
+          <i *ngIf="Data && Data.type !='file' " class="fas fa-folder fa-fw grid-item"></i>
+          <i *ngIf="Data && Data.type =='file' ">
+            <img *ngIf="errorImg === 0" (error)="setErrorImg()" class="file-icon " src="{{ Data.name | fileIconPath: false: repoId: path : 90 }}"
+              class="left-icon">
+            <!-- <img *ngIf="errorImg === 1" class="file-icon " src="{{ Data.name | customFileIcon }}" class="left-icon"> -->
+            <div *ngIf="(errorImg && errorImg === 1 ) ">
+              <i class="{{ Data.name | customFileIcon }}" id="icon--custom"></i>
+            </div>
+          </i>
+        </aside>
+        <div class="content-details-modal">
+          <div *ngIf="IsFolder">
+            <div>
+              <label [innerHTML]="'TABLE.COLUMNS.FILE' | translate"></label>: {{file_count}} </div>
+            <div>
+              <label [innerHTML]="'TABLE.COLUMNS.SIZE' | translate"></label>: {{Data ? Data.size_formatted : ''}} </div>
+            <div>
+              <label [innerHTML]="'TABLE.COLUMNS.LAST_UPDATE' | translate"></label>:
+              <span [innerHTML]="Data ? Data.mtime_relative  :''"></span>
+            </div>
+            <div>
+              <label [innerHTML]="'TABLE.COLUMNS.DESCRIPTION' | translate"></label>: {{ Data ? Data.desc : '' }} </div>
+          </div>
+          <div *ngIf="!IsFolder">
+            <div *ngIf="Data && Data.type=='dir'">
+              <label [innerHTML]="'TABLE.COLUMNS.FOLDERS' | translate"></label>: {{folder_count}} </div>
+            <div *ngIf="Data && Data.type=='dir'">
+              <label [innerHTML]="'TABLE.COLUMNS.FILES' | translate"></label>: {{file_count}} </div>
+            <div>
+              <label [innerHTML]="'TABLE.COLUMNS.LOCATION' | translate">{{ x }}</label>: {{size | customFileSize}} </div>
+            <div>
+              <label [innerHTML]="'TABLE.COLUMNS.LOCATION' | translate"></label>: {{location}} </div>
+            <div>
+              <label [innerHTML]="'TABLE.COLUMNS.LAST_UPDATE' | translate"> </label>:
+              <span [innerHTML]="Data ? Data.last_update  :''"> </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-link" data-dismiss="modal">
+          <span [innerHTML]="'BUTTONS.CLOSE' | translate"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

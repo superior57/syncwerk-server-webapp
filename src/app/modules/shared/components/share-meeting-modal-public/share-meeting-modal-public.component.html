@@ -1,0 +1,57 @@
+<div class="card-block card-share">
+  <p [innerHTML]="'MEETING.SHARE.LINK_TEXT' | translate"></p>
+  <div class="row" *ngIf="isLoading">
+    <!-- <div class="wrapper__btn">
+      <button type="button" class="btn btn-success waves-effect" (click)="createLink()">
+        Create public link
+      </button>
+    </div> -->
+    <div class="col-12">
+      <div class="img-loading">
+        <div class="page-loader__spinner">
+          <svg viewBox="25 25 50 50">
+            <circle cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" />
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row" *ngIf="!selectedMeetingInfo.public_share_token && !isLoading">
+    <div class="wrapper__btn">
+      <button type="button" class="btn btn-success waves-effect" (click)="createLink()">
+        <span [innerHTML]="'MEETING.SHARE.CREATE_PUBLIC_LINK' | translate"></span>
+      </button>
+    </div>
+  </div>
+  <div class="share__upload__link" *ngIf="selectedMeetingInfo.public_share_token && !isLoading">
+    <p [innerHTML]="'MEETING.SHARE.LINK' | translate"></p>
+    <div>
+      <input [ngxClipboard]="copyLinkShare" autosize class="input-custom" readonly data-toggle="tooltip"
+        [value]="selectedMeetingInfo.public_link" ngxClipboard [cbContent]="selectedMeetingInfo.public_link" (click)="submitCopy()"/>
+      <button class="btn btn-info waves-effect mg-t7px btn--custom" data-toggle="tooltip" [title]="'MEETING.SHARE.COPY_LINK' | translate" ngxClipboard
+        [cbContent]="selectedMeetingInfo.public_link" (click)="submitCopy()">
+        <span [innerHTML]="'MEETING.SHARE.COPY_LINK' | translate"></span>
+      </button>
+    </div>
+    <div class="btn-demo">
+      <button type="button" class="btn btn-danger waves-effect mg-r4px" (click)="deleteLink()">
+        <span [innerHTML]="'BUTTONS.REMOVE' | translate"></span>
+      </button>
+    </div>
+  </div>
+  <!-- <div class="row">
+    <div class="wrapper d-flex">
+      <strong class="share__to__all__title">{{'TABLE.COLUMNS.PERMISSIONS' | translate}}</strong>
+      <div class="select__options">
+        <select2 [data]="permissions" [options]="options" [value]="repo.permission" [cssImport]="true" [width]="120"
+          (valueChanged)="changedSettingPermission($event)"></select2>
+      </div>
+    </div>
+    <div class="wrapper__btn">
+      <button type="button" class="btn btn-success waves-effect" (click)="submit()"
+        [disabled]="isProcessing ? 'disabled' : ''">
+        <i *ngIf="isProcessing" class="fal fa-refresh fa-spin"></i>{{ 'BUTTONS.SUBMIT' | translate}}
+      </button>
+    </div>
+  </div> -->
+</div>

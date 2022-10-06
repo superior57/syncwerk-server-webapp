@@ -1,0 +1,249 @@
+<header class="content__title">
+  <h1> <span routerLink="/kanban">{{'KANBAN.TITLE' | translate}}</span> <i class="fal fa-angle-right"></i>
+    {{kanBanService.selectedProject?.project_name}}
+  </h1>
+  <small [innerHTML]="'KANBAN.PAGES.MANAGE_PROJECT_SUBTITLE' | translate"></small>
+  <div class="actions list-grid-custom">
+    <div class="list__grid__button">
+      <app-list-grid-button (onChangeViewMode)="toggleView($event)"></app-list-grid-button>
+    </div>
+  </div>
+</header>
+
+<div class="card d-inline-flex" style="min-width: 100%">
+  <div class="card-block">
+    <!-- GRID VIEW -->
+    <div class="project-filters d-md-flex">
+      <div class="project-filters__search">
+        <div class="form-group data-table__filter w-100">
+          <!--<input [(ngModel)]="taskTitle" (keyup)="filterBoards()" [placeholder]="'KANBAN.PAGES.FILTER_BOARDS' | translate" class="form-control" /> -->
+          <input [(ngModel)]="filterText" (keyup)="filterBoards()" [placeholder]="'KANBAN.PAGES.FILTER_BOARDS' | translate" class="form-control" />
+          <i class="form-group__bar"></i>
+        </div>
+      </div>
+      <!-- <div class="project-name">{{project.name}}</div> -->
+      <div class="project-filters__users">
+        <span class="__filter-name">{{'KANBAN.PAGES.MEMBERS' | translate}}</span>
+        <ul class="m-0 p-0 filtered-members-list">
+          <li *ngIf="userInfo.avatar_url;" tooltip="{{userInfo.name}}" container="body" placement="top">
+            <img *ngIf="!userInfo.avatar_url" [src]="userInfo.avatar_url" alt="">
+            <span *ngIf="userInfo.avatar_url" class="no-image">{{userInfo?.name.charAt(0)}}</span>
+          </li>
+
+          <li *ngFor="let member of kanBanService.selectedProject?.members| slice:0:3;" tooltip="{{member.user_id}}" container="body" placement="top">
+              <img *ngIf="member.avatar_url" [src]="member.avatar_url" alt="">
+              <span *ngIf="!member.avatar_url" class="no-image">{{member.user_id.charAt(0)}}</span>
+          </li>
+
+          <!-- <div class="btn-group" #membersdropdown="bs-dropdown" [autoClose]="true" insideClick="true" dropdown>
+            <li dropdownToggle aria-controls="members-dropdown-list" class="bg-primary">
+              <span><i class="fal fa-eye"></i> {{projectMembers.length}}</span>
+            </li>
+            <div id="members-dropdown-list" *dropdownMenu class="dropdown-menu members-dropdown" role="menu"
+              aria-labelledby="button-basic">
+            <div *ngFor="let member of projectMembers" role="menuitem" class="d-flex justify-content-between align-items-center project-members-list">
+              <div>
+                <img *ngIf="member.user_data.avatar_url" [src]="member.user_data.avatar_url" alt="">
+                <span *ngIf="!member.user_data.avatar_url" class="no-avatar">{{member?.user_data?.name.charAt(0)}}</span>
+                <span>{{member?.user_data?.name}}</span>
+              </div>
+              <span (click)="removeMember(member.id)" class="fal fa-trash cursor-pointer" tooltip="{{'KANBAN.PAGES.REMOVE_USER' | translate}}" container="body" placement="right"></span>
+            </div>
+            </div>
+          </div> -->
+            <li
+	      *ngIf="kanBanService.selectedProject?.owner.email == userInfo.email"
+	      (click)="openAddMemberModal()" class="add-member-button"
+	      tooltip="{{'KANBAN.MODALS.NEW_PROJECT_MEMBER' | translate}}"
+	      container="body" placement="top">
+            <span class="fal fa-plus"></span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="project-filters__label">
+        <span class="__filter-name">{{'KANBAN.PAGES.FILTER_BY_TAG' | translate}}</span>
+        <div class="btn-group" dropdown [autoClose]="false">
+          <div dropdownToggle class="tag d-flex align-items-center dropdown-toggle justify-content-start">
+            <span class="tag-name">{{'KANBAN.PAGES.TAGS' | translate}} ({{tags.length}})</span>
+          </div>
+          <ng-container *ngIf="tags.length">
+            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu tags-dropdown" role="menu"
+              aria-labelledby="button-basic">
+              <li  role="menuitem" class="d-flex justify-content-start align-items-center">
+                <input type="checkbox" [(ngModel)]="allFiltersChecked" [value]="allFiltersChecked" class="pull-left" value="tag"  (change)="selectTag()">
+                <span>All</span>
+              </li>
+              <li *ngFor="let tag of tags" role="menuitem" class="d-flex justify-content-start align-items-center">
+                <input type="checkbox" class="pull-left" value="{{tag.tag}}" [(ngModel)]="tag.checked" (change)="selectTag(tag)">
+                <span>{{tag.tag}}</span>
+              </li>
+            </ul>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+
+    <!-- BOARDS CONTAINER -->
+    <app-processing *ngIf="isProcessing"></app-processing>
+    <div class="boards-container d-md-flex" *ngIf="!isListView && !isProcessing" cdkDropListGroup>
+      <!-- BOARDS -->
+      <div *ngFor="let board of kanBanService.filteredBoards; let i = index" class="boards">
+        <div class="board" cdkDropList [cdkDropListData]="board.kanban_tasks"
+          (cdkDropListDropped)="onDropTask($event, board.id)">
+          <div class="board-header">
+            <span class="__name">{{board.board_name}}</span>
+            <div
+              *ngIf="kanBanService.selectedProject?.writable"
+              class="actions">
+              <i tooltip="{{'KANBAN.BUTTONS.RENAME' | translate}}" container="body" placement="top"
+                class="fal fa-lg fa-pencil-alt actions__item" (click)="openEditBoardModal(board)"></i>
+              <i tooltip="{{'KANBAN.BUTTONS.DELETE' | translate}}" container="body" placement="top"
+                class="fal fa-lg fa-trash-alt actions__item" (click)="openDeleteBoardModal(board)"></i>
+            </div>
+          </div>
+          <div class="board-content">
+            <div *ngFor="let task of board.kanban_tasks;" [ngStyle]="{'border-left': '3px solid ' + task.color[0].color}" class="__card" cdkDrag (cdkDragStarted)="dragTaskStart()" (cdkDragEnded)="dragTaskEnd()"
+              (click)="openManageTaskModal(task, board.id)" ondrop="event.preventDefault()">
+              <div class="card-labels">
+                <ng-container *ngFor="let tag of task.tags">
+		    <span *ngIf="tag.title" [ngStyle]="{'background-color': '#' + tag.color}">{{tag.title}}</span>
+                </ng-container>
+              </div>
+              <span class="task-name">{{task.title}}</span>
+              <div class="bottom-card">
+                <span *ngIf="task.due_date" class="task-due-date"><i class="fal fa-calendar"></i>
+                  {{ task.due_date | amDateFormat:'L' }}</span>
+                <span class="task-files"><i class="fal fa-paperclip"></i> {{task.num_attachments}} files</span>
+                <div *ngIf="task.assignee.owner_id" class="member ml-auto p-0" tooltip="{{task.assignee.owner_id}}" container="body" placement="top">
+                    <img *ngIf="task.assignee.avatar_url"  class="member-avatar" [src]="task.assignee.avatar_url"  alt="" onError="this.src = '../../../../../assets/images/placeholder-profile.png'">
+                    <i class="fas fa-user-circle" style="font-size: 20px;"></i>
+                </div>
+              </div>
+            </div>
+            <div class="add-card-form" *ngIf="addTaskFormId === i">
+              <textarea [(ngModel)]="taskTitle" (keydown.enter)="createTask(board.id, i)" placeholder="Enter task title " class="form-control" rows="3"></textarea>
+              <button [disabled]="!taskTitle" (click)="createTask(board.id, i)"
+                class="btn btn-primary">{{'KANBAN.PAGES.ADD_TASK' | translate}}</button>
+            </div>
+            <div
+	      *ngIf="kanBanService.selectedProject?.writable && !dragging && addTaskFormId !== i"
+	      class="add-card-button"
+	      (click)="showAddTaskForm(i)">
+               {{'KANBAN.PAGES.ADD_TASK' | translate}} <span class="fal fa-plus ml-1"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- #BOARDS -->
+
+      <!-- ADD BOARD FORM -->
+      <div
+	*ngIf="kanBanService.selectedProject?.writable"
+        class="add-board-form">
+        <div *ngIf="!showAddBoardForm" (click)="showAddBoardForm = !showAddBoardForm"
+          class="placeholder-btn bg-primary">
+          {{'KANBAN.PAGES.ADD_BOARD' | translate}}
+          <span class="fa fa-plus mr-1"></span>
+        </div>
+        <form *ngIf="showAddBoardForm" (submit)="createBoard($event)">
+          <input type="text" name="boardName" [(ngModel)]="boardName" placeholder="{{'KANBAN.PAGES.ADD_BOARD' | translate}}" />
+          <button type="submit" class="btn btn-primary">{{'KANBAN.PAGES.ADD_BOARD' | translate}}</button>
+        </form>
+      </div>
+      <!-- #ADD BOARD FORM -->
+
+    </div>
+    <!-- BOARDS CONTAINER -->
+
+    <!-- #END OF GRID VIEW -->
+
+    <!-- LIST VIEW -->
+    <div *ngIf="isListView" class="boards-container-list-views" cdkDropListGroup>
+      <div class="board-container-list">
+        <div *ngFor="let board of kanBanService.filteredBoards; let i = index" class="board">
+            <div class="board" cdkDropList [cdkDropListData]="board.kanban_tasks" (cdkDropListDropped)="onDropTask($event, board.id)">
+            <div class="board-header">
+              <div class="task-details" data-toggle="collapse" [attr.data-target]="'#collapseBasic'+i"  [attr.aria-expanded]="true" aria-controls="collapseBasic">
+                <span class="task-name"> {{board.board_name}} </span>
+                <span class="fal fa-chevron-down toggle-icon"></span>
+              </div>
+              <div
+                *ngIf="kanBanService.selectedProject.writable"
+                class="actions">
+                <span tooltip="{{'KANBAN.BUTTONS.RENAME' | translate}}" container="body" placement="top"
+                  class="fal fa-lg fa-pencil-alt actions__item" (click)="openEditBoardModal(board)">
+                </span>
+                <span tooltip="{{'KANBAN.BUTTONS.DELETE' | translate}}" container="body" placement="top"
+                  class="fal fa-lg fa-trash-alt actions__item" (click)="openDeleteBoardModal(board)">
+                </span>
+              </div>
+            </div>
+            <div #c [attr.id]="'collapseBasic' + i" class="board-content board-tasks collapse show __card" isAnimated="true">
+		<div
+		    *ngFor="let task of board.kanban_tasks;"
+		    class="boards-container-list-views__task"
+		    [ngStyle]="{'border-left': task.color[0].color === '#ffffff' ? '1px solid #f4f4f6' : '3px solid ' + task.color[0].color}"
+		    cdkDrag (cdkDragStarted)="dragTaskStart()" (cdkDragEnded)="dragTaskEnd()" (click)="openManageTaskModal(task, board.id)" ondrop="event.preventDefault()">
+                <div class="task-description">
+                  <span>{{task.title}}</span>
+                </div>
+                <div class="task-labels justify-content-center">
+                  <ng-container *ngFor="let tag of task.tags | slice:0:4;">
+		    <span *ngIf="tag.title" class="label" [ngStyle]="{'background-color': '#' + tag.color}">{{tag.title}}</span>
+                  </ng-container>
+                </div>
+                <div class="due-date align-items-center justify-content-center">
+                  <span *ngIf="task.due_date" class="task-due-date">
+                    <i class="fal fa-calendar"></i>
+                    {{ task.due_date | amDateFormat:'L' }}
+                  </span>
+                  <span class="task-files"><i class="fal fa-paperclip"></i> {{task.num_attachments}} files</span>
+                </div>
+
+                <div *ngIf="task.assignee.owner_id" tooltip="{{task.assignee.owner_id}}" class="member align-items-end justify-content-end m-0 p-0">
+                    <img *ngIf="task.assignee.avatar_url"  class="member-avatar" [src]="task.assignee.avatar_url"  alt="" onError="this.src = '../../../../../assets/images/placeholder-profile.png'">
+                  <i class="fas fa-user-circle" style="font-size: 20px;"></i>
+                </div>
+              </div>
+              <div class="add-card-form" *ngIf="addTaskFormId === i">
+                <textarea [(ngModel)]="taskTitle" (keydown.enter)="createTask(board.id, i)" placeholder="Enter task title " class="form-control" rows="3"></textarea>
+                <button [disabled]="!taskTitle" (click)="createTask(board.id, i)"
+                  class="btn btn-primary">{{'KANBAN.PAGES.ADD_TASK' | translate}}</button>
+              </div>
+              <div
+                  *ngIf="kanBanService.selectedProject.writable && addTaskFormId !== i"
+                  class="add-card-button" (click)="showAddTaskForm(i)">
+                {{'KANBAN.PAGES.ADD_TASK' | translate}}
+                <span class="fal fa-plus"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ADD BOARD FORM -->
+        <div
+	  *ngIf="kanBanService.selectedProject.writable"
+          class="add-board-form">
+          <div *ngIf="!showAddBoardForm" (click)="showAddBoardForm = !showAddBoardForm"
+            class="placeholder-btn bg-primary">
+            {{'KANBAN.PAGES.ADD_BOARD' | translate}}
+            <span class="fa fa-plus mr-1"></span>
+          </div>
+          <form *ngIf="showAddBoardForm" (submit)="createBoard($event)">
+            <input type="text" name="boardName" [(ngModel)]="boardName" placeholder="{{'KANBAN.PAGES.ADD_BOARD' | translate}}" />
+            <button type="submit" class="btn btn-primary">{{'KANBAN.PAGES.ADD_BOARD' | translate}}</button>
+          </form>
+        </div>
+        <!-- #ADD BOARD FORM -->
+      </div>
+    </div>
+    <!-- END OF LIST VIEW -->
+        <!-- EMPTY ITEM -->
+    <app-empty-item *ngIf="!isProcessing && !kanBanService.boards.length"
+      [messageTitle]="'KANBAN.KANBAN_LIST.NO_BOARD_CREATED' | translate"
+      [messageSub]="'KANBAN.KANBAN_LIST.NO_BOARD_SUBTITLE' | translate">
+    </app-empty-item>
+  </div>
+</div>

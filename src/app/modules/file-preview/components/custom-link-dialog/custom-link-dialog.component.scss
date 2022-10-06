@@ -1,0 +1,27 @@
+.modal-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #0067b3;
+}
+
+.row.list-file {
+    max-height: 50vh;
+    overflow-y: scroll;
+}
+
+.form-group {
+    margin: 1rem 0 0 0;
+}
+
+table {
+    margin-bottom: 1rem;
+    td {
+        vertical-align: middle;
+        word-break: break-all;
+        height: 50px;
+    }
+}
+
+.row.link-type-option {
+    margin-bottom: 1.5rem;
+}

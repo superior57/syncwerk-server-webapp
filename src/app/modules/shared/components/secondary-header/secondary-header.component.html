@@ -1,0 +1,13 @@
+<div class="header">
+  <div class="header__logo">
+    <h1>
+      <a [routerLink]="['/']">
+        <img height="30rem" [src]="logoURL" alt="" (error)="logoErrorHandler($event)">
+      </a>
+    </h1>
+  </div>
+  <div class="header-items">
+    <select2 class="float-right" [data]="select2TranslateData" [options]="translateOptions" [value]="choosenLanguage"
+      [width]="86" (valueChanged)="switchLanguage($event)"></select2>
+  </div>
+</div>

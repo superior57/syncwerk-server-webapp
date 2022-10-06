@@ -1,0 +1,34 @@
+<form class="modal-content" (submit)="addProject()">
+  <div class="modal-header">
+    <h3 class="modal-title">
+      <span class="h4 green-color">
+      <strong>{{ 'KANBAN.MODALS.NEW_PROJECT' | translate }}</strong>
+      </span>
+    </h3>
+  </div>
+  <div class="modal-body">
+    <div class="form-group">
+      <label data-toggle="tooltip" title="required" [innerHTML]="'KANBAN.MODALS.NEW_PROJECT_PLACEHOLDER' | translate"> (*)</label>
+      <input
+        appFocus
+        [(ngModel)]="projectName"
+        [ngModelOptions]="{standalone: true}"
+        class="form-control input-mask" type="text" />
+      <i class="form-group__bar"></i>
+    </div>
+    <div class="form-group">
+      <label for="file-upload">
+        <span class="upload-image-btn">Upload image</span>
+        <span *ngIf="selectedFile">{{selectedFile.name}}</span>
+      </label>
+      <input #fileInput id="file-upload" type="file" (change)="onFileSelected($event)" style="display:none" />
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button type="submit" class="btn btn-success btn--icon-text waves-effect" [disabled]="isProcessing || !projectName">
+      <span [innerHTML]="'BUTTONS.CREATE' | translate"></span>
+    </button>
+    <button type="button" class="btn btn-secondary btn--icon-text waves-effect" (click)="closeModal()" [disabled]="isProcessing ? 'disabled' : ''">{{'BUTTONS.CLOSE' | translate  }}</button>
+  </div>
+</form>

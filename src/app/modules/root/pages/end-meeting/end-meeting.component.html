@@ -1,0 +1,24 @@
+<header>
+  <div class="login__block__header__custom">
+    <a data-toggle="tooltip" [title]="logoTooltip" [routerLink]="'/'"><img [src]="logoURL" height="30rem" alt=""></a>
+    <div class="select__languages">
+      <select2 [data]="select2TranslateData" [options]="translateOptions" [value]="choosenLanguage" [width]="88"
+        (valueChanged)="switchLanguage($event)"></select2>
+    </div>
+  </div>
+</header>
+
+<div class="login">
+  <div class="login__block active" id="l-login">
+    <div class="login__block__header">
+      <h5>{{ 'MEETING.MESSAGES.MEETING_ENDED' | translate }}</h5>
+      <p *ngIf="redirectLocation">{{ 'MEETING.MESSAGES.MEETING_ENDED_REDIRECT' | translate }}</p>
+      <i class="fal fa-circle-notch fa-spin" *ngIf="redirectLocation"></i>
+      <!-- <p>{{ 'MEETING.PUBLIC_LINK_PAGE.AUTO_JOIN_WHEN_STARTED' | translate }}</p> -->
+    </div>
+  </div>
+</div>
+
+<div class="footer ft--custom">
+  <app-footer></app-footer>
+</div>

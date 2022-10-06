@@ -1,0 +1,15 @@
+@media (min-width: 576px) {
+  .modal-dialog {
+      max-width: 400px;
+  }
+}
+
+.custom-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #0067b3;
+}
+
+.sub-error-msg {
+	line-height: 1rem;
+}

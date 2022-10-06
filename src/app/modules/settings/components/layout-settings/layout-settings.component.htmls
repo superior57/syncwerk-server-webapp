@@ -1,0 +1,141 @@
+<div *ngIf="!isProcessing">
+  <!-- Profile Setting -->
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title" [innerHTML]="'SETTINGS.PROFILE.SETTING_TITLE' | translate:param"></h2>
+    </div>
+    <div class="card-block">
+      <div class="row">
+        <div class="col-2">
+          <div>
+
+            <div *ngIf="!isDefaultAvatar">
+              <img class="profile__img__setting" src="{{ userAvatar }}" alt="" placeholder="Image">
+            </div>
+            <div *ngIf="isDefaultAvatar" class="card__profile">
+              <i class="fal fa-user"></i>
+            </div>
+
+            <label for="file-upload" data-toggle="tooltip" title="{{'SETTINGS.PROFILE.AVARTAR_CHANGE' | translate}}">
+              <a class="{{uploadAvatarIcon}} profile__img__edit bgi_white btn-success"></a>
+            </label>
+            <input #fileInput id="file-upload" type="file" (change)="onChange($event)" style="display:none" />
+            <span data-toggle="tooltip" title="{{'SETTINGS.PROFILE.REMOVE_AVATAR' | translate}}" class="profile__img__edit profile__img__delete bgi_white btn-success"
+              (click)="handleOpenModal('delete-avatar')">
+              <i class="fal fa-trash"></i>
+            </span>
+          </div>
+        </div>
+        <div class="col-10">
+          <div class="profile__info">
+            <div class="form-group">
+              <label [innerHTML]="'SETTINGS.PROFILE.PASSWORD' | translate:param"></label>
+              <div>
+                <button type="button" class="btn btn-info waves-effect" (click)="handleOpenModal('change-password')">
+                  <span [innerHTML]="'SETTINGS.PROFILE.UPDATE_PASSWORD' | translate:param"></span>
+                </button>
+              </div>
+            </div>
+            <form [formGroup]="profileChangeForm">
+              <div class="form-group">
+                <label [innerHTML]="'SETTINGS.PROFILE.NAME' | translate:param"></label>
+                <input type="text" class="form-control input-mask" [(ngModel)]="userInfo.username" formControlName="name">
+                <i class="form-group__bar"></i>
+              </div>
+              <div class="form-group">
+                <label [innerHTML]="'SETTINGS.PROFILE.DEPARTMENT' | translate:param"></label>
+                <input type="text" class="form-control input-mask" [(ngModel)]="userInfo.department" formControlName="department">
+                <i class="form-group__bar"></i>
+              </div>
+              <div class="form-group">
+                <label [innerHTML]="'SETTINGS.PROFILE.TELEPHONE' | translate:param"></label>
+                <input type="text" class="form-control input-mask" value={{userTelephone}} (change)="validatePhone($event)">
+                <i class="form-group__bar"></i>
+                <span class="error-msg">{{ telErrorMessage }}</span>
+              </div>
+            </form>
+            <div class="form-group">
+              <label [innerHTML]="'SETTINGS.PROFILE.EMAIL' | translate:param"></label>
+              <input type="text" readonly class="form-control input-mask" [(ngModel)]="userInfo.email">
+            </div>
+
+            <div class="form-group">
+              <button type="button" class="btn btn-info waves-effect" (click)="profileChangePost(profileChangeForm.value)">
+                <span [innerHTML]="'SETTINGS.PROFILE.SUBMIT' | translate:param"></span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Language Setting -->
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title" [innerHTML]="'SETTINGS.LANGUAGE.SETTING_TITLE' | translate:param"></h2>
+    </div>
+    <div class="card-block">
+      <div class="row">
+        <div class="col-sm-6 col-md-4">
+          <div class="form-group">
+            <!-- <select class="select2" [(ngModel)]="choosenLanguage" (ngModelChange)="switchLanguage(choosenLanguage)">
+              <option *ngFor="let lg of languages" [value]="lg.value">{{lg.name}}</option>
+            </select> -->
+            <select2 [data]="select2TranslateData" [options]="translateOptions" [value]="choosenLanguage" [width]="130"
+              (valueChanged)="switchLanguage($event)"></select2>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title" [innerHTML]="'SETTINGS.DEFAULT_FOLDER.SETTING_TITLE' | translate:param"></h2>
+    </div>
+    <div class="card-block">
+      <div class="row">
+        <div class="col-12">
+          <div *ngIf="isShowDefaultFolder">
+            <span>{{ 'SETTINGS.DEFAULT_FOLDER.YOUR_DEFAULT_FOLDER' | translate:param }} :
+              <a class="folder-color-hover" (click)="openDefaultFolder()">{{ defaultFolder.name }}</a>.
+            </span>
+          </div>
+          <small class="card-subtitle" [innerHTML]="'SETTINGS.DEFAULT_FOLDER.DESCRIPTION' | translate:param"></small>
+          <br />
+          <button type="button" class="btn btn-info waves-effect" (click)="chooseDefaultFolder()">
+            <span [innerHTML]="'SETTINGS.DEFAULT_FOLDER.CHOOSE_DEFAULT_FOLDER' | translate:param"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title" [innerHTML]="'SETTINGS.DELETE_ACCOUNT.SETTING_TITLE' | translate:param"></h2>
+    </div>
+    <div class="card-block">
+      <div class="row">
+        <div class="col-12">
+          <small class="card-subtitle" [innerHTML]="'SETTINGS.DELETE_ACCOUNT.WARNING' | translate:param"></small>
+          <br />
+          <button type="button" class="btn btn-info waves-effect" (click)="showDeleteAccount()">
+            <span [innerHTML]="'SETTINGS.DELETE_ACCOUNT.DELETE' | translate:param"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-processing *ngIf="isProcessing"></app-processing>
+
+
+
+
+<app-modal-change-password *ngIf="isOpenModal.change_password"></app-modal-change-password>
+<app-delete-account-modal (DeleteAccountCallBack)="deleteAccountCallBack()"></app-delete-account-modal>
+<app-choose-default-folder-modal [ownedFolders]="ownedFolders" (defaultFolderCallback)="defaultFolderCallback($event)"></app-choose-default-folder-modal>
+<app-modal-confirmation *ngIf="isOpenModal.delete_avatar" [title]="'MODAL_CONFIRMATION.TITLES.DELETE_AVATAR' | translate: params"
+  [verifyQuestion]="'MODAL_CONFIRMATION.VERIFY_QUESTIONS.DELETE_AVATAR' | translate: params" (submit)="onDeleteAvatar()"></app-modal-confirmation>

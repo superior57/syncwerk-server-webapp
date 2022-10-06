@@ -1,0 +1,72 @@
+<div class="modal-content">
+  <div [ngClass]="{'d-none': !isReachedMaxLicensedUser}">
+    <div class="modal-body">
+      <p [innerHTML]="'ADMIN.USERS.REACHED_MAX_LICENSED_USER' | translate"></p>
+    </div>
+  </div>
+  <div [ngClass]="{'d-none': isReachedMaxLicensedUser}" class="tab-container">
+    <div class="modal-header">
+      <ul class="nav nav-tabs nav-fill" role="tablist" style="width: 100%;">
+        <li class="nav-item">
+          <a class="nav-link active" data-toggle="tab" href="#home-2" role="tab" [innerHTML]="'MODALS.USER.ADD_USER' | translate"></a>
+        </li>
+      </ul>
+    </div>
+    <div class="tab-content">
+      <div class="tab-pane active fade show" id="home-2" role="tabpanel">
+        <form novalidate [formGroup]="addUserForm" (submit)="addUser()">
+          <div class="modal-body">
+            <div class="form-group form-group--float">
+              <input #email formControlName="email" type="text" class="form-control" appFormControlFloat (change)="checkEmail($event)">
+              <label [innerHTML]="'SIGNUP.EMAIL' | translate"></label>
+              <i class="form-group__bar"></i>
+            </div>
+            <div class="form-group form-group--float">
+              <input formControlName="name" type="text" class="form-control" appFormControlFloat>
+              <label [innerHTML]="'MODALS.USER.NAME' | translate"></label>
+              <i class="form-group__bar"></i>
+            </div>
+            <div class="form-group form-group--float">
+              <input formControlName="department" type="text" class="form-control" appFormControlFloat>
+              <label [innerHTML]="'MODALS.USER.DEPARTMENT' | translate"></label>
+              <i class="form-group__bar"></i>
+            </div>
+            <div class="form-group">
+              <label class="role" [innerHTML]="'MODALS.USER.ROLE' | translate"></label>
+              <select2 [data]="exampleData" [options]="disableSearchOptions" [value]="role" (valueChanged)="changedSettingRole($event)"></select2>
+              <i class="form-group__bar"></i>
+            </div>
+            <div class="input-group">
+              <div class="form-group form-group--float">
+                <input #password formControlName="password" [type]="isPasswordShown ? 'text' : 'password'" class="form-control"
+                  appFormControlFloat>
+                <label [innerHTML]="'SIGNUP.PASSWORD' | translate"></label>
+                <i class="form-group__bar"></i>
+              </div>
+              <span class="input-group-addon cursor-pointer" (click)="isPasswordShown = !isPasswordShown;" data-toggle="tooltip"
+                [title]="isPasswordShown ? 'Hide' : 'Show'">
+                <i *ngIf="!isPasswordShown" class="fal fa-eye"></i>
+                <i *ngIf="isPasswordShown" class="fal fa-eye-slash"></i>
+              </span>
+              <span class="input-group-addon cursor-pointer" (click)="generatePassword()">
+                <i class="fal fa-magic"></i>
+              </span>
+            </div>
+            <div class="form-group form-group--float">
+              <input #confirmPassword formControlName="confirmPassword" [type]="isPasswordShown ? 'text' : 'password'"
+                class="form-control" appFormControlFloat>
+              <label [innerHTML]="'SIGNUP.CONFIRM_PASSWORD' | translate"></label>
+              <i class="form-group__bar"></i>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn--icon-text btn-success waves-effect">
+              <i *ngIf="isAddProcessing" class="fal fa-sync-alt fa-spin"></i>
+              <span [innerHTML]="'BUTTONS.SUBMIT' | translate"></span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

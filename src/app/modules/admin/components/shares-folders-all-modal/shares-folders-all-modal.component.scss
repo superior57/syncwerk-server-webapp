@@ -1,0 +1,75 @@
+.share-menu {
+  left: 0;
+  height: 100%;
+  overflow: hidden;
+  z-index: 9;
+  float: left;
+  width: 20%;
+
+  @media (max-width:991px) {
+    width: 100%;
+  }
+}
+
+ul{
+  @media (max-width:991px) {
+    display: flex;
+    width: 100%;
+  }
+}
+
+.share-li {
+  width: 80%;
+  text-align: left;
+  margin-top: 5px;
+  border: none;
+  box-shadow: none;
+  border-radius: 2px;
+  padding: 8px;
+  p {
+    margin: 0;
+  }
+}
+
+.share-li-active {
+  @extend .share-li;
+  background-color: #f3f3f3;
+}
+
+.cusor-p {
+  cursor: pointer;
+  margin-top: -2px;
+
+}
+
+.content-share-modal {
+  float: left;
+  width: 80%;
+  @media (max-width:991px) {
+    margin-top: 13px;
+    width: 100%;
+  }
+}
+
+.modal-title-name {
+  font-weight: 600;
+  word-break: break-all;
+  margin-left: 7px;
+}
+
+.modal-title {
+  font-size: 1.5rem;
+}
+
+.modal.show .modal-dialog {
+  @media (max-width:450px) {
+    width: 90%;
+    margin: 10px auto;
+  }
+}
+
+:host ::ng-deep .ng2-tag-input__text-input {
+  @media (max-width:450px) {
+    width: 157%;
+  }
+}

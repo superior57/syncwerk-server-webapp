@@ -1,0 +1,152 @@
+<header class="content__title">
+  <h1>
+    <span [innerHTML]="'TITLE_PAGE.GROUPS' | translate: params"></span>
+  </h1>
+  <small [innerHTML]="'GROUP_FOLDER.DESC' | translate"></small>
+  <div class="actions">
+    <app-list-grid-button (onChangeViewMode)="onChangeViewMode($event)"></app-list-grid-button>
+    <!-- <a class="actions__item fal fa-image"></a> -->
+  </div>
+</header>
+
+<div class="card">
+  <div *ngIf="groupInfo && listReposGroup && currentLoginUser">
+    <div class="specific-group">
+      <div class="card-block">
+        <div class="data-table__header d-flex justify-content-betwwen fl--custom">
+          <div class="dropdown">
+            <button class="btn btn-secondary btn--icon-text waves-effect float-left" type="button" id="dropdownMenuButton"
+              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <span [innerHTML]="'TOOLTIPS.CREATE_NEW' | translate: params"></span>
+            </button>
+            <div class="dropdown-menu dropdown--custom" aria-labelledby="dropdownMenuButton">
+              <span class="dropdown-item" [innerHTML]="'LIST_GROUPS.NEW_FOLDER' | translate: params" (click)="handleOpenModal('create-folder')"></span>
+              <span class="dropdown-item" [innerHTML]="'LIST_GROUPS.SHARE_EXIST_FOLDER' | translate: params" (click)="openModalShareExistingFolder()"></span>
+            </div>
+          </div>
+
+          <div class="form-group data-table__filter">
+            <input *ngIf="config.filtering" [placeholder]="'SEARCHS.ALL_COLUMNS' | translate: params" [(ngModel)]="config.filtering.filterString"
+              class="form-control" (keyup)="changeTable(config)" />
+            <i class="form-group__bar"></i>
+          </div>
+          <div class="row__selector">
+            <app-row-selector (changed)="onPerPageChanged($event)"></app-row-selector>
+          </div>
+          <!-- Start dropdown settings -->
+          <div class="data-table_buttons actions">
+            <a class="actions__item fal fa-cogs" role="button" (click)="settingUserRole()" data-toggle="dropdown"
+              data-placement="bottom" [title]="'LIST_GROUPS.SETTINGS' | translate: params"></a>
+            <div class="dropdown-menu dropdown-menu-right">
+              <div class="listview listview--hover">
+                <div class="listview__header">
+                  <span [innerHTML]="'LIST_GROUPS.SETTINGS' | translate: params"></span>
+                </div>
+                <div class="dropdown-divider"></div>
+                <a *ngIf="isShownSettingMenu.rename_group" class="dropdown-item" (click)="handleOpenModal('rename-group')">
+                  <span [innerHTML]="'LIST_GROUPS.OTHERS.RENAME' | translate: params"></span>
+                </a>
+                <a *ngIf="isShownSettingMenu.transfer_group" class="dropdown-item" (click)="handleOpenModal('transfer-group')">
+                  <span [innerHTML]="'LIST_GROUPS.OTHERS.TRANSFER' | translate: params"></span>
+                </a>
+                <div *ngIf="isShownSettingMenu.import_members" class="dropdown-divider"></div>
+                <!-- <a *ngIf="isShownSettingMenu.import_members" class="dropdown-item" (click)="handleOpenModal('import-members')">Import
+                  Members</a>
+                <a *ngIf="isShownSettingMenu.manageGroup" class="dropdown-item" (click)="handleOpenModal('manageGroup')">{{
+                  'LIST_GROUPS.OTHERS.MANAGE_MEMBERS' | translate: params }}</a> -->
+                <a *ngIf="isShownSettingMenu.manageGroup" class="dropdown-item" (click)="routerMangeGroupPage()">
+                  <span [innerHTML]="'LIST_GROUPS.OTHERS.MANAGE_GROUPS' | translate: params"></span>
+                </a>
+                <div *ngIf="isShownSettingMenu.manageGroup" class="dropdown-divider"></div>
+                <a *ngIf="isShownSettingMenu.dismiss" class="dropdown-item" (click)="handleOpenModal('dismiss')">
+                  <span [innerHTML]="'LIST_GROUPS.OTHERS.DISMISS_GROUP' | translate: params"></span>
+                </a>
+                <a *ngIf="isShownSettingMenu.leave" class="dropdown-item" (click)="handleOpenModal('leave')">
+                  <span [innerHTML]="'LIST_GROUPS.OTHERS.LEAVE_GROUP' | translate: params"></span>
+                </a>
+              </div>
+            </div>
+
+            <div class="btn-group">
+              <a class="actions__item fal fa-user-alt ico--custom" data-placement="bottom" data-toggle="dropdown"
+                [title]="'LIST_GROUPS.MEMBERS' | translate: params" (click)="revealMembers()"></a>
+              <div class="dropdown-menu dropdown-margin-members">
+                <div class="listview listview--hover">
+                  <div class="listview__header">
+                    <span [innerHTML]="'LIST_GROUPS.MEMBERS' | translate: params"></span>
+                  </div>
+                  <div class="dropdown-divider" style="margin: 0"></div>
+                  <div class="scrollable-menu scrollbar-outer">
+                    <a *ngFor="let item of membersGroup" class="listview__item" routerLink="/user/profile/{{ item.email }}">
+                      <div *ngIf="!item.is_default_avatar">
+                        <img src="{{ item.avatar_url }}" class="listview__img" alt="{{ item.name }}">
+                      </div>
+                      <div *ngIf="item.is_default_avatar" class="default__avatar">
+                        <i class="fal fa-user fa--md"></i>
+                      </div>
+                      <div class="listview__content">
+                        <div class="listview__heading ellipsis-text" data-toggle="tooltip" title="{{ item.name }}">{{
+                          item.name }}</div>
+                        <p class="ellipsis-text" data-toggle="tooltip" title="{{ item.email }}">{{ item.email }}</p>
+                        <span style="color: #9E9E9E">{{ item.role }}</span>
+                      </div>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="app__discuss">
+              <app-discussions-group [idGroup]="idGroup" [currentLoginUser]="currentLoginUser" [groupInfo]="groupInfo"></app-discussions-group>
+            </div>
+
+          </div>
+          <!-- End dropdown settings -->
+        </div>
+
+
+        <!-- BREADCRUMBS -->
+        <div class="breadcrumb-container">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item title-group">
+              <a routerLink="/manage/groups" class="color-folder-breadcrumbs">
+                <span [innerHTML]="'LIST_GROUPS.MY_GROUPS' | translate: params"></span>
+              </a>
+            </li>
+            <li class="breadcrumb-item active">
+              <span>{{(groupInfo ? groupInfo.name : '')}}</span>
+            </li>
+          </ol>
+        </div>
+
+        <div *ngIf="listRepoGroupDisplay.length > 0">
+          <!-- LIST VIEW -->
+          <app-root-list-view *ngIf="isListView" [listFolders]="listRepoGroupDisplay" [isStaff]="isStaff" [columns]="columns"
+            (ClickModalAction)="modalAction($event)" (Sort)="handleSort($event)" (unshared)="removeShareCallBack()"></app-root-list-view>
+
+          <!-- GRID VIEW -->
+          <app-root-grid-view *ngIf="!isListView" [ListFolders]="listRepoGroupDisplay" [isStaff]="isStaff"
+            (ClickModalAction)="modalAction($event)" (unshared)="removeShareCallBack()"></app-root-grid-view>
+        </div>
+
+        <app-empty-item *ngIf="listRepoGroupDisplay.length === 0" [messageTitle]="'LIST_GROUPS.NO_FOLDER' | translate: params"
+          [messageSub]="groupEmptyMessage | translate: params"></app-empty-item>
+      </div>
+    </div>
+    <!-- Start Child Components -->
+    <app-root-create-new-folder-modal *ngIf="isOpenSpecificGroupModal.create_folder" (create)="reloadItemList()"></app-root-create-new-folder-modal>
+    <app-dismiss-leave-group-modal *ngIf="isOpenSpecificGroupModal.dismiss_leave" [typeModal]="typeModal" [groupInfo]="groupInfo"
+      [currentEmailLogin]="currentLoginUser.email" (DismissLeaveCallback)="callbackDismissLeaveGroup($event)"></app-dismiss-leave-group-modal>
+    <app-manage-group-members *ngIf="isOpenSpecificGroupModal.manage_group_members" [groupInfo]="groupInfo"></app-manage-group-members>
+    <app-transfer-group *ngIf="isOpenSpecificGroupModal.transfer_group" [groupInfo]="groupInfo"
+      (onTransferGroupSuccess)="transferGroupSuccess()"></app-transfer-group>
+    <app-rename-group *ngIf="isOpenSpecificGroupModal.rename_group" [groupInfo]="groupInfo" (onRenameGroupSuccess)="renameGroupSuccess()"></app-rename-group>
+    <!-- End Child Components -->
+  </div>
+</div>
+<app-processing *ngIf="isProcessing"></app-processing>
+
+<pagination *ngIf="config.paging && listRepoGroupDisplay.length > 0" [(ngModel)]="page.page" [totalItems]="length"
+  [itemsPerPage]="page.itemsPerPage" [maxSize]="maxSize" [boundaryLinks]="true" [rotate]="false" (pageChanged)="changeTable(config, $event)"
+  (numPages)="numPages = $event">
+</pagination>

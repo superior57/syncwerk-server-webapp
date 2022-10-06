@@ -1,0 +1,302 @@
+<header class="content__title">
+  <h1>
+    <span [innerHTML]="'TITLE_PAGE.USERS' | translate: params"></span>
+    <!-- <i class="fal fa-chevron-right"></i>
+    <span [innerHTML]="'TITLE_PAGE.DATABASE' | translate: params"></span> -->
+  </h1>
+  <small [innerHTML]="'ADMIN.USERS.DESC_DATABASE' | translate: params"></small>
+</header>
+
+<div class="card">
+  <div class="card-block">
+    <div *ngIf="!isProcessing">
+      <div class="data-table__header d-flex justify-content-between fl--custom" *ngIf="numberOfSelectedUsers <= 0">
+        <div class="data-table_buttons actions" *ngIf="currentUserPermission.can_manage_user !== false">
+          <div class="wrapper__btn">
+            <button class="btn btn-secondary waves-effect btn--icon-text btn--custom" data-toggle="tooltip" [title]="'BUTTONS.ADD_USERS' | translate: params"
+              (click)="handleOpenModal('addImportUsers')">
+              {{'BUTTONS.ADD_USERS' | translate:params}}
+            </button>
+            <button class="btn btn-secondary waves-effect btn--icon-text btn--custom" data-toggle="tooltip" [title]="'BUTTONS.EXPORT_EXCEL' | translate: params"
+              (click)="exportToExcel()">
+              {{'BUTTONS.EXPORT_EXCEL' | translate:params}}
+            </button>
+          </div>
+        </div>
+        <div class="form-group data-table__filter">
+          <input *ngIf="config.filtering" [placeholder]="'SEARCHS.ALL_COLUMNS' | translate: params" [(ngModel)]="config.filtering.filterString"
+            class="form-control" (keyup)="changeTable(config)" />
+          <i class="form-group__bar"></i>
+        </div>
+        <div class="row-selector">
+          <app-row-selector (changed)="onPerPageChanged($event)"></app-row-selector>
+        </div>
+      </div>
+
+      <div class="data_table__header d-flex justify-content-between" *ngIf="numberOfSelectedUsers > 0">
+        <div class="form-group">
+          <span class="count-items-checked">{{ 'ADMIN.USERS.ACTIONS.NUMBER_OF_SELECTED_USERS' |
+            translate:{numberOfSelectedUsers: numberOfSelectedUsers} }}</span>
+        </div>
+        <div class="form-group">
+          <button (click)="openDeleteUsersModalBatch()" class="btn btn-secondary waves-effect" data-toggle="tooltip"
+            [title]="'BUTTONS.DELETE_USERS' | translate: params">
+            <span [innerHTML]="'BUTTONS.DELETE_USERS' | translate: params"></span>
+          </button>
+        </div>
+        <div class="form-group push-right">
+          <button (click)="openSetQuotaModalBatch()" class="btn btn-secondary waves-effect" data-toggle="tooltip"
+            [title]="'BUTTONS.SET_QUOTA' | translate: params">
+            <span [innerHTML]="'BUTTONS.SET_QUOTA' | translate: params"></span>
+          </button>
+        </div>
+      </div>
+
+      <div class="data-table">
+        <ul class="nav nav-tabs mb-3" role="tablist">
+          <li *ngIf="enableDatabaseSource" class="nav-item">
+            <a class="nav-link active" data-toggle="tab" role="tab" (click)="loadData(DatabaseSource)" aria-selected="true">{{'ADMIN.USERS.SOURCE.DATABASE' | translate:params}}</a>
+          </li>
+          <li *ngIf="enableLDAPSource" class="nav-item">
+            <a class="nav-link" data-toggle="tab" role="tab" (click)="loadData(LDAPSource)" aria-selected="false">{{'ADMIN.USERS.SOURCE.LDAP' | translate:params}}</a>
+          </li>
+        </ul>
+        <table class="table table-hover mb-0">
+          <thead>
+            <tr>
+              <th *ngIf="currentUserPermission.can_manage_user !== false">
+                <label class="custom-control custom-checkbox">
+                  <input [checked]="isCheckedAll" #checkAll type="checkbox" class="custom-control-input" name="checkAll"
+                    (click)="handleCheckAll()">
+                  <span class="custom-control-indicator"></span>
+                </label>
+              </th>
+              <th *ngFor="let column of columns" [class]="column.class" [width]="column.width" [ngClass]="{'cursor-text': column.sort===false}"
+                (click)="column.sort!==false ? sortColumn(column, config) : ''">
+                {{ column.title }}
+                <!-- <i class="fal fa-hc-lg float-right" [ngClass]="{'fal fa-sort-amount-up': column.sort==='asc', 'fal fa-sort-amount-down': column.sort==='desc'}"></i> -->
+                <ng-container>
+                  <i *ngIf="column.sort ==='asc'" class="fal fa-sort-amount-up sort-icon"></i>
+                  <i *ngIf="column.sort ==='desc'" class="fal fa-sort-amount-down sort-icon"></i>
+                </ng-container>
+              </th>
+
+              <th *ngIf="currentUserPermission.can_manage_user !== false" width="13%" class="cursor-text">
+                <span [innerHTML]="'TABLE.COLUMNS.ACTIONS' | translate: params"></span>
+              </th>
+
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let user of userListDisplay; let index = index">
+              <tr (mouseenter)="hoverIndex=index" (mouseleave)="hoverIndex=-1">
+                <td *ngIf="currentUserPermission.can_manage_user !== false">
+                  <label class="custom-control custom-checkbox">
+                    <input [checked]="user.isChecked" #checkAll type="checkbox" class="custom-control-input" name="checkAll"
+                      (click)="handleCheck(user)">
+                    <span class="custom-control-indicator"></span>
+                  </label>
+                </td>
+                <td>
+                  <div>
+                    <span [routerLink]="['/admin', 'users', 'info', user.email]" class="cursor-pointer tb-email">{{
+                      user.email | splice_length: 25 }}</span>
+                  </div>
+                  <!-- <div class="name--custom">
+                    {{ user.name }}
+                  </div> -->
+                </td>
+                <td class="d-none d-lg-table-cell">
+                  <div *ngIf="user.email === currentUser || user.editMode !== 'status'">
+                    <span *ngIf="user.is_active">{{'ADMIN.USERS.STATUS.ACTIVE' | translate}}</span>
+                    <span *ngIf="!user.is_active">{{'ADMIN.USERS.STATUS.INACTIVE' | translate}}</span>
+                    <span style="cursor: pointer;" *ngIf="currentUserPermission.can_manage_user !== false && index===hoverIndex && user.email !== currentUser"
+                      (click)="setEditMode(user, 'status')">
+                      <i class="fal fa-pen"></i>
+                    </span>
+                  </div>
+                  <div *ngIf="user.email !== currentUser && user.isEdit && user.editMode === 'status'">
+                    <select2 [data]="statusSelectData" [options]="options" [value]="user.is_active" [cssImport]="true"
+                      [width]="105" (valueChanged)="changeUserStatus(user, $event)">
+                    </select2>
+                  </div>
+                </td>
+                <td class="d-none d-lg-table-cell">
+                  <div *ngIf="user.email === currentUser || user.editMode !== 'role'">
+                    <span>{{ user.role }}</span>
+                    <span style="cursor: pointer;" *ngIf="currentUserPermission.can_manage_user !== false && index===hoverIndex && user.email !== currentUser"
+                      (click)="setEditMode(user, 'role')">
+                      <i class="fal fa-pen"></i>
+                    </span>
+                  </div>
+                  <div *ngIf="user.email !== currentUser && user.isEdit && user.editMode === 'role'">
+                    <select2 [data]="roleSelectData" [options]="options" [value]="user.role" [cssImport]="true" [width]="175"
+                      (valueChanged)="changeUserRole(user, $event, index)"></select2>
+                  </div>
+                </td>
+                <td class="d-none d-lg-table-cell">
+                  <div *ngIf="user.email === currentUser || user.editMode !== 'tenant'">
+                    <span>{{ user.tenant || '--' }}</span>
+                    <span style="cursor: pointer;" *ngIf="currentUserPermission.can_manage_user !== false && index===hoverIndex && user.email !== currentUser"
+                      (click)="setEditMode(user, 'tenant')">
+                      <i class="fal fa-pen"></i>
+                    </span>
+                  </div>
+                  <div *ngIf="user.email !== currentUser && user.isEdit && user.editMode === 'tenant'">
+                    <select2 [data]="tenantOptionList" [options]="options" [value]="user.tenant" [cssImport]="true"
+                      [width]="175" (valueChanged)="onChangeTenant(user, $event, index)"></select2>
+                  </div>
+                </td>
+                <td class="d-none d-lg-table-cell">{{ user.space_usage | customFileSize }} / {{ user.space_quota > 0 ?
+                  (user.space_quota |
+                  customFileSize) : '--'
+                  }}
+                  <span style="cursor: pointer;" *ngIf="currentUserPermission.can_manage_user !== false && index===hoverIndex"
+                    (click)="openSetQuotaModal(user)">
+                    <i class="fal fa-pen"></i>
+                  </span>
+                </td>
+                <td class="d-none d-lg-table-cell">{{ user.create_time > 0
+                  ? (((user.create_time / 1000000) | amFromUnix) | 
+                  amDateFormat:'YYYY-MM-DD HH:mm:ss') : '--'}} / {{
+                  user.last_login
+                  ? (user.last_login | amDateFormat:'YYYY-MM-DD HH:mm:ss') : '--'}}</td>
+                <td *ngIf="currentUserPermission.can_manage_user !== false" class="d-none d-lg-table-cell">
+                  <div [ngClass]="{ 'show' : index===hoverIndex && user.email !== currentUser }" class="action wrap__ico">
+                    <i class="actions__item fal fa-trash-alt ico--size" (click)="openDeleteUserConfirmModal(user)"
+                      data-toggle="tooltip" [title]="'TOOLTIPS.DELETE' | translate: params"></i>
+                    <i *ngIf="enableResetPassword" class="actions__item fal fa-sync-alt ct--ico ico--size" (click)="openResetPasswordConfirmModal(user)"
+                      data-toggle="tooltip" [title]="'TOOLTIPS.RESET_PWD' | translate: params"></i>
+                    <!-- <i *ngIf="!user.is_staff" class="fal fa-crown ct--ico ico--size" data-toggle="tooltip" [title]=" 'TOOLTIPS.PROMOTE' | translate: params"
+                      (click)="onPromoteAdmin(user,index)"></i>
+                    <i *ngIf="user.is_staff" class="fal fa-crown ct--ico ico--size" data-toggle="tooltip" [title]=" 'TOOLTIPS.DEMOTE' | translate: params"
+                      (click)="onDemoteAdmin(user,index)"></i> -->
+                  </div>
+                </td>
+                <td class="d-sm-table-cell d-md-table-cell d-lg-none">
+                  <a [href]="'#user-'+index" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="share-0">
+                    <i data-toggle="tooltip" title="Details" class="fal fa-2x fa-ellipsis-v actions__item"></i>
+                  </a>
+                </td>
+              </tr>
+
+              <!-- Collapse details of share link for sm display -->
+              <tr class="d-sm-table-row d-md-table-row d-lg-none share-details-row">
+                <td colspan="10">
+                  <div class="collapse" [id]="'user-'+index">
+                    <div class="share-details">
+                      <div>
+                        <span>
+                          <strong>{{'ADMIN.USERS.STATUS.STATUS_ROLE' | translate}}: </strong>
+                          <div *ngIf="user.email === currentUser || user.editMode !== 'status'">
+                            <span *ngIf="user.is_active">{{'ADMIN.USERS.STATUS.ACTIVE' | translate}}</span>
+                            <span *ngIf="!user.is_active">{{'ADMIN.USERS.STATUS.INACTIVE' | translate}}</span>
+                            <span style="cursor: pointer;" *ngIf="currentUserPermission.can_manage_user !== false && index===hoverIndex && user.email !== currentUser"
+                              (click)="setEditMode(user, 'status')">
+                              <i class="fal fa-pen"></i>
+                            </span>
+                          </div>
+                          <div *ngIf="user.email !== currentUser && user.isEdit && user.editMode === 'status'">
+                            <select2 [data]="statusSelectData" [options]="options" [value]="user.is_active" [cssImport]="true"
+                              [width]="105" (valueChanged)="changeUserStatus(user, $event)">
+                            </select2>
+                          </div>
+                        </span>
+                      </div>
+                      <div>
+                        <span>
+                          <strong>{{'ADMIN.USERS.STATUS.ROLE' | translate}}: </strong>
+                          <div *ngIf="user.email === currentUser || user.editMode !== 'role'">
+                            <span>{{ user.role }}</span>
+                            <span style="cursor: pointer;" *ngIf="currentUserPermission.can_manage_user !== false && index===hoverIndex && user.email !== currentUser"
+                              (click)="setEditMode(user, 'role')">
+                              <i class="fal fa-pen"></i>
+                            </span>
+                          </div>
+                          <div *ngIf="user.email !== currentUser && user.isEdit && user.editMode === 'role'">
+                            <select2 [data]="roleSelectData" [options]="options" [value]="user.role" [cssImport]="true"
+                              [width]="175" (valueChanged)="changeUserRole(user, $event, index)"></select2>
+                          </div>
+                        </span>
+
+                      </div>
+                      <div>
+                        <span>
+                          <strong>{{'ADMIN.USERS.STATUS.TENANT' | translate}}: </strong>
+                          <div *ngIf="user.email === currentUser || user.editMode !== 'tenant'">
+                            <span>{{ user.tenant || '--' }}</span>
+                            <span style="cursor: pointer;" *ngIf="currentUserPermission.can_manage_user !== false && index===hoverIndex && user.email !== currentUser"
+                              (click)="setEditMode(user, 'tenant')">
+                              <i class="fal fa-pen"></i>
+                            </span>
+                          </div>
+                          <div *ngIf="user.email !== currentUser && user.isEdit && user.editMode === 'tenant'">
+                            <select2 [data]="tenantOptionList" [options]="options" [value]="user.tenant" [cssImport]="true"
+                              [width]="175" (valueChanged)="onChangeTenant(user, $event, index)"></select2>
+                          </div>
+                        </span>
+                      </div>
+                      <div>
+                        <span>
+                          <strong>{{'ADMIN.USERS.STATUS.USED_TOTAL' | translate}}: </strong>
+                          {{ user.space_usage | customFileSize }} / {{ user.space_quota > 0 ?
+                          (user.space_quota |
+                          customFileSize) : '--'
+                          }}
+                          <span style="cursor: pointer;" *ngIf="currentUserPermission.can_manage_user !== false && index===hoverIndex"
+                            (click)="openSetQuotaModal(user)">
+                            <i class="fal fa-pen"></i>
+                          </span>
+                        </span>
+                      </div>
+                      <div>
+                        <span>
+                          <strong>{{'ADMIN.USERS.STATUS.CREATED_LAST_LOGIN' | translate}}: </strong>
+                          {{ ((user.create_time / 1000000) | amFromUnix) |
+                          amDateFormat:'YYYY-MM-DD HH:mm:ss' }} / {{
+                          user.last_login
+                          ? (user.last_login | amDateFormat:'YYYY-MM-DD HH:mm:ss') : '--'}}
+                        </span>
+                      </div>
+                      <div class="actions" *ngIf="currentUserPermission.can_manage_user !== false && !user.is_staff">
+                        <i class="actions__item fal fa-trash-alt ico--size" (click)="openDeleteUserConfirmModal(user)"
+                          data-toggle="tooltip" [title]="'TOOLTIPS.DELETE' | translate: params"></i>
+                        <i class="fal fa-sync-alt ct--ico ico--size" (click)="openResetPasswordConfirmModal(user)"
+                          data-toggle="tooltip" [title]="'TOOLTIPS.RESET_PWD' | translate: params"></i>
+                        <!-- <i *ngIf="!user.is_staff" class="fal fa-crown ct--ico ico--size" data-toggle="tooltip" [title]=" 'TOOLTIPS.PROMOTE' | translate: params"
+                          (click)="onPromoteAdmin(user,index)"></i>
+                        <i *ngIf="user.is_staff" class="fal fa-crown ct--ico ico--size" data-toggle="tooltip" [title]=" 'TOOLTIPS.DEMOTE' | translate: params"
+                          (click)="onDemoteAdmin(user,index)"></i> -->
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- EMPTY ITEM -->
+      <app-empty-item *ngIf="userListDisplay.length === 0" [messageTitle]="('USERADMIN_INFO.SEARCH_DATABASE.USER_NOT_FOUND') | translate: params"
+        [messageSub]="('USERADMIN_INFO.SEARCH_DATABASE.USER_SUB_NOT_FOUND') | translate: params"></app-empty-item>
+
+
+      <app-set-quota-modal *ngIf="isModalOpen.setQuota" [userList]="userListForEdit" (onSetQuotaSuccess)=onSetQuotaSuccess($event)
+        (onBatchSetQuotaSuccess)="onBatchSetQuotaSuccess($event)"></app-set-quota-modal>
+      <app-delete-user-confirmation-modal *ngIf="isModalOpen.deleteUser" [userListForDelete]="userListForDelete"
+        (onDeleteSuccess)="onUserDeleteSuccess($event)" (onBatchDeleteSuccess)="onBatchUserDeleteSuccess($event)"></app-delete-user-confirmation-modal>
+      <app-reset-password-confirmation-modal *ngIf="isModalOpen.resetPassword" [userForResetPassword]="userForResetPassword"
+        (onResetPasswordSuccess)="onResetPasswordSuccess($event)"></app-reset-password-confirmation-modal>
+      <app-add-import-users-modal *ngIf="isModalOpen.addImportUsers" (onAddUserSuccess)="onAddUserSuccess($event)"></app-add-import-users-modal>
+    </div>
+
+    <app-processing *ngIf="isProcessing"></app-processing>
+  </div>
+</div>
+
+<div *ngIf="!isProcessing" class="data-table__footer">
+  <pagination *ngIf="config.paging" [(ngModel)]="page.page" [totalItems]="length" [itemsPerPage]="page.itemsPerPage"
+    [maxSize]="maxSize" [boundaryLinks]="true" [rotate]="false" (pageChanged)="changeTable(config, $event)" (numPages)="numPages = $event">
+  </pagination>
+</div>

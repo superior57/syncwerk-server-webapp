@@ -1,0 +1,44 @@
+<div class="footer--custom  hidden-xs-down o-hidden">
+  <ul class="nav footer__nav pull-right ul--custom" *ngIf="showFooters">
+
+    <a class="nav-link" target="_blank" (click)="openAboutModal()" [innerHTML]="'FOOTER.VERSION' | translate"></a>
+    <ng-container *ngIf="config_dict.SUPPORT_PAGE_ENABLE">
+      <a class="nav-link" [routerLink]="['/help']">{{'FOOTER.SUPPORT' | translate}}</a>
+    </ng-container>
+    <ng-container *ngIf="config_dict.PRIVACY_POLICY_ENABLE">
+      <a class="nav-link" [routerLink]="['/privacy']">{{'FOOTER.PRIVACY' | translate}}</a>
+    </ng-container>
+    <ng-container *ngIf="config_dict.TERMS_ENABLE">
+      <a class="nav-link" [routerLink]="['/terms']">{{'FOOTER.TERMS' | translate}}</a>
+    </ng-container>
+    <ng-container *ngIf="config_dict.WELCOME_MESSAGE_ENABLE">
+      <a class="nav-link" [routerLink]="['/welcome']">{{'FOOTER.WELCOME_MESSAGE' | translate}}</a>
+    </ng-container>
+    <ng-container *ngIf="config_dict.LEGAL_NOTICES_ENABLE">
+      <a class="nav-link" [routerLink]="['/legal']">{{'FOOTER.LEGAL_INFO' | translate}}</a>
+    </ng-container>
+  </ul>
+</div>
+
+<div class="modal fade" id="about-modal" tabindex="-1">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="text-center">
+          <img width="80%" src="/media/img/syncwerk-logo-black.png" alt="Syncwerk Logo">
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="text-center">
+          <span [innerHTML]="'FOOTER.VERSION' | translate"></span>
+        </div>
+        <div class="text-center">
+          <span>VFULLBUILDVER</span>
+        </div>
+        <div class="text-center">
+          <a href="https://www.syncwerk.de">www.syncwerk.de</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

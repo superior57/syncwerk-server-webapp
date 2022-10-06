@@ -1,0 +1,315 @@
+<header class="content__title">
+  <h1>
+    {{'MEETING.TITLE' | translate}}
+  </h1>
+  <small>{{'MEETING.SUBTITLE' | translate}}</small>
+</header>
+
+<div class="card">
+  <div class="card-block">
+    <div class="data-table__header d-flex justify-content-betwwen fl--custom">
+      <div class="form-group">
+        <button (click)="openCreateNewMeetingModal()" class="btn btn-secondary waves-effect btn--icon-text mr-25px">
+          {{'MEETING.BUTTON.ADD_NEW' | translate}}</button>
+      </div>
+
+      <div class="form-group data-table__filter">
+        <input [placeholder]="'MEETING.FILTER_PLACEHOLDER' | translate" class="form-control"
+          (keyup)="onSearchFilterChange($event)" />
+        <i class="form-group__bar"></i>
+      </div>
+
+      <div class="row-selector">
+        <app-row-selector (changed)="onPerPageChanged($event)"></app-row-selector>
+      </div>
+      <div class="form__direct__link">
+        <a [routerLink]="['/manage', 'meeting-servers']" data-toggle="tooltip" [title]="'SIDE_MENU_BAR.BBB_SERVERS' | translate"
+          class="a--direct">
+          <i class="fal fa-server ico__direct"></i>
+        </a>
+        <!-- <a [routerLink]="['/admin', 'folders', 'system']" data-toggle="tooltip" [title]="'SIDE_MENU_BAR.TEMPLATES' | translate: param"
+          class="a--direct">
+          <i class="fal fa-table ico__direct" aria-hidden="true"></i>
+        </a> -->
+      </div>
+      <!-- <div class="btn-group btn-group__actions">
+        <a class="actions__item" [routerLink]="['/manage', 'meeting-servers']" role="button" [title]="'SIDE_MENU_BAR.BBB_SERVERS' | translate">
+          <i class="fal fa-server"></i>
+        </a>
+      </div> -->
+    </div>
+
+    <!-- List view -->
+    <ng-container *ngIf="!isProcessing">
+      <table class="table table-hover" *ngIf="meetingListFromAPI.length !== 0 && meetingListForDisplay.length !== 0">
+        <thead>
+          <tr>
+            <th class="sortable" (click)="triggerSort('room_name')" >
+              {{'MEETING.TABLE_HEADERS.NAME' | translate: params}}
+              <ng-container *ngIf="sortConfig.column==='room_name'">
+                <i *ngIf="sortConfig.mode==='asc'" class="fal fa-sort-amount-up sort-icon d-none d-lg-table-cell"></i>
+                <i *ngIf="sortConfig.mode==='desc'" class="fal fa-sort-amount-down sort-icon d-none d-lg-table-cell"></i>
+              </ng-container>
+            </th>
+            <th class="sortable" (click)="triggerSort('meeting_role')">
+              {{'MEETING.TABLE_HEADERS.ROLE' | translate}}
+              <ng-container *ngIf="sortConfig.column==='meeting_role'">
+                <i *ngIf="sortConfig.mode==='asc'" class="fal fa-sort-amount-up sort-icon d-none d-lg-table-cell"></i>
+                <i *ngIf="sortConfig.mode==='desc'" class="fal fa-sort-amount-down sort-icon d-none d-lg-table-cell"></i>
+              </ng-container>
+            </th>
+            <th class="d-none d-lg-table-cell sortable" (click)="triggerSort('created_at')">
+              {{'MEETING.TABLE_HEADERS.CREATED_ON' | translate}}
+              <ng-container *ngIf="sortConfig.column==='created_at'">
+                <i *ngIf="sortConfig.mode==='asc'" class="fal fa-sort-amount-up sort-icon d-none d-lg-table-cell"></i>
+                <i *ngIf="sortConfig.mode==='desc'" class="fal fa-sort-amount-down sort-icon d-none d-lg-table-cell"></i>
+              </ng-container>
+            </th>
+            <th class="d-none d-lg-table-cell sortable" (click)="triggerSort('owner_id')">
+              {{'MEETING.TABLE_HEADERS.CREATOR' | translate}}
+              <ng-container *ngIf="sortConfig.column==='owner_id'">
+                <i *ngIf="sortConfig.mode==='asc'" class="fal fa-sort-amount-up sort-icon d-none d-lg-table-cell"></i>
+                <i *ngIf="sortConfig.mode==='desc'" class="fal fa-sort-amount-down sort-icon d-none d-lg-table-cell"></i>
+              </ng-container>
+            </th>
+            <th class="d-none d-lg-table-cell sortable" (click)="triggerSort('private_setting_name')">
+              {{'MEETING.TABLE_HEADERS.SETTING_NAME' | translate}}
+              <ng-container *ngIf="sortConfig.column==='private_setting_name'">
+                <i *ngIf="sortConfig.mode==='asc'" class="fal fa-sort-amount-up sort-icon d-none d-lg-table-cell"></i>
+                <i *ngIf="sortConfig.mode==='desc'" class="fal fa-sort-amount-down sort-icon d-none d-lg-table-cell"></i>
+              </ng-container>
+            </th>
+            <th width="15%" class="d-none d-lg-table-cell sortable" (click)="triggerSort('private_setting_url')">
+              {{'MEETING.TABLE_HEADERS.BBB_SERVER' | translate}}
+              <ng-container *ngIf="sortConfig.column==='private_setting_url'">
+                <i *ngIf="sortConfig.mode==='asc'" class="fal fa-sort-amount-up sort-icon d-none d-lg-table-cell"></i>
+                <i *ngIf="sortConfig.mode==='desc'" class="fal fa-sort-amount-down sort-icon d-none d-lg-table-cell"></i>
+              </ng-container>
+            </th>
+            <th class="sortable" (click)="triggerSort('status')">
+              {{'MEETING.TABLE_HEADERS.STATUS' | translate}}
+               <ng-container *ngIf="sortConfig.column==='status'">
+                <i *ngIf="sortConfig.mode==='asc'" class="fal fa-sort-amount-up sort-icon d-none d-lg-table-cell"></i>
+                <i *ngIf="sortConfig.mode==='desc'" class="fal fa-sort-amount-down sort-icon d-none d-lg-table-cell"></i>
+              </ng-container>
+            </th>
+            <th width="24%">{{'MEETING.TABLE_HEADERS.ACTIONS' | translate}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let meeting of meetingListForDisplay; let index=index">
+            <tr (mouseover)="hoveredIndex=index" (mouseleave)="hoveredIndex=-1">
+              <td class="text-ellipsis" data-toggle="tooltip" data-placement="top" [title]="meeting.room_name">
+                <span *ngIf="meeting.room_share_type!=='SHARED_TO_GROUP'">{{meeting.room_name}}</span>
+	              <span *ngIf="meeting.room_share_type==='SHARED_TO_GROUP'">{{ 'MEETING.LIST.GROUP' | translate }} - {{meeting.room_name}}</span>
+              </td>
+              <td class="text-ellipsis" [title]="(meeting.meeting_role === 'MODERATOR' ? 'MEETING.LIST.MODERATOR' : 'MEETING.LIST.ATTENDEE') | translate">
+                {{(meeting.meeting_role === 'MODERATOR' ? 'MEETING.LIST.MODERATOR' : 'MEETING.LIST.ATTENDEE') | translate}}
+              </td>
+              <td class="d-none d-lg-table-cell text-ellipsis" [title]="meeting.created_at | date:'yyyy-MM-dd HH:mm:ss'">
+                {{meeting.created_at | date:'yyyy-MM-dd HH:mm:ss'}}
+              </td>
+              <td class="d-none d-lg-table-cell text-ellipsis" [title]="meeting.owner_id">{{meeting.owner_id}}</td>
+              <td class="d-none d-lg-table-cell text-ellipsis" [title]="meeting.private_setting_name">{{meeting.private_setting_name}}</td>
+              <td class="d-none d-lg-table-cell text-ellipsis" [title]="meeting.private_setting_url">{{meeting.private_setting_url}}</td>
+              <td class="text-ellipsis" [title]="displayStatus(meeting.status)">{{displayStatus(meeting.status)}}</td>
+              <td class="d-none d-lg-table-cell">
+                <div *ngIf="meeting.room_share_type==='OWN'">
+                  <div *ngIf="!meeting.isStarting && !meeting.isStopping">
+                    <i *ngIf="meeting.status==='STOPPED'" [title]="'TOOLTIPS.START_MEETING' | translate"
+                      (click)="openStartMeetingModal(meeting, 'START')" class="fal fa-play actions__item"></i>
+                    <i *ngIf="meeting.status==='IN_PROGRESS'" [title]="'TOOLTIPS.JOIN_MEETING_AS_MD' | translate"
+                      (click)="openStartMeetingModal(meeting, 'JOIN')" class="fal fa-sign-in actions__item"></i>
+                    <i *ngIf="meeting.status==='IN_PROGRESS'" [title]="'TOOLTIPS.STOP_MEETING' | translate"
+                      (click)="stopMeeting(meeting)" class="fal fa-stop actions__item"></i>
+                    <!-- <i class="fal fa-share-alt actions__item" data-toggle="tooltip" title="Copy to Clipboard" ngxClipboard [cbContent]="getLink(meeting)"
+                  (click)="copyLinks()"></i> -->
+                    <i class="fal fa-share-alt actions__item" data-toggle="tooltip"
+                      [title]="'TOOLTIPS.SHARE_MEETING' | translate" ngxClipboard [cbContent]="getLink(meeting)"
+                      (click)="openShareMeetingModal(meeting)"></i>
+                    <i [title]="'TOOLTIPS.EDIT_MEETING' | translate" (click)="editMeeting(meeting)"
+                      class="fal fa-pen actions__item"></i>
+                    <a routerLink="/meetings/recordings/{{meeting.id}}"> <i
+                        [title]="'TOOLTIPS.MEETING_RECORDING' | translate" class="fal fa-film actions__item"></i></a>
+                    <i [title]="'TOOLTIPS.DELETE_MEETING' | translate" (click)="openDeleteMeetingModal(meeting)"
+                      class="fal fa-times actions__item"></i>
+                  </div>
+
+                  <div *ngIf="meeting.isStarting && !meeting.isStopping">
+                    <span [innerHTML]="'MEETING.STATUS.STARTING' | translate"></span>
+                  </div>
+                  <div *ngIf="!meeting.isStarting && meeting.isStopping">
+                    <span [innerHTML]="'MEETING.STATUS.STOPPING' | translate"></span>
+                  </div>
+                </div>
+                <div *ngIf="meeting.room_share_type!=='OWN' && meeting.meeting_role === 'MODERATOR'">
+                  <div *ngIf="!meeting.isStarting && !meeting.isStopping">
+                    <span>
+                      <i *ngIf="meeting.status==='STOPPED'" [title]="'TOOLTIPS.START_MEETING' | translate"
+                        (click)="openStartMeetingModal(meeting, 'START')" class="fal fa-play actions__item"></i>
+                      <i *ngIf="meeting.status==='IN_PROGRESS'" [title]="'TOOLTIPS.JOIN_MEETING_AS_MD' | translate"
+                        (click)="openStartMeetingModal(meeting, 'JOIN')" class="fal fa-sign-in actions__item"></i>
+                      <i *ngIf="meeting.status==='IN_PROGRESS'" [title]="'TOOLTIPS.STOP_MEETING' | translate"
+                        (click)="stopMeeting(meeting)" class="fal fa-stop actions__item"></i>
+                      <i [title]="'TOOLTIPS.EDIT_MEETING' | translate" (click)="editMeeting(meeting)"
+                        class="fal fa-pen actions__item"></i>
+                      <a routerLink="/meetings/recordings/{{meeting.id}}"> <i
+                          [title]="'TOOLTIPS.MEETING_RECORDING' | translate" class="fal fa-film actions__item"></i></a>
+                    </span>
+                  </div>
+                  <div *ngIf="meeting.isStarting && !meeting.isStopping">
+                    <span [innerHTML]="'MEETING.STATUS.STARTING' | translate"></span>
+                  </div>
+                  <div *ngIf="!meeting.isStarting && meeting.isStopping">
+                    <span [innerHTML]="'MEETING.STATUS.STOPPING' | translate"></span>
+                  </div>
+                </div>
+                <div *ngIf="meeting.room_share_type!=='OWN' && meeting.meeting_role !== 'MODERATOR'">
+                  <div *ngIf="!meeting.isStarting">
+                    <span>
+                      <i *ngIf="meeting.status==='STOPPED' && meeting.allow_any_user_start"
+                        [title]="'TOOLTIPS.START_MEETING' | translate" (click)="openStartMeetingModal(meeting, 'START')"
+                        class="fal fa-play actions__item"></i>
+                      <i *ngIf="meeting.status==='IN_PROGRESS'" [title]="'TOOLTIPS.JOIN_MEETING' | translate"
+                        (click)="openStartMeetingModal(meeting, 'JOIN')" class="fal fa-sign-in actions__item"></i>
+                      <a routerLink="/meetings/recordings/{{meeting.id}}"> <i
+                          [title]="'TOOLTIPS.MEETING_RECORDING' | translate" class="fal fa-film actions__item"></i></a>
+                    </span>
+                  </div>
+                  <div *ngIf="meeting.isStarting && !meeting.isStopping">
+                    <span [innerHTML]="'MEETING.STATUS.STARTING' | translate"></span>
+                  </div>
+                  <div *ngIf="!meeting.isStarting && meeting.isStopping">
+                    <span [innerHTML]="'MEETING.STATUS.STOPPING' | translate"></span>
+                  </div>
+                </div>
+              </td>
+              <td class="d-sm-table-cell d-md-table-cell d-lg-none">
+                <a [href]="'#meeting-room-'+index" data-toggle="collapse" role="button" aria-expanded="false"
+                  aria-controls="share-0">
+                  <i data-toggle="tooltip" title="Details" class="fal fa-2x fa-ellipsis-v actions__item"></i>
+                </a>
+              </td>
+            </tr>
+            <!-- Collapse details of share link for sm display -->
+            <tr class="d-sm-table-row d-md-table-row d-lg-none share-details-row">
+              <td colspan="10">
+                <div class="collapse" [id]="'meeting-room-'+index">
+                  <div class="share-details">
+                    <div>
+                      <span>
+                        <strong>{{'MEETING.TABLE_HEADERS.CREATED_ON' | translate}}: </strong>
+                        {{meeting.created_at | date:'yyyy-MM-dd HH:mm:ss'}} </span>
+                    </div>
+                    <div>
+                      <span>
+                        <strong>{{'MEETING.TABLE_HEADERS.CREATOR' | translate}}: </strong>
+                        {{meeting.owner_id}} </span>
+                    </div>
+                    <div>
+                      <span>
+                        <strong>{{'MEETING.TABLE_HEADERS.SETTING_NAME' | translate}}: </strong>
+                        {{meeting.private_setting_name}} </span>
+                    </div>
+                    <div>
+                      <span>
+                        <strong>{{'MEETING.TABLE_HEADERS.BBB_SERVER' | translate}}: </strong>
+                        {{meeting.private_setting_url}} </span>
+                    </div>
+                    <div class="actions">
+                      <div *ngIf="meeting.room_share_type==='OWN'">
+                        <div *ngIf="!meeting.isStarting && !meeting.isStopping">
+                          <i *ngIf="meeting.status==='STOPPED'" [title]="'TOOLTIPS.START_MEETING' | translate"
+                            (click)="openStartMeetingModal(meeting, 'START')" class="fal fa-play actions__item"></i>
+                          <i *ngIf="meeting.status==='IN_PROGRESS'" [title]="'TOOLTIPS.JOIN_MEETING_AS_MD' | translate"
+                            (click)="openStartMeetingModal(meeting, 'JOIN')" class="fal fa-sign-in actions__item"></i>
+                          <i *ngIf="meeting.status==='IN_PROGRESS'" [title]="'TOOLTIPS.STOP_MEETING' | translate"
+                            (click)="stopMeeting(meeting)" class="fal fa-stop actions__item"></i>
+                          <!-- <i class="fal fa-share-alt actions__item" data-toggle="tooltip" title="Copy to Clipboard" ngxClipboard [cbContent]="getLink(meeting)"
+                        (click)="copyLinks()"></i> -->
+                          <i class="fal fa-share-alt actions__item" data-toggle="tooltip"
+                            [title]="'TOOLTIPS.SHARE_MEETING' | translate" ngxClipboard [cbContent]="getLink(meeting)"
+                            (click)="openShareMeetingModal(meeting)"></i>
+                          <i [title]="'TOOLTIPS.EDIT_MEETING' | translate" (click)="editMeeting(meeting)"
+                            class="fal fa-pen actions__item"></i>
+                          <a routerLink="/meetings/recordings/{{meeting.id}}"> <i
+                              [title]="'TOOLTIPS.MEETING_RECORDING' | translate" class="fal fa-film actions__item"></i></a>
+                          <i [title]="'TOOLTIPS.DELETE_MEETING' | translate" (click)="openDeleteMeetingModal(meeting)"
+                            class="fal fa-times actions__item"></i>
+                        </div>
+
+                        <div *ngIf="meeting.isStarting && !meeting.isStopping">
+                          <span [innerHTML]="'MEETING.STATUS.STARTING' | translate"></span>
+                        </div>
+                        <div *ngIf="!meeting.isStarting && meeting.isStopping">
+                          <span [innerHTML]="'MEETING.STATUS.STOPPING' | translate"></span>
+                        </div>
+                      </div>
+                      <div *ngIf="meeting.room_share_type!=='OWN' && meeting.meeting_role === 'MODERATOR'">
+                        <div *ngIf="!meeting.isStarting && !meeting.isStopping">
+                          <span>
+                            <i *ngIf="meeting.status==='STOPPED'" [title]="'TOOLTIPS.START_MEETING' | translate"
+                              (click)="openStartMeetingModal(meeting, 'START')" class="fal fa-play actions__item"></i>
+                            <i *ngIf="meeting.status==='IN_PROGRESS'" [title]="'TOOLTIPS.JOIN_MEETING_AS_MD' | translate"
+                              (click)="openStartMeetingModal(meeting, 'JOIN')" class="fal fa-sign-in actions__item"></i>
+                            <i *ngIf="meeting.status==='IN_PROGRESS'" [title]="'TOOLTIPS.STOP_MEETING' | translate"
+                              (click)="stopMeeting(meeting)" class="fal fa-stop actions__item"></i>
+                            <i [title]="'TOOLTIPS.EDIT_MEETING' | translate" (click)="editMeeting(meeting)"
+                              class="fal fa-pen actions__item"></i>
+                            <a routerLink="/meetings/recordings/{{meeting.id}}"> <i
+                                [title]="'TOOLTIPS.MEETING_RECORDING' | translate" class="fal fa-film actions__item"></i></a>
+                          </span>
+                        </div>
+                        <div *ngIf="meeting.isStarting && !meeting.isStopping">
+                          <span [innerHTML]="'MEETING.STATUS.STARTING' | translate"></span>
+                        </div>
+                        <div *ngIf="!meeting.isStarting && meeting.isStopping">
+                          <span [innerHTML]="'MEETING.STATUS.STOPPING' | translate"></span>
+                        </div>
+                      </div>
+                      <div *ngIf="meeting.room_share_type!=='OWN' && meeting.meeting_role !== 'MODERATOR'">
+                        <div *ngIf="!meeting.isStarting">
+                          <span>
+                            <i *ngIf="meeting.status==='STOPPED' && meeting.allow_any_user_start"
+                              [title]="'TOOLTIPS.START_MEETING' | translate" (click)="openStartMeetingModal(meeting, 'START')"
+                              class="fal fa-play actions__item"></i>
+                            <i *ngIf="meeting.status==='IN_PROGRESS'" [title]="'TOOLTIPS.JOIN_MEETING' | translate"
+                              (click)="openStartMeetingModal(meeting, 'JOIN')" class="fal fa-sign-in actions__item"></i>
+                            <a routerLink="/meetings/recordings/{{meeting.id}}"> <i
+                                [title]="'TOOLTIPS.MEETING_RECORDING' | translate" class="fal fa-film actions__item"></i></a>
+                          </span>
+                        </div>
+                        <div *ngIf="meeting.isStarting && !meeting.isStopping">
+                          <span [innerHTML]="'MEETING.STATUS.STARTING' | translate"></span>
+                        </div>
+                        <div *ngIf="!meeting.isStarting && meeting.isStopping">
+                          <span [innerHTML]="'MEETING.STATUS.STOPPING' | translate"></span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+      <!-- EMPTY ITEM -->
+      <app-empty-item *ngIf="meetingListForDisplay.length === 0 && meetingListFromAPI.length !== 0"
+        [messageTitle]="'MEETING.MESSAGES.NO_FOUND' | translate"
+        [messageSub]="'MEETING.MESSAGES.CREATE_SUB' | translate"></app-empty-item>
+      <app-empty-item *ngIf="meetingListForDisplay.length === 0 && meetingListFromAPI.length === 0"
+        [messageTitle]="'MEETING.MESSAGES.NO_CREATE' | translate"
+        [messageSub]="'MEETING.MESSAGES.CREATE_SUB' | translate"></app-empty-item>
+    </ng-container>
+
+    <app-processing *ngIf="isProcessing"></app-processing>
+  </div>
+</div>
+
+<div class="data-table__footer">
+  <div class="footer__wrapper">
+    <pagination [itemsPerPage]="pagination.itemsPerPage" [boundaryLinks]="true" [maxSize]="maxSize"
+      [totalItems]="meetingListFromAPI.length" (pageChanged)="pageChanged($event)"></pagination>
+  </div>
+</div>

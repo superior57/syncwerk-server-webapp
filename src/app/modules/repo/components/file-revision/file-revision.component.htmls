@@ -1,0 +1,109 @@
+<main class="main">
+  <!-- <app-secondary-header (onChoosenLanguage)="onChoosenLanguage()"></app-secondary-header> -->
+  <div *ngIf="!pageStatus.isGettingData && !pageStatus.isError" class="file-history">
+    <section class="">
+      <div class="header-modification d-flex mrl-20">
+        <i (click)="goBack()" data-toggle="tooltip" title="{{'BUTTONS.GO_BACK' | translate }}" class="fal fa-caret-circle-left fa-hc-fw icon-back-folders fa-2x"></i>
+        <div class="title__history">
+          <span class="name-modification">{{ revisionData.u_filename }}</span>
+          <!-- <span class="modification">
+            <span [innerHTML]="'REVISION.VERSION_HISTORY' | translate: params"></span>
+          </span> -->
+        </div>
+      </div>
+      <div class="tip__title">
+        <span style="display: block;" class="caption-modification">
+          <span [innerHTML]="'REVISION.TIP' | translate: params"></span>
+        </span>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <nav class="breadcrumb">
+            <span class="breadcrumb-title" [innerHTML]="'REVISION.CURRENT_PATH' | translate: params">:</span>
+            <a *ngFor="let path of revisionData.zipped; let index=index" class="breadcrumb-item" [ngClass]="{'active': revisionData.zipped.length === index + 1}"
+              (click)="openItem(path, index)">
+              {{ handleString(path[0]) }}
+            </a>
+          </nav>
+          <div class="actions">
+            <div class="form-group form-group--select form-inline">
+              <label class="mtr2" [innerHTML]="'REVISION.DURATION' | translate: params">: </label>
+              <div class="select">
+                <select2 [data]="select2Time" [options]="timeOptions" [value]="numberOfDays" [width]="100"
+                  (valueChanged)="changeDuration($event)"></select2>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-block">
+          <table class="table table-hover mb-0">
+            <thead>
+              <tr>
+                <th width="30%">
+                  <span [innerHTML]="'TABLE.COLUMNS.TIME' | translate: params"></span>
+                </th>
+                <th width="30%">
+                  <span [innerHTML]="'TABLE.COLUMNS.MODIFIER' | translate: params"></span>
+                </th>
+                <th width="20%">
+                  <span [innerHTML]="'TABLE.COLUMNS.SIZE' | translate: params"></span>
+                </th>
+                <th width="20%">
+                  <span [innerHTML]="'TABLE.COLUMNS.OPERATIONS' | translate: params"></span>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let rev of revisionData.commits; let index=index" (mouseover)="hoveredIndex=index"
+                (mouseleave)="hoveredIndex=-1">
+                <td>
+                  <div>
+                    <span data-toggle="tooltip" title="{{ (rev.ctime | amFromUnix) | amDateFormat:'ddd, D MMM YYYY HH:mm:ss ZZ'}}">{{
+                      (rev.ctime | amFromUnix) | amTimeAgo }}</span>
+                  </div>
+                  <small *ngIf="rev.rev_renamed_old_path!==null">
+                    (
+                    <span [innerHTML]="'REVISION.RENAME_OR_MOVE' | translate: params"></span> {{
+                    rev.rev_renamed_old_path }})
+                  </small>
+                </td>
+                <td>
+                  <a (click)="goToProfile(rev)">
+                    <img class="avatar-img" src="{{rev.creator.avatar_url}}" alt=""> {{ rev.creator.name }}
+                  </a>
+                </td>
+                <td>{{ rev.rev_file_size | customFileSize }}</td>
+                <td>
+                  <div *ngIf="index==hoveredIndex">
+                    <a (click)="restoreFileVersion(rev)" [title]="'REVISION.RESTORE' | translate: params" class="action"
+                      *ngIf="revisionData.can_revert_file && !rev.is_first_commit">
+                      <i class="zmdi zmdi-time-restore fa-hc-2x"></i>
+                    </a>
+                    <a [title]="'REVISION.DOWNLOAD' | translate: params" class="action" (click)="getHistoryDownloadLink(rev)">
+                      <i class="fal fa-download fa-hc-2x"></i>
+                    </a>
+                    <a [title]="'REVISION.VIEW' | translate: params" class="action" (click)=goToPreview(rev)>
+                      <i class="zmdi zmdi-view-web fa-hc-2x"></i>
+                    </a>
+                    <a (click)="goToDiff(rev)" [title]="'REVISION.DIFF' | translate: params" class="action" *ngIf="revisionData.can_compare && rev.rev_file_id!=='0000000000000000000000000000000000000000'">
+                      <i class="zmdi zmdi-compare fa-hc-2x"></i>
+                    </a>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </section>
+  </div>
+
+  <div *ngIf="!pageStatus.isGettingData && pageStatus.isError">
+    <section class="content content--full">
+      <div class="alert alert-danger text-center" role="alert">
+        {{ pageStatus.errorMessage }}
+      </div>
+    </section>
+  </div>
+</main>

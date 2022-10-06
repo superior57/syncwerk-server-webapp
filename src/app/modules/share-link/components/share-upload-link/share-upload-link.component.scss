@@ -1,0 +1,158 @@
+// .card {
+//   margin: 100px 150px;
+// }
+.content {
+  margin: 3rem 1rem 0rem 1rem;
+
+  .card {
+    padding: 6rem 0;
+    position: relative;
+  }
+}
+
+.center-dropzone {
+	width: 75%;
+  margin: auto;
+
+  .title-upload {
+    font-size: 16px;
+
+    span.color-folder {
+      font-weight: bold;
+    }
+  }
+  .content-share-by {
+    font-size: 14px;
+
+    .user-name {
+      font-weight: bold;
+      color: #0067b3;
+    }
+  }
+  .user__img {
+    width: 2rem;
+    height: 2rem;
+    margin-left: 0.2rem;
+    margin-right: 0.2rem;
+  }
+}
+button.btn.btn-success.btn--icon-text.waves-effect.pull-right[_ngcontent-c1] {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translate(-50%);
+}
+
+.title-upload{
+  span.title__header {
+    display: inline-block;
+    margin-bottom: 3px;
+    font-size: 1.15rem;
+  }
+  span.color-folder {
+    color: #0067b3;
+    font-size: 1.15rem;
+    margin: 0px 4px;
+  }
+}
+
+section {
+  min-height: calc(100vh - 114px);
+}
+
+span.share__by {
+  font-size: 1.15rem;
+  padding-bottom: 10px;
+  display: inline-block;
+}
+span.user-name {
+  color: #0067b3;
+  font-size: 1.15rem;
+}
+
+:host ::ng-deep .dz-error-message {
+  opacity: 1!important;
+  position: absolute!important;
+  top: 25px!important;
+  &::after {
+    content: none!important;
+  }
+}
+
+i#icon--listview {
+  font-size: 34px;
+  margin-left: 4px;
+}
+
+.row-icon {
+  float: left;
+
+  .folder-icon {
+    font-size: 30px;
+    float: left;
+    margin-top: -5px;
+  }
+
+  .file-icon {
+    margin-top: -5px;
+    max-width: 29px;
+    max-height: 30px;
+  }
+}
+
+
+.tb-name {
+  max-width: 0;
+
+  .name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-left: 4px;
+  }
+  .name-starred {
+    font-weight: bold;
+  }
+
+  .name:hover {
+/*    text-decoration: underline !important; */
+  }
+
+  .tb-name-input {
+    margin-bottom: 0;
+    margin-top: -10px;
+  }
+}
+
+.table td {
+  padding: 1.2rem 1.5rem;
+}
+
+td {
+  vertical-align: middle;
+  @media (min-width:992px) {
+    height: 57px;
+  }
+}
+
+
+tr.tr__xs__size {
+  box-shadow: 0px 1px rgba(0, 0, 0, 0.05);
+}
+
+thead {
+  box-shadow: 0px 1px rgba(0, 0, 0, 0.05);
+}
+
+.center-img{
+  width: 29px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 26px;
+  position: relative;
+  i.fal.fa-lock.tb-row-folder-lock {
+      position: absolute;
+      color: #e10032;
+  }
+}

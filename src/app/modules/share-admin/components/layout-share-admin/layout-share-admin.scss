@@ -1,0 +1,152 @@
+.zmdi {
+  cursor: pointer;
+}
+
+.data-table__filter {
+  margin-right: 25px;
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 10px;
+}
+
+.data-table__footer {
+  position: absolute;
+  right: 0;
+  margin-top: 3.7rem;
+}
+
+.row-selector {
+  min-width: 13rem;
+}
+
+:host ::ng-deep {
+  app-empty-item {
+    .card {
+      margin-bottom: 0;
+    }
+  }
+  pagination {
+    ul.pagination {
+      padding-right: 2rem;
+      justify-content: flex-end;
+    }
+  }
+}
+
+
+input[type=range] {
+  /*removes default webkit styles*/
+  -webkit-appearance: none;
+
+  /*fix for FF unable to apply focus style bug */
+  // border: 1px solid white;
+
+  /*required for proper track sizing in FF*/
+  width: 90%;
+  margin-right: 10px;
+  margin-top: -13px;
+  @media (max-width:600px) {
+    margin-right: -40px;
+  }
+}
+input[type=range]::-webkit-slider-runnable-track {
+  width: 47%;
+  height: 2px; // 5
+  background: #ddd;
+  border: none;
+  border-radius: 3px;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  border: none;
+  height: 12px;
+  width: 12px;
+  border-radius: 0px;
+  background: #0067b3;;
+  margin-top: -4px;
+}
+input[type=range]:focus {
+  outline: none;
+}
+input[type=range]:focus::-webkit-slider-runnable-track {
+  background: #ccc;
+}
+
+input[type=range]::-moz-range-track {
+  width: 64px;
+  height: 5px;
+  background: #ddd;
+  border: none;
+  border-radius: 3px;
+}
+input[type=range]::-moz-range-thumb {
+  border: none;
+  height: 12px;
+  width: 12px;
+  border-radius: 0px;
+  background: #0067b3;;
+}
+
+/*hide the outline behind the border*/
+input[type=range]:-moz-focusring{
+  outline: 1px solid white;
+  outline-offset: -1px;
+}
+
+input[type=range]::-ms-track {
+  width: 64px;
+  height: 5px;
+
+  /*remove bg colour from the track, we'll use ms-fill-lower and ms-fill-upper instead */
+  background: transparent;
+
+  /*leave room for the larger thumb to overflow with a transparent border */
+  border-color: transparent;
+  border-width: 6px 0;
+
+  /*remove default tick marks*/
+  color: transparent;
+}
+input[type=range]::-ms-fill-lower {
+  background: #d3d3d3; // 777
+  border-radius: 10px;
+}
+input[type=range]::-ms-fill-upper {
+  background: #ddd;
+  border-radius: 10px;
+}
+input[type=range]::-ms-thumb {
+  border: none;
+  height: 12px;
+  width: 12px;
+  border-radius: 0px;
+  background:#0067b3;;
+}
+input[type=range]:focus::-ms-fill-lower {
+  background: #888;
+}
+input[type=range]:focus::-ms-fill-upper {
+  background: #ccc;
+}
+
+.actions.list-grid-custom {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 374px){
+  .fl--custom{
+    flex-wrap: wrap;
+  }
+  .data-table__filter{
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-right: 0px !important;
+    margin-bottom: 10px;
+  }
+  .row-selector{
+    margin: 8px 0px !important;
+  }
+}
+

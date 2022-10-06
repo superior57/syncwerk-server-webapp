@@ -1,0 +1,154 @@
+.data-table__header {
+  .data-table__filter {
+    margin-right: 25px;
+    width: 87%;
+    max-width: 87%;
+    margin-bottom: 5px !important;
+  }
+  .row-selector {
+    min-width: 11rem;
+  }
+  .data-table_buttons {
+    margin: 10px 0 0 30px;
+  }
+}
+
+.mt-20px{
+  margin-top: 10px;
+}
+
+a {
+  &:hover {
+    //text-decoration: underline;
+    color: #0067b3;
+  }
+}
+
+table {
+  td {
+    vertical-align: middle;
+    word-break: break-all;
+    &.detail a {
+      cursor: default;
+    }
+  }
+  th.sortable {
+    cursor: pointer;
+  }
+  .sort-icon {
+    float: right;
+    color: black;
+  }
+}
+
+.actions__item {
+  height: 0;
+}
+
+.user-avatar {
+  width: 3rem;
+  height: 3rem;
+  //border-radius: 50%;
+  vertical-align: top;
+}
+
+a.card__profile {
+  background: #cecece;
+  padding: 6px 12px;
+  //border-radius: 50%;
+  color: #fff;
+  font-size: 20px;
+  box-sizing: border-box;
+}
+
+.notif-link {
+  color:#0067b3;
+  cursor: pointer;
+}
+.modification {
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 25px;
+  font-weight: bold;
+}
+.content__title .actions {
+  right: 1.5rem;
+  top: 1.4rem;
+}
+
+:host ::ng-deep span.folder-name {
+  color: #0067b3;
+}
+:host ::ng-deep span.file-name {
+  color: #0067b3;
+}
+:host ::ng-deep span.group-name {
+  color: #0067b3;
+}
+
+
+:host ::ng-deep span.folder_name {
+  color: #0067b3;
+}
+:host ::ng-deep span.sub_folder_file{
+  color: #0067b3;
+}
+
+.date-separator {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: darkgrey;
+}
+
+.description {
+  float: left;
+}
+
+.activity-details {
+  float: left;
+}
+
+.activity-time {
+  float: right;
+  text-align: right;
+}
+
+.detail {
+  width: 100%;
+  color: darkgray;
+  margin: auto;
+}
+
+.data-table__footer{
+  position: relative;
+  .footer__wrapper {
+    position: absolute;
+    right: 2rem;
+    top: 0px;
+  }
+}
+
+.form-group-btn {
+  margin-top: 4px;
+}
+
+@media (max-width: 768px){
+  .fl--custom{
+    flex-wrap: wrap;
+  }
+  .data-table__filter{
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-right: 0px !important;
+    margin-bottom: 0px;
+  }
+  .row-selector{
+    margin: 8px 0px !important;
+  }
+
+  .form-group-btn {
+      margin-top: 11px;
+  }
+}
+
+

@@ -1,0 +1,2262 @@
+{
+  "APPLICATION_NAME":"Syncwerk",
+  "DASHBOARD": {
+    "TITLE": "Übersicht",
+    "DESC": "Hier finden Sie aktuelle Änderungen, Aktionen und Neugikeiten für Ihr Cloudkonto",
+    "WELCOME": "Hier erscheint demnächst das Syncwerk Dashboard"
+  },
+  "FOLDERS": {
+    "DESC": "Persönliche und freigegebene Ordner verwalten",
+    "NO_FILTER_RESULT_TITLE": "Keine Ordner gefunden",
+    "NO_FILTER_RESULT_SUB": "Es tut uns leid, aber wir konnten keine Ergebnisse finden, die Ihrer Suche entsprechen. Bitte überprüfen Sie auch Ihre Schreibweise und versuchen Sie es erneut.",
+    "NO_FOLDER_ADDED": "Es wurde noch kein Ordner hinzugefügt.",
+    "NO_FOLDER_SUB_ADDED": "Sie können einen Ordner erstellen, um Ihre Dateien zu organisieren. Jeder Ordner kann separat synchronisiert und geteilt werden."
+  },
+  "GROUPS": {
+    "DESC": "Gruppen und Gruppenmitgliedschaften verwalten"
+  },
+  "SERVER": {
+    "PAGE_NOT_FOUND": "Seite nicht gefunden",
+    "SERVER_ERROR_MESSAGE": "Server zurzeit nicht erreichbar. Bitte versuchen Sie es später nochmal.",
+    "BACK_TO_HOMEPAGE": "Zurück zur Übersicht"
+  },
+  "GROUP_FOLDER": {
+    "DESC": "Gruppenordner verwalten"
+  },
+  "GROUP_MANAGEMENT": {
+    "TITLE": "Gruppenmanagement",
+    "DESC": "Gruppe verwalten",
+    "IMPORT_MEMBER_FROM_CSV": "Gruppenmitglieder aus einer CSV-Datei importieren",
+    "DISMISS_GROUP": "Wollen Sie die Gruppe \"{{groupName}}\" wirklich löschen?",
+    "LEAVE_GROUP": "Wollen Sie die Gruppe \"{{groupName}}\" wirklich verlassen?",
+    "YOU_MUST_SELECT_AT_LEAST_1_USER_TO_ADD_TO_THE_GROUP": "Bitte wählen Sie mindestens einen Benutzer aus.",
+    "SEARCH_INPUT_PLACEHOLDER": "Suche...",
+    "ROLE_ADMIN": "Administrator",
+    "ROLE_MEMBER": "Mitglied",
+    "ROLE_OWNER": "Inhaber",
+    "TABLE_HEADERS": {
+      "NAME": "Name",
+      "EMAIL": "E-Mail",
+      "ROLE": "Rolle",
+      "ACTIONS": "Aktionen"
+    },
+    "ADD_MEMBERS_BTN": "Mitglieder hinzufügen",
+    "VIEW_FOLDER_BTN": "Gruppenordner",
+    "CREATE_GROUP": "Eine Gruppe wurde erstellt",
+    "REMOVE_MEMBER_GROUP": "Mitglied aus Gruppe entfernt",
+    "DISMISS_GROUP_NOTI": "Gruppe gelöscht",
+    "LEFT_GROUP_NOTI": "Gruppe verlassen",
+    "ADD_MEMBERS_MODAL": {
+      "ADD_MEMBERS_TAB_TITLE": "Mitglieder hinzufügen",
+      "ADD_MEMBERS_TAB_SUBTITLE": "Suchen Sie die Benutzer, die Sie hinzufügen möchten:",
+      "IMPORT_MEMBERS_TAB_TITLE": "Mitglieder importieren",
+      "IMPORT_MEMBERS_TAB_SUBTITLE": "Wählen Sie die CSV-Datei aus der Sie Benutzer hinzufügen möchten.",
+      "CHOOSE_FILE_BUTTON": "Datei auswählen",
+      "NO_FILE_CHOSEN": "Keine Datei ausgewählt",
+      "ADD_BTN": "Hinzufügen",
+      "IMPORT_BTN": "Importieren",
+      "CANCEL_BTN": "Abbrechen",
+      "SERVER_ERROR": "Serverfehler",
+      "INCORRECT_CSV_FILE_ERROR": "Sie müssen eine CSV-Datei auswählen",
+      "IMPORT_MEMBER_ERROR": "Mitglied konnte nicht importiert werden. Entweder ist der Benutzer nicht auf diesem Server registriert oder ist bereits in dieser Gruppe."
+    },
+    "SEARCH": {
+      "NO_GROUP_ADDED": "Es wurde noch keine Gruppe hinzugefügt",
+      "GROUP_NOT_FOUND": "Gruppe nicht gefunden",
+      "GROUP_SUB_NOT_FOUND": "Es tut uns leid, aber wir konnten keine Ergebnisse finden, die Ihrer Suche entsprechen. Bitte überprüfen Sie auch Ihre Schreibweise und versuchen Sie es erneut."
+    },
+    "BUTTON_GROUP": {
+      "REMOVE_GROUP": "Gruppe entfernen",
+      "TRANSFER_GROUP": "Gruppe übertragen",
+      "OPEN_FOLDER": "Gruppenordner",
+      "MANAGER_GROUP": "Gruppenmanagement",
+      "UN_SHARE": "Ordner nicht freigeben",
+      "RENAME_GROUP": "Gruppe umbenennen"
+    }
+  },
+  "DEVICES": {
+    "DESC": "Verbundene Geräte verwalten"
+  },
+  "SNAPSHOT": {
+    "DESC": "",
+    "CURRENT_PATH": "Aktueller Pfad: "
+  },
+  "NOTIFICATION": {
+    "THEME": "Thema",
+    "THEME_SWITCH": "Farbschema ändern",
+    "FULLSCREEN": "Vollbild",
+    "CLEAR_LOCAL_STORAGE": "Lokalen Speicher löschen"
+  },
+  "NOTIFICATIONS": {
+    "DESC": "Benachrichtigungen über Ordnerfreigaben, etc"
+  },
+  "SIDE_MENU_BAR": {
+    "HOME": "Übersicht",
+    "PROFILE": "Profil",
+    "FILES": "Dateien",
+    "MY_FILES": "Meine Dateien",
+    "SHARED_WITH_ME": "Mit mir geteilt",
+    "SHARED_WITH_ALL": "Für alle freigegeben",
+    "SHARED_WITH_GROUPS": "Mit Gruppen geteilt",
+    "ALL_GROUPS": "Alle Gruppen",
+    "TOOLS": "Werkzeuge",
+    "FAVORITES": "Favoriten",
+    "LINKED_DEVICES": "Geräte",
+    "SHARE_ADMIN": "Freigaben",
+    "TRAFFIC": "Datenverkehr",
+    "VIRUS_SCAN": "Virenscanner",
+    "FOLDERS": "Ordner",
+    "LINKS": "Links",
+    "DROPDOWN_USER_AVATAR": {
+      "SETTINGS": "Einstellungen",
+      "SYSTEM_ADMIN": "Systemverwaltung",
+      "LOGOUT": "Abmelden"
+    },
+    "GROUPS": "Gruppen",
+    "SYSTEM_ADMIN": "Systemadmin",
+    "SETTINGS": "Einstellungen",
+    "DEVICES": "Geräte",
+    "ALL_LIB": "Alle",
+    "SYSTEM_LIB": "System",
+    "TRASH_LIB": "Papierkorb",
+    "USERS": "Benutzer",
+    "DATABASE": "Datenbank",
+    "ADMINS": "Admins",
+    "MOBILES": "Mobile Geräte",
+    "DESKTOPS": "Desktops PCs",
+    "MANAGE": "Verwaltung",
+    "TEMPLATES": "Vorlagen",
+    "SYSTEM_NOTIFICATIONS": "Benachrichtigungen",
+    "INSTITUTIONS": "Mandanten",
+    "PUBLIC_SHARES": "Freigaben",
+    "WIKIS": "Wikis",
+    "ACTIVITY_LOGS": "Aktivitäten",
+    "TENANT": "Mandant",
+    "EMAIL_CHANGE_REQUEST": "E-Mail-Änderungen",
+    "AUDIT_LOG": "Audit-log",
+    "MEETINGS": "Meetings",
+    "BBB_SERVERS":"Meeting Server",
+    "KANBAN": "Kanban"
+  },
+  "SEARCHS": {
+    "NAME": "Ordner suchen",
+    "OWNER": "Eigentümer suchen",
+    "USER": "Benutzer suchen",
+    "NOTICE_INPUT_UNSER": "Hinweis: Bitte geben Sie die E-Mail-Adresse ein und drücken Sie die Eingabetaste, um die eingegebene E-Mail-Adresse zu akzeptieren.",
+    "USER_NO_ADDRESSBOOK": "Bitte geben Sie die E-Mail-Adresse ein und drücken Sie die Eingabetaste.",
+    "GROUP": "Suchen Sie und wählen Sie eine Gruppe unten",
+    "ALL_COLUMNS": "Suchen",
+    "PROJECTS": "Projekte filtern",
+    "FILE": "Geben Sie hier ein, um nach einer Datei zu suchen"
+  },
+  "BUTTONS": {
+    "CREATE_NEW_FOLDER": "Neuer Ordner",
+    "SEARCH": "Suchen",
+    "CLEAN_TRASH": "Papierkorb leeren",
+    "ADD_USERS": "Benutzer hinzufügen",
+    "EXPORT_EXCEL": "Excel-Liste herunterladen",
+    "SET_QUOTA": "Speicherplatz festlegen",
+    "DELETE_USERS": "Benutzer löschen",
+    "ADD_ADMINS": "Adminstatus hinzufügen",
+    "DELETE_ADMINS": "Adminstatus löschen",
+    "RENAME": "Umbenennen",
+    "EDIT_DESCRIPTION": "Beschreibung bearbeiten",
+    "TRANSFER": "Übertragen",
+    "HISTORY_SETTING": "Verlaufseinstellung",
+    "CHANGE_PASSWORD": "Passwort ändern",
+    "DETAILS": "Details",
+    "SHARE_LINKS": "Öffentliche Links",
+    "MORE": "Mehr",
+    "DELETE": "Löschen",
+    "DELETED_FOLDERS": "Gelöschte Ordner",
+    "ADD_FOLDER": "Ordner hinzufügen",
+    "SHARE_EXISTING_FOLDERS": "Ordner teilen",
+    "NEW_FOLDER": "Ordner",
+    "NEW_FILE": "Datei",
+    "NEW_MARKDOWN_FILE": "Markdown-Datei",
+    "NEW_EXCEL_FILE": "Excel-Datei",
+    "NEW_POWERPOINT_FILE": "PowerPoint-Datei",
+    "NEW_WORD_FILE": "Word-Datei",
+    "NEW_HTML_FILE": "HTML-Datei",
+    "MOVE": "Verschieben",
+    "COPY": "Kopieren",
+    "HISTORY": "Verlauf",
+    "DOWNLOAD": "Herunterladen",
+    "CLEAN": "Papierkorb leeren",
+    "VIEW_SNAPSHOT": "Schattenkopie öffnen",
+    "CURRENT_VERSION": "Aktuelle Version",
+    "NEXT": "Nächster",
+    "PREV": "Vorherige",
+    "CREATE": "Erstellen",
+    "CLOSE": "Abbrechen",
+    "GENERATE": "Erstellen",
+    "YES": "Ja",
+    "NO": "Nein",
+    "SUBMIT": "Übernehmen",
+    "CANCEL": "Abbrechen",
+    "SEND": "Senden",
+    "REMOVE": "Löschen",
+    "UPLOAD_A_FILE": "Eine Datei hochladen",
+    "UPLOAD": "Hochladen",
+    "ZIP_AND_DOWNLOAD": "Als ZIP-Datei herunterladen",
+    "GET_CODE": "Code abrufen",
+    "SAVE": "Speichern und schließen",
+    "SAVE_CHANGE": "Speichern",
+    "REPLY": "Antworten",
+    "SELECT_ALL": "Alle auswählen",
+    "UNSELECT_ALL": "Auswahl widerrufen",
+    "UPLOAD_LICENSE": "Berechtigungsschlüssel hochladen",
+    "ENTER_LICENSE": "Autorisierungsschlüssel eingeben",
+    "ADD": "Hinzufügen",
+    "LOAD_MORE": "Mehr laden...",
+    "RESTORE": "Wiederherstellen",
+    "LOCK": "Sperren",
+    "UNLOCK": "Freischalten",
+    "SHARE": "Freigabe",
+    "GO_BACK": "Zurück",
+    "EXPAND_ALL": "Alle erweitern",
+    "ITEM_SELECT": "Elemente ausgewählt",
+    "CSV_EXPORT": "CSV Export",
+    "CLEAR_LOGS": "Logs löschen",
+    "REFRESH_LOGS": "Neu laden",
+    "FILTERS":"Filtern",
+    "CLEAR_SEARCH_INFO":"Filter zurücksetzen",
+    "COPY_INTERNAL_LINK": "Internen Link kopieren"
+  },
+  "TOOLTIPS": {
+    "DELETE": "Löschen",
+    "TRANSFER": "übertragen",
+    "SHARE": "Freigeben",
+    "ENCRYPTED_FOLDER": "Verschlüsselter Ordner",
+    "READ_ONLY_FOLDER": "Schreibgeschützter Ordner",
+    "RESTORE": "Wiederherstellen",
+    "RESET_PWD": "Passwort zurücksetzen",
+    "REVOKE_ADMIN": "Adminrechte entziehen",
+    "EDIT": "Bearbeiten",
+    "REMOVE": "Löschen",
+    "MORE_OPERATIONS": "Weitere Aktionen",
+    "UNSHARE": "Freigaben löschen",
+    "LEAVE_SHARE": "Freigabe verlassen",
+    "LIST_VIEW": "Listenansicht",
+    "GRID_VIEW": "Rasteransicht",
+    "UPLOAD": "Hochladen",
+    "TRASH": "Papierkorb",
+    "HISTORY": "Verlauf",
+    "CREATE_NEW": "Neu",
+    "DOWNLOAD": "Als ZIP herunterladen",
+    "Batch_DOWNLOAD": "Batch-Download",
+    "CANNOT_BATCH": "Ordner sind im Batch-Download nicht zulässig",
+    "CANNOT_BATCH_SELECTION": "Die Einstellungen erlauben keine Stapelverarbeitung mit den aktuell ausgewählten Elementen",
+    "MOVE": "Verschieben",
+    "COPY": "Kopieren",
+    "UNLINK": "Gerät entfernen",
+    "VIEW": "Ansehen",
+    "VISIT": "Öffnen",
+    "COPY_TO_CLIPBOARD": "In die Zwischenablage kopieren",
+    "EDIT_PERMISSION": "Berechtigungen bearbeiten",
+    "COMMENT": "Kommentar",
+    "UPLOAD_A_FILE": "Eine Datei hochladen",
+    "NEW_SUBFOLDER": "Neuer Unterordner",
+    "CLEAN_TRASH": "Papierkorb leeren",
+    "FAVORITE": "Favorit",
+    "UNFAVORITE": "Aus Favoriten entfernen",
+    "NOT_MARK_FAVORITE": "Ordner können nicht als Favorit markiert werden. Bitte entfernen Sie Ordner aus Ihrer Auswahl.",
+    "NEW": "Neu",
+    "PROMOTE": "Zum Admin befördern",
+    "DEMOTE": "Berechtigung herabstufen",
+    "LOCK": "Sperren",
+    "UNLOCK": "Freischalten",
+    "VISIT_LINK": "Link öffnen",
+    "MARK_AS_FALSE_POSITIVE": "Als falsch positiv markieren",
+    "MOVE_SUCCESS": "Elemente wurden erfolgreich verschoben",
+    "COPY_SUCCESS": "Dateien erfolgreich kopiert",
+    "START_MEETING": "Meeting starten",
+    "JOIN_MEETING_AS_MD": "Nehmen Sie als Moderator am Meeting teil",
+    "STOP_MEETING": "Meeting beenden",
+    "SHARE_MEETING": "Meeting teilen",
+    "EDIT_MEETING": "Meeting bearbeiten",
+    "DELETE_MEETING": "Meeting löschen",
+    "MEETING_RECORDING": "Meeting Recordings",
+    "JOIN_MEETING": "Dem Meeting beitreten"
+  },
+  "LABELS": {
+    "MINE": "Ich"
+  },
+  "FORMS": {
+    "INPUTS": {
+      "NAME": "Name",
+      "DESCRIPTION": "Beschreibung",
+      "PASSWORD": "Passwort",
+      "REPEAT_PASSWORD": "Passwort wiederholen",
+      "DAYS": "Tage",
+      "OWNER": "Besitzer",
+      "EMAIL": "E-Mail",
+      "VERIFICATION_CODE": "Bestätigungscode",
+      "SHOW": "Zeigen",
+      "OLD_PASSWORD": "Altes Passwort",
+      "NEW_PASSWORD": "Neues Passwort",
+      "NEW_PASSWORD_LEAST_CHARACTER": "(mindestens 8 Zeichen)",
+      "NEW_PASSWORD_AGAIN": "Neues Passwort bestätigen",
+      "CONFIRM_PASSWORD": "Passwort bestätigen",
+      "BLANK_INPUT_FILED": "Dieses Feld darf nicht leer sein."
+    },
+    "CHECK_BOXS": {
+      "ENCRYPT": "Verschlüsseln",
+      "ADD_PASSWORD_PROTECTION": "Passwortschutz aktivieren",
+      "ADD_AUTO_EXPIRATION": "Ablaufzeit hinzufügen"
+    },
+    "SELECTS": {
+      "ITEMS": "Elemente",
+      "ROWS": "Reihen",
+      "EVERYTHING": "Alles anzeigen"
+    },
+    "REQUIRED": {
+      "PASSWORD": "Passwort wird benötigt.",
+      "REPEAT_PASSWORD": "Das Passwort muss wiederholt werden.",
+      "REPEAT_PASSWORD_DOES_NOT_MATCH": "Wiederholtes Passwort stimmt nicht überein.",
+      "PASSWORD_LENGTH": "Das Passwort muss mindestens 8 Zeichen lang sein.",
+      "PUBLIC_SHARE_PASSWORD_LENGTH": "Das Passwort muss mindestens {{ numberOfCharacters }} Zeichen lang sein",
+      "DAYS": "Tage sind erforderlich."
+    },
+    "INVALID": {
+      "DAYS": "Bitte geben Sie gültige Tage ein",
+      "EMAIL_LIST": "Es gibt mindestens eine ungültige E-Mail-Adresse. Bitte prüfen Sie die Eingabe.",
+      "EMAIL_LIST_EMPTY": "Bitte geben Sie mindestens eine E-Mail-Adresse an."
+    },
+    "VALIDATES": {
+      "OLD_PASSWORD_REQUIRED": "Altes Passwort ist erforderlich.",
+      "NEW_PASSWORD_REQUIRED": "Ein neues Passwort ist erforderlich.",
+      "NEW_PASSWORD_LEAST_CHARACTERS": "Das neue Passwort muss mindestens 8 Zeichen lang sein.",
+      "DIFFERENT_PASSWORD": "Das neues Passwort muss anders als das alte Passwort sein.",
+      "REPEAT_PASSWORD_REQUIRED": "Das Passwort muss wiederholt werden.",
+      "REPEAT_PASSWORD_DOES_NOT_MATCH": "Passwörter stimmen nicht überein."
+    }
+  },
+  "NOTIFY_MSG": {
+    "DANGER": {
+      "ACCESS_DENINED": {
+        "TITLE": "Zugriff abgelehnt",
+        "SUB_TITLE": "Sie sind nicht berechtigt, auf diesen Bereich zuzugreifen."
+      }
+    },
+    "SUCCESS": {
+      "INTERNAL_LINK_COPIED": "Interner Link in Zwischenablage kopiert"
+    }
+  },
+  "CHANGE_PASSWORD": {
+    "TITLE": "Passwortänderung",
+    "MODAL_TITLE": "Passwortänderung",
+    "CURRENT_PASSWORD": "Aktuelles Passwort",
+    "NEW_PASSWORD": "Neues Passwort",
+    "CONFIRM_PASSWORD": "Passwort bestätigen",
+    "SUBMIT": "Übernehmen",
+    "CHANGE_PASSWORD_FIRST_LOGIN_SUCCESS": "Das neue Passwort wurde gespeichert.",
+    "CHANGE_PASSWORD_FIRST_LOGIN": "Sie müssen Ihr Passwort ändern, bevor Sie fortfahren.",
+    "INVALID_PASSWORD": "Ungültiges Passwort"
+  },
+  "SETTINGS": {
+    "SETTING_TITLE": "Einstellungen",
+    "EMAIL": {
+      "SETTING_TITLE": "E-Mail-Einstellung",
+      "CURRENT_EMAIL": "Aktuelle E-Mail",
+      "REQUEST_CHANGE_BUTTON": "Änderung der E-Mail anfordern",
+      "TYPE_YOUR_EMAIL_HERE": "Geben Sie Ihre neue E-Mail an",
+      "NEW_EMAIL_TO_CHANGE_TO": "Neue E-Mail",
+      "REQUEST_STATUS": "Status der E-Mail-Änderungsanforderung",
+      "WAITING_FOR_NEW_EMAIL_CONFIRM": "Warten auf neue E-Mail-Bestätigung ...",
+      "RESEND_CONFIRMATION_EMAIL": "Bestätigungsmail erneut senden",
+      "CANCEL_REQUEST": "Anfrage abbrechen",
+      "REQUEST_EXPIRED": "Anfrage abgelaufen. Bitte klicken Sie auf \"Bestätigungsmail erneut senden\", um eine neue Anfrage zu erstellen.",
+      "WAIT_FOR_ADMIN": "Email bestätigt. Bitte warten Sie, bis der Systemadministrator Ihre E-Mail-Adresse geändert hat. Sie erhalten nach Abschluss der Änderung eine Benachrichtigungs-E-Mail."
+    },
+    "PROFILE": {
+      "SETTING_TITLE": "Profileinstellung",
+      "AVATAR": "Benutzerbild",
+      "REMOVE_AVATAR": "Avatar entfernen",
+      "AVARTAR_CHANGE": "Avatar ändern",
+      "PASSWORD": "Passwort",
+      "UPDATE_PASSWORD": "Passwort ändern",
+      "NAME": "Name",
+      "DEPARTMENT": "Abteilung",
+      "TELEPHONE": "Telefon",
+      "EMAIL": "E-Mail",
+      "SUBMIT": "Änderungen speichern",
+      "QUOTA": "Speichernutzung / Speicherplatz"
+    },
+    "LANGUAGE": {
+      "SETTING_TITLE": "Spracheinstellung"
+    },
+    "DEFAULT_FOLDER": {
+      "NAME": "Standardordner",
+      "SETTING_TITLE": "Standardordner",
+      "YOUR_DEFAULT_FOLDER": "Aktueller Standardordner",
+      "DESCRIPTION": "Der Standardordner enstpricht bei neuen Konten dem ersten Ordner der automatisch in Ihrem Konto angelegt wird. Während der Einrichtung der Syncwerk Desktop App können Sie auswählen, ob dieser Ordner sofort synchronisiert werden soll.",
+      "CHOOSE_DEFAULT_FOLDER": "Standardordner ändern",
+      "PLEASE_SELECT_A_FOLDER": "Bitte und wählen Sie einen Standardordner.",
+      "MODAL_TITLE": "Standardordner ändern",
+      "MODAL_SUBMIT": "Übernehmen",
+      "MODAL_CANCEL": "Abbrechen"
+    },
+    "DELETE_ACCOUNT": {
+      "SETTING_TITLE": "Kontolöschung",
+      "WARNING": "Achtung: Dieser Vorgang kann NICHT rückgängig gemacht werden.",
+      "DELETE": "Konto löschen",
+      "MODAL_TITLE": "Konto löschen",
+      "MODAL_CONFIRMATION": "Möchten Sie Ihr Konto wirklich endgültig löschen?",
+      "MODAL_YES": "Ja",
+      "MODAL_NO": "Nein"
+    }
+  },
+  "LINKED_DEVICE": {
+    "PAGE_TITLE": "Geräte",
+    "PLATFORM_COL": "Betriebssystem",
+    "DEVICE_NAME_COL": "Gerätename",
+    "IP_COL": "IP-Adresse",
+    "LAST_ACCESS_COL": "Letzter Zugriff",
+    "NO_DEVICE_HEADER": "Zurzeit sind keine Geräte mit Ihrem Konto verknüpft",
+    "NO_DEVICE_DESCRIPTION": "",
+    "UNLINK_TOOLTIP": "Verknüpfung aufheben",
+    "UNLINK_SUCCESS": "{{device_name}} wurde erfolgreich entfernt",
+    "UNLINK_FAILED": "Fehler beim Entfernen des Geräts",
+    "APP_DOWNLOAD_DESC": "Wählen Sie Ihre Synchronisations-App",
+    "APP_REQUIREMENT_ANDROID": "Läuft auf 5.0+",
+    "APP_REQUIREMENT_IOS": "Läuft auf 9+",
+    "APP_REQUIREMENT_WINDOWS": "Läuft auf Windows 7+",
+    "APP_REQUIREMENT_MAC": "Läuft auf 10.9+",
+    "APP_REQUIREMENT_LINUX": "Debian, Ubuntu",
+    "BUTTON_ANDROID": "Google Play",
+    "BUTTON_IOS": "Appstore",
+    "BUTTON_WINDOWS": "Herunterladen",
+    "BUTTON_MAC": "Herunterladen",
+    "BUTTON_LINUX": "Paketquellen",
+    "DEVICE_NOT_FOUND": "Gerät nicht gefunden",
+    "DEVICE_SUB_NOT_FOUND": "Es tut uns leid, aber wir konnten keine Ergebnisse finden, die Ihrer Suche entsprechen. Bitte überprüfen Sie auch Ihre Schreibweise und versuchen Sie es erneut."
+  },
+  "FAVORITE": {
+    "PAGE_TITLE": "Favoriten",
+    "PAGE_DESC": "Hier können Sie auf häufig benötigte Dokumente zugreifen",
+    "FILE_NAME_COL": "Name",
+    "SIZE_COL": "Größe",
+    "SHARED_BY_FOLDER_COL": "Gemeinsame Ordner",
+    "LAST_UPDATE_COL": "Aktualisiert",
+    "NO_STARRED_FILE_HEADER": "Es wurden noch keine Dateien zu den Favoriten hinzugefügt",
+    "NO_STARRED_FILE_DESCRIPTION": "Um hier häufig benötigte Dokumente anzuzeigen, markieren Sie sie <a href=\"/folders\">Dateien</a> einfach als Favoriten.",
+    "UNSTAR_TOOLTIP": "Aus den Favoriten entfernen",
+    "UNSTAR_SUCCESS": "{{file_name}} wurde aus den Favoriten entfernt",
+    "UNSTAR_FAILED": "{{file_name}} konnte nicht aus den Favoriten entfernt werden",
+    "FILTER_FILE_NOT_FOUND": "Datei nicht gefunden",
+    "FILTER_SUB_FILE_NOT_FOUND": "Es tut uns leid, aber wir konnten keine Ergebnisse finden, die Ihrer Suche entsprechen. Bitte überprüfen Sie auch Ihre Schreibweise und versuchen Sie es erneut."
+  },
+  "CREATE_NEW_GROUP": {
+    "MODAL_TITLE": "Neue Gruppe",
+    "LABEL_GROUP_NAME": "Gruppenname",
+    "ERROR_MESSAGE": "{{error_message}}",
+    "MODAL_CREATE": "Erstellen",
+    "MODAL_CLOSE": "Abbrechen"
+  },
+  "CREATE_FILE_FOLDER_MODAL": {
+    "NEW": "Neue",
+    "FILE": "Datei",
+    "NEW_FILE": "Neue Datei",
+    "NEW_FOLDER": "Neuer Ordner",
+    "ADD_SUCCESS": "{{type}} erfolgreich hinzugefügt.",
+    "CLOSE_MODAL": "Schließen",
+    "CREATE_MODAL": "Neue Gruppe wurde erfolgreich hinzugefügt.",
+    "DANGER_MODAL": "Bitte geben Sie einen Namen für die neue Gruppe an.",
+    "ERROR_MESSAGE": {
+      "PLEASE_ENTER_VALID_NAME": "Bitte geben Sie einen gültigen Namen ein.",
+      "NAME_IS_REQUIRED": "{{type}} Name ist erforderlich.",
+      "INVALID_MAIN_MESSAGE": "{{type}} enthält ein ungültiges Zeichen: '{{character}}'",
+      "INVALID_SUB_MESSAGE": "Ein gültiger Name darf nur Buchstaben, Zahlen und Bindestriche / Unterstriche enthalten.",
+      "ADD_ERROR": "Füge {{type}} Fehler hinzu."
+    }
+  },
+  "LIST_GROUPS": {
+    "TABLE_HEADERS": {
+      "GROUP_NAME": "Gruppenname",
+      "OWNER": "Inhaber",
+      "NUMBER_OF_MEMBERS": "Mitglieder",
+      "NUMBER_OF_FOLDERS": "Ordner",
+      "ACTIONS": "Aktionen",
+      "CREATED_AT": "Erstellt"
+    },
+    "MY_GROUPS": "Meine Gruppen",
+    "BTN_CREATE_NEW_GROUP": "Neue Gruppe",
+    "EMPTY_GROUP": {
+      "TITLE": "Sie sind in keiner Gruppe",
+      "SUB_TITLE_FIRST": "Innerhalb von Gruppen können Sie Diskussionen führen und an Ordner bzw. Dateien arbeiten.",
+      "SUB_TITLE_SECOND": "Erstellen Sie jetzt eine neue Gruppe über die Schaltfläche \"Neue Gruppe\", rechts oben."
+    },
+    "NEW_FOLDER": "Neuer Ordner",
+    "SHARE_EXIST_FOLDER": "Bestehenden Ordner freigeben",
+    "SETTINGS": "Die Einstellungen",
+    "MEMBERS": "Mitglieder",
+    "DISCUSSION": "Diskussion",
+    "OTHERS": {
+      "RENAME": "Umbenennen",
+      "TRANSFER": "Eigentümer ändern",
+      "MANAGE_MEMBERS": "Mitglieder verwalten",
+      "MANAGE_GROUPS": "Gruppen verwalten",
+      "DISMISS_GROUP": "Gruppe auflösen",
+      "LEAVE_GROUP": "Gruppe verlassen",
+      "GROUP_MANAGEMENT": "Einstellungen",
+      "MORE": "Mehr",
+      "ADD_DISCUSSION": "Nachricht schreiben...",
+      "GROUP_FOLDER": "Gruppenordner",
+      "BBB_SETTING": "Meeting Server Einstellungen"
+    },
+    "NO_FOLDER": "Diese Gruppe enthält keine Ordner",
+    "NO_FOLDER_TEXT": "Sie können Ordner freigeben, indem Sie oben auf die Schaltfläche \"Neuer Ordner\" oder auf das \"Teilen\"-Symbol in der Detailansicht eines Ihrer persönlichen Ordner klicken.<br>Ordner, die Sie lesend-schreibend freigegeben, können von anderen Gruppenmitgliedern synchronisiert werden. Lokale Änderungen werden mit dem Ordner in der Cloud synchronisiert. Ordner die nur lesend freigegeben werden, können zwar heruntergeladen werden, lokale Änderungen werden aber nicht in den Cloud-Ordner hochgeladen. Stattdessen erhält der Nutzer eine entsprechenden Hinweis über Synchronisations-App.",
+    "IMPORT_MEMBERS": "Mitglieder importieren",
+    "ADD_MEMBERS": "Mitglieder hinzufügen"
+  },
+  "SHARED_FOLDERS": {
+    "PAGE_TITLE": "Ordner",
+    "TABLE": {
+      "NAME": "Name",
+      "SHARE_TO": "Freigegeben an",
+      "PERMISSION": "Berechtigung"
+    },
+    "FOLDERS": "Ordner",
+    "SUBFOLDERS": "Unterordner",
+    "DOWNLOAD_LINK": "Herunterladen",
+    "UPLOAD_LINK": "Hochladen"
+  },
+  "SHARED_FOLDERS": {
+    "PAGE_TITLE": "Ordner",
+    "SHARE_FOLDER_RANDOM_PASSWORD": "Passwort generieren",
+    "SHOW_PASSWORD": "Passwort anzeigen",
+    "TABLE": {
+      "NAME": "Name",
+      "SHARE_TO": "Freigegeben an",
+      "PERMISSION": "Berechtigung"
+    }
+  },
+  "LOGIN": {
+    "WELCOME_MESSAGE": "Anmelden",
+    "LABEL": {
+      "LOGIN_ID": "Anmeldename oder E-Mail",
+      "PASSWORD": "Passwort",
+      "FORGOT_PASSWORD": "Passwort vergessen",
+      "CAPTCHA": "Captcha",
+      "REFRESH_CAPTCHA": "Captcha ändern",
+      "SIGN_IN": "Anmelden",
+      "EMAIL_ADDRESS": "E-Mail",
+      "FORGOT_PASSWORD_NOTIFY_MESSAGE": "Geben Sie Ihre E-Mail Adresse an, damit wir Ihr Passwort zurücksetzen können.",
+      "FORGOT_PASSWORD_SUCCESS_MESSAGE": "Bitte prüfen Sie Ihren Maileingang und bestätigen die Passwortänderung.",
+      "SUBMIT": "Senden",
+      "LOGIN_REMEMBER": "Für {{remember_days}} Tage an diesem Gerät angemeldet bleiben",
+      "LOGIN_ID_ALREADY_USED": "Die Login-ID ist bereits vorhanden."
+    },
+    "MESSAGE": {
+      "INCORRECT_USERNAME_OR_PASSWORD": "Bitte geben Sie eine korrekte E-Mail-Adresse und Passwort ein. Bitte achten Sie auf eine korrekte Groß-und Kleinschreibung.",
+      "INCORRECT_CAPTCHA": "Ungültiges Captcha",
+      "ACCOUNT_HAS_BEEN_FROZEN": "Dieses Konto wurde aufgrund zu vieler fehlgeschlagener Anmeldeversuche gesperrt."
+    }
+  },
+  "SIGNUP": {
+    "TITLE": "Registrieren",
+    "EMAIL": "E-Mail",
+    "PASSWORD": "Passwort",
+    "CONFIRM_PASSWORD": "Passwort bestätigen",
+    "REGISTER": "Registrieren",
+    "TERMS": "Ich akzeptiere die <a href=\"https://www.syncwerk.de/agb/\" target=\"_blank\">Nutzungsbedingungen</a>",
+    "SIGNUP_DISABLED": "Die Registrierung wurde deaktiviert",
+    "BACK_TO_LOGIN": "< zurück",
+    "ALREADY_HAVE_ACCOUNT": "Anmelden",
+    "FORGOT_PASSWORD": "Passwort vergessen?",
+    "MESSAGE": {
+      "USER_PASSWORD_MIN_LENGTH": "Die minimale Passwortlänge muss mindestens {{number}} Zeichen betragen",
+      "USER_STRONG_PASSWORD_REQUIRED": "",
+      "USER_MUST_CHECK_TERMS": "Sie müssen die Nutzungsbedingungen akzeptieren.",
+      "SUCCESSFUL_MESSAGE_EMAIL_ACTIVATION": "Konto erfolgreich erstellt. Bitte überprüfen Sie Ihre E-Mail, um das Konto zu aktivieren.",
+      "SUCCESSFUL_MESSAGE_ADMIN_ACTIVATION": "Konto erfolgreich erstellt. Bitte kontaktieren Sie den Administrator, um Ihr Konto zu aktivieren."
+    }
+  },
+  "ADMIN": {
+    "BREADCRUMB_CONTENT": "Systemadmin",
+    "HEADER_TITLE": "Admin Einstellungen",
+    "HEADER_TAB": {
+      "INFO": "Info",
+      "DEVICES": "Geräte",
+      "SETTINGS": "Einstellungen",
+      "FOLDERS": "Ordner",
+      "USERS": "Benutzer"
+    },
+    "INFO": {
+      "SYSTEM_INFO": "Nutzungsinformationen",
+      "FOLDERS": "Hauptordner",
+      "FILES": "Dateien",
+      "STORAGE_USED": "Genutzter Speicherplatz",
+      "TOTAL_DEVICES": "Verbundene Geräte",
+      "CURRENT_CONNECTED_DEVICES": "Aktiv in der letzten Stunde",
+      "ACTIVE_USERS": "Benutzerkonten: Aktiviert",
+      "TOTAL_USERS": "Alle",
+      "LIMITS": "Berechtigt",
+      "GROUPS": "Gruppen",
+      "UPLOAD_LICENSE_SUCCESS": "Die Lizenz wurde erfolgreich hochgeladen. Syncwerk wird jetzt neu gestartet, um die Änderungen zu übernehmen. Bitte warten Sie eine Minute.",
+      "UPLOAD_LICENSE_ERROR": "Wir können den Berechtigungsschlüssel im Moment nicht bearbeiten. Bitte versuchen Sie es erneut.",
+      "LICENSE_NO": "Professionelle Ausgabe",
+      "LICENSE_PREFIX": "Professional Edition für ",
+      "LICENSE_SUFFIX": ", Läuft ab am ",
+      "LICENSEE_NAME": "Name",
+      "LICENSEE_EMAIL": "E-Mail",
+      "LICENSE_START_DATE": "Beginnt am",
+      "LICENSE_END_DATE": "Läuft ab am",
+      "LICENSE_START_VERSION": "Von Version",
+      "LICENSE_END_VERSION": "Bis Version",
+      "LICENSE_TYPE_FREEWARE": "Freeware",
+      "LICENSE_TYPE_SUBSCRIPTION": "Abo-Edition",
+      "LICENSE_TYPE_PERPETUAL": "Kauf-Edition",
+      "LICENSE_TYPE": "Nutzungstyp",
+      "LICENSE_SERVER_ID": "Serverkennung",
+      "VERSION": "Version",
+      "AVAILABLE_FEATRUES": "Verfügbare Funktionen",
+      "FEATURES_FOLDER": "Ordnerverwaltung",
+      "FEATURES_FILE_COMMENTS": "Dateikommentare",
+      "FEATURES_GROUPS": "Gruppen",
+      "FEATURES_WIKI": "Wiki",
+      "FEATURES_FILE_PREVIEW": "Dateivorschau",
+      "FEATURES_INTERNAL_SHARE": "Interne Freigaben",
+      "FEATURES_PUBLIC_SHARE": "Öffentliche Freigaben",
+      "FEATURES_ADMIN_AREA": "Admin-Bereich",
+      "FEATURES_MULTI_TENANCY": "Mandantenfähigkeit",
+      "FEATURES_WEBDAV": "WebDAV",
+      "FEATURES_ADMIN_TRAFFIC": "Datenverkehr",
+      "FEATURES_VIRUS_SCANNING": "Virenscanner",
+      "FEATURES_AUDIT_LOG": "Audit-Log",
+      "NICK_NAME": "Spitzname",
+      "INFO_NAME": "Info Name"
+    },
+    "VIRUS":{
+      "TITLE":{
+        "VIRUS_SCAN":"Virenscanner",
+        "VIRUS_HEADER":"Virenscanner",
+        "VIRUS_SUB_HEADER":"Verwalten Sie infizierte Dateien",
+        "VIRUS_FOLDER": "Ordner",
+        "VIRUS_OWNER": "Besitzer",
+        "VIRUS_FILE_COMMIT_ID": "Commit-ID",
+        "VIRUS_FILE_DETECTED_AT": "Erkannt am",
+        "VIRUS_FILE": "Infizierte Datei",
+        "VIRUS_OPERATIONS": "Aktionen",
+        "VIRUS_SUCCESS_STATE":"Gelöscht",
+        "VIRUS_DELETE_STATE":"Löschen",
+        "VIRUS_FALSE_POSITIVE":"Falsch positiv",
+        "VIRUS_HANDLE_SUCCESS":"Infizierte Datei entfernt",
+        "VIRUS_HANDLE_FAIL":"Infizierte Datei konnte nicht entfernt werden",
+        "VIRUS_HANDLE_STATUS":"Status"
+      }
+    },
+    "TRAFFIC": {
+      "TITLE": {
+        "TRAFFIC_HEADER": "Datenverkehr",
+        "TRAFFIC_HEADER_SUBTITLE": "Verwalten Sie den gesamten Verkehr",
+        "TRAFFIC_MONTH": "Monat: ",
+        "TRAFFIC_USER": "Nutzer",
+        "TRAFFIC_SYNC_UPLOAD": "Upload-Sync",
+        "TRAFFIC_SYNC_DOWNLOAD": "Download-Sync",
+        "TRAFFIC_WEB_UPLOAD": "Upload-Web-App",
+        "TRAFFIC_WEB_DOWNLOAD": "Download-Web-App",
+        "TRAFFIC_SHARELINK_UPLOAD": "Upload-Link",
+        "TRAFFIC_SHARELINK_DOWNLOAD": "Download-Link",
+        "TRAFFIC_CHECK_LENGTH":"Maximale Längeneingabe nur 6 Stellen",
+        "TRAFFIC_CHECK_NUMBER_INPUT":"Bitte geben Sie das korrekte Jahr-Monat-Format von YYYYMM ein",
+        "TRAFFIC_CHECK_NUMBER_DATE_LENGTH":"Bitte geben Sie das korrekte Jahr-Monat-Format von YYYYMM ein."
+      }
+    },
+    "DEVICES": {
+      "TITLE": {
+        "DESKTOPS": "Computer",
+        "MOBILES": "Mobilgeräte",
+        "ERRORS": "Fehler"
+      },
+      "DESC": "Verwalten Sie die verbundenen Desktop- und Mobilgeräte aller Cloudnutzer",
+      "EMPTY_ITEM": {
+        "DESKTOPS": {
+          "TITLE": "Es sind keine Desktop Geräte verbunden"
+        },
+        "MOBILES": {
+          "TITLE": "Es sind keine Mobilgeräte verbunden",
+          "DEVICE_NOT_FOUND": "Gerät nicht gefunden",
+          "DEVICE_SUB_NOT_FOUND": "Es tut uns leid, aber wir konnten keine Ergebnisse finden, die Ihrer Suche entsprechen. Bitte überprüfen Sie auch Ihre Schreibweise und versuchen Sie es erneut."
+        }
+      }
+    },
+    "SETTINGS": {
+      "NOTE": "Hier vorgenommene Einstellungen überschreiben Konfigurationen aus dem Ordner /etc/syncwerk/",
+      "COLLAPSES": {
+        "INFO": "System",
+        "URL": "Serveradresse",
+        "LOGO": "Branding",
+        "USER": "Benutzer",
+        "GROUP": "Gruppen",
+        "PASSWORD": "Passwort",
+        "FOLDER": "Hauptordner",
+        "SYNC": "Unterorder",
+        "COOKIE_DISCLAIMER": "Cookie Informationen",
+        "CMS": "Seiten",
+        "GENERAL": "Allgemeines",
+        "BATCH_DOWNLOAD": "Batch-Download",
+        "ALLOW_FOLDERS_IN_BATCH": "Ordner-Download aktivieren (BETA)",
+        "BATCH_MAX_FILES_COUNT": "Maximale Dateien",
+        "ONLYOFFICE": "Einziges Büro"
+      },
+      "GENERAL": {
+        "ENABLE_GLOBAL_ADDRESS_BOOK": "Aktivieren Sie das globale Adressbuch",
+        "DESCRIBE_ENABLE_GLOBAL_ADDRESS_BOOK": "Aktivieren Sie die automatische Vervollständigungsliste des Benutzers. Bitte beachten Sie, dass sich diese Option nicht auf Benutzer auswirkt, die nicht zur Verwendung des globalen Adressbuchs berechtigt sind."
+      },
+      "URL": {
+        "DESCRIBE_SERVICE_URL": "Tragen Sie hier die Serveradresse mit Protokoll ein. Sie können einen Domainnamen oder eine IP-Adresse eintragen. Achten Sie beim Domainnamen darauf, dass dieser auf die externe IP-Adresse des Servers auflöst. Beispiel: https://app.syncwerk.de oder http://192.168.0.1",
+        "DESCRIBE_FILE_SERVER_ROOT": "Tragen Sie hier die unter SERVICE_URL angegebene Adresse mit dem Zusatz \"/seafhttp\" ein. Wenn die Adresse nicht korrekt eingestellt ist, können Sie keine Dateien mit dem Server austauschen. Beispiel: https://app.syncwerk.de/seafhttp oder http://192.168.0.1/seafhttp",
+        "DESCRIBE_ALLOW_FOLDERS_IN_BATCH": "Legt fest, ob der Ordner im Batch-Download heruntergeladen werden darf",
+        "DESCRIBE_BATCH_MAX_FILES_COUNT": "Bestimmt die maximale Anzahl von Dateien, die beim Batch-Download gleichzeitig heruntergeladen werden dürfen",
+        "DESCRIBE_ENABLE_ONLYOFFICE" : "Nur Büro aktivieren / deaktivieren",
+        "DESCRIBE_VERIFY_ONLYOFFICE_CERTIFICATE" : "Bestimmen Sie, ob das einzige Office Server-Zertifikat überprüft werden soll oder nicht (sollte in der Produktion immer zutreffen).",
+        "DESCRIBE_ONLYOFFICE_APIJS_URL" : "Die URL des einzigen Office-Service-Servers",
+        "DESCRIBE_ONLYOFFICE_FILE_EXTENSION" : "Nur Büro erlaubt Erweiterungen",
+        "DESCRIBE_ONLYOFFICE_EDIT_FILE_EXTENSION": "Nur Büro bearbeiten Dateierweiterungen",
+             "DESCRIBE_ONLYOFFICE_FORCE_ADMIN_SETTINGS": "Legt fest, ob die Administratoreinstellungen erzwungen werden sollen oder nicht.",
+        "DESCRIBE_ONLYOFFICE_OPEN_MODE": "Der Standardöffnungsmodus für Openoffice-Dokumente"
+      },
+      "USER": {
+        "ALLOW_NEW_REGISTRATION": "Registrierung",
+        "DESCRIBE_ALLOW_NEW_REGISTRATION": "Aktivieren Sie hier die öffentliche Registrierung. Dann können sich neue Benutzer im Anmeldebereich registrieren.",
+        "TERMS_AND_CONDITION_LABEL": "Nutzungsbedingungen",
+        "TERMS_AND_CONDITION_TEXT_EN": "Englisch",
+        "TERMS_AND_CONDITION_TEXT_DE": "Deutsch",
+        "ACTIVATE_AFTER_REGISTRATION": "Freischalten",
+        "DESCRIBE_ACTIVATE_AFTER_REGISTRATION": "Aktivieren oder deaktivieren Sie die sofortige Aktivierung öffentlich registrierter Benutzer. Die Einstellung \"E-Mail Verifizierung\" wird ignoriert, wenn diese Option aktiviert ist.",
+        "SEND_ACTIVATION_EMAIL": "E-Mail Verifizierung",
+        "DESCRIBE_SEND_ACTIVATION_EMAIL": "Wenn diese Option aktiviert ist, müssen öffentlich registrierte Benutzer ihr Konto über einen Bestätigungslink aktivieren, der ihnen per E-Mail zugeschickt wird. Andernfalls muss das Konto von einem Administrator aktiviert werden.",
+        "KEEP_SIGN_IN": "Anmeldedauer",
+        "DESCRIBE_KEEP_SIGN_IN": "Stellen Sie hier ein, wieviele Tage ein Nutzer maximal an der Syncwerk Web-App angemeldet sein kann bevor er sich erneut anmelden muss.",
+        "LOGIN_ATTEMP_LIMIT": "Anmeldeversuche",
+        "DESCRIBE_LOGIN_ATTEMP_LIMIT": "Legen Sie hier die Anzahl an fehlerhaften Anmeldeversuchen fest - bevor die Eingabe eines CAPTCHA erforderlich ist.",
+        "FREEZE_USER_ON_LOGIN_FAILED": "Kontensperrung",
+        "DESCRIBE_FREEZE_USER_ON_LOGIN_FAILED": "Sperrt das Konto, wenn die Anzahl der angegebenen Anmeldeversuche erreicht wurde. Gesperrte Konten müssen per Hand von einem Administrator reaktiviert werden. "
+      },
+      "PASSWORD": {
+        "STRONG_PASSWORD": "Komplexität",
+        "DESCRIBE_STRONG_PASSWORD": "Die Aktivierung erzwingt die Verwendung von sicheren Passwörtern.",
+        "PASSWORD_STRENGTH_LEVEL": "Sicherheitsstufe",
+        "DESCRIBE_PASSWORD_STRENGTH_LEVEL": "Legen Sie fest, wie viele Zeichentypen (1-4) Anmeldepasswörter benötigen. Es gibt vier Zeichentypen: 1. Nummerisch, 2. Großbuchstaben, 3. Kleinbuchstaben, 4. Sonderzeichen. Abhängig von der Anzahl ist ein beliebiger Mix aus diesen Zeichentypen zur Passworterstellung notwendig.",
+        "FORCE_PASSWORD_CHANGE": "Änderung",
+        "DESCRIBE_FORCE_PASSWORD_CHANGE": "Erzwingt bei Aktivierung die Passwortänderung bei vom Administrator hinzugefügten neuen Benutzerkonten sowie dem Zurücksetzen der Passwörter von bestehenden Benutzerkonten.",
+        "PASSWORD_MINIMUM_LENGTH": "Mindestlänge",
+        "DESCRIBE_PASSWORD_MINIMUM_LENGTH": "Legt die Mindestzahl an Zeichen für ein Passwort fest.",
+        "SAME_PASSWORD": "Neues Passwort muss sich vom alten Passwort unterscheiden."
+      },
+      "FOLDER": {
+        "FOLDER_HISTORY": "Versionsverlauf",
+        "DESCRIBE_FOLDER_HISTORY": "Wenn aktiviert, erlaubt es Nutzern die Einstellungen für den Versionierungszeitraum eines Hauptordners zu ändern.",
+        "ENCRYPTED_FOLDER": "Verschlüsselung",
+        "DESCRIBE_ENCRYPTED_FOLDER": "Erlaubt Nutzern, verschlüsselte Hauptordner zu erstellen.",
+        "FOLDER_PASSWORD_MINIMUM_LENGTH": "Passwortlänge",
+        "DESCRIBE_FOLDER_PASSWORD_MINIMUM_LENGTH": "Die Mindestzahl an Zeichen, die ein verschlüsselter Ordner enthalten muss.",
+        "DOWNLOAD_UPLOAD_LINK_PASSWORD_MINIMUM_LENGTH": "Passwortlänge bei Freigabelinks",
+        "DESCRIBE_DOWNLOAD_UPLOAD_LINK_PASSWORD_MINIMUM_LENGTH": "Legt die Mindestlänge für Freigabelinks zum Hoch- und Herunterladen fest.",
+        "ENABLE_USER_CREATE_ORG_REPO": "Cloudweite Freigaben",
+        "DESCRIBE_ENABLE_USER_CREATE_ORG_REPO": "Wenn aktiviert, können Nutzer einen oder mehrer ihrer Ordner, global für ALLE anderen Nutzer auf dieser Installation freigeben. Falls deaktiviert, können nur Administratoren solche Freigaben erstellen.",
+        "PREVIEW_FILE_EXTENSIONS": "Dateivorschau",
+        "DESCRIBE_PREVIEW_FILE_EXTENSIONS": "Legen Sie hier fest, für welche Dateitypen die Vorschaufunktion aktiviert wird. Trennen Sie mehrere Dateitypen durch ein Komma. Beispiel: docx, xlsx, pdf",
+        "DESCRIPTION_LEFT": "Vorlage zum Erstellen ",
+        "DESCRIPTION_RIGHT": " für Benutzer",
+        "PASSWORD": "Passwort",
+        "PASSWORD_PROTECTED": "Bitte geben Sie das Passwort für den Ordner '{{nameFolder}}' ein"
+      },
+      "SYNC": {
+        "ENABLE_SYNC_WITH_ANY_FOLDER": "Synchronisierung aktivieren",
+        "DISABLE_SYNC_WITH_ANY_FOLDER": "Synchronisation deaktivieren",
+        "DESCRIBE_DISABLE_SYNC_WITH_ANY_FOLDER": "Wenn aktiviert, kann der Benutzer Unterordner synchronisieren. Wenn diese Option deaktiviert ist, können Unterordner nur über ihren Ordner auf der obersten Ebene synchronisiert werden."
+      },
+      "COOKIE_DISCLAIMER": {
+        "SHOW_COOKIE_DISCLAIMER": "Cookie-Haftungsausschluss anzeigen",
+        "SHOW_COOKIE_DISCLAIMER_DESC": "Aktivieren Sie diese Option, um einen Cookie-Haftungsausschluss auf der Anmeldeseite anzuzeigen",
+        "COOKIE_DISCLAIMER_TYPE": "Wählen Sie den Haftungsausschluss",
+        "COOKIE_DISCLAIMER_TYPE_OPTION_BANNER": "Cookie-Banner",
+        "COOKIE_DISCLAIMER_TYPE_OPTION_MODAL": "Cookie Modal",
+        "COOKIE_BANNER_TEXT": "Cookie Banner Text",
+        "COOKIE_MODAL_TEXT": "Cookie modaler Text",
+        "COOKIE_TEXT_EN": "Englisch",
+        "COOKIE_TEXT_DE": "Deutsch"
+      },
+      "CMS": {
+        "SUPPORT_PAGE_TITLE": "Support-Seite",
+        "SUPPORT_PAGE_DESC": "Bei Aktivierung ist die Support-Seite unter <a href=\"help\">{{hostOrigin}}/help</a>",
+        "PRIVACY_POLICY_TITLE": "Datenschutz-Bestimmungen",
+        "PRIVACY_POLICY_DESC": "Bei Aktivierung ist die Seite mit den Datenschutzbestimmungen unter <a href=\"privacy\">{{hostOrigin}}/privacy</a>",
+        "TERMS_TITLE": "Nutzungsbedingungen",
+        "TERMS_DESC": "Bei Aktivierung ist die Seite Nutzungsbedingungen unter <a href=\"terms\">{{hostOrigin}}/terms</a>",
+        "WELCOME_TITLE": "Willkommensnachricht",
+        "WELCOME_DESC": "Bei Aktivierung ist die Begrüßungsseite unter <a href=\"welcome\">{{hostOrigin}}/welcome</a>",
+        "LEGAL_NOTICES_TITLE": "Impressum",
+        "LEGAL_NOTICES_DESC": "Wenn diese Option aktiviert ist, steht die Seite mit den Impressum unter <a href=\"legal\">{{hostOrigin}}/legal</a>",
+        "PLACEHOLDER_TEXT": "Fügen Sie den öffentlichen Download-Link einer HTML-Datei in einen unverschlüsselten Ordner ein",
+        "LANG_DE_TITLE": "Deutsch",
+        "LANG_EN_TITLE": "Englisch",
+        "MODAL": {
+          "FILE_CHOOSER": {
+            "TITLE": "Wähle eine Datei",
+            "TABLE_HEADERS": {
+              "FILE_NAME": "Dateiname",
+              "PATH": "Pfad"
+            }
+          }
+        },
+        "MESSAGES": {
+          "SELECT_FILE_REQUIRED": "Bitte wählen Sie mindestens eine Datei aus, um fortzufahren.",
+          "SETTING_KEYS_REQUIRED": "Einstellungsschlüssel ist erforderlich."
+        }
+      },
+      "BBB": {
+        "TITLE": "BigBlueButton-Einstellungen",
+        "ACTIVATED":"Aktiviert",
+        "BBB_SERVER_URL": "BBB-Server-URL (EndPoint)",
+        "BBB_SERVER_URL_DESC": "URL des BBB-Servers (mit abschließendem Schrägstrich)",
+        "BBB_SECRET_KEY": "BBB Secret Key (gemeinsames Geheimnis)",
+        "BBB_SECRET_KEY_DESC": "Geheimschlüssel des BBB-Servers",
+        "BBB_SECRET_KEY_PLACEHOLDER": "(Geheimschlüssel ist gesetzt, wird aber aus Sicherheitsgründen nicht angezeigt)",
+        "TEST_CONNECTION": "Verbindung testen",
+        "ADVANCED_CONFIGS": "Erweiterte Konfigurationen",
+        "ALLOW_USER_PRIVATE_BBB_SERVER": "Ermöglichen Sie Benutzern das Hinzufügen eines privaten BBB-Servers",
+        "ALLOW_USER_PRIVATE_BBB_SERVER_DESC": "Wenn diese Option aktiviert ist, können Benutzer ihrem Profil einen benutzerdefinierten BBB-Server hinzufügen",
+        "ALLOW_USER_PRIVATE_BBB_SERVER_NOTE": "Hinweis: Wenn diese Option deaktiviert ist, sind vorhandene Meetings, die die persönlichen Einstellungen des Benutzers verwenden, nicht betroffen. Gehen Sie zu Administration => Meetings, um sie manuell zu entfernen.",
+        "ALLOW_TENANTS_PRIVATE_BBB_SERVER": "Ermöglichen Sie Mandanten, einen privaten BBB-Server hinzuzufügen",
+        "ALLOW_TENANTS_PRIVATE_BBB_SERVER_DESC": "Wenn diese Option aktiviert ist, können Mandanten ihrem Profil einen benutzerdefinierten BBB-Server hinzufügen",
+        "ALLOW_TENANTS_PRIVATE_BBB_SERVER_NOTE": "Hinweis: Wenn diese Option deaktiviert ist, sind vorhandene Meetings, die die Mandanteneinstellung verwenden, nicht betroffen. Gehen Sie zu Administration => Meetings, um sie manuell zu entfernen.",
+        "ALLOW_GROUPS_PRIVATE_BBB_SERVER": "Erlauben Sie Gruppen, einen privaten Meeting-Server hinzuzufügen",
+        "ALLOW_GROUPS_PRIVATE_BBB_SERVER_DESC": "Wenn diese Option aktiviert ist, können Gruppen ihrem Profil einen benutzerdefinierten Meeting-Server hinzufügen",
+        "ALLOW_GROUPS_PRIVATE_BBB_SERVER_NOTE": "Hinweis: Wenn deaktiviert, sind vorhandene Meetings, die die Gruppeneinstellung verwenden, nicht betroffen. Gehen Sie zu Administration => Meetings, um sie manuell zu entfernen.",
+        "DEFAULT_AMOUNT_OF_MEETING": "Standardanzahl der Meetings",
+        "DEFAULT_AMOUNT_OF_MEETING_DESC": "Standardanzahl der Meetings pro Benutzer. Standard ist 1",
+        "ALLOW_MEETING_RECORDINGS": "Aufzeichnungen erlauben",
+        "ALLOW_PUBLIC_SHARES_FOR_RECORDINGS": "Öffentliche Freigaben für Meetings erlauben",
+        "ALLOW_PUBLIC_SHARES_FOR_MEETING_RECORDINGS": "Öffentliche Freigaben für Aufnahmen eines Meetings erlauben"
+      },
+      "UPDATE_SETTING_SUCCESSFULLY": "Die Änderung wurde übernommen.",
+      "UPDATE_SETTING_ERROR": "Die Einstellung kann momentan nicht aktualisiert werden. Bitte versuchen Sie es später nochmal!",
+      "CHANGE_FAVICON_FAILED": "Favicon konnte nicht geändert werden.",
+      "CHANGE_LOGO_FAILED": "Änderung des Logos fehlgeschlagen.",
+      "YOU_NEED_TO_CHOOSE_AN_IMAGE": "Sie müssen ein Bild auswählen.",
+      "YOU_NEED_TO_CHOOSE_A_VALID_IMAGE": "Sie müssen ein gültiges Bild auswählen.",
+      "UPDATE_FAVICON_SUCCESSFULLY": "Favicon erfolgreich aktualisiert",
+      "UPDATE_LOGO_SUCCESSFULLY": "Logo wurde erfolgreich aktualisiert.",
+      "RESET_LOGO_SUCCESSFULLY": "Logo erfolgreich zurückgesetzt.",
+      "RESET_LOGO_FAILED": "Sie haben kein benutzerdefiniertes Logo festgelegt.",
+      "RESET_FAVICON_SUCCESSFULLY": "erfolgreich zurückgesetzt.",
+      "RESET_FAVICON_FAILED": "Sie haben kein benutzerdefiniertes Favicon festgelegt."
+    },
+    "FOLDERS": {
+      "BREADCRUMB_CONTENT": "Dateien",
+      "DROPDOWN_TITLE": {
+        "ALL": "Alle",
+        "SYSTEM": "System",
+        "TRASH": "Papierkorb"
+      },
+      "ALL": {
+        "BREADCRUMB_CONTENT": "Alle",
+        "DESC": "Verwalten Sie hier die Ordner aller Cloudnutzer",
+        "TIP_SEARCH": "Tipp: Sie können nach Schlüsselworten in der Bezeichung, dem Besitzer oder beides suchen.",
+        "TABLE": {
+          "NAME": "Name",
+          "FILES": "Dateien",
+          "SIZE": "Größe",
+          "ID": "Kennung",
+          "OWNER": "Besitzer",
+          "OPERATIONS": "Aktionen"
+        },
+        "EMPTY_ITEM": {
+          "MSG_TITLE": "Es wurde noch kein Ordner hinzugefügt",
+          "MSG_SUB_TITLE": "Erstellen Sie eine Ordner um Ihre Dateien zu organisieren. Sie können beispielsweise für jedes Ihrer Projekte eine Projekt erstellen. Jeder Ordner kann separat synchronisiert und geteilt werden.",
+          "MSG_NOT_FOUND": "Ordner nicht gefunden",
+          "MSG_SUB_NOT_FOUND": "Es tut uns leid, aber wir konnten keine Ergebnisse finden, die Ihrer Suche entsprechen. Bitte überprüfen Sie auch Ihre Schreibweise und versuchen Sie es erneut."
+        }
+      },
+      "SYSTEM": {
+        "BREADCRUMB_CONTENT": "System",
+        "DESC": "Verwalten Sie hier die Vorlage des initialen Ordners",
+        "TABLE": {
+          "NAME": "Name",
+          "ID": "Kennung",
+          "DESCRIPTION": "Beschreibung"
+        }
+      },
+      "TRASH": {
+        "TIP": "Hier finden Sie Ordner die in den letzten 30 Tagen gelöscht wurden. Ältere Ordner werden automatisch gelöscht.",
+        "SEARCH": {
+          "OWNER": "Durchsuchen Sie Ordner nach Eigentümer"
+        },
+        "EMPTY_ITEM": {
+          "MSG_TITLE": "Es wurde noch keine Datei hinzugefügt",
+          "TRASH_NOT_FOUND": "Ordner nicht gefunden",
+          "TRASH_SUB_NOT_FOUND": "Es tut uns leid, aber wir konnten keine Ergebnisse finden, die Ihrer Suche entsprechen. Bitte überprüfen Sie auch Ihre Schreibweise und versuchen Sie es erneut."
+        }
+      }
+    },
+    "USERS": {
+      "TITLE": {
+        "DATABASE": "Anwender",
+        "ADMINS": "Admins"
+      },
+      "STATUS": {
+        "ACTIVE": "Aktiv",
+        "INACTIVE": "Inaktiv",
+        "STATUS_ROLE": "Status",
+        "ROLE": "Rolle",
+        "TENANT": "Mandant",
+        "USED_TOTAL": "Gebraucht / Gesamt",
+        "CREATED_LAST_LOGIN": "Erstellt / Letzter Login"
+      },
+      "SOURCE":{
+        "DATABASE":"Registrierte Benutzer",
+        "LDAP":"LDAP-Benutzer"
+      },
+      "DESC_DATABASE": "Verwalten Sie hier alle Cloudkonten",
+      "DESC_ADMIN": "Verwalten Sie hier alle Adminkonten",
+      "TABLE": {
+        "EMAIL": "E-Mail",
+        "NAME": "Name",
+        "CONTACT_EMAIL": "Kontaktadresse",
+        "STATUS": "Status",
+        "ROLE": "Benutzerolle",
+        "SPACE_USED": "Genutzt",
+        "TENANT": "Mandant",
+        "QUOTA": "Gesamt",
+        "CREATED_AT": "Erstellt",
+        "LAST_LOGIN": "Letzter Login"
+      },
+      "MODALS": {
+        "ADD_ADMINS": "Zum Administrator befördern",
+        "MODAL_UPLOAD_FILE": {
+          "FILE_UPLOAD_LARGE": "Datei ist zu groß. Maximale Größe {{maxSize}} MB",
+          "OUT_OF_QUOTA": "Speicherplatz nicht ausreichend"
+        }
+      },
+      "ACTIONS": {
+        "NUMBER_OF_SELECTED_USERS": "{{numberOfSelectedUsers}} Benutzer ausgewählt"
+      },
+      "SET_QUOTA_SUCCESS": "Benutzerspeicherkontingent wurde aktualisiert.",
+      "SET_QUOTA_ERROR": "Momentan kann das Benutzerspeicherkontingent nicht aktualisiert werden. Bitte versuche es erneut!",
+      "REACHED_MAX_LICENSED_USER": "Um weitere Benutzer hinzuzufügen, müssen Sie Ihre Nutzungsberechtigung erhöhen. Bestellen Sie ein Upgrade unter <a href=\"https://www.syncwerk.de\">https://www.syncwerk.de</a>, schreiben an <a href=\"mailto:support@syncwerk.com\">support@syncwerk.com</a> oder rufen uns unter 0049-9383-333370 an.",
+      "CANT_REMOVE_YOURSELF": "Sie können sich nicht selbst entfernen",
+      "CANT_REVOKE_YOURSELF": "Sie können sich nicht widerrufen",
+      "UPDATE_TENANT_SUCCESSFULLY": "Benutzer-Mandant erfolgreich aktualisiert."
+    },
+    "GROUPS": {
+      "TITLE": {
+        "GROUP_NEW": "Neue Gruppe",
+        "GROUP_LIST": "Gruppen",
+        "GROUP_FOLDERS": "Gruppenordner",
+        "GROUP_MANAGEMENT": "Gruppenmanagement"
+      },
+      "SUBTITLE": {
+        "GROUP_LIST": "Verwalten Sie alle im System angelegten Gruppen",
+        "GROUP_FOLDERS": "Verwalten Sie alle Ordner der Gruppen",
+        "GROUP_MANAGEMENT": "Mitglieder der Gruppe verwalten"
+      },
+      "LIST_GROUPS": {
+        "TABLE_HEADERS": {
+          "GROUP_NAME": "Gruppenname",
+          "OWNER": "Inhaber",
+          "DESCRIPTION": "(Wenn das Feld leer bleibt, wird der aktuelle Administrator der Besitzer)",
+          "NUMBER_OF_MEMBERS": "Mitglieder",
+          "NUMBER_OF_FOLDERS": "Ordner",
+          "ACTIONS": "Aktionen",
+          "CREATED_AT": "Erstellt"
+        }
+      },
+      "LIST_GROUP_FOLDERS": {
+        "TABLE_HEADERS": {
+          "FOLDER_NAME": "Ordnernamen",
+          "SIZE": "Größe",
+          "SHARED_BY": "Geteilt von",
+          "ACTION": "Aktionen"
+        }
+      },
+      "LIST_GROUP_MEMBERS": {
+        "TABLE_HEADERS": {
+          "NAME": "Name",
+          "EMAIL": "Email",
+          "ROLE": "Rolle",
+          "ACTION": "Aktionen"
+        },
+        "BUTTONS": {
+          "ADD_MEMBER": "Mitglieder hinzufügen"
+        }
+      },
+      "MODALS": {
+        "RENAME_GROUP_TITLE": "Gruppe umbenennen",
+        "REMOVE_GROUP_TITLE": "Gruppe entfernen",
+        "REMOVE_GROUP_CONFIRMATION": "Möchten Sie die Gruppe <code>{{name}}</code> wirklich entfernen?",
+        "UNSHARE_FOLDER_TITLE": "Freigabe-Ordner",
+        "UNSHARE_FOLDER_CONFIRMATION": "Möchten Sie den Ordner <code>{{ name }} </code> deaktivieren?",
+        "REMOVE_GROUP_MEMBER_TITLE": "Mitglied entfernen",
+        "REMOVE_GROUP_MEMBER_CONFIRMATION": "Möchten Sie <code>{{name}}</code> aus der Gruppe entfernen?",
+        "ADD_GROUP_MEMBER": "Mitglieder hinzufügen",
+        "ADD_GROUP_MEMBER_BUTTON": "Hinzufügen"
+      },
+      "MESSAGES": {
+        "RENAME_GROUP_INVALID_NAME": "Bitte geben Sie einen gültigen Gruppennamen an",
+        "RENAME_GROUP_SUCCESS": "Gruppe erfolgreich umbenannt",
+        "REMOVE_GROUP_SUCCESS": "Gruppe erfolgreich aufgelöst",
+        "REMOVE_GROUP_FAILED": "Fehler beim Auflösen der Gruppe.",
+        "UNSHARE_FOLDER_SUCCESSFULLY": "Ordner ist nicht mehr freigegeben",
+        "REMOVE_GROUP_MEMBER_SUCCESSFULLY": "Mitglied wurde erfolgreich aus der Gruppe entfernt",
+        "NO_GROUP_ADDED_TITLE": "Es wurde noch keine Gruppe erstellt",
+        "NO_GROUP_ADDED_SUBTITLE": "Gruppe ist ein Ort, an dem Sie und Ihre Freunde Nachrichten hinterlassen und Ordner bearbeiten können.",
+        "NO_GROUP_FOUND_TITLE": "Keine Gruppe gefunden.",
+        "NO_GROUP_FOUND_SUBTITLE": "Leider konnten wir keine Ergebnisse finden, die Ihrer Suche entsprechen. Bitte überprüfen Sie auch Ihre Schreibweise und versuchen Sie es erneut.",
+        "ADD_GROUP_MEMBER_AT_LEAST_A_USER": "Bitte wählen Sie mindestens 1 Benutzer aus, den Sie der Gruppe hinzufügen möchten",
+        "ADD_GROUP_MEMBER_FAILED": "Fehler beim Hinzufügen von {{numberOfFailed}} Benutzern in die Gruppe. Die Benutzer werden nicht gefunden oder sind bereits Mitglieder der Gruppe",
+        "ADD_GROUP_MEMBER_PARTLY_SUCCESS": "{{numberOfSuccessful}} Benutzer wurden erfolgreich zur Gruppe hinzugefügt. Fehler beim Hinzufügen von {{numberOfFailed}} Benutzern in die Gruppe. Die fehlgeschlagenen Benutzer werden nicht gefunden oder sind bereits Mitglieder der Gruppe",
+        "ADD_GROUP_MEMBER_SUCCESS": "{{numberOfSuccessful}} Benutzer wurden erfolgreich zur Gruppe hinzugefügt",
+        "CHANGE_GROUP_MEMBER_ROLE_SUCCESS": "Benutzerrolle erfolgreich geändert"
+      }
+    },
+    "NOTIFICATIONS": {
+      "TITLE": {
+        "NOTIFICATION_LIST": "Systembenachrichtigungen"
+      },
+      "SUBTITLE": {
+        "NOTIFICATION_LIST": "Verwalten Sie alle Systembenachrichtigungen"
+      },
+      "LIST_SYSTEM_NOTIFICATIONS": {
+        "TABLE_HEADERS": {
+          "NOTIFICATION_MESSAGE": "Benachrichtigungsnachricht"
+        },
+        "BUTTONS": {
+          "ADD_NEW_NOTIFICATION": "Benachrichtigung hinzufügen"
+        },
+        "TOOLTIPS": {
+          "SET_AS_DEFAULT": "Als Standard einstellen",
+          "EDIT": "Bearbeiten",
+          "REMOVE_NOTIFICATION": "Löschen"
+        }
+      },
+      "MODALS": {
+        "NEW_SYSTEM_NOTIFICATION_TITLE": "Neue Systembenachrichtigung",
+        "NEW_MESSAGE_PLACEHOLDER": "Neue Nachricht...",
+        "EDIT_SYSTEM_NOTIFICATION_TITLE": "Systembenachrichtigung bearbeiten",
+        "REMOVE_NOTIFICATION_TITLE": "Benachrichtigung entfernen",
+        "REMOVE_NOTIFICATION_CONFIRMATION": "Möchten Sie die Benachrichtigung mit folgendem Inhalt entfernen?"
+      },
+      "MESSAGES": {
+        "EMPTY_MESSAGE": "Bitte geben Sie die Nachricht für die Benachrichtigung an.",
+        "ADD_NOTIFICATION_SUCCESS": "Neue Systembenachrichtigung erfolgreich erstellt.",
+        "UPDATE_NOTIFICATION_SUCCESS": "Systembenachrichtigung erfolgreich aktualisiert.",
+        "REMOVE_NOTIFICATION_SUCCESSFULLY": "Systembenachrichtigung erfolgreich entfernt",
+        "SET_AS_DEFAULT_SUCCESS": "Standardsystembenachrichtigung erfolgreich eingerichtet.",
+        "DEACTIVE_DEFAULT_SUCCESS": "Standardsystembenachrichtigung erfolgreich deaktiviert."
+      }
+    },
+    "INSTITUTIONS": {
+      "TITLE": {
+        "INSTITUTION_LIST": "Mandanten",
+        "INSTITUTION_USER_LIST": "Mandanten Benutzerverwaltung"
+      },
+      "SUBTITLE": {
+        "INSTITUTION_LIST": "Verwalten Sie alle Mandanten im System",
+        "INSTITUTION_USER_LIST": "Verwalten Sie die Benutzer des Mandanten"
+      },
+      "LIST_INSTITUTIONS": {
+        "TABLE_HEADERS": {
+          "NAME": "Name",
+          "USAGE": "Belegt",
+          "QUOTA": "Gesamt",
+          "CREATED_AT": "Erstellt"
+        },
+        "BUTTONS": {
+          "ADD_NEW_INSTITUTION": "Mandant hinzufügen"
+        },
+        "TOOLTIPS": {
+          "REMOVE_INSTITUTION": "Löschen"
+        }
+      },
+      "LIST_INSTITUTION_USERS": {
+        "TABLE_HEADERS": {
+          "EMAIL": "E-Mail",
+          "STATUS": "Status",
+          "SPACE_USED": "Genutzter Speicher",
+          "CREATED_AT": "Konto erstellt am",
+          "LAST_LOGIN": "Letzte Anmeldung",
+          "MAX_MEETINGS": "Max Meetings"
+        },
+        "TABLE_VALUES": {
+          "USER_STATUS_ACTIVE": "Aktiv",
+          "USER_STATUS_INACTIVE": "Inaktiv"
+        },
+        "BUTTONS": {
+          "ADD_NEW_MEMBERS": "Mitglieder hinzufügen",
+          "ADD_EXISTING_USER": "Bestehenden Benutzer hinzufügen",
+          "ADD_NEW_USER": "Einen neuen Benutzer hinzufügen"
+        },
+        "TOOLTIPS": {
+          "PROMOTE_TO_ADMIN": "Mandant zum Mandanten Administrator befördern",
+          "REVOKE_ADMIN": "Mandanten Administrator-Berechtigung entfernen",
+          "REMOVE_USER": "Aus dem Mandantenkonto entfernen"
+        }
+      },
+      "MODALS": {
+        "NEW_INSTITUTION_TITLE": "Mandantkonto erstellen",
+        "NEW_INSTITUTION_PLACEHOLDER": "Name des Mandanten",
+        "REMOVE_INSTITUTION_TITLE": "Mandant entfernen",
+        "REMOVE_INSTITUTION_CONFIRMATION": "Möchten Sie den Mandant <code>{{name}}</code> entfernen?",
+        "ADD_INSTITUTION_MEMBER_TITLE": "Vorhandene Benutzer hinzufügen",
+        "ADD_INSTITUTION_MEMBER_BUTTON": "Hinzufügen",
+        "REMOVE_INSTITUTION_MEMBER_TITLE": "Mitglied entfernen",
+        "REMOVE_INSTITUTION_MEMBER_CONFIRMATION": "Möchten Sie den Benutzer <code>{{email}}</code> vom Mandanten entfernen?",
+        "UPDATE_QUOTA_TITLE": "Speichermenge des Mandanten festlegen",
+        "UPDATE_QUOTA_TIP_1": "Sollte eine ganze Zahl größer oder gleich 0 sein. Die Einheit ist MB",
+        "UPDATE_QUOTA_TIP_2": "Info: 0 bedeutet Standardlimit",
+        "MAX_MEETINGS_TITLE": "Anzahl der maximalen Besprechungen",
+        "UPDATE_MAX_MEETINGS_TIP_1": "Die maximale Anzahl von Besprechungen, die der Benutzer erstellen kann",
+        "UPDATE_MAX_MEETINGS_TIP_2": "Info: 0 bedeutet Standardlimit"
+      },
+      "MESSAGES": {
+        "INSTITUTION_NAME_REQUIRED": "Der Name des Mandanten ist erforderlich",
+        "ADD_INSTITUTION_AT_LEAST_A_USER": "Bitte wählen Sie mindestens 1 Benutzer aus, der zum Mandanten hinzugefügt werden soll",
+        "ADD_INSTITUTION_SUCCESS": "Mandant wurde erstellt",
+        "ADD_INSTITUTION_FAILED": "Mandant konnte nicht erstellt werden",
+        "REMOVE_INSTITUTION_SUCCESS": "Mandant wurde entfernt",
+        "REMOVE_INSTITUTION_FAILED": "Mandant wurde nicht entfernt",
+        "REMOVE_INSTITUTION_MEMBER_SUCCESS": "Benutzer wurde aus dem Mandanten entfernt",
+        "REMOVE_INSTITUTION_MEMBER_FAILED": "Benutzer konnte nicht aus dem Mandanten entfernt werden",
+        "ADD_INSTITUTION_MEMBER_SUCCESS": "Es wurden {{ numberOfSuccessful }} Benutzer zum Mandanten hinzugefügt",
+        "ADD_INSTITUTION_MEMBER_PARTLY_SUCCESS": "Es wurden {{ numberOfSuccessful }} Benutzer zum Mandanten hinzugefügt. Fehler beim Hinzufügen von {{numberOfFailed}} Benutzern. Die fehlgeschlagenen Benutzer werden nicht gefunden oder sind bereits Teil dieses oder eines anderen Mandanten.",
+        "ADD_INSTITUTION_MEMBER_FAILED": "Fehler beim Hinzufügen von {{numberOfFailed}} Benutzer zum Mandanten. Die fehlgeschlagenen Benutzer werden nicht gefunden oder sind bereits Teil dieses oder eines anderen Mandanten",
+        "INSTITUTION_UPDATE_QUOTA_INVALID_QUOTA": "Die Speichermenge muss eine ganze Zahl größer oder gleich 0 sein.",
+        "INSTITUTION_UPDATE_QUOTA_SUCCESS": "Die Speichermenge des Mandanten wurde aktualisiert",
+        "INSTITUTION_UPDATE_QUOTA_FAILED": "Die Speichermenge des Mandanten konnte nicht aktualisiert werden",
+        "NUMBER_OF_MEETINGS_INVALID": "Die Anzahl der maximalen Besprechungen muss größer oder gleich 0 sein",
+        "UPDATE_NUMBER_OF_MEETINGS_SUCCESS": "Aktualisieren Sie die maximale Anzahl von Besprechungen erfolgreich",
+        "UPDATE_NUMBER_OF_MEETINGS_FAILED": "Aktualisierung der maximalen Anzahl von Besprechungen fehlgeschlagen"
+      }
+    },
+    "PUBLIC_SHARES": {
+      "TITLE": {
+        "LINK_LIST": "Freigaben"
+      },
+      "SUBTITLE": {
+        "LINK_LIST": "Verwalten Sie hier alle öffentlichen und internen Freigaben"
+      },
+      "LIST_PUBLIC_SHARE_LINKS": {
+        "TABLE_HEADERS": {
+          "NAME": "Name",
+          "UPDATED": "Aktualisiert",
+          "SIZE": "Größe",
+          "SHARE_OWNER": "Eigentümer",
+          "SHARE_TO": "Freigabe für",
+          "PERMISSION": "Berechtigung",
+          "VISIT_COUNT": "Aufrufe",
+          "EXPIRED": "Abgelaufen",
+          "ACTIONS": "Aktionen"
+        },
+        "TOOLTIPS": {
+          "REMOVE_SHARE_LINK": "Entfernen",
+          "VISIT_LINK": "Link besuchen"
+        },
+        "TABLE_CONTENTS": {
+          "DOWNLOAD_LINK": "Download-Link",
+          "UPLOAD_LINK": "Upload-Link",
+          "GROUP": "Gruppe",
+          "PERMISSION_READ_WRITE": "Lesen/Schreiben",
+          "PERMISSION_READ_ONLY": "Nur Lesen",
+          "PERMISSION_WRITE_ONLY": "Nur Schreiben",
+          "EXPIRED": "Abgelaufen"
+        }
+      },
+      "MODALS": {
+        "REMOVE_LINK_TITLE": "Link entfernen",
+        "REMOVE_LINK_CONFIRMATION": "<p>Link-Token: <code>{{token}}</code></p> <p>Möchten Sie diesen Link entfernen?</p>",
+        "REMOVE_INTERNAL_SHARE_TITLE": "Freigabe entfernen",
+        "REMOVE_INTERNAL_SHARE_CONFIRMATION": "Möchten Sie die ausgewählte Freigabe entfernen?"
+      },
+      "MESSAGES": {
+        "REMOVE_LINK_SUCCESSFULLY": "Link erfolgreich entfernt.",
+        "REMOVE_SHARE_SUCCESSFULLY": "Freigabe erfolgreich entfernt."
+      }
+    },
+    "EMAIL_CHANGES": {
+      "TITLE": "E-Mail-Änderungsanforderung",
+      "SUBTITLE": "Verwalten aller Anforderungen zum Ändern der Benutzer-E-Mail",
+      "LIST_REQUEST": {
+        "TABLE_HEADERS": {
+          "REQUEST_OWNER": "Angefragt von",
+          "NEW_EMAIL": "Neue E-Mail",
+          "CREATED_AT": "Erstellt am",
+          "STATUS": "Status"
+        },
+        "TOOLTIPS": {
+          "REMOVE_REQUEST": "Entfernen"
+        },
+        "BUTTONS": {
+          "CHANGE_EMAIL": "Ändern Sie die E-Mail"
+        },
+        "STATUS": {
+          "WAIT_FOR_CONFIRMATION": "Warte auf Bestätigung",
+          "COMPLETED": "Änderung durchgeführt"
+        }
+      },
+      "MODALS": {
+        "REMOVE_REQUEST_TITLE": "E-Mail-Änderungsanforderung entfernen",
+        "REMOVE_REQUEST_CONFIRMATION": "Möchten Sie diese E-Mail-Änderungsanforderung von <code> {{user_id}} </code> zu <code> {{new_email}} </code> entfernen?"
+      },
+      "MESSAGES": {
+        "REMOVE_REQUEST_SUCCESS": "E-Mail-Änderungsanforderung erfolgreich entfernen"
+      }
+    },
+    "AUDIT_LOG": {
+      "DESC_AUDIT_LOG": "Audit-Log verwalten",
+      "TABLE": {
+        "NAME": "Benutzer",
+        "UPDATED": "Geändert",
+        "IP/DEVICE": "IP",
+        "DEVICE_NAME": "Gerät",
+        "FOLDER": "Verzeichnis",
+        "FOLDER_ID": "ID",
+        "SUB_FOLDER": "Pfad",
+        "ACTIONS": "Aktion",
+        "RECIPIENT": "Empfänger",
+        "PERMISSION": "Rechte"
+      },
+      "SEARCH": {
+        "AUDIT_LOG_NOT_FOUND": "Keine Einträge vorhanden",
+        "AUDIT_LOG_SUB_NOT_FOUND": "",
+        "START_DATE": "Anfangsdatum",
+        "END_DATE": "Enddatum"
+      },
+      "MODAL": {
+        "HEADER": "Audit-Log löschen",
+        "BODY": "Wollen Sie das Audit-Log wirklich löschen?"
+      },
+      "DELETE_SUCCESS": "Gelöscht",
+      "CSV_EXPORT_SUCCESS":"Exportiert",
+      "CSV_EXPORT_WRONG_DATE":"Maximales Log-Intervall ist 7 Tage"
+
+    },
+    "SUDO": {
+      "TITLE": "Bestätigen Sie das Passwort, um fortzufahren",
+      "PLACEHOLDER": "Passwort",
+      "TIPS_TITLE": "Achtung",
+      "TIPS": "Sie betreten den Admin-Bereich, wir werden für 20 Minuten nicht mehr nach Ihrem Passwort fragen.",
+      "MESSAGES": {
+        "INTERNAL_SERVER_ERROR": "Interner Serverfehler.",
+        "INCORRECT_PASSWORD": "Falsches Passwort angegeben. Bitte überprüfen Sie Ihr Passwort und versuchen Sie es erneut."
+      }
+    }
+  },
+  "USERADMIN_INFO": {
+    "DESC": "Verwalten Sie hier das angezeigte Nutzerkonto",
+    "TAB_HEADER": {
+      "PROFILE": "Profil",
+      "OWNED_LIBS": "Hauptordner",
+      "SHARED_LIBS": "Freigaben",
+      "SHARED_LINKS": "Links",
+      "GROUPS": "Gruppen",
+      "MEETINGS": "Meetings"
+    },
+    "MEETINGS": {
+      "EMPTY_ITEM": {
+        "MSG_TITLE": "Kein Meeting erstellt"
+      },
+      "MEETING_NAME": "Name des Meetings",
+      "CREATED_ON": "Erstellt am",
+      "STATUS": "Status"
+    },
+    "PROFILE": {
+      "AVATAR": "Benutzerbild",
+      "EMAIL": "E-Mail",
+      "NAME": "Name",
+      "LOGIN_ID": "Anmeldename",
+      "DEPARTMENT": "Abteilung",
+      "SPACE_USED": "Speichernutzung",
+      "QUOTA": "Speicherplatz",
+      "MAX_MEETINGS": "Max Meetings"
+    },
+    "OWNED_LIBS": {
+      "TABLE": {
+        "NAME": "Name",
+        "SIZE": "Größe",
+        "LAST_UPDATE": "Aktualisiert",
+        "OPERATIONS": "Aktionen"
+      },
+      "EMPTY_ITEM": {
+        "MSG_TITLE": "Dieser Benutzer hat keine Ordner erstellt"
+      }
+    },
+    "SHARED_LIBS": {
+      "TABLE": {
+        "NAME": "Name",
+        "SHARE_BY": "Geteilt von",
+        "SHARE_TO":"Freigegeben an",
+        "SIZE": "Größe",
+        "LAST_UPDATE": "Aktualisiert"
+      },
+      "EMPTY_ITEM": {
+        "MSG_TITLE": "Dieser Benutzer hat keine gemeinsam genutzten Ordner"
+      }
+    },
+    "SHARED_LINKS": {
+      "TITLE": "Öffentliche Links",
+      "TABLE": {
+        "NAME": "Name",
+        "SIZE": "Größe",
+        "TYPE": "Art",
+        "VISITS": "Besuche",
+        "CREATED_BY": "Ersteller",
+        "OPERATIONS": "Aktionen"
+      },
+      "EMPTY_ITEM": {
+        "MSG_TITLE": "Dieser Benutzer hat keine freigegebenen Links erstellt"
+      }
+    },
+    "GROUPS": {
+      "TABLE": {
+        "NAME": "Name",
+        "ROLE": "Rolle",
+        "CREATED_AT": "Erstellt / Angemeldet",
+        "OPERATIONS": "Aktionen"
+      },
+      "EMPTY_ITEM": {
+        "MSG_TITLE": "Dieser Benutzer hat keine Gruppen erstellt oder beigetreten"
+      }
+    },
+    "SEARCH_DATABASE": {
+      "USER_NOT_FOUND": "Benutzerkonto nicht gefunden",
+      "USER_SUB_NOT_FOUND": "Es tut uns leid, aber wir konnten keine Ergebnisse finden, die Ihrer Suche entsprechen. Bitte überprüfen Sie auch Ihre Schreibweise und versuchen Sie es erneut."
+    },
+    "SEARCH_ADMIN": {
+      "ADMIN_NOT_FOUND": "Administratorkonto wurde nicht gefunden",
+      "ADMIN_SUB_NOT_FOUND": "Es tut uns leid, aber wir konnten keine Ergebnisse finden, die Ihrer Suche entsprechen. Bitte überprüfen Sie auch Ihre Schreibweise und versuchen Sie es erneut."
+    }
+  },
+  "FILES": {
+    "TABLE": {
+      "NAME": "Name",
+      "SIZE": "Größe",
+      "LAST_UPDATE": "Aktualisiert",
+      "SHARED_BY": "Geteilt von"
+    },
+    "YOU_HAVE_NOT_CREATED_ANY_FOLDERS": "Sie haben keine Ordner erstellt",
+    "YOU_HAVE_NOT_CREATED_ANY_FOLDERS_SUB": "Sie können einen Ordner erstellen, um Ihre Dateien zu organisieren. Sie können beispielsweise für jedes Ihrer Projekte ein Projekt erstellen. Jeder Ordner kann separat synchronisiert und geteilt werden.",
+    "SEARCH_NO_RESULT": "Zur Zeit liegen keine Daten vor"
+  },
+  "DELETED_FOLDERS": {
+    "TITLE": "Gelöschte Ordner",
+    "TIP": "Info: Ordner, die länger als 30 Tage im Papierkorb liegen, werden automatisch endgültig gelöscht.",
+    "TABLE": {
+      "NAME": "Name",
+      "DELETED_TIME": "Gelöscht vor",
+      "OPERATIONS": "Aktionen"
+    },
+    "EMPTY_ITEM": {
+      "MSG_TITLE": "Keine gelöschten Ordner",
+      "MSG_SEARCH_NOT_FOUND": "Ordner nicht gefunden",
+      "MSG_SEARCH_NOT_FOUND_SUB": "Es tut uns leid, aber wir konnten keine Ergebnisse finden, die Ihrer Suche entsprechen. Bitte überprüfen Sie auch Ihre Schreibweise und versuchen Sie es erneut."
+    }
+  },
+  "TRASH": {
+    "TITLE": "Papierkorb",
+    "DESC": "Verwalten Sie hier Ihre gelöschten Dateien.",
+    "TABLE": {
+      "NAME": "Name",
+      "DELETED_TIME": "Gelöschte Zeit",
+      "SIZE": "Größe",
+      "OPERATIONS": "Aktionen"
+    },
+    "EMPTY_ITEM": {
+      "MSG_TITLE": "Ihr Papierkorb ist leer",
+      "MSG_SUB": "Im Moment befinden sich keine Dateien im Papierkorb"
+    },
+    "SEARCH_NO_RESULT": {
+      "MSG_TITLE": "Kein Gegenstand gefunden",
+      "MSG_SUB": "Es tut uns leid, aber wir konnten keine Ergebnisse finden, die Ihrer Suche entsprechen. Bitte überprüfen Sie Ihre Schreibweise und versuchen Sie es erneut."
+    },
+    "CLEAR_TRASH": "Dateien in Papierkorb und Versionierungen löschen, die älter sind als:",
+    "TIME": {
+      "THREE_DAYS": "3 Tage",
+      "ONE_WEEK": "1 Woche",
+      "ONE_MONTH": "1 Monat",
+      "ALL": "Alle löschen"
+    }
+  },
+  "HISTORY": {
+    "TITLE": "Änderungsverlauf",
+    "TIP": "Info: Nach jeder Änderung wird eine Schattenkopie erstellt, die den Ordnerzustand zum Zeitpunkt der Änderung aufzeichnet.",
+    "CHANGE": "Veränderung",
+    "CHANGES": "Änderungen",
+    "SHOW_DETAIL": "Detail anzeigen",
+    "ITEM_NAME": "Artikelname",
+    "OPERATION": "Operation",
+    "DEVICE_INFO": "Gerätename",
+    "DESCRIPTION": "Beschreibung",
+    "CURRENT_SNAPSHOT": "Aktuell",
+    "OPERATION_TYPE": {
+      "NEW": "Neue Dateien",
+      "REMOVE": "Entfernte Dateien",
+      "NEW_DIR": "Neue Ordner",
+      "RENAME": "Umbenannte Ordner / Dateien",
+      "MODIFIED": "Geänderte Dateien",
+      "DELETE_DIR": "Gelöschte Ordner"
+    },
+    "TABLE": {
+      "DESCRIPTION": "Name",
+      "TIME": "Zeit",
+      "ADJUSTED_BY": "Angepasst von",
+      "DEVICE_VERSION": "Gerät / Ausführung",
+      "DEVICE": "Gerät",
+      "VERSION": "Ausführung",
+      "OPERATIONS": "Aktionen"
+    },
+    "SETTING": {
+      "TITLE": "Verlaufseinstellung",
+      "KEEP_HISTORY": "Unbegrenzt speichern",
+      "DONT_KEEP_HISTORY": "Deaktivieren",
+      "ONLY_KEEP": "Speicherdauer:",
+      "DAYS": "Tage",
+      "DISABLED": "Der Versionsverlauf wurde vom Administrator festgelegt.",
+      "PERIOD_CANNOT_EXCEED": "Ein Zeitraum darf 90 Tage nicht überschreiten."
+    }
+  },
+  "MODALS": {
+    "TITLES": {
+      "ENTER_LICENSE": "Autorisierungsschlüssel eingeben",
+      "NEW_FOLDER": "Neuer Ordner",
+      "DELETE": "Löschen",
+      "UNLINK_DEVICE": "Geräteverbindung entfernen",
+      "DELETE_FOLDER": "Ordner löschen",
+      "TRANSFER": {
+        "FROM": "Übertrage Ordner",
+        "TO": "an"
+      },
+      "SHARE": "Freigaben",
+      "RESET_PASSWORD": "Passwort zurücksetzen",
+      "REMOVE": "Entfernen",
+      "RESTORE": "Wiederherstellen",
+      "REMOVE_FAVORITE": "Favorit entfernen",
+      "FOLDER_REQUIRED": "Ordnername ist erforderlich.",
+      "MAX_NAME_FOLDER": "Ordnername darf nicht länger als 255 Zeichen sein.",
+      "INVALID_FOLDER": "Ungültiger Ordnername.",
+      "EDIT_DESC": "Beschreibung bearbeiten",
+      "CHANGE_PASSWORD_FOLDER": "Passwort des Ordners ändern",
+      "RENAME_GROUP_TO": "Gruppe umbenennen",
+      "TRANSFER_GROUP_TO": "Gruppe übertragen",
+      "RESTORE_FOLDER": "Ordner wiederherstellen",
+      "DETAILS_CHANGE": "Details ändern sich",
+      "REVOKE_ADMIN": "Adminrechte entziehen",
+      "SET_USER_STORAGE_LIMIT": "Legen Sie das Benutzerspeicherlimit fest",
+      "CLEAN_TRASH": "Papierkorb leeren"
+    },
+    "VERIFY_QUESTIONS": {
+      "UNLINK_DEVICE": "Möchten Sie das Gerät wirklich entfernen?",
+      "DELETE": "Möchten Sie das Benutzerkonto <span class=\"highlight\">{{username}}</span> wirklich löschen?",
+      "DELETE_FOLDER": "Möchten Sie den Ordner <code>{{folderName}}</code> wirklich löschen?",
+      "DELETE_SELECTED_USERS": "Möchten Sie die ausgewählten Benutzer wirklich löschen?",
+      "RESET_PASSWORD": "Möchten Sie das Passwort wirklich zurücksetzen",
+      "DELETE_REMOVE": "Möchten Sie",
+      "RESTORE": "Möchten Sie die Datei wirklich wiederherstellen?",
+      "REMOVE_FROM_FAVORITE_SUFFIX": "  aus den Favoriten entfernen?",
+      "REMOVE_FAVORITE": "Möchten Sie <span class=\"modal-title-name\">{{itemName}}</span> aus den Favoriten entfernen?",
+      "UNLINK_DEVICE_UNSTABLE": "Möchten Sie das Gerät <b class='text-danger'>{{device_name}}</b> wirklich entfernen?",
+      "RESTORE_FOLDER": "Möchten Sie diesen Ordner wirklich wiederherstellen?",
+      "REVOKE_ADMIN": "Möchten Sie die Administratorberechtigung von. wirklich widerrufen",
+      "CLEAN_TRASH": "Möchten Sie den Papierkorb wirklich leeren?",
+      "FOLDER_CURRENT_SHARED_WITH_USERS": "Dieser Ordner ist momentan für {{ numberOfUsers }} Benutzer freigegeben .",
+      "FOLDER_CURRENT_SHARED_WITH_GROUPS": "Dieser Ordner wird derzeit mit {{ numberOfGroups }} Gruppen geteilt.",
+      "FOLDER_CURRENT_SHARED_WITH_USERS_AND_GROUPS": "Dieser Ordner wird derzeit mit {{ numberOfUsers }} Benutzern und {{ numberOfGroups }} Gruppen geteilt."
+    },
+    "WARNINGS": {
+      "RESTORE_FOLDER": "Das Wiederherstellen einer Schattenkopie wirkt sich auf alle verbundenen Sync-Apps aus. <br /> Das kann dazu führen, dass lokale Daten unwiderruflich gelöscht werden.",
+      "TRANSFER_NOTE": "Durch Übertragen dieses Ordners an einen neuen Besitzer werden alle freigegebenen Links gelöscht."
+    },
+    "TIPS": {
+      "SET_USER_STORAGE_LIMIT": "Eine ganze Zahl, die größer oder gleich 0 ist. Tipp: 0 bedeutet Standardlimit."
+    },
+    "TRANSFER": {
+      "SELECT_USER": "Bitte wählen Sie einen Benutzer aus, an der Ordner übertragen werden soll.",
+      "INVALID_USER": "Der Benutzer kann nicht übertragen werden.",
+      "CANNOT_TRANSFER": "Der Ordner kann nicht an den Eigentümer übertragen werden.",
+      "TYPE_TO_SEARCH_USER": "Benutzername oder E-Mail-Adresse eingeben",
+      "TYPE_USER_EMAIL": "Geben Sie die Benutzer-E-Mail ein und drücken Sie die Eingabetaste, um sie zu manifestieren"
+    },
+    "USER": {
+      "ADD_USER": "Benutzer hinzufügen",
+      "IMPORT_FROM_CSV": "CSV-Import",
+      "NAME": "Name (optional)",
+      "DEPARTMENT": "Abteilung (optional)",
+      "ROLE": "Benutzerrolle",
+      "FILE_FORTMAT": "Dateiformat: E-Mail,Passwort,Name,Abteilung,Benutzerrolle,Speicherkontingent.",
+      "FORTMAT_TEXT": "Name, Abteilung, Benutzerrolle und Speicherkontingent sind optional."
+    },
+    "UNLINK_DEVICE": {
+      "REMOTE_WIPE": "Löschen Sie Dateien beim nächsten Online-Zugriff von diesem Gerät.",
+      "REMOTE_WIPE_DESC": "Wenn Sie die Remote-Löschung aktivieren, werden alle synchronisierten Ordner von diesem und anderen Servern unwiderruflich von dem Gerät gelöscht, auf dem die Sync-App ausgeführt wird. Verwenden Sie dies mit äußerster Vorsicht und stellen Sie sicher, dass Sie aktuelle Sicherungen zur Verfügung haben, falls Sie Dateien wiederherstellen müssen.",
+      "REMOTE_WIPE_CONFIRM_NAME": "Bitte bestätigen Sie durch Eingabe des Gerätenamens"
+    },
+    "SEND_LINK": {
+      "SEND_SUCCESSFULLY_TO": "Erfolgreich gesendet an ",
+      "SEND_FAILED": "Senden fehlgeschlagen"
+    }
+  },
+  "ROLES": {
+    "DEFAULT": "Standard",
+    "SUPER_ADMINISTRATOR": "Super Administrator",
+    "EMPLOYEE": "Mitarbeiter",
+    "GUEST": "Gast",
+    "USER_ROLES": "Benutzerregeln",
+    "ADMIN_ROLES": "Admin-Rollen",
+    "DEACTIVATE_USER_SUCCESS": "Benutzer wurde erfolgreich deaktiviert.",
+    "ACTIVATE_USER_SUCCESS": "Benutzer aktiviert Eine Benachrichtigung wurde an die E-Mail des Benutzers gesendet.",
+    "USER_ROLES_CHANGE_SUCCESS": "Benutzerrolle erfolgreich geändert."
+  },
+  "MODAL_SHARE": {
+    "TITLE": "Freigabe",
+    "UNSHARE_NOTIFICATIONS": "Ungeteilter Erfolg.",
+    "SHARE_MODAL_TITLE": "Geben Sie den Ordner <span class=\"group-name\">{{ groupName }}</span> für diese Gruppe frei.",
+    "NAVIGATIONS": {
+      "DOWNLOAD_LINK": "Herunterladen",
+      "UPLOAD_LINK": "Hochladen",
+      "SHARE_TO_USER": "Benutzer",
+      "SHARE_TO_GROUP": "Gruppe",
+      "SHARE_TO_ALL": "Alle"
+    },
+    "READ_WRITE": "Lesen-Schreiben",
+    "READ_ONLY": "Nur Lesend",
+    "NONE": "Keine",
+    "EXPIRE_DATE": "Ablaufzeit:",
+    "LINK": "Link:",
+    "DIRECT_DOWNLOAD_LINK_DESCRIPTION": "Erstellen Sie hier einen öffentlichen Freigabelink und übermitteln ihn an externe Nutzer um diesen bequem lesenden Zugriff zu ermöglichen.",
+    "DIRECT_DOWNLOAD_LINK": "Direkter Download-Link:",
+    "SHARE_TO_USER_DESCRIPTION": "Verwenden Sie dieses Freigabeformular, um vorhandene Benutzer in der Cloud für den Benutzer freizugeben.",
+    "SHARE_TO_GROUP_DESCRIPTION": "Verwenden Sie dieses Freigabeformular, um vorhandene Ordner in der Cloud für die Gruppe freizugeben.",
+    "SHARE_TO_ALL_DESCRIPTION": "Verwenden Sie dies, um für alle Benutzer zu teilen",
+    "GENERATE_TEXT": "Erstellen Sie hier einen öffentlichen Freigabelink zum Hochladen von Dateien und übermitteln ihn an externe Nutzer. Der Inhalt bereits vorhandener Dateien wird über diesen Link nicht angezeigt.",
+    "UNSHARE_FOLDER": "Freigabe des Ordner",
+    "UNSHARE_FOLDER": "Ordner Freigeben",
+    "UNSHARE_DOWNLOAD": "Freigabe-Download-Link",
+    "UNSHARE_UPLOAD": "Upload-Link Nicht Freigeben",
+    "SURE_UNSHARE": "Sind Sie sicher, dass Sie die Freigabe aufheben möchten",
+    "SEND_LINK": {
+      "SEND_TO": "Senden an:",
+      "PLEASE_ENTER_A_VALID_EMAIL_ADDRESS": "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
+      "EMAIL_IS_REQUIRED": "E-Mail ist erforderlich.",
+      "MESSAGE_OPTIONAL": "Nachricht (optional):"
+    },
+    "SHARE_CLOSE_MODAL_PROMT_UNSAVE_DATA": "Möchten Sie den Modal schließen? Sie haben nicht gesendete Daten, die gelöscht werden, wenn Sie fortfahren."
+  },
+  "MODAL_DELETE_FILE": {
+    "VERIFICATION_QUESTION": "Möchten Sie ",
+    "VERIFICATION_QUESTION_LAST": "löschen? ",
+    "WARNING": "Zugehörige Freigaben werden ebenfalls dauerhaft entfernt."
+  },
+  "MODAL_CREATE_NEW_FOLDERS_ALL": {
+    "INPUT_OWNER_DESCRIPTION": "Wenn das Feld leer bleibt, wird der aktuelle Administrator der Besitzer"
+  },
+  "BREADCRUMBS": {
+    "FILES": "Ordner",
+    "MY_FILES": "Ordner:",
+    "SHARED_WITH_ME": "Mit mir geteilt",
+    "SHARED_WITH_ALL": "Mit allen geteilt",
+    "SHARED_WITH_GROUPS": "Mit Gruppen geteilt"
+  },
+  "TYPE_FILES": {
+    "FOLDER": "Ordner",
+    "FOLDER": "Ordner",
+    "FILE": "Datei"
+  },
+  "TABLE": {
+    "COLUMNS": {
+      "TITLE": "Details",
+      "NAME": "Name",
+      "SIZE": "Größe",
+      "OWNER": "Besitzer",
+      "DELETED_TIME": "Löschdatum",
+      "LAST_UPDATE": "Aktualisiert",
+      "USER": "Benutzer",
+      "PERMISSION": "Berechtigung",
+      "FILE": "Datei",
+      "FILES": "Dateien",
+      "FILE_NAME": "Dateiname",
+      "SHARED_FOLDER": "Freigegebener Ordner",
+      "SHARED_BY": "Geteilt von",
+      "OPERATIONS": "Aktionen",
+      "FOLDER": "Ordner",
+      "VISITS": "Aufgerufen",
+      "DATE_EXPIRATION": "Ablaufdatum",
+      "SHARE_TO": "Freigegeben an",
+      "SHARE_TYPE": "Freigabeart",
+      "PLATFORM_VERSION": "Plattform / Ausführung",
+      "DEVICE_NAME": "Gerätename",
+      "IP": "IP",
+      "LAST_ACCESS": "Letzter Zugriff",
+      "DESCRIPTION": "Beschreibung",
+      "LOCATION": "Ort",
+      "FOLDERS": "Ordner",
+      "TIME": "Zeit",
+      "MODIFIER": "Geändert von",
+      "ACTIONS": "Aktionen",
+      "UPDATED": "Aktualisiert",
+      "PERMISSIONS": "Berechtigungen",
+      "EXPIRES": "Gültig bis",
+      "MESSAGE": "Nachricht",
+      "GROUP": "Gruppe",
+      "HISTORY_PERMISSION": "Erweiterte Berechtigungen",
+      "ROLE": "Rolle"
+    }
+  },
+  "DROPZONE_BOTTOM": {
+    "TITLE": "Ziehen Sie die Datei hoch und legen Sie sie ab",
+    "SUB_TITLE": "DropzoneJS ist eine Open-Source-Bibliothek, die Drag'n'Drop-Datei-Uploads mit Bildvorschauen ermöglicht.",
+    "POSITION_DROP": "Ziehen Sie Dateien oder Ordner zum Hochladen auf diese Fläche"
+  },
+  "FILE_DROP": {
+    "INTRUCTION": "Ziehen Sie Dateien oder Ordner zum Hochladen auf diese Fläche"
+  },
+  "ADMIN_AREA": {
+    "FOLDERS": {
+      "CHILD_SYSTEM": {
+        "EMPTY_ITEM": {
+          "MSG_TITLE": "Ihr Ordner ist leer",
+          "MSG_SUB_TITLE": "Sie können mit dem Hochladen Ihres Dokuments beginnen oder einen neuen Ordner / eine neue Datei erstellen, indem Sie auf die obigen Menüs klicken",
+          "DROP_FILES": "Um Dateien hochzuladen, ziehen Sie sie einfach auf diese Seite",
+          "MSG_SEARCH": "Datei nicht gefunden",
+          "MSG_SEARCH_SUB": "Es tut uns leid, aber wir konnten keine Ergebnisse finden, die Ihrer Suche entsprechen. Bitte überprüfen Sie auch Ihre Schreibweise und versuchen Sie es erneut."
+        }
+      }
+    }
+  },
+  "MODAL_CONFIRMATION": {
+    "TITLES": {
+      "REMOVE_USER_UNSTABLE": "Löschen <span class='text-danger'>{{username}}</span>",
+      "DELETE_AVATAR": "Avatar löschen",
+      "UPLOAD_AVATAR_SUCCESS": "Ein neuer Avatar wurde erfolgreich hochgeladen.",
+      "DELETE_AVATAR_SUCCESS": "Avatar erfolgreich gelöscht.",
+      "AVATAR_NOT_EXIST": "Avatar existiert nicht oder wurde bereits gelöscht."
+    },
+    "VERIFY_QUESTIONS": {
+      "REMOVE_USER_UNSTABLE_LAST": "Sind Sie sich sicher, dass Sie <span class='text-danger'>{{username}}</span> entfernen wollen?",
+      "DELETE_AVATAR": "Möchten Sie den Avatar endgültig löschen?"
+    }
+  },
+  "SHARE_LINK": {
+    "SHARE_BY": "Geteilt von",
+    "UPLOAD_DIRECTORY": {
+      "TITLE_PREFIX": "Laden Sie Dateien / Ordner nach",
+      "DROPZONE_NOTE": "Klicken oder ziehen Sie Dateien hier zum Hochladen. <br /> HINWEIS: Ordner können nicht über den Dateibrowser ausgewählt werden. <br /> Laden Sie die Ordner stattdessen per Drag & Drop hoch."
+    },
+    "DOWNLOAD_DIRECTORY": {
+      "TITLE_BREADCRUMB": "Aktueller Pfad:",
+      "EMPTY_ITEM": {
+        "MSG_TITLE": "Ihr Ordner-Download ist leer",
+        "MSG_SUB_TITLE": "Sie können mit dem Hochladen Ihres Dokuments beginnen oder einen neuen Ordner / eine neue Datei erstellen, indem Sie auf die obigen Menüs klicken."
+      }
+    },
+    "DOWNLOAD_PREVIEW_FILE": {
+      "ENCODING": "Codierung"
+    },
+    "AUDIT": {
+      "HEADER": "E-Mail-Verifizierung",
+      "SUB_HEADER": "Bitte geben Sie Ihre E-Mail-Adresse an, um fortzufahren."
+    }
+  },
+  "EMPTY_ITEMS": {
+    "MSG_TITLES": {
+      "SHARES_FOLDER": "Es wurde noch kein Ordner hinzugefügt",
+      "SHARES_DOWNLOAD_LINK": "Sie haben keinen Download-Link",
+      "SHARES_UPLOAD_LINK": "Sie haben keinen Upload-Link",
+      "SHARES_NOT_FOUND": "Keine Freigabe gefunden."
+    },
+    "MSG_SUB_TITLES": {
+      "SHARES_FOLDER": "Sie können Ordner und Dateien für registrierte Benutzer auf dieser Cloud freigeben. Alternativ können Sie aber auch öffentliche Freigaben, für unbekannte Dritte, erstellen.<br><br> Um Freigaben jeglicher Art zu erstellen, klicken Sie auf das Freigabesymbol Ihrer Ordner und/oder Dateien unterhalb des <a href=\"/folders\">Ordner-Bereichs</a>.<br><br> Zusätzlich können Sie in der jeweiligen <a href=\"/manage\/groups\">Gruppenverwaltung</a>, neue Ordner erstellen und für andere Gruppenmitglieder freigeben.",
+      "SHARES_DOWNLOAD_LINK": "Sie können einen Download-Link für einen Ordner oder eine Datei generieren. Personen, die diesen Link erhalten, können den Ordner oder die Datei online anzeigen.",
+      "SHARES_UPLOAD_LINK": "Sie können einen Upload-Link aus einem beliebigen Ordner generieren. Personen, die diesen Link erhalten, können Dateien in diesen Ordner hochladen.",
+      "SHARES_NOT_FOUND": "Es tut uns leid, aber wir konnten keine Ergebnisse finden, die Ihrer Suche entsprechen. Bitte überprüfen Sie auch Ihre Schreibweise und versuchen Sie es erneut."
+    }
+  },
+  "VALIDATORS": {
+    "FOLDER_NAME_REQUIRED": "Der Ordnername ist erforderlich.",
+    "FOLDER_NAME_MAX_LENGTH": "Der Ordnername darf nicht länger als 255 Zeichen sein.",
+    "FOLDER_NAME_INVALID": "Ungültiger Ordnername.",
+    "PASSWORD_REQUIRED": "Passwort wird benötigt.",
+    "PASSWORD_REPEAT_NOT_MATCH": "Passwort stimmt nicht überein."
+  },
+  "PREVIEW": {
+    "UPDATED": "aktualisiert",
+    "UPDATED_ON": "Aktualisiert am",
+    "OPEN_PARENT": "Öffnen Sie den übergeordneten Ordner",
+    "DETAIL": "Details",
+    "ENCODING": "Codierung",
+    "CURRENT_PATH": "Aktueller pfad",
+    "COMMENTS": "Kommentare",
+    "DELETE_FILE": "Datei Löschen",
+    "ADD_COMMENT": "Einen Kommentar hinzufügen...",
+    "PROMPT_PASSWORD_TIP": "Dieser Ordner ist verschlüsselt. Bitte geben Sie das Passwort ein, wenn Sie online surfen möchten. Das Passwort wird für 1 Stunde auf dem Server gespeichert.",
+    "SWITCH_TO_SOURCE_EDITOR": "Wechseln Sie zum Quelleditor",
+    "SWITCH_TO_WYSIWYG_EDITOR": "Wechseln Sie zum WYSIWYG-Editor",
+    "PDF_FILE_PAGE_LIMIT_NOTIFICATION": "Diese Datei hat mehr als {{ limitPageNumber }} Seiten. Hier werden nur die ersten {{ limitPageNumber }} angezeigt.",
+    "PREMISSION_EDIT_OFFICE_FILE":"Sie haben keine Berechtigung, diese Datei zu bearbeiten",
+    "OPEN_OFFICE_EDITOR":"Vollbild",
+    "MODALS": {
+      "INSERT_LINK": {
+        "TITLE": "Link einfügen",
+        "CUSTOM_LINK": "Benutzerdefinierten Link",
+        "EXISTING_PAGE": "Von der vorhandenen Seite",
+        "INSERT_URL_HERE_PLACEHOLDER": "Von der vorhandenen Seite",
+        "TYPE_HERE_TO_SEARCH_PLACEHOLDER": "Geben Sie hier ein, um nach Dateinamen zu suchen",
+        "FILENAME_TABLE_HEADER": "Dateiname",
+        "PATH_TABLE_HEADER": "Pfad",
+        "PLEASE_PROVIDE_LINK_MESSAGE": "Bitte geben Sie die URL zum Einfügen an",
+        "SELECT_FILE_BTN": "Datei aussuchen",
+        "OPEN_IN_NEW_TAB": "In neuem Tab öffnen"
+      },
+      "INSERT_IMAGE": {
+        "TITLE": "Bild einfügen",
+        "NEW_IMAGE": "Laden Sie ein neues Bild hoch",
+        "EXISTING_IMAGE": "Wählen Sie aus vorhandenen Bildern",
+        "INVALID_IMAGE": "Ungültiges Bild Es werden nur Bilddateien unterstützt.",
+        "PLEASE_PROVIDE_IMAGE": "Bitte geben Sie das einzufügende Bild an.",
+        "PLEASE_SELECT_IMAGE": "Bitte wählen Sie ein Bild aus der Liste aus, das Sie einfügen möchten.",
+        "URL_INVALID": "Ungültige URL. Bitte prüfen Sie die Eingabe.",
+        "DIRECT_LINK": "Von direkter Verbindung"
+      },
+      "CONFIRM_SAVE":{
+        "TITLE":"Bearbeitung speichern",
+        "DESCRIPTION":"Diese Datei wurde geändert. Möchten Sie diese Änderung speichern?"
+      }
+    }
+  },
+  "REVISION": {
+    "VERSION_HISTORY": "Vorherige Versionen",
+    "TIP": "Tipp: Jede Änderung erzeugt eine neue Version. Vorherige Versionen können wiederhergestellt werden.",
+    "CURRENT_PATH": "Dateipfad",
+    "DURATION": "Ansicht",
+    "A_WEEK": "1 Woche",
+    "A_MONTH": "1 Monat",
+    "ALL": "Alle",
+    "RENAME_OR_MOVE": "Umbenannt oder verschoben",
+    "RESTORE": "Wiederherstellen",
+    "VIEW": "Version ansehen",
+    "DOWNLOAD": "Download",
+    "DIFF": "Vergleichen"
+  },
+  "DIFF": {
+    "MODIFICATION_DETAILS": "Änderungsdetails",
+    "EDITED": "bearbeitet",
+    "CURRENT_PATH": "Aktueller pfad",
+    "BEFORE_MODIFICATION": "Vor der Änderung",
+    "AFTER_MODIFICATION": "Nach der Modifikation"
+  },
+  "TITLE_PAGE": {
+    "SHARES": "Freigaben",
+    "FAVORITES": "Favoriten",
+    "GROUPS": "Gruppen",
+    "FILES": "Ordner",
+    "SETTINGS": "Einstellungen",
+    "DEVICES": "Geräte",
+    "FOLDERS": "Ordner",
+    "ALL": "Alle",
+    "SYSTEM_LIB": "System",
+    "TRASH_LIB": "Papierkorb",
+    "USERS": "Benutzer",
+    "DATABASE": "Datenbank",
+    "ADMINS": "Administratoren",
+    "USER_INFO": "Benutzerübersicht",
+    "MOBILES": "Mobiles",
+    "DESKTOPS": "Desktops",
+    "SNAPSHOT": "Schattenkopie",
+    "CHANGE_PASSWORD_FOR_FIRST_LOGIN": "ändere das Passwort",
+    "CHANGE_PASSWORD_DESCRIBLE_HEADER": "Sie sollten das Passwort bei der ersten Anmeldung ändern",
+    "AUDIT_LOG": "Audit Log",
+    "MEETINGS": "Meetings",
+    "RECORDINGS": "Aufnahmen",
+    "BBB_SERVER":"Meeting Server"
+  },
+  "UPLOAD_PROCESS": {
+    "TITLE": "Upload-Prozess",
+    "COMPLETED": "Abgeschlossen",
+    "CANCELED": "Abgebrochen",
+    "ERROR": "Fehler",
+    "SAVING": "Speichern",
+    "UPLOADING": "Hochladen"
+  },
+  "SHARE_WITH_PASSWORD": {
+    "EXPIRATION_CANNOT_EXCEED": "Der Ablauf darf 90 Tage nicht überschreiten"
+  },
+  "NOTIFICATION_MESSAGE": {
+    "LINK_HAS_BEEN_COPIED_TO_CLIPBOARD": "Der Link wurde in die Zwischenablage kopiert.",
+    "YOU_MUST_SELECT_AS_LEAST_1_USER_TO_SHARE": "Sie müssen mindestens 1 Benutzer für die Freigabe auswählen.",
+    "CANNOT_SHARE_FOLDER_TO_THE_OWNER": "Ordner kann nicht mit dem Eigentümer geteilt werden.",
+    "DELETE_SHARED_UPLOAD_LINK_SUCCESSFULLY": "Upload-Link erfolgreich gelöscht",
+    "DELETE_SHARED_ITEM_SUCCESSFULLY": "Geteilte Dateien erfolgreich gelöscht.",
+    "UPDATE_SHARED_ITEM_PERMISSION_SUCCESSFULLY": "Freigabe erfolgreich erteilt.",
+    "SHARE_FOLDER_TO_USER_SUCCESSFULLY": "Ordner wurde erfolgreich mit dem Benutzer geteilt.",
+    "SHARE_TO_GROUP_SUCCESS": "Ordner erfolgreich für die Gruppe freigegeben.",
+    "MUST_SELECT_GROUP_TO_SHARE": "Sie müssen mindestens 1 Gruppe zum Teilen auswählen.",
+    "DELETE_SHARED_DOWNLOAD_LINK_SUCCESSFULLY": "Download-Link erfolgreich gelöscht",
+    "ADDED_USERS_GROUPS_TO_SHARE_SUCCESSFULLY": "Benutzer / Gruppen hinzugefügt, um sie erfolgreich zu teilen",
+    "SHARE_PERMISSION_UPDATED_SUCCESSFULLY": "Freigabeberechtigung erfolgreich aktualisiert",
+    "WRONG_EMAIL": "Fehler beim Versenden der E-Mail, bitte überprüfen Sie Ihre E-Mail-Adresse.",
+    "CHANGE_PASSWORD_FOLDER": {
+      "SUCCESSFULLY": "Das Passwort für den Ordner wurde erfolgreich geändert.",
+      "WRONG_OLD_PASSWORD": "Falsches altes Passwort."
+    },
+    "GROUP_NAME_WAS_RENAMED_SUCCESSFULLY": "Gruppe wurde erfolgreich umbenannt.",
+    "YOU_MUST_PROVIDE_A_NEW_NAME_FOR_THE_GROUP": "Sie müssen einen neuen Namen für die Gruppe angeben.",
+    "GROUP_WAS_TRANSFERRED_SUCCESSFULLY": "Gruppe wurde erfolgreich übertragen.",
+    "THE_OWNER_OF_THE_GROUP": "{{display}} ist derzeit der Eigentümer der Gruppe.",
+    "EMAIL_INVALID": "E-Mail {{ userName }} ungültig",
+    "UPLOAD_FILE_FOLDER_SUCCESSFULLY": "Datei (en) / Ordner erfolgreich hochgeladen.",
+    "YOU_MUST_PROVIDE_A_VALID_EMAIL": "Sie müssen eine gültige E-Mail-Adresse angeben.",
+    "ONLY_CSV_FILES_ALLOWED": "Nur CSV-Dateien erlaubt.",
+    "SHARE_LINK_WAS_DELETED_SUCCESSFULLY": "Share-Link erfolgreich gelöscht",
+    "DEVICE_NAME_BEEN_COPIED_TO_CLIPBOARD": "Der Gerätename wurde in die Zwischenablage kopiert.",
+    "SHARE_LINK_PASSWORD_TITLE": "Passwortgeschützter Link zum Hochladen von Freigaben.",
+    "SHARE_LINK_PASSWORD_DESCRIPTION": "Bitte geben Sie das Passwort ein, wenn Sie die freigegebene Datei / Verzeichnis durchsuchen möchten.",
+    "PASSWORD_PROTECTED": "Passwortgeschützt",
+    "PASSWORD_CHECK_BUTTON": "Prüfen",
+    "LOCK_FILE_SUCCESS": "Datei erfolgreich gesperrt",
+    "UNLOCK_FILE_SUCCESS": "Datei erfolgreich entsperret",
+    "FILE_HAS_BEEN_LOCKED": "Diese Datei wurde gesperrt. Sie können die Datei nicht bearbeiten.",
+    "FILE_PREVIEW_OFFICE_EDIT": "Um Änderungen zu übernehmen, drücken Sie bitte die Tastenkombination (Strg + S) oder klicken auf das Speichern Symbol (Diskette)."
+  },
+  "PERMISSIONS": {
+    "READ_WRITE": "Lesen/Schreiben",
+    "WRITE": "Schreiben",
+    "READ": "Nur lesen",
+    "VIEW_HISTORY": "Verlauf anzeigen",
+    "VIEW_SNAPSHOT": "Schattenkopie anzeigen",
+    "RESTORE_SNAPSHOT": "Schattenkopie wiederherstellen"
+  },
+  "SUB_TITLE_PAGE": {
+    "SHARES": "Hinzufügen von Verwaltungsfreigaben für andere Benutzer, Gruppen oder über öffentliche Links"
+  },
+  "FOOTER": {
+    "HELP": "Hilfe",
+    "ABOUT": "Über",
+    "VERSION": "Syncwerk Server",
+    "VERSION_LINK": "https://www.syncwerk.de/editionen/",
+    "ABOUT_US": "Über",
+    "SUPPORT": "Unterstützung",
+    "SUPPORT_LINK": "https://support.syncwerk.de/",
+    "PRIVACY": "Datenschutz",
+    "PRIVACY_LINK": "https://www.syncwerk.de/datenschutzerklaerung/",
+    "LEGAL_INFO": "Impressum",
+    "LEGAL_INFO_LINK": "https://www.syncwerk.de/impressum/",
+    "TERMS": "Nutzungsbedingungen",
+    "WELCOME_MESSAGE": "Willkommen"
+  },
+  "HEADER": {
+    "SEE_ALL_NOTIFICATIONS": "Alle Benachrichtigungen anzeigen",
+    "YOU_HAVE_NO_NOTIFICATIONS": "Sie haben keine Benachrichtigungen",
+    "A_FILE_NAME_PREFIX": "Die Datei",
+    "IS_UPLOAD_TO_SUFFIX": "wurde hochgeladen",
+    "HAS_A_NEW_DISCUSION_SUFFIX": "hat eine neue Diskussion.",
+    "POSTED_A_NEW_DISCISSION_IN_SUFFIX": "gepostet in neuer Diskussion in",
+    "HAS_SHARED_A_FOLDER_NAMED_SUFFIX": "hat einen Ordner geteilt",
+    "HAS_ADD_YOU_TO_GROUP_SUFFIX": "hat Sie zur Gruppe hinzugefügt",
+    "TO_GROUP_SUFFIX": "mit der Gruppe",
+    "TO_YOU_SUFFIX": "mit Ihnen",
+    "USER": "Benutzer",
+    "MARK_AS_READED": "als gelesen markieren",
+    "NOTIFICATIONS": "Benachrichtigungen",
+    "DELETED_FOLDER": "Gelöschter Ordner",
+    "HAS_A_NEW_COMMENT_FROM_USER_SUFFIX": "hat einen neuen Kommentar vom Benutzer",
+    "NOTI_REPO_SHARE": " <span class=\"title-name\">{{ titleName }}</span> hat den Ordner <span class=\"folder-name\">{{ folderName }}</span> mit Ihnen geteilt.",
+    "NOTI_FILE_COMMENT": "Die Datei  <span class=\"file-name\">{{fileName}}</span> hat einen neuen Kommentar vom Benutzer <span class=\"user-name\">{{userName}}</span>.",
+    "NOTI_ADD_USER_TO_GROUP": "Benutzer <span class=\"user-name\">{{userName}}</span> hat Sie zur Gruppe <span class=\"group-name\">{{groupName}} hinzugefügt.</span>",
+    "NOTI_SHARE_TO_GROUP": "<span class=\"user-name-share\">{{userName}}</span> hat einen Ordner namens <span class=\"folder-name-share\">{{ folderName }}</span> für die Gruppe <span class=\"group-name\">{{groupName}}</span> freigegeben.",
+    "NOTI_POSTER_DISCUSSION": "<span class=\"user-name-discuss\">{{userName}}</span> hat eine neue Diskussion in einer Gruppe gepostet <span class=\"group-name\">{{groupName}}</span> : \" <span class=\"mess-text\">{{messText}}</span> \".",
+    "NOTI_POSTER_DISCUSSION_UNKNOW": "<span class=\"group-name\">{{groupName}}</span> hat eine neue Diskussion: \" <span class=\"mess-text\">{{messText}}</span>\".",
+    "NOTI_FILE_UPLOADED": "Die Datei <span class=\"file-name-upload\">{{fileName}}</span> wurde in <span class=\"folder-name-upload\">{{folderName}}</span> hochgeladen.",
+    "NOTI_FILE_UPLOADED_UNKNOW": "Die Datei <span class=\"file-name\">{{fileName}}</span> wurde in einen gelöschten Ordner hochgeladen"
+  },
+  "REVOKE_ADMIN": {
+    "TITLE": "Administratorrechte entziehen",
+    "QUESTION": "Möchten Sie die Administratorberechtigung für das Benutzerkonto \"{{username}}\" wirklich entziehen?"
+  },
+  "SET_USER_STORAGE_LIMIT": {
+    "TITLE": "Legen Sie das Benutzerspeicherlimit fest",
+    "DESC_1": "Eine Ganzzahl, die größer oder gleich ist 0.",
+    "DESC_2": "Tipp: 0 bedeutet Standardlimit"
+  },
+  "EMPTY_MESSAGE": {
+    "FOLDER_EMPTY_TITLE": "Dieser Ordner ist leer",
+    "FOLDER_EMPTY_SUBTITLE": "Sie können mit dem Hochladen Ihres Dokuments beginnen oder neue Unterordner / Dateien erstellen, indem Sie auf die Menüs oben klicken",
+    "SUBFOLDER_EMPTY_TITLE": "Dieser Unterordner ist leer",
+    "SUBFOLDER_EMPTY_SUBTITLE": "Sie können mit dem Hochladen Ihres Dokuments beginnen oder neue Unterordner / Dateien erstellen, indem Sie auf die Menüs oben klicken",
+    "FILE_NOT_FOUND": "Datei nicht gefunden",
+    "FILE_SUB_NOT_FOUND": "Es tut uns leid, aber wir konnten keine Ergebnisse finden, die Ihrer Suche entsprechen. Bitte überprüfen Sie auch Ihre Schreibweise und versuchen Sie es erneut."
+  },
+  "UPLOAD_FILES_FOLDERS": {
+    "TITLE": "Dateien / Ordner hochladen",
+    "DESC": "Klicken oder ziehen Sie Dateien hier zum Hochladen.<br>HINWEIS: Ordner können nicht über den Dateibrowser ausgewählt werden.<br>Ordner stattdessen per Drag & Drop hochladen.",
+    "UPLOADED": "Ihre Dateien / Ordner wurden erfolgreich hochgeladen.",
+    "NO_FILE_EXISTS_TO_UPLOAD": "Zum Hochladen ist keine Datei vorhanden. Bitte ziehen Sie eine Datei per Drag & Drop zum Hochladen.",
+    "UPLOAD_ERROR": "Ihre Dateien / Ordner können in diesem Moment nicht hochgeladen werden. Bitte versuche es erneut.",
+    "FILE_SIZE_TOO_LARGE": "Dateigröße ist zu groß. Die maximale Größe beträgt {{ max_size }} MB",
+    "OUT_OF_QUOTA": "Speicherplatz nicht ausreichend",
+    "THE_FILE_EXCEEDS_LEVEL_5.": "Die Datei überschreitet Stufe 5."
+  },
+  "MODAL_EDIT_FOLDER_DESCRIPTION": {
+    "INPUT_LABEL": "Beschreibung",
+    "EDIT_SUCCESSFULLY": "Ordnerbeschreibung erfolgreich bearbeitet",
+    "EDIT_FAILED": "Fehler beim Bearbeiten der Ordnerbeschreibung"
+  },
+  "MODAL_COPY_MOVE": {
+    "COPY_SINGLE_ITEM": "Kopiere <span class=\"item-name\">{{ itemName }}</span> nach:",
+    "COPY_MULTIPLE_ITEMS": "Kopiere <span class=\"item-name\">{{ itemName }} und {{ numberOfOtherItems }} Element(e) </span> nach:",
+    "MOVE_SINGLE_ITEM": "Verschiebe <span class=\"item-name\">{{ itemName }}</span> nach:",
+    "MOVE_MULTIPLE_ITEMS": "Verschiebe <span class=\"item-name\">{{ itemName }} und {{ numberOfOtherItems }} Element(e)</span> nach:",
+    "BTN_COPY": "Kopieren",
+    "BTN_MOVE": "Verschieben",
+    "BTN_CANCEL": "Abbrechen",
+    "BTN_SHARE": "Freigabe"
+  },
+  "FILE_BROWSER": {
+    "CONTEXT_MENU": {
+      "MARK_FAVORITE": "Als Favorit markieren",
+      "REMOVE_FAVORITE": "Favoriten entfernen"
+    },
+    "MARKED_FAVORITE_SUCCESS": "{{fileName}} erfolgreich als Favorit markiert",
+    "REMOVE_FAVORITE_SUCCESS": "{{fileName}} erfolgreich aus den Favoriten entfernt",
+    "BATCH_MARKED_FAVORITE_SUCCESS": "Alle ausgewählten Dateien wurden als Favoriten markiert.",
+    "BATCH_MARKED_FAVORITE_AT_LEAST_ONE_FILE": "Nur Dateien können als Favoriten markiert werden. Bitte wählen Sie mindestens eine Datei aus.",
+    "FOLDER_NOT_ALLOWED_IN_BATCH": "Ordner sind beim Batch-Download nicht zulässig",
+    "MAX_FOLDERS_ALLOWED_IN_BATCH": "Viele Dateien für den Batch-Download ausgewählt, maximal zulässig: "
+  },
+  "WIKIS": {
+    "WIKI_LIST": {
+      "TITLE": "Wikis",
+      "SUBTITLE": "Verwalten Sie hier Ihre Wikis",
+      "NO_WIKI_TITLE": "Sie haben noch kein Wiki erstellt",
+      "NO_WIKI_SUBTITLE": "Mit dem Wiki können Sie Ihr Wissen auf einfache Weise organisieren. Der Inhalt des Wikis wird in einem Ordner mit vordefinierter Datei- / Ordnerstruktur gespeichert.",
+      "NO_WIKI_FOUND_TITLE": "Kein Wiki gefunden",
+      "NO_WIKI_FOUND_SUBTITLE": "Bitte überprüfen Sie die Schreibweise und versuchen es erneut.",
+      "HEADERS": {
+        "NAME": "Name",
+        "OWNER": "Inhaber",
+        "LAST_UPDATE": "Aktualisiert",
+        "ACTIONS": "Aktionen"
+      },
+      "BUTTONS": {
+        "ADD_WIKI": "Wiki hinzufügen",
+        "NEW_WIKI": "Neues Wiki",
+        "CHOOSE_FOLDER_AS_WIKI": "Wählen Sie einen Ordner für das Wiki",
+        "RENAME_WIKI": "Wiki umbenennen",
+        "REMOVE_WIKI": "Wiki entfernen"
+      },
+      "MODALS": {
+        "NEW_WIKI_TITLE": "Neues Wiki",
+        "NEW_WIKI_PLACEHOLDER": "Wiki-Name",
+        "NEW_WIKI_SUBMIT_BTN": "Erstellen",
+        "WIKI_FROM_FOLDER_TITLE": "Erstelle Wiki aus einem Ordner",
+        "WIKI_FROM_FOLDER_SUBMIT_BTN": "Erstellen",
+        "WIKI_RENAME_TITLE": "Wiki umbenennen",
+        "WIKI_REMOVE_TITLE": "Wiki entfernen",
+        "WIKI_REMOVE_CONFIRMATION": "Möchten Sie das Wiki <code>{{name}}</code> entfernen?"
+      },
+      "MESSAGES": {
+        "NEED_TO_SELECT_A_FOLDER": "Bitte wählen Sie einen Ordner aus, aus dem das Wiki erstellt werden soll",
+        "WIKI_NAME_INVALID": "Bitte geben Sie einen gültigen Wiki-Namen an. Wiki-Name darf nur Buchstaben, Zahlen, Leerzeichen, Bindestrich oder Unterstrich enthalten.",
+        "WIKI_CREATED_SUCCESSFULLY": "Wiki wurde erfolgreich erstellt"
+      }
+    },
+    "WIKI_PAGES": {
+      "TITLE": "Wiki-Seiten",
+      "SUBTITLE": "Alle Seiten des Wikis anzeigen und verwalten",
+      "PAGE_LIST": {
+        "PAGES_TITLE": "Seiten",
+        "ACTION_RENAME": "Seite umbenennen",
+        "ACTION_REMOVE": "Seite entfernen",
+        "WIKI_HISTORY": "Verlauf anzeigen",
+        "ACTION_ADD_PAGE": "Seite hinzufügen",
+        "ACTION_EDIT_PAGE": "Bearbeiten",
+        "ACTION_SAVE_PAGE": "Speichern",
+        "ACTION_CANCEL": "Abbrechen",
+        "LAST_MODIFY_TITLE": "Letzte Änderung um ",
+        "LAST_MODIFY_AT": "beim",
+        "NO_PAGE_YET": "Noch keine Seite hinzugefügt."
+      },
+      "MODALS": {
+        "NEW_WIKI_PAGE_TITLE": "Neue Seite",
+        "NEW_WIKI_PAGE_PLACEHOLDER": "Seitenname",
+        "WIKI_PAGE_RENAME_TITLE": "Seite umbenennen",
+        "WIKI_PAGE_REMOVE_TITLE": "Seite entfernen",
+        "WIKI_PAGE_REMOVE_CONFIRMATION": "Möchten Sie die Seite <code> {{name}} </ code> entfernen?"
+      },
+      "MESSAGES": {
+        "WIKI_PAGE_NAME_INVALID": "Bitte geben Sie einen gültigen Wiki-Seitennamen an. Der Seitenname darf nur Buchstaben, Zahlen, Leerzeichen, Bindestrich oder Unterstrich enthalten.",
+        "WIKI_PAGE_CREATED_SUCCESSFULLY": "Wiki-Seite erfolgreich erstellt.",
+        "WIKI_PAGE_RENAMED_SUCCESSFULLY": "Wiki-Seite erfolgreich umbenannt.",
+        "WIKI_PAGE_REMOVE_SUCCESSFULLY": "Seite wurde erfolgreich entfernt.",
+        "WIKI_PAGE_EDIT_SUCCESSFULLY": "Seite erfolgreich aktualisieren."
+      }
+    }
+  },
+  "HOME": {
+    "TITLE": "Übersicht",
+    "SUBTITLE": "Hier finden Sie aktuelle Änderungen, Aktionen und Neuigkeiten für Ihr Cloud-Konto.",
+    "LOG_LIST": {
+      "TITLE": "Aktivitätsprotokolle",
+      "SUBTITLE": "Ihr persönliches Aktivitätsprotokoll.",
+      "LOG_REPO_CREATE": "Sie haben einen neuen Ordner mit dem Namen <span class=\"folder-name\">{{ name }}</span> erstellt.",
+      "LOG_REPO_TRANSFER_TO": "Sie haben den Ordner <span class=\"folder-name\">{{ name }}</span> an {{ to.email }} übertragen.",
+      "LOG_REPO_TRANSFER_FROM": "{{ from.email }} hat Ihnen einen Ordner mit dem Namen <span class=\"folder-name\">{{ name }}</span> übermittelt .",
+      "LOG_REPO_DELETE": "Sie haben einen Ordner mit dem Namen <span class=\"folder-name\">{{ name }}</span> gelöscht.",
+      "LOG_GROUP_CREATE": "Sie haben eine Gruppe mit dem Namen <span class=\"folder-name\">{{ name }}</span> erstellt",
+      "LOG_GROUP_TRANSFER_TO": "Sie haben die Gruppe <span class=\"folder-name\">{{ name }}</span> auf {{ to.email }} übertragen",
+      "LOG_GROUP_TRANSFER_FROM": "{{ from.email }} hat Ihnen eine Gruppe namens <span class=\"folder-name\">{{ name }}</span> übermittelt",
+      "LOG_GROUP_DELETE": "Sie haben die Gruppe <span class=\"folder-name\">{{ name }}</span> gelöscht",
+      "BTN_CSV_EXPORT": "CSV-Liste herunterladen",
+      "LOG_LIST_EMPTY_MESSAGE_TITLE": "Noch keine Aktivität",
+      "LOG_LIST_EMPTY_MESSAGE_SUBTITLE": "Ihre Aktivitäten im System werden hier angezeigt",
+      "LOG_LIST_NOT_FOUND_MESSAGE_TITLE": "Kein Ergebnis",
+      "LOG_LIST_NOT_FOUND_MESSAGE_SUBTITLE": "Bitte überprüfen Sie Ihre Schreibweise und versuchen Sie es erneut"
+    }
+  },
+  "STATIC_CMS": {
+    "SUPPORT_TITLE": "Support",
+    "PRIVACY_TITLE": "Datenschutz",
+    "TERMS_TITLE": "Nutzungsbedingungen",
+    "WELCOME_TITLE": "Willkommensnachricht",
+    "LEGAL_TITLE": "Impressum"
+  },
+  "MEETING": {
+    "TITLE": "Meetings",
+    "SUBTITLE": "Verwalten Sie Ihre Meetings",
+    "FILTER_PLACEHOLDER": "Filtern Sie nach Meetingname und Ersteller",
+    "BUTTON": {
+      "ADD_NEW": "Neues Meeting"
+    },
+    "LIST": {
+      "MODERATOR": "Moderator",
+      "ATTENDEE": "Teilnehmer",
+      "GROUP": "(GRUPPE)"
+    },
+    "TABLE_HEADERS": {
+      "NAME": "Name",
+      "CREATED_ON": "Erstellt am",
+      "ROLE": "Rolle",
+      "CREATOR": "Ersteller",
+      "SETTING_TYPE": "Typ",
+      "SETTING_NAME": "Server",
+      "BBB_SERVER": "Adresse",
+      "STATUS": "Status",
+      "ACTIONS": "Aktionen"
+    },
+    "STATUS": {
+      "STARTING": "Starte...",
+      "STOPPING": "Halte an...",
+      "STOPPED": "Gestoppt",
+      "IN_PROGRESS": "Aktiv"
+    },
+    "MESSAGES": {
+      "NO_FOUND": "Kein Meeting gefunden.",
+      "CREATE_SUB": "Hier können Sie Ihre erstellten Meetings verwalten",
+      "NO_CREATE": "Keine Meetings erstellt.",
+      "MEETING_ENDED": "Sie sind von der Besprechung abgemeldet oder die Besprechung wurde beendet",
+      "MEETING_ENDED_REDIRECT": "Sie werden in Kürze zu Ihrem vorherigen Standort weitergeleitet. Warten Sie mal..."
+    },
+
+    "SHARE": {
+      "TITLE": "Besprechung teilen",
+      "PUBLIC_LINK": "Öffentlicher Link",
+      "USERS": "Für Benutzer freigeben",
+      "GROUPS": "Für Gruppen freigeben",
+      "LINK_TEXT": "Erstellen Sie hier einen öffentlichen Freigabelink und senden Sie ihn an externe Benutzer, um an der Besprechung teilzunehmen.",
+      "CREATE_PUBLIC_LINK": "Öffentlichen Link erstellen",
+      "LINK": "Verknüpfung",
+      "COPY_LINK": "Link kopieren",
+      "USER_LINK_TEXT": "Verwenden Sie dieses Freigabeformular, um die Besprechung für den Benutzer freizugeben.",
+      "GROUP_LINK_TEXT": "Verwenden Sie dieses Freigabeformular, um die Besprechung für Gruppen freizugeben.",
+      "GROUP_NAME": "Gruppenname",
+      "ROLE": "Rolle"
+    },
+    "FORM": {
+      "ADD_NEW": "Neues Meeting",
+      "EDIT": "Meeting bearbeiten",
+      "BBB_SETTING": "Serverauswahl",
+      "BBB_SETTING_DELETE": "Einstellung wird gelöscht",
+      "BBB_SETTING_DISABLED": "Deaktiviert",
+      "NAME": "Bezeichnung",
+      "OWNER": "Inhaber",
+      "MEETING_OWNER": "Inhaber",
+      "INPUT_OWNER_PLACEHOLDER": "E-Mailadresse des Meeting-Inhabers. Wenn nichts angegeben ist, ist der aktuelle Administrator der Eigentümer.",
+      "SYSTEM_SETTING": "System",
+      "PERSONAL_SETTING": "Persönliche Einstellung",
+      "GROUP_SETTING": "Gruppeneinstellung",
+      "TENANT_SETTING": "Mandanteneinstellung",
+      "PIN_MODERATOR": "Meeting-PIN für Moderator (erforderlich)",
+      "PIN_ATTENDEES": "Meeting-PIN für Teilnehmer (erforderlich)",
+      "OPTION_ALLOW_STREAMING": "Ermöglichen, dass Besprechungen gestreamt werden",
+      "OPTION_ALLOW_STREAMING_FEEDBACK": "Aktivieren Sie das Feedback-Formular auf der Streaming-Seite",
+      "OPTION_REQUIRE_PASSWORD": "PIN für öffentliche Freigaben erforderlich",
+      "OPTION_MUTE_PARTICIPANT": "Teilnehmer beim Betreten des Meetings stummschalten",
+      "OPTION_REQUIRE_MODERATOR_APPROVAL": "Vor dem Beitreten ist eine Genehmigung des Moderators erforderlich",
+      "OPTION_ALLOW_START": "Jeder Teilnehmer darf das Meeting starten",
+      "OPTION_JOIN_AS_MODERATOR": "Alle Benutzer treten als Moderator bei",
+      "OPTION_ALLOW_RECORDING": "Aufnahmen zulassen. Meetings werden immer vollständig aufgenommen.",
+      "MAX_AMOUNT": "Maximale Teilnehmeranzahl für dieses Meeting",
+      "WELCOME_MESSAGE_PLACEHOLDER": "Begrüßungsnachricht bearbeiten",
+      "MEETING_NAME_INVALID": "Der Name der Besprechung ist ungültig",
+      "PRESENTATION_FILES": "Präsentationsdateien",
+      "CHOOSE_PRESENTATION_FILES": "Präsentationsdateien hinzufügen",
+      "DEFAULT_FILE": "Standarddatei",
+      "FEEDBACK_USERNAME": "Nutzername",
+      "FEEDBACK_EMAIL": "Email",
+      "FEEDBACK_MESSAGE": "Botschaft",
+      "FEEDBACK_INVALID": "Bitte füllen Sie die Felder aus"
+    },
+    "START_JOIN_MEETING_MODAL": {
+      "STARTING_MEETING": "Meeting beginnen ...",
+      "JOINING_MEETING": "An einem Meeting teilnehmen ...",
+      "PROVIDE_PASSWORD": "Geben Sie das Kennwort ein"
+    },
+    "PUBLIC_LINK_PAGE": {
+      "JOIN_A_MEETING": "An einem Meeting teilnehmen",
+      "PROVIDE_FULLNAME": "Geben Sie Ihren Namen an",
+      "PROVIDE_PASSWORD": "Geben Sie das Kennwort für das Meeting an",
+      "JOIN_MEETING": "Dem Meeting beitreten",
+      "LOADING": "Wird geladen...",
+      "MEETING_NOT_STARTED": "Das Meeting hat noch nicht begonnen.",
+      "AUTO_JOIN_WHEN_STARTED": "Sie werden automatisch teilnehmen, wenn das Meeting beginnt.",
+      "FULL_NAME_LENGTH_ERROR": "Ihr vollständiger Name darf 150 Zeichen nicht überschreiten",
+      "FULL_NAME_FORMAT_ERROR": "Ihr vollständiger Name kann nur Zahlen, Alphabet und Leerzeichen enthalten",
+      "MUST_ACCEPT_TERMS": "Sie müssen die Allgemeinen Geschäftsbedingungen akzeptieren, um fortzufahren"
+    },
+    "RECORDINGS": {
+      "TITLE": "Aufnahmen des Meetings",
+      "NAME": "Name",
+      "UPDATED": "Aktualisiert",
+      "SIZE": "Größe",
+      "OWNER": "Inhaber",
+      "STATUS": "Status",
+      "ACTIONS": "Aktionen",
+      "PUBLISHING": "Veröffentlichen...",
+      "UNPUBLISHING": "Unveröffentlichen...",
+      "NO_RECORDING_FOUND": "Keine Aufnahme gefunden",
+      "NO_RECORDING_CREATED": "Keine Aufnahme erstellt",
+      "NO_RECORDING_CREATED_SUB": "Hier können Sie Ihre Aufnahmen verwalten. Es dauert eine Weile, bis die Aufzeichnungen nach Beendigung des Meetings angezeigt werden."
+    },
+    "MODALS": {
+      "DELETE_MEETING_CONFIRM_MESSAGE": "Möchten Sie diese Besprechung löschen?",
+      "DELETE_MEETING_RECORDINGS_CONFIRM_MESSAGE": "Möchten Sie diese Aufnahme löschen?"
+    }
+  },
+  "BBB_SERVERS": {
+    "TITLE": "Meeting Server",
+    "SUBTITLE": "Verwalten Sie hier Ihre (BigBlueButton) Meeting-Serververbindungen",
+    "FILTER_PLACEHOLDER": "Filtern nach Bezeichnung und URL",
+    "TABLE_HEADERS": {
+      "SERVER_NAME": "Bezeichnung",
+      "SERVER_URL": "URL",
+      "CREATED_ON": "Erstellt",
+      "NUMBER_OF_CREATED_MEETINGS": "Räume",
+      "ACTIONS": "Aktionen",
+      "CREATED_BY": "Besitzer"
+    },
+    "BUTTON": {
+      "ADD_NEW":"Neuer Server",
+      "ADD_SERVER": "Hinzufügen",
+      "EDIT_SERVER": "Übernehmen",
+      "TEST_CONNECTION": "Verbindung testen"
+    },
+    "MODALS": {
+      "ADD_SERVER_TITLE": "Neuer BigBlueButton Server",
+      "EDIT_SERVER_TITLE": "Bearbeiten Sie den BigBlueButton-Server",
+      "SERVER_NAME": "Bezeichnung",
+      "SERVER_ADDRESS": "URL",
+      "SECRET_KEY": "Secret",
+      "TEST_CONNECTION": "Testen",
+      "OWNER": "Besitzer",
+      "OWNER_PLACEHOLDER": "E-Mail des Besitzers.",
+      "DELETE_MEETING_SERVER_TITLE": "Server löschen",
+      "DELETE_MEETING_SERVER_CONFIRM_MESSAGE": "<div>Alle Meetings, die diesen Meeting-Server verwenden, werden auf den Standardserver von Syncwerk zurückgesetzt.</div><div>Möchten Sie diesen BigBlueButton-Server löschen?</div>",
+      "LIVE_STREAM_TOKEN": "Live Stream Token",
+      "LIVE_STREAM_SERVER": "Live Stream Server"
+    },
+    "MESSAGES": {
+      "SERVER_NAME_REQUIRED": "Sie müssen den Servernamen angeben",
+      "SERVER_NAME_LENGTH_INVALID": "Der Servername muss aus weniger als 255 Zeichen bestehen",
+      "SERVER_URL_REQUIRED": "Sie müssen die Server-URL angeben",
+      "SERVER_SECRET_REQUIRED": "Sie müssen den geheimen Serverschlüssel (Secret) angeben",
+      "NO_FOUND": "Kein BBB-Server gefunden",
+      "NO_CREATE": "Kein BBB-Server erstellt",
+      "CREATE_SUB": "Hier können Sie Ihre erstellten BBB-Serververbindungen erstellen und verwalten"
+    }
+  },
+  "KANBAN": {
+    "TITLE": "Kanban",
+    "SUBTITLE": "Persönliche und freigegebene Projekte verwalten",
+    "KANBAN_LIST": {
+      "NAME": "Name",
+      "OWNER": "Besitzer",
+      "CREATED": "Erstellt am",
+      "LAST_UPDATE": "Zuletzt aktualiert",
+      "ACTIONS": "Actions",
+      "NO_BOARD_CREATED":  "Sie haben für dieses Projekt kein Board erstellt",
+      "NO_BOARD_SUBTITLE": "Sie können mehrere Aufgabenprojekte erstellen und in diesem Projekt verwalten.",
+      "NO_PROJECT_CREATED": "Sie haben kein Projekt erstellt",
+      "NO_PROJECT_SUBTITLE": "Sie können mehrere Kanban-Projekte erstellen und verwalten."
+    },
+    "BUTTONS": {
+      "CREATE_PROJECT": "Neues Projekt erstellen",
+      "RENAME": "Umbenennen",
+      "DELETE": "Löschen"
+    },
+    "MODALS": {
+      "NEW_PROJECT": "Neues Projekt",
+      "NEW_PROJECT_PLACEHOLDER": "Projektname",
+      "DELETE_PROJECT": "Projekt löschen",
+      "CONFIRM_DELETE": "Möchten Sie das Project <code>{{project_name}}</code> löschen?",
+      "RENAME_PROJECT": "Projekt umbennen",
+      "RENAME_BOARD": "Board umbenennen",
+      "DELETE_BOARD": "Board löschen",
+      "CONFIRM_DELETE_BOARD": "Möchten Sie das Board <code>{{board_name}}</code> und dessen Aufgaben löschen?",
+      "CONFIRM_DELETE_TASK": "Möchten Sie die Aufgabe löschen?",
+      "DESCRIPTION": "Beschreibung",
+      "ADD_DESCRIPTION": "Fügen Sie eine Beschreibung hinzu",
+      "TASKS": "Aufgaben",
+      "ADD_TASK": "Neue Aufgabe",
+      "ACTIVITY": "Aktivität",
+      "ADD_COMMENT": "Einen Kommentar hinzufügen",
+      "ASSIGNEE": "Zugewiesen an",
+      "DUE_DATE": "Fällig am",
+      "COLOR_CODE": "Farbe",
+      "ACTIONS": "Aktionen",
+      "DELETE_TASK": "Aufgabe löschen",
+      "SUBSCRIBE": "Abonnieren",
+      "UNSUBSCRIBE": "Abmelden",
+      "FILES": "Dateien",
+      "ATTACH_FILE": "Datei hinzufügen",
+      "MOVE": "Verschieben",
+      "ADD_TAG": "Tag hinzufügen",
+      "PROJECT_CREATED_SUCCESS": "Projekt erfolgreich erstellt",
+      "PROJECT_DELETED": "Projekt gelöscht",
+      "ADD_MEMBER_SUCCESS": "Mitglied erfolgreich hinzugefügt",
+      "ADD_MEMBER_ERROR": "Fehler beim Hinzufügen eines Mitglieds zum Projekt. Bitte versuchen Sie es erneut",
+      "NEW_PROJECT_MEMBER": "Mitglied hinzufügen",
+      "NO_ATTACHMENTS": "Keine angehängten Dateien",
+      "ATTACHMENTS": "Anhänge",
+      "DELETE_ATTACHMENT": "Anhang löschen?",
+      "CONFIRM_DELETE_ATTACHMENT": "Möchten Sie den Anhang endgültig löschen?"
+    },
+    "PAGES": {
+      "FILTER_BOARDS": "Boards filtern",
+      "MEMBERS": "Teilnehmer",
+      "ADD_MEMBER": "Freigeben an",
+      "REMOVE_MEMBER_SUCCESS": "Benutzer erfolgreich aus Projekt entfernt",
+      "REMOVE_USER": "Aus dem Projekt entfernen",
+      "REMOVE_USER_ERROR": "Fehler beim Entfernen des Benutzers aus dem Projekt. Bitte versuchen Sie es erneut",
+      "SEARCH_TASKS": "Nach Aufgaben suchen",
+      "FILTER_BY_TAG": "Nach Stichworten filtern",
+      "TAGS": "Stichworte",
+      "ADD_TASK": "Aufgabe hinzufügen",
+      "ADD_BOARD": "Board hinzufügen",
+      "MANAGE_PROJECT_SUBTITLE": "Verwalten Sie Boards, Aufgaben und Benutzer für dieses Projekt.",
+      "TASK_CREATED_SUCCESS" : "Aufgabe erfolgreich erstellt",
+      "TASK_CREATE_ERROR": "Fehler beim Erstellen der Aufgabe, versuchen Sie es erneut",
+      "TASK_TITLE": "Geben Sie den Aufgabentitel ein"
+    }
+  }
+}

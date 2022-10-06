@@ -1,0 +1,93 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h3 class="modal-title">
+      <strong>{{ 'PREVIEW.MODALS.INSERT_LINK.TITLE' | translate }}</strong>
+    </h3>
+  </div>
+
+  <div class="modal-body">
+    <div class="row link-type-option">
+      <div class="col-12">
+        <label class="custom-control custom-checkbox">
+          <input [disabled]="linkSrc!=='custom'" [(ngModel)]="isOpenInNewTab" type="checkbox" class="custom-control-input">
+          <span class="custom-control-indicator"></span>
+        </label>
+        <!-- <span>{{ 'PREVIEW.MODALS.INSERT_LINK.EXISTING_PAGE' | translate }}</span> -->
+        <span>{{ 'PREVIEW.MODALS.INSERT_LINK.OPEN_IN_NEW_TAB' | translate }}</span>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-4">
+        <label class="custom-control custom-radio">
+          <input [(ngModel)]="linkSrc" value="custom" type="radio" class="custom-control-input"
+            (change)="onLinkSrcChange()">
+          <span class="custom-control-indicator"></span>
+        </label>
+        <span>{{ 'PREVIEW.MODALS.INSERT_LINK.CUSTOM_LINK'| translate }}</span>
+      </div>
+      <div class="col-8">
+        <input [(ngModel)]="linkToInsert" [disabled]="linkSrc!=='custom'" type="text" class="form-control"
+          [placeholder]="'PREVIEW.MODALS.INSERT_LINK.INSERT_URL_HERE_PLACEHOLDER' | translate">
+        <i class="form-group__bar"></i>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <label class="custom-control custom-radio">
+          <input [(ngModel)]="linkSrc" value="existingPage" type="radio" class="custom-control-input"
+            (change)="onLinkSrcChange()">
+          <span class="custom-control-indicator"></span>
+        </label>
+        <span>{{ 'PREVIEW.MODALS.INSERT_LINK.EXISTING_PAGE' | translate }}</span>
+      </div>
+    </div>
+    <ng-container *ngIf="linkSrc==='existingPage'">
+      <div class="row">
+        <div class="col-12">
+          <div class="form-group">
+            <input [placeholder]="'SEARCHS.FILE' | translate" class="form-control"
+              (keyup)="onSearchFilterChange($event)" />
+            <i class="form-group__bar"></i>
+          </div>
+        </div>
+      </div>
+      <div class="row list-file">
+        <div class="col-12">
+          <ng-container *ngIf="!processes.isLoadingFileList">
+            <table class="table table-sm">
+              <thead>
+                <tr>
+                  <th width="40%">{{'PREVIEW.MODALS.INSERT_LINK.FILENAME_TABLE_HEADER' | translate }}</th>
+                  <th width="40%">{{'PREVIEW.MODALS.INSERT_LINK.PATH_TABLE_HEADER' | translate }}</th>
+                  <th width="20%"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let file of fileListForDisplay; let index=index" (mouseover)="hoveredIndex=index"
+                  (mouseleave)="hoveredIndex=-1">
+                  <td>{{ file.name }}</td>
+                  <td>{{ file.repo.name }}{{ file.parent_dir }}</td>
+                  <td>
+                    <button *ngIf="hoveredIndex===index" class="btn btn-success"
+                      (click)="onSelectFile(file)">{{'PREVIEW.MODALS.INSERT_LINK.SELECT_FILE_BTN' | translate }}</button>
+                  </td>
+                  <!-- <td>{{ (folder.mtime | amFromUnix) | amTimeAgo }}</td> -->
+                </tr>
+              </tbody>
+            </table>
+          </ng-container>
+        </div>
+      </div>
+    </ng-container>
+
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-success btn--icon-text waves-effect" (click)="insertLink()">
+      <span [innerHTML]="'BUTTONS.SUBMIT' | translate"></span>
+    </button>
+    <button type="button" class="btn btn-danger btn--icon-text waves-effect" (click)="cancel()">
+      <span [innerHTML]="'BUTTONS.CANCEL' | translate"></span>
+    </button>
+  </div>
+</div>

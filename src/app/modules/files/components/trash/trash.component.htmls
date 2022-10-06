@@ -1,0 +1,307 @@
+<header class="content__title">
+  <h1 class="d-flex align-items-center" data-toggle="tooltip">
+    <!-- <i *ngIf="typeRepo.includes('mine')" class="fal fa-caret-circle-left fa-hc-fw icon-back-folders" [routerLink]="['/folders']"></i>
+    <i *ngIf="typeRepo.includes('group--')" class="fal fa-caret-circle-left fa-hc-fw icon-back-folders" [routerLink]="['/files', 'groups']"></i> -->
+    <i class="fal fa-caret-circle-left fa-hc-fw icon-back-folders" (click)="goBack()"></i>
+    <strong>{{ nameTrash }}</strong> &nbsp;
+    <!-- <span class="modification" [innerHTML]="'TRASH.TITLE' | translate: params"> </span> -->
+  </h1>
+  <!-- <h1 *ngIf="typeRepo.includes('group--')">{{ 'TITLE_PAGE.GROUPS' | translate: params }}</h1> -->
+  <div class="actions">
+    <app-list-grid-button (onChangeViewMode)="onChangeViewMode($event)"></app-list-grid-button>
+    <!-- <a class="actions__item fal fa-image"></a> -->
+  </div>
+  <!-- <app-breadcrumbs [breadcrumbs]="breadcrumbs" (sendDataBreadcrumbs)="handleNavigateBreadcrumbs($event)"></app-breadcrumbs> -->
+  <app-breadcrumbs2 [breadcrumbs]="breadcrumbs"></app-breadcrumbs2>
+</header>
+
+<div class="card">
+  <div class="card-block">
+    <div class="data-table__header d-flex justify-content-betwwen">
+      <div class="form-group data-table__filter">
+        <input (keyup)="onSearchFilterChange($event)" [placeholder]="'SEARCHS.ALL_COLUMNS' | translate: params" class="form-control" />
+        <i class="form-group__bar"></i>
+      </div>
+      <div class="row-selector">
+        <app-row-selector (changed)="onPerPageChanged($event)"></app-row-selector>
+      </div>
+      <div class="forn-group table_buttons">
+        <button *ngIf="isRootTrash" type="button" class="btn btn-secondary waves-effect" (click)="openTrashModal()">
+          <i class="fal fa-trash"></i>
+          <span [innerHTML]="'BUTTONS.CLEAN' | translate: params"></span>
+        </button>
+      </div>
+    </div>
+    <div *ngIf="!isProcessing">
+      <!-- GRID VIEW -->
+      <div *ngIf="isListView!==true">
+        <div class="contacts row">
+          <div *ngFor="let item of trashItemsForDisplay; let index=index " (mouseover)="hoveredIndex=index "
+            (mouseleave)="hoveredIndex=-1 " class="col-xl-3 col-lg-3 col-sm-4 col-6 mb-4">
+            <div class="contacts__item">
+              <a *ngIf="rename != index" (click)="openItemFile(item.name, item.id, item.commit_id, item.basedir)">
+                <img *ngIf="!item.imgError || (item.imgError && item.imgError != 1)" (error)="setErrorImg('root', index)"
+                  class="file-icon" src="{{ item.name | fileIconPath: false: repoId: item.basedir + item.name: 48: item.id }}">
+                <div *ngIf="(item.imgError && item.imgError === 1)" class="file-icons">
+                  <i class="{{ item.name | customFileIcon }}"></i>
+                </div>
+              </a>
+              <span class="span__name" (click)="item.type === 'dir' ? openItemFolder(item.name, item.commit_id, item.basedir) : openItemFile(item.name, item.id, item.commit_id, item.basedir)">
+                {{ item.name | splice_length: 65 }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="trashData.trash.dir_entries.length === 0 && trashItemsForDisplay.length === 0" class="card-header">
+          <div class="card color-empty">
+            <div class="card-header header-empty">
+              <h2 class="card-title title-empty">
+                <span [innerHTML]="'TRASH.EMPTY_ITEM.MSG_TITLE' | translate: params"></span>
+              </h2>
+              <small class="card-subtitle">
+                <span [innerHTML]="'TRASH.EMPTY_ITEM.MSG_SUB' | translate: params"></span>
+              </small>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="trashData.trash.dir_entries.length !== 0 && trashItemsForDisplay.length === 0" class="card-header">
+          <div class="card color-empty">
+            <div class="card-header header-empty">
+              <h2 class="card-title title-empty">
+                <span [innerHTML]="'TRASH.SEARCH_NO_RESULT.MSG_TITLE' | translate: params"></span>
+              </h2>
+              <small class="card-subtitle">
+                <span [innerHTML]="'TRASH.SEARCH_NO_RESULT.MSG_SUB' | translate: params"></span>
+              </small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LIST VIEW -->
+      <div *ngIf="isListView === true">
+        <div *ngIf="trashData && isRootTrash" class="card">
+          <div *ngIf="trashData.trash.dir_entries.length > 0 && trashItemsForDisplay.length > 0" class="card-block">
+            <table class="table table-hover mb-0 ">
+              <thead>
+                <tr>
+                  <th>
+                    <span [innerHTML]="'TRASH.TABLE.NAME' | translate: params"></span>
+                  </th>
+                  <th>
+                    <span [innerHTML]="'TRASH.TABLE.DELETED_TIME' | translate: params"></span>
+                  </th>
+                  <th>
+                    <span [innerHTML]="'TRASH.TABLE.SIZE' | translate: params"></span>
+                  </th>
+                  <th>
+                    <span [innerHTML]="'TRASH.TABLE.OPERATIONS' | translate: params"></span>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of trashItemsForDisplay; let index=index " (mouseover)="hoveredIndex=index "
+                  (mouseleave)="hoveredIndex=-1 ">
+                  <td>
+                    <div class="row">
+                      <div class="col-12 col-md-12">
+                        <div class="icon-folder" *ngIf="item.type === 'dir'; else icon_file_content">
+                          <a *ngIf="rename != index" (click)="openItemFolder(item.name, item.commit_id, item.basedir)">
+                            <i class="fas fa-folder fa-fw tb-row-folder"></i>
+                          </a>
+                        </div>
+                        <ng-template #icon_file_content>
+                          <div class="icon-folder">
+                            <a *ngIf="rename != index" (click)="openItemFile(item.name, item.id, item.commit_id, item.basedir)">
+                              <i class="file-icon tb-row-file">
+                                <img *ngIf="!item.imgError || (item.imgError && item.imgError != 1)" (error)="setErrorImg('root', index)"
+                                  class="file-icon" src="{{ item.name | fileIconPath: false: repoId: item.basedir + item.name: 48: item.id }}">
+                                <div *ngIf="(item.imgError && item.imgError === 1)" class="file-icon-list">
+                                  <i class="{{ item.name | customFileIcon }}"></i>
+                                </div>
+                              </i>
+                            </a>
+                          </div>
+                        </ng-template>
+                        <div class="tb-name">
+                          <span (click)="item.type === 'dir' ? openItemFolder(item.name, item.commit_id, item.basedir) : openItemFile(item.name, item.id, item.commit_id, item.basedir)">
+                            {{ item.name | splice_length: 65 }}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <span data-toggle="tooltip " title="{{item.mtime | amDateFormat: 'ddd, D MMM YYYY HH:mm:ss ZZ'}} ">
+                      {{item.mtime | date: 'dd.MM.yyyy - HH:mm:ss'}}
+                      <!-- {{item.mtime | amTimeAgo}} -->
+                    </span>
+                  </td>
+                  <td>
+                    <span *ngIf="item.type === 'file'">{{item.size | customFileSize}}</span>
+                  </td>
+                  <td style="padding-top: 0px;padding-bottom: 0px;width:15% ">
+                    <button class="btn btn-secondary waves-effect " *ngIf="index===hoveredIndex
+                  "
+                      (click)="restoreTrash(item.type, item.commit_id, item.basedir + item.name)">
+                      <i class="zmdi zmdi-time-restore "></i>
+                      <span [innerHTML]="'BUTTONS.RESTORE' | translate: params"></span>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div *ngIf="trashData.trash.dir_entries.length === 0 && trashItemsForDisplay.length === 0" class="card-header">
+            <div class="card color-empty">
+              <div class="card-header header-empty">
+                <h2 class="card-title title-empty">
+                  <span [innerHTML]="'TRASH.EMPTY_ITEM.MSG_TITLE' | translate: params"></span>
+                </h2>
+                <small class="card-subtitle">
+                  <span [innerHTML]="'TRASH.EMPTY_ITEM.MSG_SUB' | translate: params"></span>
+                </small>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="trashData.trash.dir_entries.length !== 0 && trashItemsForDisplay.length === 0" class="card-header">
+            <div class="card color-empty">
+              <div class="card-header header-empty">
+                <h2 class="card-title title-empty">
+                  <span [innerHTML]="'TRASH.SEARCH_NO_RESULT.MSG_TITLE' | translate: params"></span>
+                </h2>
+                <small class="card-subtitle">
+                  <span [innerHTML]="'TRASH.SEARCH_NO_RESULT.MSG_SUB' | translate: params"></span>
+                </small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Children Trash -->
+      <div *ngIf="trashData && !isRootTrash " class="card">
+        <div *ngIf="trashData.dir_entries.length > 0 && trashItemsForDisplay.length > 0" class="card-block">
+          <table class="table table-hover mb-0 ">
+            <thead>
+              <tr>
+                <th>
+                  <span [innerHTML]="'TRASH.TABLE.NAME' | translate: params"></span>
+                </th>
+                <th>
+                  <span [innerHTML]="'TRASH.TABLE.DELETED_TIME' | translate: params"></span>
+                </th>
+                <th>
+                  <span [innerHTML]="'TRASH.TABLE.SIZE' | translate: params"></span>
+                </th>
+                <th>
+                  <span [innerHTML]="'TRASH.TABLE.OPERATIONS' | translate: params"></span>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of trashItemsForDisplay; let index=index " (mouseover)="hoveredIndex=index "
+                (mouseleave)="hoveredIndex=-1 ">
+                <td>
+                  <div class="row">
+                    <div class="col-12 col-md-12">
+                      <div class="icon-folder" *ngIf="item.type === 'dir'; else icon_file_content">
+                        <a *ngIf="rename != index" (click)="openItemFolder(item.name)">
+                          <i class="fas fa-folder fa-fw tb-row-folder"></i>
+                        </a>
+                      </div>
+                      <ng-template #icon_file_content>
+                        <div class="icon-folder">
+                          <a *ngIf="rename != index" (click)="openItemFile(item.name, item.id)">
+                            <i class="file-icon tb-row-file">
+                              <img *ngIf="!item.imgError || (item.imgError && item.imgError != 1)" (error)="setErrorImg('child', index)"
+                                class="file-icon" src="{{ item.name | fileIconPath: false: repoId: item.basedir + item.name: 48: item.id }}">
+                              <img *ngIf="(item.imgError && item.imgError === 1)" class="file-icon" src="{{ item.name | customFileIcon }}">
+                            </i>
+                          </a>
+                        </div>
+                      </ng-template>
+                      <div class="tb-name">
+                        <span (click)="item.type === 'dir' ? openItemFolder(item.name) : openItemFile(item.name, item.id)">
+                          {{ item.name | splice_length: 65 }}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <span data-toggle="tooltip " title="{{item.mtime | amDateFormat: 'ddd, D MMM YYYY HH:mm:ss ZZ'}} ">
+                    {{item.mtime | amTimeAgo}}
+                  </span>
+                </td>
+                <td>
+                  <span *ngIf="item.type === 'file'">{{item.size | customFileSize}}</span>
+                </td>
+                <td style="padding-top: 0px;padding-bottom: 0px;width:15% "></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div *ngIf="trashData.trash.dir_entries.length === 0 && trashItemsForDisplay.length === 0" class="card-header">
+          <div class="card color-empty">
+            <div class="card-header header-empty">
+              <h2 class="card-title title-empty">
+                <span [innerHTML]="'TRASH.EMPTY_ITEM.MSG_TITLE' | translate: params"></span>
+              </h2>
+              <small class="card-subtitle">
+                <span [innerHTML]="'TRASH.EMPTY_ITEM.MSG_SUB' | translate: params"></span>
+              </small>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="trashData.trash.dir_entries.length !== 0 && trashItemsForDisplay.length === 0" class="card-header">
+          <div class="card color-empty">
+            <div class="card-header header-empty">
+              <h2 class="card-title title-empty">
+                <span [innerHTML]="'TRASH.SEARCH_NO_RESULT.MSG_TITLE' | translate: params"></span>
+              </h2>
+              <small class="card-subtitle">
+                <span [innerHTML]="'TRASH.SEARCH_NO_RESULT.MSG_SUB' | translate: params"></span>
+              </small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <app-processing *ngIf="isProcessing"></app-processing>
+  </div>
+</div>
+
+<!-- Modal clean trash -->
+<div class="modal fade " id="modal-clean-trash" tabindex="-1 ">
+  <div class="modal-dialog modal-sm ">
+    <div class="modal-content ">
+      <!-- Modal Header -->
+      <div class="modal-header ">
+        <h5 class="modal-title pull-left">
+          <span [innerHTML]="'BUTTONS.CLEAN' | translate: params"></span>
+        </h5>
+      </div>
+      <!-- Modal Body -->
+      <div class="modal-body ">
+        <p [innerHTML]="'TRASH.CLEAR_TRASH' | translate: params"></p>
+        <select2 [data]="exampleData " [options]="options " [value]="trashDay " [cssImport]="true " [width]="200
+        "
+          (valueChanged)="changedSettingPermission($event) "></select2>
+      </div>
+      <!-- Modal footer -->
+      <div class="modal-footer ">
+        <button type="button " class="btn btn-info btn--icon-text waves-effect " (click)="cleanTrash(trashDay)">
+          <span [innerHTML]="'BUTTONS.SUBMIT' | translate: params"></span>
+        </button>
+        <button type="button " class="btn btn-secondary btn--icon-text waves-effect " (click)="closeModal()">
+          <span [innerHTML]="'BUTTONS.CANCEL' | translate: params"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="text-right-pagination">
+  <pagination [itemsPerPage]="pagination.itemsPerPage" [totalItems]="trashItemsFromAPI.length" (pageChanged)="pageChanged($event)"></pagination>
+</div>

@@ -1,0 +1,113 @@
+<header class="content__title">
+  <h1>
+    <span [innerHTML]="'TITLE_PAGE.FILES' | translate: params"></span>
+    <div *ngIf="loginData && loginData.permissions.can_add_repo" class="dropdown d-none">
+      <i class="actions__item fal fa-plus-circle" data-toggle="dropdown" [title]="'BUTTONS.CREATE_NEW_FOLDER' | translate: params"></i>
+      <div class="dropdown-menu">
+        <a [routerLink]="" role="button" class="dropdown-item" (click)="handleOpenModal('createFolder')" [innerHTML]="'BUTTONS.CREATE_NEW_FOLDER' | translate: params"></a>
+        <a [routerLink]="" role="button" class="dropdown-item" (click)="handleOpenModal('share-existing-folders')" [innerHTML]="'BUTTONS.SHARE_EXISTING_FOLDERS' | translate: params"></a>
+      </div>
+    </div>
+    <!-- <i class="actions__item fal fa-plus-circle" data-toggle="dropdown tooltip" [title]="'BUTTONS.CREATE_NEW_FOLDER' | translate: params"></i> -->
+  </h1>
+  <small [innerHTML]="'FOLDERS.DESC' | translate"></small>
+  <div class="actions list-grid-custom">
+    <div class="range__size">
+        <input *ngIf="!isListView" type="range" min="100" max="160" class="sliderr" [(ngModel)]="rangeSizeGrid" />
+    </div>
+    <div class="list__grid__button">
+        <app-list-grid-button (onChangeViewMode)="onChangeViewMode($event)"></app-list-grid-button>
+    </div>
+  </div>
+</header>
+
+<div *ngIf="!getError.is_err" class="card">
+  <div class="card-block">
+    <div class="data-table__header d-flex justify-content-betwwen lg__size__display">
+      <div class="form-group" *ngIf="currentUserPermission.can_add_repo === undefined || currentUserPermission.can_add_repo === true">
+        <button (click)="handleOpenModal('createFolder')" class="btn btn-secondary waves-effect btn--icon-text mr-25px">
+          {{'BUTTONS.CREATE_NEW_FOLDER' | translate: params}}</button>
+      </div>
+      &nbsp;&nbsp;
+      <div class="form-group data-table__filter">
+        <input *ngIf="config.filtering" [placeholder]="'SEARCHS.ALL_COLUMNS' | translate: params" [(ngModel)]="config.filtering.filterString"
+          class="form-control" (keyup)="changeTable(config)" />
+        <i class="form-group__bar"></i>
+      </div>
+      <div class="row-selector">
+        <app-row-selector (changed)="onPerPageChanged($event)"></app-row-selector>
+      </div>
+      <div class="data-table_buttons actions">
+        <i class="actions__item fal fa-trash-alt" data-toggle="tooltip" [title]="'BUTTONS.DELETED_FOLDERS' | translate: params"
+          (click)="viewDeletedFolders()"></i>
+      </div>
+    </div>
+
+    <!-- data-table__header mobile zise -->
+    <!-- this element will be display while screen < 750 px -->
+    <div class="data-table sm__size__display">
+      <div class="form-group" *ngIf="loginData && loginData.permissions.can_add_repo">
+        <!-- <button (click)="handleOpenModal('createFolder')" class="btn btn-secondary waves-effect btn--icon-text mr-25px">
+          </button> -->
+        <i (click)="handleOpenModal('createFolder')" class="fal fa-plus-circle"></i>
+      </div>
+      <div class="search__box">
+        <i class="fal fa-search" aria-hidden="true" (click)="onOpenSearchBar()"></i>
+      </div>
+      <div class="data-table_buttons actions trash__box">
+        <i class="fal fa-trash-alt sm--size" data-toggle="tooltip" [title]="'BUTTONS.DELETED_FOLDERS' | translate: params"
+          (click)="viewDeletedFolders()" aria-hidden="true"></i>
+      </div>
+      <div class="row-selector">
+        <app-row-selector (changed)="onPerPageChanged($event)"></app-row-selector>
+      </div>
+
+    </div>
+    <div class="form-group data-table__filter search__bar">
+      <input *ngIf="config.filtering" [placeholder]="'SEARCHS.ALL_COLUMNS' | translate: params" [(ngModel)]="config.filtering.filterString"
+        class="form-control" (keyup)="changeTable(config)" />
+      <i class="form-group__bar"></i>
+    </div>
+
+    <div *ngIf="!isProcessing">
+      <div *ngIf="listFoldersDisplay2.length > 0">
+        <app-root-list-view *ngIf="isListView" [listFolders]="listFoldersDisplay2" [typeRepo]="type" [columns]="columns"
+          (ClickModalAction)="modalAction($event)" (unshared)="loadListRepos()" (refresh)="loadListRepos()" (sorted)="sortColumn($event, config)"></app-root-list-view>
+
+        <app-root-grid-view *ngIf="!isListView" [ListFolders]="listFoldersDisplay2" [rangeSize]="rangeSizeGrid"
+          (ClickModalAction)="modalAction($event)" (unshared)="loadListRepos()" (unshared)="loadListRepos()"></app-root-grid-view>
+      </div>
+
+
+      <app-empty-item *ngIf="listFoldersDisplay2.length === 0 && this.folders2.length !== 0" [messageTitle]="messageTitle"
+        [messageSub]="messageSub"></app-empty-item>
+      <app-empty-item *ngIf="listFoldersDisplay2.length === 0 && this.folders2.length === 0 " [messageTitle]="messageTitleFolderNotFound"
+        [messageSub]="messageSubFolderNotFound"></app-empty-item>
+
+      <app-root-create-new-folder-modal *ngIf="isOpenModalFolder.create_folder" (create)="loadListRepos()"></app-root-create-new-folder-modal>
+      <app-share-modal *ngIf="isOpenModalFolder.share" [shareItem]="currentShareItem"></app-share-modal>
+      <app-delete-file-modal *ngIf="isOpenModalFolder.delete" [Data]="currentFolder" (deleted)="loadListRepos()" Path="/"></app-delete-file-modal>
+      <app-transfer-folder-modal *ngIf="isOpenModalFolder.transfer" [type]="'folders'" [dataTransfer]="currentFolder"
+        (transfered)="onTranferReload($event)"></app-transfer-folder-modal>
+      <app-root-history-setting-modal *ngIf="isOpenModalFolder.history_setting" [Folder]="currentFolder"></app-root-history-setting-modal>
+      <app-root-share-link-modal *ngIf="isOpenModalFolder.view_share_link" [Folder]="currentFolder"></app-root-share-link-modal>
+      <app-root-change-password-folder-modal *ngIf="isOpenModalFolder.change_password" [Folder]="currentFolder"></app-root-change-password-folder-modal>
+      <app-details-modal *ngIf="isOpenModalFolder.detail" [Data]="currentFolder"></app-details-modal>
+      <app-share-existing-folders-modal *ngIf="isOpenModalFolder.share_existing_folders" (addShareExisting)="loadListRepos()"></app-share-existing-folders-modal>
+    </div>
+    <app-processing *ngIf="isProcessing"></app-processing>
+  </div>
+</div>
+
+
+<div *ngIf="getError.is_err" class="card">
+  <div class="card-header">
+    <div class="alert alert-danger text-center" role="alert" [innerHTML]="getError.msg_err"></div>
+  </div>
+</div>
+
+
+<pagination *ngIf="config.paging && listFoldersDisplay2.length > 0" [(ngModel)]="page.page" [totalItems]="length"
+  [itemsPerPage]="page.itemsPerPage" [maxSize]="maxSize" [boundaryLinks]="true" [rotate]="false" (pageChanged)="changeTable(config, $event)"
+  (numPages)="numPages = $event">
+</pagination>

@@ -1,0 +1,154 @@
+<header class="content__title">
+  <h1>
+    <span [innerHTML]="'TITLE_PAGE.USERS' | translate: params"></span>
+    <i class="fal fa-chevron-right"></i>
+    <span [innerHTML]="'TITLE_PAGE.ADMINS' | translate: params"></span>
+  </h1>
+  <small [innerHTML]="'ADMIN.USERS.DESC_ADMIN' | translate: params"></small>
+</header>
+
+<div class="card">
+  <div class="card-block">
+    <div *ngIf="!isProcessing">
+      <div class="data-table__header d-flex justify-content-between">
+        <div class="form-group data-table__filter">
+          <input *ngIf="config.filtering" [placeholder]="'SEARCHS.ALL_COLUMNS' | translate: params" [(ngModel)]="config.filtering.filterString"
+            class="form-control" (keyup)="changeTable(config)" />
+          <i class="form-group__bar"></i>
+        </div>
+        <div class="row-selector">
+          <app-row-selector (changed)="onPerPageChanged($event)"></app-row-selector>
+        </div>
+        <div class="data-table_buttons actions" [ngClass]="{'w-80px': numberOfSelectedUsers > 0}">
+          <div *ngIf="numberOfSelectedUsers === 0">
+            <i class="actions__item fal fa-user-alt-add" data-toggle="tooltip" [title]="'BUTTONS.ADD_ADMINS' | translate: params"
+              (click)="handleOpenModal('addAdmins')"></i>
+          </div>
+          <div *ngIf="numberOfSelectedUsers > 0">
+            <i class="actions__item" data-toggle="tooltip" [title]="'BUTTONS.SET_QUOTA' | translate: params"
+              (click)="openSetQuotaModalBatch()"></i>
+            <i class="actions__item" data-toggle="tooltip" [title]="'BUTTONS.DELETE_ADMINS' | translate: params"
+              (click)="openDeleteUsersModalBatch()"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="data-table">
+        <table class="table table-hover mb-0">
+          <thead>
+            <tr>
+              <th width="5%">
+                <label class="custom-control custom-checkbox">
+                  <input [checked]="isCheckedAll" #checkAll type="checkbox" class="custom-control-input" name="checkAll"
+                    (click)="handleCheckAll()">
+                  <span class="custom-control-indicator"></span>
+                </label>
+              </th>
+              <th *ngFor="let column of columns" [width]="column.width" [ngClass]="{'cursor-text': column.sort===false}"
+                (click)="column.sort!==false ? sortColumn(column, config) : ''">
+                {{ column.title }}
+                <i class="fal fa-hc-lg" [ngClass]="{'zmdi-chevron-down': column.sort==='asc', 'zmdi-chevron-up': column.sort==='desc', 'zmdi-unfold-more': column.sort!=='asc'&&column.sort!=='desc'&&column.sort!==false}"></i>
+              </th>
+              <th width="13%" class="cursor-text">
+                <span [innerHTML]="'TABLE.COLUMNS.OPERATIONS' | translate: params"></span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of adminListDisplay; let index = index" (mouseenter)="hoverIndex=index" (mouseleave)="hoverIndex=-1">
+              <td>
+                <label class="custom-control custom-checkbox">
+                  <input [checked]="user.isChecked" #checkAll type="checkbox" class="custom-control-input" name="checkAll"
+                    (click)="handleCheck(user)">
+                  <span class="custom-control-indicator"></span>
+                </label>
+              </td>
+              <td>
+                <div>
+                  <span [routerLink]="['/admin', 'users', 'info', user.email]" class="cursor-pointer tb-email">{{
+                    user.email }}</span>
+                </div>
+                <div>{{ user.name }}</div>
+              </td>
+              <td>
+                <div *ngIf="user.email === currentUser || user.editMode !== 'status'">
+                  <span *ngIf="user.is_active">Active</span>
+                  <span *ngIf="!user.is_active">Inactive</span>
+                  <span style="cursor: pointer;" *ngIf="index===hoverIndex && user.email !== currentUser" (click)="setEditMode(user, 'status')">
+                    <i class="fal fa-pen"></i>
+                  </span>
+                </div>
+                <div *ngIf="user.email !== currentUser && user.isEdit && user.editMode === 'status'">
+                  <select2 [data]="statusSelectData" [options]="options" [value]="user.is_active" [cssImport]="true"
+                    [width]="105" (valueChanged)="changeUserStatus(user, $event)">
+                  </select2>
+                </div>
+              </td>
+              <td>
+                <div *ngIf="user.email === currentUser || user.editMode !== 'role'">
+                  <span>{{ (user.role | lowercase) === 'default' ? ('ROLES.DEFAULT' | translate) : ((user.role |
+                    lowercase) ===
+                    'super administrator' ? ('ROLES.SUPER_ADMINISTRATOR' | translate) : ((user.role | lowercase) ===
+                    'employee'
+                    ? ('ROLES.EMPLOYEE' | translate) : ((user.role | lowercase) === 'guest' ? ('ROLES.GUEST' |
+                    translate)
+                    : user.role))) }}
+                  </span>
+                  <span style="cursor: pointer;" *ngIf="index===hoverIndex && user.email !== currentUser" (click)="setEditMode(user, 'role')">
+                    <i class="fal fa-pen"></i>
+                  </span>
+                </div>
+                <div *ngIf="user.email !== currentUser && user.isEdit && user.editMode === 'role'">
+                  <select2 [data]="roleSelectData" [options]="options" [value]="user.role" [cssImport]="true" [width]="175"
+                    (valueChanged)="changeUserRole(user, $event)"></select2>
+                </div>
+              </td>
+              <td>{{ user.space_usage | customFileSize }} / {{ user.space_quota > 0 ? (user.space_quota |
+                customFileSize) : '--'
+                }}
+                <span style="cursor: pointer;" *ngIf="index===hoverIndex" (click)="openSetQuotaModal(user)">
+                  <i class="fal fa-pen"></i>
+                </span>
+              </td>
+              <td>{{ ((user.create_time / 1000000) | amFromUnix) | amDateFormat:'YYYY-MM-DD HH:mm:ss' }} / {{
+                user.last_login
+                ? (user.last_login | amDateFormat:'YYYY-MM-DD HH:mm:ss') : '--'}}</td>
+              <td>
+                <div *ngIf="index===hoverIndex && user.email !== currentUser">
+                  <i class="actions__item" (click)="openDeleteUserConfirmModal(user)" data-toggle="tooltip"
+                    [title]="'TOOLTIPS.DELETE' | translate: params"></i>
+                  <i class="actions__item fal fa-redo" (click)="openResetPasswordConfirmModal(user)" data-toggle="tooltip"
+                    [title]="'TOOLTIPS.RESET_PWD' | translate: params"></i>
+                  <i class="actions__item zmdi zmdi-replay" (click)="openRevokeAdminConfirmModal(user)" data-toggle="tooltip"
+                    [title]="'TOOLTIPS.REVOKE_ADMIN' | translate: params"></i>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- EMPTY ITEM -->
+      <app-empty-item *ngIf="adminListDisplay.length === 0" [messageTitle]="('USERADMIN_INFO.SEARCH_ADMIN.ADMIN_NOT_FOUND') | translate: params"
+        [messageSub]="('USERADMIN_INFO.SEARCH_ADMIN.ADMIN_SUB_NOT_FOUND') | translate: params"></app-empty-item>
+
+      <app-set-quota-modal *ngIf="isModalOpen.setQuota" [userList]="userListForEdit" (onSetQuotaSuccess)=onSetQuotaSuccess($event)
+        (onBatchSetQuotaSuccess)="onBatchSetQuotaSuccess($event)"></app-set-quota-modal>
+      <app-delete-user-confirmation-modal *ngIf="isModalOpen.deleteUser" [userListForDelete]="userListForDelete"
+        (onDeleteSuccess)="onUserDeleteSuccess($event)" (onBatchDeleteSuccess)="onBatchUserDeleteSuccess($event)"></app-delete-user-confirmation-modal>
+      <app-reset-password-confirmation-modal *ngIf="isModalOpen.resetPassword" [userForResetPassword]="userForResetPassword"
+        (onResetPasswordSuccess)="onResetPasswordSuccess($event)"></app-reset-password-confirmation-modal>
+      <app-revoke-admin-confirm-modal *ngIf="isModalOpen.revokeAdmin" [userForRevoke]="userForRevoke"
+        (onRevokeAdminSuccess)="onRevokeAdminSuccess($event)"></app-revoke-admin-confirm-modal>
+      <app-add-admins-modal *ngIf="isModalOpen.addAdmins" (onAddAdminsSuccess)="onAddAdminsSuccess($event)"></app-add-admins-modal>
+    </div>
+  </div>
+
+  <app-processing *ngIf="isProcessing"></app-processing>
+</div>
+
+<div *ngIf="!isProcessing" class="data-table__footer">
+  <pagination *ngIf="config.paging" [(ngModel)]="page.page" [totalItems]="length" [itemsPerPage]="page.itemsPerPage"
+    [maxSize]="maxSize" [boundaryLinks]="true" [rotate]="false" (pageChanged)="changeTable(config, $event)" (numPages)="numPages = $event">
+  </pagination>
+</div>

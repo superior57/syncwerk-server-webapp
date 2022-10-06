@@ -1,0 +1,19 @@
+<header class="content__title">
+  <h1>
+    <span [innerHTML]="'TITLE_PAGE.FAVORITES' | translate:params"></span>
+  </h1>
+  <small [innerHTML]="'FAVORITE.PAGE_DESC' | translate:params"></small>
+  <div class="actions list-grid-custom">
+   <div class="range__size">
+      <app-range-size-grid *ngIf="!isListView" (onRangeSize)="changeTypeCol($event)"></app-range-size-grid>
+   </div>
+    <div class="list__grid__button">
+        <app-list-grid-button (onChangeViewMode)="onChangeViewMode($event)"></app-list-grid-button>
+    </div>
+    <!-- <a class="actions__item fal fa-image"></a> -->
+  </div>
+</header>
+
+
+<app-favorites-list *ngIf="isListView"></app-favorites-list>
+<app-favorites-grid *ngIf="!isListView" [dataRangeSizeGrid]="dataRangeSizeGrid"></app-favorites-grid>

@@ -1,0 +1,82 @@
+header {
+  padding: 0px 15rem;
+  .filename {
+    font-size: 16px;
+    padding-right: 1.5rem;
+  }
+}
+
+.content {
+  margin: -8rem 13rem 0rem 13rem;
+  width: 100%;
+  margin-left: 0px;
+  &__title {
+    padding-bottom: 2rem;
+  }
+}
+
+.card {
+  &__download {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+  &__preview {
+    min-height: 500px;
+  }
+  & .office-preview {
+    height: calc(100vh - 200px);
+    & iframe {
+      height: calc(100vh - 200px);
+    }
+  }
+}
+
+.image-preview {
+  height: 400px;
+  text-align: center;
+  img {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: calc(100% - 4px);
+  }
+}
+
+
+vg-controls {
+  vg-scrub-bar-current-time {
+    background-color: gray;
+  }
+}
+
+strong.filename {
+  text-transform: uppercase;
+  font-weight: normal;
+  color: #676767;
+  font-size: 1.15rem;
+}
+
+.section__info {
+  margin-bottom: 28px;
+}
+
+.download {
+  float: right;
+  margin-top: -59px;
+}
+
+.encoding {
+  float: right;
+  margin-top: -61px;
+  margin-right: 114px;
+}
+
+img.img--preview {
+  margin: 50px 0px;
+}
+
+.icon-back {
+  font-size: 1.5rem;
+  margin-right: 0.5rem;
+  cursor: pointer;
+}

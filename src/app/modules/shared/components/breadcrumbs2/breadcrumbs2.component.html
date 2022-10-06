@@ -1,0 +1,7 @@
+<div class="breadcrumb-container">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item" *ngFor="let breadcrumb of breadcrumbs; let index = index" [ngClass]="{'active': breadcrumbs.length === index + 1}">
+      <a (click)="breadcrumbs.length > index+1 ? navigateBreadcrumbs(breadcrumb.path) : ''" [ngClass]="{'cursor-text': breadcrumbs.length === index + 1}">{{ breadcrumb.name | CutStringAny }}</a>
+    </li>
+  </ol>
+</div>

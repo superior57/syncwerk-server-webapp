@@ -1,0 +1,38 @@
+td {
+  vertical-align: middle;
+}
+
+.tb-user {
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+.cursor-pointer {
+  cursor: pointer
+}
+
+:host ::ng-deep app-empty-item .card {
+  margin-bottom: 0px;
+}
+
+.data-table__filter {
+  margin-right: 30px;
+  width: 100%;
+  max-width: 100%;
+}
+
+:host ::ng-deep app-title-devices {
+  .dropdown-demo {
+    margin-bottom: 0;
+  }
+}
+
+:host ::ng-deep {
+  pagination ul.pagination {
+    justify-content: flex-end;
+  }
+}
+
+.data-table__footer {
+  padding: 0 2.1rem;
+}

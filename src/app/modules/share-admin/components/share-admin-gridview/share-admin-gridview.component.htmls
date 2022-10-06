@@ -1,0 +1,68 @@
+<div class="row lightbox photos">
+  <div class="col-xl-3 col-md-4 col-lg-3 col-sm-6 col-xs-12" *ngFor="let r of listShares; let index=index" (mouseover)="hoveredIndex=index"
+    [ngClass]="classRangeSize" (mouseleave)="hoveredIndex=-1">
+    <div class="lightbox__item photos__item text-center">
+      <!-- Start Row Action -->
+      <div *ngIf="index==hoveredIndex">
+        <div class="dropup actions__item grid-menu-button">
+          <button *ngIf="r.type==='download-link' || r.type==='upload-link'" (click)="onOpenModal('share', r)" class="btn btn-success waves-effect"
+            style="padding: 8.5px; width: 31px;" data-toggle="tooltip" [title]="'TOOLTIPS.VIEW' | translate: params">
+            <i class="fal fa-envelope"></i>
+          </button>
+
+          <button *ngIf="r.type==='download-link' || r.type==='upload-link'" (click)="copyLinks()" ngxClipboard
+            [cbContent]="getLink(r)" class="btn btn-success waves-effect" style="padding: 8.5px; width: 31px;"
+            data-toggle="tooltip" [title]="'TOOLTIPS.COPY_TO_CLIPBOARD' | translate: params">
+            <i class="fal fa-copy"></i>
+          </button>
+
+          <button *ngIf="r.type==='repo' || r.type==='folder'" (click)="onOpenModal('unshare', r)" class="btn btn-success waves-effect"
+            style="padding: 8.5px; width: 31px;" data-toggle="tooltip" [title]="'TOOLTIPS.UNSHARE' | translate: params">
+            <i class="fal fa-trash-alt"></i>
+          </button>
+
+          <button *ngIf="r.type==='download-link' || r.type==='upload-link'" (click)="onOpenModal('remove', r)" class="btn btn-success waves-effect"
+            style="padding: 8.5px; width: 31px;" data-toggle="tooltip" [title]="'TOOLTIPS.REMOVE' | translate: params">
+            <i class="fal fa-trash-alt"></i>
+          </button>
+
+          <button class="btn btn-success waves-effect" style="padding: 8.5px; width: 31px;" data-toggle="tooltip"
+            [title]="'TOOLTIPS.VISIT' | translate: params">
+            <i class="fal fa-external-link-square ico--custom" [routerLink]="['/folders',r.repo_id]"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="center-img" *ngIf="r.is_dir!==false" (click)="routerLinkShares(r)" [ngStyle]="{'height': rangeHeightPx} ">
+        <i class="fas fa-folder fa-fw" style="transition: all 0.5s " style="text-align: center; cursor: pointer;"
+          [ngStyle]="{ 'transform': 'scale(' + rangeTransformScale + ')'} "></i>
+        <i *ngIf="r.encrypted" class="fal fa-key grid-folder-lock" data-toggle="tooltip" [title]="'TOOLTIPS.ENCRYPTED_FOLDER' | translate: params"></i>
+        <i *ngIf="r.share_permission === 'r'" class="fal fa-eye grid-read-only" [ngClass]="{'second-lock':r.encrypted}"
+          data-toggle="tooltip" [title]="'TOOLTIPS.READ_ONLY_FOLDER' | translate: params"></i>
+      </div>
+      <div *ngIf="r.type==='download-link' && r.is_dir===false" (click)="routerLinkShares(r)">
+        <div class="center-img" [ngStyle]="{'height': rangeHeightPx}">
+          <a target="_blank" class="name">
+            <div>
+              <img *ngIf=" !r.imgError || (r.imgError && r.imgError !==1 ) " style="transition: all 0.5s " [ngStyle]="{
+            'transform': 'scale(' + rangeTransformScale + ')'} "
+                (error)="setErrorImg(index) " class="file-icon " max-height="90px" src="{{ r.item_name | fileIconPath: false: r.repo_id: r.path: 500 }}">
+            </div>
+            <div *ngIf="(r.imgError && r.imgError === 1)" style="transition: all 0.5s " [ngStyle]="{ 'transform':
+            'scale(' + rangeTransformScale + ')'} ">
+              <i class="{{ r.item_name | customFileIcon }}"></i>
+            </div>
+            <!-- <i class="fal fa-eye grid-file-lock " *ngIf="r.encrypted || r.share_permission==='r' "></i> -->
+          </a>
+        </div>
+      </div>
+
+      <div *ngIf="r.is_dir !== false" class="tb-name-grid">
+        <a data-toggle="tooltip " data-title="{{r.tooltip_item_name}} ">{{ r.displayed_item_name }}</a>
+      </div>
+      <div *ngIf="r.is_dir === false" class="tb-name">
+        <a data-toggle="tooltip " data-title="{{r.tooltip_item_name}} ">{{ r.displayed_item_name }}</a>
+      </div>
+    </div>
+  </div>
+</div>

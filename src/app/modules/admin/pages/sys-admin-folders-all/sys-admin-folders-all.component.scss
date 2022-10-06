@@ -1,0 +1,291 @@
+td {
+  vertical-align: middle;
+  // height: 60px;
+  &.tb-name {
+    max-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    .icon-folder {
+      .tb-row-folder {
+        font-size: 35px;
+        float: left;
+      }
+      .tb-row-folder-lock {
+        font-size: 15px;
+        color: #e10032;
+        margin-top: 14px;
+        margin-left: -24px;
+        margin-right: 3px;
+        z-index: 1;
+        position: absolute;
+      }
+    }
+    span.name-folder {
+      line-height: 40px;
+    }
+  }
+}
+
+.dropdown-demo {
+  // margin-bottom: 30px;
+
+  .dropdown-menu-tabs-devices {
+    top: 25px;
+    border: 1px solid #f2f2f2;
+  }
+}
+
+.cursor-pointer {
+  cursor: pointer
+}
+
+span.name-folder.link {
+  //color: #0067b3;
+}
+
+.more-button {
+	text-align: center;
+  border-top: 1px solid #f3f3f3;
+  padding-top:15px
+}
+
+.btn {
+  margin-right: 5px;
+  &:last-child {
+    margin-right: 0;
+  }
+}
+
+:host ::ng-deep .ng2-tag-input__text-input {
+  width: 200%;
+}
+
+:host ::ng-deep .ng2-tag-input {
+  border-bottom: 1px solid #efefef !important;
+}
+
+.form-group.row label {
+  padding-top: 9px;
+}
+
+tag-input tag-input-dropdown ::ng-deep ng2-dropdown div.ng2-dropdown-menu {
+  // top: inherit !important;
+  // left: inherit !important;
+  max-height: 300px;
+  .user-avt {
+    // float: left;
+    // margin-right: 10px;
+    margin-top: -5px;
+    img {
+      width: 32px;
+      height: 32px;
+      border-radius: 50px;
+    }
+  }
+  .user-detail {
+    height: 2rem;
+    margin-top: -10px;
+  }
+}
+
+:host ::ng-deep app-empty-item .card {
+  margin-bottom: 0;
+}
+
+.tb-owner {
+  &:hover {
+    //text-decoration: underline;
+  }
+}
+
+.search-name {
+  margin-top: 12px;
+}
+
+.dropdown-title .actions {
+  top: 0;
+  right: 0;
+}
+
+.tb-operations {
+  .actions__item:hover {
+    color: #0067b3;
+  }
+  .zmdi-swap {
+    font-size: 1.9rem;
+  }
+}
+
+.ico--custom{
+  float: right;
+}
+
+.data-table__filter {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-bottom: 10px;
+    margin-right: 25px;
+    &:before{
+      top: 3px;
+    }
+}
+
+.row__selector {
+  @media (max-width:517px){
+    position: absolute;
+    right: 7px;
+  }
+}
+
+.card-header {
+  .actions {
+    right: 28px;
+  }
+}
+
+.data-table_buttons {
+  margin: 3px 24px 0px 0px;
+}
+
+:host ::ng-deep {
+  pagination ul.pagination {
+    justify-content: flex-end;
+  }
+}
+
+
+
+.data-table__footer {
+  padding: 0 2.1rem;
+}
+small.name-folder.name__lib--custom {
+  display: block;
+  margin: -12px 0px 0px 44px;
+  color: #BDBDBD;
+}
+.form__direct__link {
+  width: 9rem;
+  height: auto;
+  text-align: right;
+  padding-top:8px;
+  margin: 0px 10px;
+  display: flex;
+  justify-content: space-around;
+}
+
+a.a--direct{
+  i.fa.fa-table {
+    color: #bdbdbd;
+    font-size: 1.7rem;
+    margin: -1px 2px;
+  }
+  i.actions__item.zmdi.zmdi-delete {
+      color: #bdbdbd;
+      font-size: 1.5rem;
+      margin: 1px 2px;
+  }
+}
+
+.icon--custom{
+  color: #000;
+}
+
+i.ico__direct {
+  font-size: 19px;
+  margin-top: 5px;
+  color: #c4bdbd;
+}
+
+.btn--icon-text {
+  margin-top: 2px;
+}
+
+
+.form-group.data-table__filter {
+  width: 61%;
+}
+
+
+i.fal.fa-2x.fa-ellipsis-v.actions__item {
+  color: #000;
+  width: 2.5rem;
+  height: 2.5rem;
+  background: #fefefe;
+  line-height: 2.5rem;
+  margin-right: 7px;
+}
+
+.share-details-row {
+  padding: 0px;
+  td {
+    padding: 0px;
+    .share-details {
+      padding: 0.75rem 1rem;
+      border: solid 1px lightgrey;
+      text-align: left;
+      .actions {
+        margin-top: 1rem;
+        .actions__item {
+          width: auto;
+          margin-right: 10px;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width:991px){
+  tr{
+    &:hover{
+      background-color: #efefef;
+    }
+    th{
+      &:last-child{
+        text-align: right;
+      }
+    }
+    td{
+      &:last-child{
+        text-align: right;
+      }
+    }
+  }
+}
+
+.folder__desc {
+  margin-top: -2px;
+}
+
+@media (max-width: 768px){
+  .fl--custom{
+    flex-wrap: wrap;
+  }
+  .data-table__filter{
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-right: 0px !important;
+    margin: 10px 0px;
+  }
+  .row__selector {
+      position: absolute;
+      top: 29px;
+      right: calc(100vw - 87vw);
+      margin-right: 23px;
+  }
+  .form__direct__link {
+      position: absolute;
+      top: 29px;
+      right: 4%;
+  }
+}
+
+@media (max-width: 400px){
+  .row__selector {
+      position: static;
+  }
+}
+
+
+
+

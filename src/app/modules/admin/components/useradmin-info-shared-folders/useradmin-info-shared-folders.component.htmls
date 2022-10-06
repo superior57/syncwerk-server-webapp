@@ -1,0 +1,60 @@
+<table *ngIf="listSharedLibs.length > 0" class="table table-hover mb-0">
+  <thead>
+    <tr>
+      <th>
+        <span [innerHTML]="'USERADMIN_INFO.SHARED_LIBS.TABLE.NAME' | translate: params"></span>
+      </th>
+      <th width="20%">
+        <span [innerHTML]="'USERADMIN_INFO.SHARED_LIBS.TABLE.SHARE_BY' | translate: params"></span>
+      </th>
+      <th width="15%">
+        <span [innerHTML]="'USERADMIN_INFO.SHARED_LIBS.TABLE.SIZE' | translate: params"></span>
+      </th>
+      <th width="20%">
+        <span [innerHTML]="'USERADMIN_INFO.SHARED_LIBS.TABLE.LAST_UPDATE' | translate: params"></span>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of listSharedLibs; let index = index" (mouseover)="hoveredIndex=index" (mouseleave)="hoveredIndex=-1">
+      <td class="tb-name">
+        <ng-container *ngIf="enableViewRepo">
+          <div class="vertical-items item-link" [routerLink]="['/admin', 'folders', item.id]">
+            <div class="icon-folder">
+              <!-- <a [routerLink]="['/folders', item.id]" class="a--link"> -->
+              <i class="fas fa-folder fa-fw tb-row-folder"></i>
+              <i *ngIf="item.encrypted" class="fal fa-key tb-row-folder-lock" data-toggle="tooltip"
+                title="Encrypted"></i>
+              <i *ngIf="item.permission==='r' && !item.encrypted" class="fal fa-eye fa-hc-fw tb-row-folder-lock"
+                data-toggle="tooltip" title="Read-Only"></i>
+              <!-- </a> -->
+            </div>
+            <span class="text-ellipsis" data-toggle="tooltip" title="{{ item.name }}">{{ item.name }}</span>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="!enableViewRepo">
+            <div class="vertical-items">
+              <div class="icon-folder">
+                <!-- <a [routerLink]="['/folders', item.id]" class="a--link"> -->
+                <i class="fas fa-folder fa-fw tb-row-folder"></i>
+                <i *ngIf="item.encrypted" class="fal fa-key tb-row-folder-lock" data-toggle="tooltip"
+                  title="Encrypted"></i>
+                <i *ngIf="item.permission==='r' && !item.encrypted" class="fal fa-eye fa-hc-fw tb-row-folder-lock"
+                  data-toggle="tooltip" title="Read-Only"></i>
+                <!-- </a> -->
+              </div>
+              <span class="text-ellipsis" data-toggle="tooltip" title="{{ item.name }}">{{ item.name }}</span>
+            </div>
+          </ng-container>
+      </td>
+      <td>{{ item.props.from }}</td>
+      <td>{{ item.size | customFileSize }}</td>
+      <td>
+        <span data-toggle="tooltip" title="{{ (item.last_modify | amFromUnix) | amDateFormat: 'ddd, D MMM YYYY HH:mm:ss ZZ' }}">{{
+          (item.last_modify | amFromUnix) | amDateFormat:'YYYY-MM-DD HH:mm:ss' }}</span>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<app-empty-item *ngIf="listSharedLibs.length === 0" [messageTitle]="'USERADMIN_INFO.SHARED_LIBS.EMPTY_ITEM.MSG_TITLE' | translate: params"></app-empty-item>

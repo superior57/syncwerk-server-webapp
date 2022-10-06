@@ -1,0 +1,48 @@
+<main class="main" *ngIf="!isError && !promptPassword" [attr.data-ma-theme]="maTheme">
+  <div class="section__preview">
+    <app-preview-content *ngIf="!inProgress" [editMode]="editMode" [fileDetails]="fileDetails" [fileEditHeadID]="fileEditHeadID"
+      [hightlightMode]="hightlightMode" [ref]="ref" [parent]="parent" [isProcessing]="inProgress" [configDict]="configDict"></app-preview-content>
+    <app-processing *ngIf="inProgress"></app-processing>
+  </div>
+</main>
+
+<div class=" error " *ngIf="!inProgress && isError ">
+  <app-secondary-header></app-secondary-header>
+  <div class=" " *ngIf="!inProgress ">
+    <div class="error__inner ">
+      <h1 style="color:black ">{{errorCode}}</h1>
+      <h2>{{errorMessage}}</h2>
+    </div>
+  </div>
+</div>
+
+<div class="promptPassword" *ngIf="promptPassword">
+  <app-secondary-header></app-secondary-header>
+  <div>
+    <section class="content content--full">
+      <header class="content__title">
+        <!-- <img src="../assets/img/icons/KeyChainAccess-icon.png" alt="" class="key-icon"> -->
+        <i class="fal fa-key fa-5x"></i>
+        <div style="padding: 10px 10px 0 0;">
+          <h1 class="card-title">
+            <strong>{{filename}}</strong>
+          </h1>
+          <small class="card-subtitle" [innerHTML]="'PREVIEW.PROMPT_PASSWORD_TIP' | translate"></small>
+        </div>
+      </header>
+      <div class="card">
+        <div class="card-block">
+          <div class="form-group" (keyup.enter)="authPasswordFolder()">
+            <label [innerHTML]="'FORMS.INPUTS.PASSWORD' | translate"></label>
+            <input #passwordInput type="password" class="form-control input-mask" maxlength="255" name="password">
+            <i class="form-group__bar"></i>
+          </div>
+          <p class="error-msg" *ngIf="passwordErrorMessage !== ''">{{ passwordErrorMessage }}</p>
+          <button type="button" class="btn btn-success btn--icon-text waves-effect" (click)="authPasswordFolder()">
+            <span [innerHTML]="'BUTTONS.SUBMIT' | translate"></span>
+          </button>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

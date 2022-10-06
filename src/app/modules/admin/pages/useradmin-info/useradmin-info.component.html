@@ -1,0 +1,67 @@
+<header class="content__title">
+  <h1 [innerHTML]="'TITLE_PAGE.USER_INFO' | translate: params"></h1>
+  <small [innerHTML]="'USERADMIN_INFO.DESC' | translate"></small>
+</header>
+
+<div class="card">
+  <div class="card-header">
+    <h2 class="card-title">{{ getInfoUserName }}</h2>
+  </div>
+  <div class="card-block">
+    <div class="tab-container tab-container--green">
+      <ul class="nav nav-pills" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link" [ngClass]="{'active': tabName === 'profile'}" data-toggle="tab" href="#profile" role="tab" (click)="handleTabActive('profile')" [innerHTML]="'USERADMIN_INFO.TAB_HEADER.PROFILE' | translate: params"></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [ngClass]="{'active': tabName === 'owned-folders'}" data-toggle="tab" href="#owned-folders" role="tab" (click)="handleTabActive('owned-folders')" [innerHTML]="'USERADMIN_INFO.TAB_HEADER.OWNED_LIBS' | translate: params"></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [ngClass]="{'active': tabName === 'shared-folders'}" data-toggle="tab" href="#shared-folders" role="tab" (click)="handleTabActive('shared-folders')" [innerHTML]="'USERADMIN_INFO.TAB_HEADER.SHARED_LIBS' | translate: params"></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [ngClass]="{'active': tabName === 'shared-links'}" data-toggle="tab" href="#shared-links" role="tab" (click)="handleTabActive('shared-links')" [innerHTML]="'USERADMIN_INFO.TAB_HEADER.SHARED_LINKS' | translate: params"></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [ngClass]="{'active': tabName === 'groups'}" data-toggle="tab" href="#groups" role="tab" (click)="handleTabActive('groups')" [innerHTML]="'USERADMIN_INFO.TAB_HEADER.GROUPS' | translate: params"></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [ngClass]="{'active': tabName === 'meetings'}" data-toggle="tab" href="#meetings" role="tab" (click)="handleTabActive('meetings')" [innerHTML]="'USERADMIN_INFO.TAB_HEADER.MEETINGS' | translate: params"></a>
+        </li>
+      </ul>
+    </div>
+    <div class="tab-content">
+      <!-- PROFILE -->
+      <div [ngClass]="{'show active': tabName === 'profile'}" class="tab-pane fade" id="profile" role="tabpanel">
+        <app-useradmin-info-profiles *ngIf="dataUserAdminInfo" [dataProfiles]="dataUserAdminInfo" (updatedReloadData)="onReloadData($event)"></app-useradmin-info-profiles>
+      </div>
+
+      <!-- OWNED LIBS -->
+      <div [ngClass]="{'show active': tabName === 'owned-folders'}" class="tab-pane fade" id="owned-folders" role="tabpanel">
+        <app-useradmin-info-owned-folders *ngIf="dataUserAdminInfo" [dataOwnedRepos]="dataUserAdminInfo.owned_repos" [email]="userEmail"
+          (deleteReloadData)="onReloadData($event, '#modal-delete-remove')" (transferReloadData)="onReloadData($event, '#transfer-folder-modal')"></app-useradmin-info-owned-folders>
+      </div>
+
+      <!-- SHARED LIBS -->
+      <div [ngClass]="{'show active': tabName === 'shared-folders'}" class="tab-pane fade" id="shared-folders" role="tabpanel">
+        <app-useradmin-info-shared-folders *ngIf="dataUserAdminInfo" [listSharedLibs]="dataUserAdminInfo.in_repos"></app-useradmin-info-shared-folders>
+      </div>
+
+      <!-- SHARED LINKS -->
+      <div [ngClass]="{'show active': tabName === 'shared-links'}" class="tab-pane fade" id="shared-links" role="tabpanel">
+        <app-useradmin-info-shared-links *ngIf="dataUserAdminInfo" [listSharedLinks]="dataUserAdminInfo.user_shared_links"
+          (removeReloadData)="onReloadData($event, '#modal-delete-remove')"></app-useradmin-info-shared-links>
+      </div>
+
+      <!-- GROUPS -->
+      <div [ngClass]="{'show active': tabName === 'groups'}" class="tab-pane fade" id="groups" role="tabpanel">
+        <app-useradmin-info-groups *ngIf="dataUserAdminInfo" [listGroups]="dataUserAdminInfo.personal_groups" (deleteReloadData)="onReloadData($event, '#modal-delete-remove')"></app-useradmin-info-groups>
+      </div>
+
+      <!-- MEETINGS -->
+      <div [ngClass]="{'show active': tabName === 'meetings'}" class="tab-pane fade" id="meetings" role="tabpanel">
+        <app-useradmin-info-meetings *ngIf="dataUserAdminInfo" [listMeetings]="dataUserAdminInfo.meeting_rooms" (deleteReloadData)="onReloadData($event, '#modal-delete-remove')"></app-useradmin-info-meetings>
+      </div>
+    </div>
+  </div>
+</div>

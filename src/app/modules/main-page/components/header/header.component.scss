@@ -1,0 +1,124 @@
+.top-nav > li {
+  font-size: 1.1em;
+}
+
+.header-notification {
+  cursor: pointer;
+  .bell {
+    font-size:25px;
+  }
+  .number{
+    border-radius: 10px;
+    padding: 0 2px 0 2px;
+    margin-left: -9px;
+  }
+}
+
+.header {
+  z-index: 10 !important;
+}
+
+.user-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50px;
+}
+
+.dropdown-menu {
+	//margin-top: 60px;
+	//margin-right:15px;
+  //width: 300px;
+  //.listview__header {
+  //  margin-bottom: 0px;
+  //  padding: 0.5rem 1rem 1.2rem;
+  //  .actions {
+  //    top: 0.9rem;
+  //  }
+  //}
+  .listview__content {
+    word-wrap: break-word;
+  }
+  //.listview__footer {
+  //    font-size: 1rem;
+  //    padding: 1.2rem 1rem 0.5rem;
+  //    text-align: center;
+  //    border-top: 1px solid #f3f3f3;
+  //}
+  //.listview__footer__link {
+  //  color: #333;
+  //}
+  //.listview__img {
+  //  min-width: 3rem;
+  //}
+}
+
+.scrollable-menu {
+  height: auto;
+  max-height:  calc(100vh - 300px);
+  overflow-x: hidden;
+  .notseen {
+    background-color: #f0f8ff;
+  }
+  .border-top {
+    border-top: 1px solid #ebebeb;
+  }
+  .notif__time {
+    float: right;
+    color: #969696;
+  }
+  .notif-link {
+    color:#0067b3;
+    cursor: pointer;
+  }
+}
+
+:host ::ng-deep .scrollbar-macosx .scroll-element.scroll-y .scroll-bar {
+  left: -6px;
+  min-height: 10px;
+  width: 5px;
+}
+
+:host ::ng-deep span.folder-name {
+  color: #0067b3;
+}
+:host ::ng-deep span.file-name {
+  color: #0067b3;
+}
+:host ::ng-deep span.group-name {
+  color: #0067b3;
+}
+
+img.header-logo{
+  height: 30px;
+  @media (max-width:470px) {
+    height: 25px;
+  }
+  @media (max-width:350px) {
+    height: 18px;
+    margin-left: -14px;
+  }
+}
+
+@media (max-width: 767px){
+  .hidden-sm-down {
+      display: block !important;
+  }
+}
+@media (max-width: 470px){
+
+  .top-nav > li {
+      width: 40px;
+  }
+}
+@media (max-width: 350px){
+  .top-nav > li {
+      width: 40px;
+      margin-left: 0px;
+  }
+}
+
+@media (max-width: 575px){
+  .top-nav > li .dropdown-menu--block {
+    width: 100% !important;
+  }
+}

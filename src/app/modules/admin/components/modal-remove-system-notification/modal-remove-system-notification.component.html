@@ -1,0 +1,27 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h5 class="modal-title pull-left">
+      <span>
+        <strong>
+          <span>{{'ADMIN.NOTIFICATIONS.MODALS.REMOVE_NOTIFICATION_TITLE' | translate}}</span>
+        </strong>
+      </span>
+    </h5>
+  </div>
+  <div class="modal-body">
+    <div>{{'ADMIN.NOTIFICATIONS.MODALS.REMOVE_NOTIFICATION_CONFIRMATION' | translate}}</div>
+    <br>
+    <code>{{ selectedNotification.notificationMessage }}</code>
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" [disabled]="isProcessing ? true : false" class="btn btn-danger btn--icon-text waves-effect"
+      (click)="removeSystemNotification()">
+      <i *ngIf="isProcessing" class="fal fa-refresh fa-spin" style="margin-right: 5px;"></i>
+      <span [innerHTML]="'BUTTONS.YES' | translate"></span>
+    </button>
+    <button type="button" class="btn btn-secondary btn--icon-text waves-effect" (click)="closeModal()">
+      <span [innerHTML]="'BUTTONS.NO' | translate"></span>
+    </button>
+  </div>
+</div>

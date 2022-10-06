@@ -1,0 +1,79 @@
+<header class="content__title">
+  <h1 [innerHTML]="'ADMIN.INSTITUTIONS.TITLE.INSTITUTION_LIST' | translate"></h1>
+  <small [innerHTML]="'ADMIN.INSTITUTIONS.SUBTITLE.INSTITUTION_LIST' | translate"></small>
+</header>
+
+<div class="card">
+  <div class="card-block">
+    <div class="data-table__header d-flex justify-content-betwwen">
+      <div class="form-group">
+        <button (click)="openCreateTenantModal()" class="btn btn-secondary waves-effect btn--icon-text mr-25px">
+          {{'ADMIN.INSTITUTIONS.LIST_INSTITUTIONS.BUTTONS.ADD_NEW_INSTITUTION' | translate}}</button>
+      </div>
+      <div class="form-group data-table__filter">
+        <input [placeholder]="'SEARCHS.ALL_COLUMNS' | translate" class="form-control" (keyup)="onSearchFilterChange($event)" />
+        <i class="form-group__bar"></i>
+      </div>
+      <div class="row-selector">
+        <app-row-selector (changed)="onPerPageChanged($event)"></app-row-selector>
+      </div>
+    </div>
+
+    <ng-container *ngIf="!isProcessing">
+      <table class="table table-hover" *ngIf="tenantListFromAPI.length !== 0 && tenantListForDisplay.length !== 0">
+        <thead>
+          <tr>
+            <th width="40%">{{'ADMIN.INSTITUTIONS.LIST_INSTITUTIONS.TABLE_HEADERS.NAME' |
+              translate
+              }}</th>
+            <th width="20%">{{'ADMIN.INSTITUTIONS.LIST_INSTITUTIONS.TABLE_HEADERS.USAGE' |
+              translate
+              }}
+              /
+              {{'ADMIN.INSTITUTIONS.LIST_INSTITUTIONS.TABLE_HEADERS.QUOTA' |
+              translate
+              }}
+            </th>
+
+            <th width="20%">{{'ADMIN.INSTITUTIONS.LIST_INSTITUTIONS.TABLE_HEADERS.CREATED_AT' |
+              translate
+              }}</th>
+            <th width="20%"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let inst of tenantListForDisplay; let index=index" (mouseover)="hoveredIndex=index"
+            (mouseleave)="hoveredIndex=-1">
+            <td>
+              <a [routerLink]="['/admin','tenants',inst.id]">{{ inst.name }}</a>
+            </td>
+            <td>
+              {{ inst.space_usage | customFileSize }}
+              /
+              {{ inst.space_quota ? (inst.space_quota | customFileSize) : '--' }}
+              <ng-container *ngIf="hoveredIndex === index">
+                  <span style="cursor: pointer;" (click)="openChangeQuotaModal(inst)">
+                      <i class="fal fa-pen"></i>
+                    </span>
+              </ng-container>
+
+            </td>
+            <td>{{ inst.ctime | amDateFormat:'YYYY-MM-DD HH:mm:ss' }}</td>
+            <td>
+              <ng-container *ngIf="hoveredIndex === index">
+                <i data-toggle="tooltip" [title]="'ADMIN.INSTITUTIONS.LIST_INSTITUTIONS.TOOLTIPS.REMOVE_INSTITUTION' | translate"
+                  class="fal fa-lg fa-trash-alt actions__item" (click)="openRemoveTenantModal(inst)"></i>
+              </ng-container>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </ng-container>
+
+    <app-processing *ngIf="isProcessing"></app-processing>
+  </div>
+</div>
+
+<div class="data-table__footer">
+  <pagination [itemsPerPage]="pagination.itemsPerPage" [totalItems]="tenantListFromAPI.length" (pageChanged)="pageChanged($event)"></pagination>
+</div>

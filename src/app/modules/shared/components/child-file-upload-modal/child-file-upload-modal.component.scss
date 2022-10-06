@@ -1,0 +1,18 @@
+.modal-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+// :host ::ng-deep .dropzone {
+//   min-height: 50vh;
+//   height: 50vh;
+// }
+
+:host ::ng-deep .dz-error-message {
+  opacity: 1!important;
+  position: absolute!important;
+  top: 25px!important;
+  &::after {
+    content: none!important;
+  }
+}

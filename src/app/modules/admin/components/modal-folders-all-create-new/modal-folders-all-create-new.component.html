@@ -1,0 +1,98 @@
+<div class="modal fade" id="modal-folders-all-create-new" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left custom-title" [innerHTML]="'MODALS.TITLES.NEW_FOLDER' | translate: params"></h5>
+      </div>
+      <div class="modal-body">
+        <form #folderForm="ngForm" (keyup.enter)="createFolder()">
+          <div class="form-group input" [ngClass]="{'has-danger': validateErr.type==='name'}">
+            <label data-toggle="tooltip" title="required" [innerHTML]="'FORMS.INPUTS.NAME' | translate: params">
+              <span class="text-danger">(*)</span>
+            </label>
+            <input #name type="text" class="form-control input-mask" maxlength="255" required [(ngModel)]="model.name" name="name" #name="ngModel"
+              [ngClass]="{'form-control-danger': validateErr.type==='name'}">
+            <i class="form-group__bar"></i>
+          </div>
+          <div class="error-msg">
+            <span *ngIf="validateErr.type==='name'" [innerHTML]="validateErr.message | translate: params"></span>
+          </div>
+
+          <div class="form-group input">
+            <label data-toggle="tooltip" title="required">
+              <span [innerHTML]="'FORMS.INPUTS.OWNER' | translate: params"></span>
+              (<span [innerHTML]="'MODAL_CREATE_NEW_FOLDERS_ALL.INPUT_OWNER_DESCRIPTION' | translate: params"></span>)
+            </label>
+            <tag-input [maxItems]="1" placeholder="+ User" [secondaryPlaceholder]="'SEARCHS.USER' | translate: params" [allowDupes]="false"
+              [(ngModel)]="model.owner" name="owner" #owner="ngModel" [onlyFromAutocomplete]="true">
+              <tag-input-dropdown [matchingFn]="autoCompleteUserListMatching" [appendToBody]="false" [autocompleteObservable]="autocompleteUserList">
+                <ng-template let-item="item" let-index="index">
+                  <div class="row">
+                    <div class="col-md-2">
+                      <div class="user-avt">
+                        <img [src]="item.templateData.avatar_url" />
+                      </div>
+                    </div>
+                    <div class="col-md-10">
+                      <div class="user-detail">
+                        <strong>{{ item.templateData.name }}</strong>
+                      </div>
+                      <div class="user-detail">
+                        ({{ item.templateData.email }})
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
+              </tag-input-dropdown>
+            </tag-input>
+            <i class="form-group__bar"></i>
+          </div>
+
+          <!-- Start Encrypt -->
+          <div class="listview__item" style="padding: 0 0 15px 0;">
+            <label class="custom-control custom-checkbox">
+              <input type="checkbox" class="custom-control-input" [(ngModel)]="model.encrypted" name="encrypted" #encrypted="ngModel" (click)="handleFocusEncrypted()">
+              <span class="custom-control-indicator"></span>
+            </label>
+            <div class="listview__content">
+              <p [innerHTML]="'FORMS.CHECK_BOXS.ENCRYPT' | translate: params"></p>
+            </div>
+          </div>
+          <div *ngIf="model.encrypted">
+            <div class="form-group input" [ngClass]="{'has-danger': validateErr.type==='password'}">
+              <label [innerHTML]=" 'FORMS.INPUTS.PASSWORD' | translate: params "></label>
+              <input #password type="password" class="form-control input-mask padding-tex-input" [ngClass]="{'form-control-danger': validateErr.type==='password'}"
+                required [(ngModel)]="model.password" name="password" #password="ngModel">
+              <i class="form-group__bar"></i>
+            </div>
+            <div class="error-msg">
+              <span *ngIf="validateErr.type==='password'" [innerHTML]="validateErr.message | translate: params"></span>
+            </div>
+
+            <div class="form-group input" [ngClass]="{'has-danger': validateErr.type==='password-repeat'}">
+              <label [innerHTML]="'FORMS.INPUTS.REPEAT_PASSWORD' | translate: params"></label>
+              <input #repeat type="password" class="form-control input-mask padding-tex-input" [ngClass]="{'form-control-danger': validateErr.type==='password-repeat'}"
+                required [(ngModel)]="model.repeat" name="repeat" #repeat="ngModel">
+              <i class="form-group__bar"></i>
+            </div>
+            <div class="error-msg">
+              <span *ngIf="validateErr.type==='password-repeat'" [innerHTML]="validateErr.message | translate: params"></span>
+            </div>
+          </div>
+          <!-- End Encrypt -->
+        </form>
+      </div>
+      <div class="modal-footer">
+        <div>
+          <button type="button" class="btn btn-success waves-effect" (click)="createFolder()" [disabled]="isProcessing ? 'disabled' : ''">
+            <i *ngIf="isProcessing" class="fal fa-sync-alt fa-spin"></i>
+            <span [innerHTML]="'BUTTONS.CREATE' | translate: params"></span>
+          </button>
+          <button type="button" class="btn btn-secondary btn--icon-text waves-effect" data-dismiss="modal" [disabled]="isProcessing ? 'disabled' : ''">
+            <span [innerHTML]="'BUTTONS.CLOSE' | translate: params"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

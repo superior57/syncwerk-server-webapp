@@ -1,0 +1,24 @@
+<form class="modal-content" (submit)="addWikiPage()">
+  <div class="modal-header">
+    <h3 class="modal-title">
+      <strong>{{ 'WIKIS.WIKI_PAGES.MODALS.NEW_WIKI_PAGE_TITLE' | translate }}</strong>
+    </h3>
+  </div>
+  <div class="modal-body">
+    <div class="form-group">
+      <input appFocus
+             [(ngModel)]="pageName"
+             [ngModelOptions]="{standalone: true}"
+             [placeholder]="'WIKIS.WIKI_PAGES.MODALS.NEW_WIKI_PAGE_PLACEHOLDER' | translate"
+             class="form-control" type="text" />
+      <i class="form-group__bar"></i>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button type="submit" class="btn btn-success btn--icon-text waves-effect" [disabled]="isProcessing ? 'disabled' : ''">
+      <i *ngIf="isProcessing" class="fal fa-refresh fa-spin" style="margin-right: 5px;"></i>
+      <span [innerHTML]="'BUTTONS.SUBMIT' | translate"></span>
+    </button>
+  </div>
+</form>

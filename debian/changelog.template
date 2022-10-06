@@ -1,0 +1,5 @@
+syncwerk-server-webapp (${BUILDVER}.${BUILDITERATION}+${RELEASE}~${OS}) unstable; urgency=medium
+
+  * Initial release
+
+ -- ${MAINTAINER}  ${DATERFC}

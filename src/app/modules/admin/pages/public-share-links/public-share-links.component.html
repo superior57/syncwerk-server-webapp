@@ -1,0 +1,750 @@
+<header class="content__title">
+  <h1 [innerHTML]="'ADMIN.PUBLIC_SHARES.TITLE.LINK_LIST' | translate"></h1>
+  <small [innerHTML]="'ADMIN.PUBLIC_SHARES.SUBTITLE.LINK_LIST' | translate"></small>
+</header>
+
+<div class="card">
+  <div class="card-block">
+    <div class="data-table__header d-flex justify-content-betwwen fl--custom">
+      <div class="form-group data-table__filter">
+        <!-- <input [placeholder]="'SEARCHS.ALL_COLUMNS' | translate" class="form-control" (keyup)="onSearchFilterChange($event)" />
+        <i class="form-group__bar"></i> -->
+        <input *ngIf="config.filtering" [(ngModel)]="config.filtering.filterString"
+          [placeholder]="'SEARCHS.ALL_COLUMNS' | translate" class="form-control"
+          (keyup)="onSearchFilterChange(config)" />
+        <i class="form-group__bar"></i>
+      </div>
+      <div class="row-selector">
+        <app-row-selector (changed)="onPerPageChanged($event)"></app-row-selector>
+      </div>
+    </div>
+
+    <ng-container *ngIf="!isProcessing">
+      <table class="table table-sm table-hover">
+        <thead>
+          <tr>
+            <th class="sortable" style="width: 20%" (click)="triggerSort('repo_name')">
+              {{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_HEADERS.NAME' | translate}}
+              <ng-container *ngIf="sortConfig.column==='repo_name'" class="d-none d-lg-table-cell">
+                <i *ngIf="sortConfig.mode==='asc'" class="fal fa-sort-amount-up sort-icon d-none d-lg-table-cell"></i>
+                <i *ngIf="sortConfig.mode==='desc'"
+                  class="fal fa-sort-amount-down sort-icon d-none d-lg-table-cell"></i>
+              </ng-container>
+            </th>
+            <th class="sortable d-none d-lg-table-cell" style="width: 10%" (click)="triggerSort('ctime')">{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_HEADERS.UPDATED'
+              | translate}}
+              <ng-container *ngIf="sortConfig.column==='ctime'" class="d-none d-lg-table-cell">
+                <i *ngIf="sortConfig.mode==='asc'" class="fal fa-sort-amount-up sort-icon d-none d-lg-table-cell"></i>
+                <i *ngIf="sortConfig.mode==='desc'"
+                  class="fal fa-sort-amount-down sort-icon d-none d-lg-table-cell"></i>
+              </ng-container>
+            </th>
+            <th class="sortable d-none d-lg-table-cell" style="width: 10%" (click)="triggerSort('size')">{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_HEADERS.SIZE'
+              | translate}}
+              <ng-container *ngIf="sortConfig.column==='size'" class="d-none d-lg-table-cell">
+                <i *ngIf="sortConfig.mode==='asc'" class="fal fa-sort-amount-up sort-icon d-none d-lg-table-cell"></i>
+                <i *ngIf="sortConfig.mode==='desc'"
+                  class="fal fa-sort-amount-down sort-icon d-none d-lg-table-cell"></i>
+              </ng-container>
+            </th>
+            <th class="sortable d-none d-lg-table-cell" style="width: 10%" (click)="triggerSort('username')">{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_HEADERS.SHARE_OWNER'
+              |
+              translate}}
+              <ng-container *ngIf="sortConfig.column==='username'" class="d-none d-lg-table-cell">
+                <i *ngIf="sortConfig.mode==='asc'" class="fal fa-sort-amount-up sort-icon d-none d-lg-table-cell"></i>
+                <i *ngIf="sortConfig.mode==='desc'"
+                  class="fal fa-sort-amount-down sort-icon d-none d-lg-table-cell"></i>
+              </ng-container>
+            </th>
+            <th class="sortable d-none d-lg-table-cell" style="width: 10%" (click)="triggerSort('share_type')">{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_HEADERS.SHARE_TO'
+              | translate}}
+              <ng-container *ngIf="sortConfig.column==='share_type'" class="d-none d-lg-table-cell">
+                <i *ngIf="sortConfig.mode==='asc'" class="fal fa-sort-amount-up sort-icon d-none d-lg-table-cell"></i>
+                <i *ngIf="sortConfig.mode==='desc'"
+                  class="fal fa-sort-amount-down sort-icon d-none d-lg-table-cell"></i>
+              </ng-container>
+            </th>
+            <th class="d-none d-lg-table-cell" style="width: 10%">{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_HEADERS.PERMISSION'
+              | translate}}</th>
+            <th class="sortable d-none d-lg-table-cell" style="width: 10%" (click)="triggerSort('view_cnt')">{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_HEADERS.VISIT_COUNT'
+              | translate}}
+              <ng-container *ngIf="sortConfig.column==='view_cnt'" class="d-none d-lg-table-cell">
+                <i *ngIf="sortConfig.mode==='asc'" class="fal fa-sort-amount-up sort-icon d-none d-lg-table-cell"></i>
+                <i *ngIf="sortConfig.mode==='desc'"
+                  class="fal fa-sort-amount-down sort-icon d-none d-lg-table-cell"></i>
+              </ng-container>
+            </th>
+            <th class="sortable d-none d-lg-table-cell" style="width: 10%" (click)="triggerSort('expire_date')">{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_HEADERS.EXPIRED'
+              | translate}}
+              <ng-container *ngIf="sortConfig.column==='expire_date'" class="d-none d-lg-table-cell">
+                <i *ngIf="sortConfig.mode==='asc'" class="fal fa-sort-amount-up sort-icon d-none d-lg-table-cell"></i>
+                <i *ngIf="sortConfig.mode==='desc'"
+                  class="fal fa-sort-amount-down sort-icon d-none d-lg-table-cell"></i>
+              </ng-container>
+            </th>
+            <th class="d-none d-lg-table-cell" style="width: 10%">{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_HEADERS.ACTIONS'
+              | translate}}</th>
+            <!-- <th *ngFor="let column of columns" [class]="column.class" [width]="column.width" (click)="triggerSort(column.name)">
+              <span [innerHTML]="column.title | translate"></span>
+              <ng-container *ngIf="sortConfig.name===column.name">
+                <i *ngIf="sortConfig.mode==='asc'" class="fal fa-sort-amount-up sort-icon d-none d-lg-table-cell"></i>
+                <i *ngIf="sortConfig.mode==='desc'" class="fal fa-sort-amount-down sort-icon d-none d-lg-table-cell"></i>
+              </ng-container>
+            </th> -->
+            <th class="d-sm-table-cell d-md-table-cell d-lg-none" style="width: 10%">{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_HEADERS.ACTIONS'
+              | translate}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let share of shareListForDisplay; let index=index">
+            <ng-container *ngIf="share.share_type==='public_download'">
+              <tr (mouseover)="hoveredIndex=index" (mouseleave)="hoveredIndex=-1">
+                <td data-toggle="tooltip" [title]="'/'+share.repo_name+share.path">
+                  <div class="icon-folder">
+                    <img *ngIf="!share.imgError || (share.imgError && share.imgError != 1)" (error)="setErrorImg(share)"
+                      class="icon-file" src="{{ share.obj_name | fileIconPath: false: share.repo_id: share.path }}">
+                    <div *ngIf="(share.imgError && share.imgError === 1)" class="icon-file">
+                      <i class="{{ share.obj_name | customFileIcon }} fa-fw tb-row-folder fa-3x"></i>
+                    </div>
+                  </div>
+                  <div class="share-item-name">/{{ share.repo_name }}{{ share.path }}</div>
+                </td>
+                <td class="d-none d-lg-table-cell">{{ share.ctime | amDateFormat:'YYYY-MM-DD HH:mm:ss' }}</td>
+                <td class="d-none d-lg-table-cell">{{ share.size | customFileSize }} </td>
+                <td class="d-none d-lg-table-cell">{{ share.username }}</td>
+                <td class="d-none d-lg-table-cell">{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_CONTENTS.DOWNLOAD_LINK'
+                  | translate}}</td>
+                <td class="d-none d-lg-table-cell">{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_CONTENTS.PERMISSION_READ_ONLY'
+                  | translate}}</td>
+                <td class="d-none d-lg-table-cell">{{ share.view_cnt }}</td>
+                <td class="d-none d-lg-table-cell">
+                  <span *ngIf="share.is_expired">{{ share.expire_date }}</span>
+                  <span *ngIf="!share.is_expired">--</span>
+                </td>
+                <td class="d-none d-lg-table-cell">
+                  <ng-container *ngIf="hoveredIndex===index">
+                    <i data-toggle="tooltip"
+                      [title]="'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TOOLTIPS.VISIT_LINK' | translate"
+                      class="fal fa-lg fa-external-link actions__item" (click)="visitLink(share)"></i>
+                    <i data-toggle="tooltip"
+                      [title]="'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TOOLTIPS.REMOVE_SHARE_LINK' | translate"
+                      class="fal fa-lg fa-trash-alt actions__item" (click)="openRemoveLinkModal(share)"></i>
+                  </ng-container>
+                </td>
+                <td class="d-sm-table-cell d-md-table-cell d-lg-none">
+                  <a [href]="'#share-'+index" data-toggle="collapse" role="button" aria-expanded="false"
+                    aria-controls="share-0">
+                    <i data-toggle="tooltip" title="Details" class="fal fa-2x fa-ellipsis-v actions__item"></i>
+                  </a>
+                </td>
+              </tr>
+              <!-- Collapse details of share link for sm display -->
+              <tr class="d-sm-table-row d-md-table-row d-lg-none share-details-row">
+                <td colspan="10">
+                  <div class="collapse" [id]="'share-'+index">
+                    <div class="share-details">
+                      <div>
+                        <span>
+                          <strong>{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_HEADERS.UPDATED'
+                            | translate}}: </strong>
+                          {{ share.ctime | amDateFormat:'YYYY-MM-DD HH:mm:ss' }}
+                        </span>
+                      </div>
+                      <div>
+                        <span>
+                          <strong>{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_HEADERS.SIZE'
+                            | translate}}: </strong>
+                          {{ share.size === 0 ? '--' : (share.size | customFileSize)}}
+                        </span>
+                      </div>
+                      <div>
+                        <span>
+                          <strong>{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_HEADERS.SHARE_TO' | translate}}:
+                          </strong>
+                          {{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_CONTENTS.DOWNLOAD_LINK' | translate}}
+                        </span>
+                      </div>
+                      <div>
+                        <span>
+                          <strong>{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_HEADERS.SHARE_OWNER'
+                            | translate}}: </strong>
+                          {{ share.username }}
+                        </span>
+                      </div>
+                      <div>
+                        <span>
+                          <strong>{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_HEADERS.PERMISSION'
+                            | translate}}: </strong>
+                          {{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_CONTENTS.PERMISSION_READ_ONLY'
+                          | translate}}
+                        </span>
+                      </div>
+                      <div>
+                        <span>
+                          <strong>{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_HEADERS.VISIT_COUNT'
+                            | translate}}: </strong>
+                          {{ share.view_cnt }}
+                        </span>
+                      </div>
+                      <div>
+                        <span>
+                          <strong>{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_HEADERS.EXPIRED'
+                            | translate}}: </strong>
+                          {{ share.is_expired ? share.expire_date + ' 00:00:00' : '--' }}
+                        </span>
+                      </div>
+                      <div class="actions">
+                        <i data-toggle="tooltip"
+                          [title]="'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TOOLTIPS.VISIT_LINK' | translate"
+                          class="fal fa-lg fa-external-link actions__item" (click)="visitLink(share)"></i>
+                        <i data-toggle="tooltip"
+                          [title]="'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TOOLTIPS.REMOVE_SHARE_LINK' | translate"
+                          class="fal fa-lg fa-trash-alt actions__item" (click)="openRemoveLinkModal(share)"></i>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </ng-container>
+            <ng-container *ngIf="share.share_type==='public_upload'">
+              <tr *ngIf="share.share_type==='public_upload'" (mouseover)="hoveredIndex=index"
+                (mouseleave)="hoveredIndex=-1">
+                <td data-toggle="tooltip" [title]="'/'+share.repo_name+share.path">
+                  <div class="icon-folder">
+                    <i class="fas fa-folder fa-fw tb-row-folder fa-3x"></i>
+                  </div>
+                  <div class="share-item-name">/{{ share.repo_name }}{{ share.path }}</div>
+                </td>
+                <td class="d-none d-lg-table-cell">{{ share.ctime | amDateFormat:'YYYY-MM-DD HH:mm:ss' }}</td>
+                <td class="d-none d-lg-table-cell">{{ share.size | customFileSize }}</td>
+                <td class="d-none d-lg-table-cell">{{ share.username }}</td>
+                <td class="d-none d-lg-table-cell">{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_CONTENTS.UPLOAD_LINK'
+                  | translate}}</td>
+                <td class="d-none d-lg-table-cell">{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_CONTENTS.PERMISSION_WRITE_ONLY'
+                  | translate}}</td>
+                <td class="d-none d-lg-table-cell">{{ share.view_cnt }}</td>
+                <td class="d-none d-lg-table-cell">
+                  <span *ngIf="share.is_expired">{{ share.expire_date + ' 00:00:00'}}</span>
+                  <span *ngIf="!share.is_expired">--</span>
+                </td>
+                <td class="d-none d-lg-table-cell">
+                  <ng-container *ngIf="hoveredIndex===index">
+                    <i data-toggle="tooltip"
+                      [title]="'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TOOLTIPS.VISIT_LINK' | translate"
+                      class="fal fa-lg fa-external-link actions__item" (click)="visitLink(share)"></i>
+                    <i data-toggle="tooltip"
+                      [title]="'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TOOLTIPS.REMOVE_SHARE_LINK' | translate"
+                      class="fal fa-lg fa-trash-alt actions__item" (click)="openRemoveLinkModal(share)"></i>
+                  </ng-container>
+                </td>
+                <td class="d-sm-table-cell d-md-table-cell d-lg-none">
+                  <a [href]="'#share-'+index" data-toggle="collapse" role="button" aria-expanded="false"
+                    aria-controls="share-0">
+                    <i data-toggle="tooltip" title="Details" class="fal fa-2x fa-ellipsis-v actions__item"></i>
+                  </a>
+                </td>
+              </tr>
+              <!-- Collapse details of share link for sm display -->
+              <tr class="d-sm-table-row d-md-table-row d-lg-none share-details-row">
+                <td colspan="10">
+                  <div class="collapse" [id]="'share-'+index">
+                    <div class="share-details">
+                      <div>
+                        <span>
+                          <strong>{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_HEADERS.UPDATED'
+                            | translate}}: </strong>
+                          {{ share.ctime | amDateFormat:'YYYY-MM-DD HH:mm:ss' }}
+                        </span>
+                      </div>
+                      <div>
+                        <span>
+                          <strong>{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_HEADERS.SIZE'
+                            | translate}}: </strong>
+                          {{ share.size === 0 ? '--' : (share.size | customFileSize)}}
+                        </span>
+                      </div>
+                      <div>
+                        <span>
+                          <strong>{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_HEADERS.SHARE_TO' | translate}}:
+                          </strong>
+                          {{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_CONTENTS.UPLOAD_LINK' | translate}}
+                        </span>
+                      </div>
+                      <div>
+                        <span>
+                          <strong>{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_HEADERS.SHARE_OWNER'
+                            | translate}}: </strong>
+                          {{ share.username }}
+                        </span>
+                      </div>
+                      <div>
+                        <span>
+                          <strong>{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_HEADERS.PERMISSION'
+                            | translate}}: </strong>
+                          {{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_CONTENTS.PERMISSION_WRITE_ONLY'
+                          | translate}}
+                        </span>
+                      </div>
+                      <div>
+                        <span>
+                          <strong>{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_HEADERS.VISIT_COUNT'
+                            | translate}}: </strong>
+                          {{ share.view_cnt }}
+                        </span>
+                      </div>
+                      <div>
+                        <span>
+                          <strong>{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_HEADERS.EXPIRED'
+                            | translate}}: </strong>
+                          {{ share.is_expired ? share.expire_date + ' 00:00:00' : '--' }}
+                        </span>
+                      </div>
+                      <div class="actions">
+                        <i data-toggle="tooltip"
+                          [title]="'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TOOLTIPS.VISIT_LINK' | translate"
+                          class="fal fa-lg fa-external-link actions__item" (click)="visitLink(share)"></i>
+                        <i data-toggle="tooltip"
+                          [title]="'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TOOLTIPS.REMOVE_SHARE_LINK' | translate"
+                          class="fal fa-lg fa-trash-alt actions__item" (click)="openRemoveLinkModal(share)"></i>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </ng-container>
+            <ng-container *ngIf="share.share_type==='personal'">
+              <!-- All shares to user always are folders or sub-folder  -->
+              <tr (mouseover)="hoveredIndex=index" (mouseleave)="hoveredIndex=-1">
+                <td data-toggle="tooltip" [title]="'/'+share.folder_name+share.path">
+                  <div class="icon-folder">
+                    <i class="fas fa-folder fa-fw tb-row-folder fa-3x"></i>
+                  </div>
+                  <div class="share-item-name">/{{ share.folder_name }}{{ share.path }}</div>
+                </td>
+                <td class="d-none d-lg-table-cell">{{ share.ctime | amDateFormat:'YYYY-MM-DD HH:mm:ss' }}</td>
+                <td class="d-none d-lg-table-cell">--</td>
+                <td class="d-none d-lg-table-cell">{{ share.owner }}</td>
+                <td class="d-none d-lg-table-cell">{{ share.user_email }}</td>
+                <td class="d-none d-lg-table-cell">
+                  <span *ngIf="share.share_permission==='rw'">{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_CONTENTS.PERMISSION_READ_WRITE'
+                    | translate}}</span>
+                  <span *ngIf="share.share_permission==='r'">{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_CONTENTS.PERMISSION_READ_ONLY'
+                    | translate}}</span>
+                  <span *ngIf="share.share_permission==='w'">{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_CONTENTS.PERMISSION_WRITE_ONLY'
+                    | translate}}</span>
+                </td>
+                <td class="d-none d-lg-table-cell">--</td>
+                <td class="d-none d-lg-table-cell">--</td>
+                <td class="d-none d-lg-table-cell">
+                  <ng-container *ngIf="hoveredIndex===index">
+                    <i data-toggle="tooltip"
+                      [title]="'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TOOLTIPS.REMOVE_SHARE_LINK' | translate"
+                      class="fal fa-lg fa-trash-alt actions__item" (click)="openInternalShareRemoveModal(share)"></i>
+                  </ng-container>
+                </td>
+                <td class="d-sm-table-cell d-md-table-cell d-lg-none">
+                  <a [href]="'#share-'+index" data-toggle="collapse" role="button" aria-expanded="false"
+                    aria-controls="share-0">
+                    <i data-toggle="tooltip" title="Details" class="fal fa-2x fa-ellipsis-v actions__item"></i>
+                  </a>
+                </td>
+              </tr>
+              <!-- Collapse details of share link for sm display -->
+              <tr class="d-sm-table-row d-md-table-row d-lg-none share-details-row">
+                <td colspan="10">
+                  <div class="collapse" [id]="'share-'+index">
+                    <div class="share-details">
+                      <div>
+                        <span>
+                          <strong>{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_HEADERS.UPDATED'
+                            | translate}}: </strong>
+                          {{ share.ctime | amDateFormat:'YYYY-MM-DD HH:mm:ss' }}
+                        </span>
+                      </div>
+                      <div>
+                        <span>
+                          <strong>{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_HEADERS.SIZE'
+                            | translate}}: </strong>
+                          {{ share.size === 0 ? '--' : (share.size | customFileSize)}}
+                        </span>
+                      </div>
+                      <div>
+                        <span>
+                          <strong>{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_HEADERS.SHARE_TO' | translate}}:
+                          </strong>
+                          {{ share.user_email }} </span>
+                      </div>
+                      <div>
+                        <span>
+                          <strong>{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_HEADERS.SHARE_OWNER'
+                            | translate}}: </strong>
+                          {{ share.owner }}
+                        </span>
+                      </div>
+                      <div>
+                        <span>
+                          <strong>{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_HEADERS.PERMISSION'
+                            | translate}}: </strong>
+                        </span>
+                        <span *ngIf="share.share_permission==='rw'">{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_CONTENTS.PERMISSION_READ_WRITE'
+                          | translate}}</span>
+                        <span *ngIf="share.share_permission==='r'">{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_CONTENTS.PERMISSION_READ_ONLY'
+                          | translate}}</span>
+                        <span *ngIf="share.share_permission==='w'">{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_CONTENTS.PERMISSION_WRITE_ONLY'
+                          | translate}}</span>
+                      </div>
+                      <div>
+                        <span>
+                          <strong>{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_HEADERS.VISIT_COUNT'
+                            | translate}}: </strong>
+                          --
+                        </span>
+                      </div>
+                      <div>
+                        <span>
+                          <strong>{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_HEADERS.EXPIRED'
+                            | translate}}: </strong>
+                          {{ share.is_expired ? share.expire_date + ' 00:00:00' : '--' }}
+                        </span>
+                      </div>
+                      <div class="actions">
+                        <i data-toggle="tooltip"
+                          [title]="'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TOOLTIPS.REMOVE_SHARE_LINK' | translate"
+                          class="fal fa-lg fa-trash-alt actions__item"
+                          (click)="openInternalShareRemoveModal(share)"></i>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </ng-container>
+            <ng-container *ngIf="share.share_type==='group'">
+              <!-- All shares to group always are folders or sub-folder  -->
+              <tr (mouseover)="hoveredIndex=index" (mouseleave)="hoveredIndex=-1">
+                <td data-toggle="tooltip" [title]="'/'+share.folder_name+share.path">
+                  <div class="icon-folder">
+                    <i class="fas fa-folder fa-fw tb-row-folder fa-3x"></i>
+                  </div>
+                  <div class="share-item-name">/{{ share.folder_name }}{{ share.path }}</div>
+                </td>
+                <td class="d-none d-lg-table-cell">{{ share.ctime | amDateFormat:'YYYY-MM-DD HH:mm:ss' }}</td>
+                <td class="d-none d-lg-table-cell">--</td>
+                <td class="d-none d-lg-table-cell">{{ share.owner }}</td>
+                <td class="d-none d-lg-table-cell">Group - {{ share.group_name }}</td>
+                <td class="d-none d-lg-table-cell">
+                  <span *ngIf="share.share_permission==='rw'">{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_CONTENTS.PERMISSION_READ_WRITE'
+                    | translate}}</span>
+                  <span *ngIf="share.share_permission==='r'">{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_CONTENTS.PERMISSION_READ_ONLY'
+                    | translate}}</span>
+                  <span *ngIf="share.share_permission==='w'">{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_CONTENTS.PERMISSION_WRITE_ONLY'
+                    | translate}}</span>
+                </td>
+                <td class="d-none d-lg-table-cell">--</td>
+                <td class="d-none d-lg-table-cell">--</td>
+                <td class="d-none d-lg-table-cell">
+                  <ng-container *ngIf="hoveredIndex===index">
+                    <i data-toggle="tooltip"
+                      [title]="'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TOOLTIPS.REMOVE_SHARE_LINK' | translate"
+                      class="fal fa-lg fa-trash-alt actions__item" (click)="openInternalShareRemoveModal(share)"></i>
+                  </ng-container>
+                </td>
+                <td class="d-sm-table-cell d-md-table-cell d-lg-none">
+                  <a [href]="'#share-'+index" data-toggle="collapse" role="button" aria-expanded="false"
+                    aria-controls="share-0">
+                    <i data-toggle="tooltip" title="Details" class="fal fa-2x fa-ellipsis-v actions__item"></i>
+                  </a>
+                </td>
+              </tr>
+              <!-- Collapse details of share link for sm display -->
+              <tr class="d-sm-table-row d-md-table-row d-lg-none share-details-row">
+                <td colspan="10">
+                  <div class="collapse" [id]="'share-'+index">
+                    <div class="share-details">
+                      <div>
+                        <span>
+                          <strong>{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_HEADERS.UPDATED'
+                            | translate}}: </strong>
+                          {{ share.ctime | amDateFormat:'YYYY-MM-DD HH:mm:ss' }}
+                        </span>
+                      </div>
+                      <div>
+                        <span>
+                          <strong>{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_HEADERS.SIZE'
+                            | translate}}: </strong>
+                          {{ share.size === 0 ? '--' : (share.size | customFileSize)}}
+                        </span>
+                      </div>
+
+                      <div>
+                        <span>
+                          <strong>{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_HEADERS.SHARE_TO' | translate}}:
+                          </strong>
+                          Group - {{ share.group_name }}
+                        </span>
+                      </div>
+
+                      <div>
+                        <span>
+                          <strong>{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_HEADERS.SHARE_OWNER'
+                            | translate}}: </strong>
+                          {{ share.owner }}
+                        </span>
+                      </div>
+                      <div>
+                        <span>
+                          <strong>{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_HEADERS.PERMISSION'
+                            | translate}}: </strong>
+                        </span>
+                        <span *ngIf="share.share_permission==='rw'">{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_CONTENTS.PERMISSION_READ_WRITE'
+                          | translate}}</span>
+                        <span *ngIf="share.share_permission==='r'">{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_CONTENTS.PERMISSION_READ_ONLY'
+                          | translate}}</span>
+                        <span *ngIf="share.share_permission==='w'">{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_CONTENTS.PERMISSION_WRITE_ONLY'
+                          | translate}}</span>
+                      </div>
+                      <div>
+                        <span>
+                          <strong>{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_HEADERS.VISIT_COUNT'
+                            | translate}}: </strong>
+                          --
+                        </span>
+                      </div>
+                      <div>
+                        <span>
+                          <strong>{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_HEADERS.EXPIRED'
+                            | translate}}: </strong>
+                          {{ share.is_expired ? share.expire_date + ' 00:00:00' : '--' }}
+                        </span>
+                      </div>
+                      <div class="actions">
+                        <i data-toggle="tooltip"
+                          [title]="'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TOOLTIPS.REMOVE_SHARE_LINK' | translate"
+                          class="fal fa-lg fa-trash-alt actions__item"
+                          (click)="openInternalShareRemoveModal(share)"></i>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </ng-container>
+            <ng-container *ngIf="share.share_type==='meeting-public-share'">
+              <tr (mouseover)="hoveredIndex=index" (mouseleave)="hoveredIndex=-1">
+                <td data-toggle="tooltip" [title]="share.meeting_name">
+                  <div class="icon-folder">
+                    <i class="fal fa-video fa-fw tb-row-folder fa-3x"></i>
+                  </div>
+                  <div class="share-item-name">{{ share.meeting_name }}</div>
+                </td>
+                <td class="d-none d-lg-table-cell">{{ share.ctime | amDateFormat:'YYYY-MM-DD HH:mm:ss' }}</td>
+                <td class="d-none d-lg-table-cell">--</td>
+                <td class="d-none d-lg-table-cell">{{ share.room_owner }}</td>
+                <td class="d-none d-lg-table-cell">Public link</td>
+                <td class="d-none d-lg-table-cell">--</td>
+                <td class="d-none d-lg-table-cell">--</td>
+                <td class="d-none d-lg-table-cell">--</td>
+                <td class="d-none d-lg-table-cell">
+                  <ng-container *ngIf="hoveredIndex===index">
+                    <i data-toggle="tooltip"
+                      [title]="'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TOOLTIPS.VISIT_LINK' | translate"
+                      class="fal fa-lg fa-external-link actions__item"
+                      [routerLink]="['/share-link', 'm', share.share_token]"></i>
+                    <i data-toggle="tooltip"
+                      [title]="'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TOOLTIPS.REMOVE_SHARE_LINK' | translate"
+                      class="fal fa-lg fa-trash-alt actions__item" (click)="openRemoveLinkModal(share)"></i>
+                  </ng-container>
+                </td>
+                <td class="d-sm-table-cell d-md-table-cell d-lg-none">
+                  <a [href]="'#share-'+index" data-toggle="collapse" role="button" aria-expanded="false"
+                    aria-controls="share-0">
+                    <i data-toggle="tooltip" title="Details" class="fal fa-2x fa-ellipsis-v actions__item"></i>
+                  </a>
+                </td>
+              </tr>
+              <!-- Collapse details of share link for sm display -->
+              <tr class="d-sm-table-row d-md-table-row d-lg-none share-details-row">
+                <td colspan="10">
+                  <div class="collapse" [id]="'share-'+index">
+                    <div class="share-details">
+                      <div>
+                        <span>
+                          <strong>{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_HEADERS.UPDATED'
+                            | translate}}: </strong>
+                          {{ share.ctime | amDateFormat:'YYYY-MM-DD HH:mm:ss' }}
+                        </span>
+                      </div>
+                      <div>
+                        <span>
+                          <strong>{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_HEADERS.SIZE'
+                            | translate}}: </strong>
+                          --
+                        </span>
+                      </div>
+
+                      <div>
+                        <span>
+                          <strong>{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_HEADERS.SHARE_TO' | translate}}:
+                          </strong>
+                          Public link
+                        </span>
+                      </div>
+
+                      <div>
+                        <span>
+                          <strong>{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_HEADERS.SHARE_OWNER'
+                            | translate}}: </strong>
+                          {{ share.room_owner }}
+                        </span>
+                      </div>
+                      <div>
+                        <span>
+                          <strong>{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_HEADERS.PERMISSION'
+                            | translate}}: </strong>
+                        </span>
+                        --
+                      </div>
+                      <div>
+                        <span>
+                          <strong>{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_HEADERS.VISIT_COUNT'
+                            | translate}}: </strong>
+                          --
+                        </span>
+                      </div>
+                      <div>
+                        <span>
+                          <strong>{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_HEADERS.EXPIRED'
+                            | translate}}: </strong>
+                          --
+                        </span>
+                      </div>
+                      <div class="actions">
+                        <i data-toggle="tooltip"
+                          [title]="'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TOOLTIPS.VISIT_LINK' | translate"
+                          class="fal fa-lg fa-external-link actions__item"
+                          [routerLink]="['/share-link', 'm', share.share_token]"></i>
+                        <i data-toggle="tooltip"
+                          [title]="'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TOOLTIPS.REMOVE_SHARE_LINK' | translate"
+                          class="fal fa-lg fa-trash-alt actions__item" (click)="openRemoveLinkModal(share)"></i>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </ng-container>
+            <ng-container *ngIf="share.share_type==='meeting-private-share'">
+              <tr (mouseover)="hoveredIndex=index" (mouseleave)="hoveredIndex=-1">
+                <td data-toggle="tooltip" [title]="share.meeting_name">
+                  <div class="icon-folder">
+                    <i class="fal fa-video fa-fw tb-row-folder fa-3x"></i>
+                  </div>
+                  <div class="share-item-name">{{ share.meeting_name }}</div>
+                </td>
+                <td class="d-none d-lg-table-cell">{{ share.ctime | amDateFormat:'YYYY-MM-DD HH:mm:ss' }}</td>
+                <td class="d-none d-lg-table-cell">--</td>
+                <td class="d-none d-lg-table-cell">{{ share.room_owner }}</td>
+                <td class="d-none d-lg-table-cell">
+                  <span *ngIf="share.room_share_type==='SHARED_TO_USER'">{{ share.share_to }}</span>
+                  <span *ngIf="share.room_share_type==='SHARED_TO_GROUP'">Group - {{ share.share_to }}</span>
+                </td>
+                <td class="d-none d-lg-table-cell">--</td>
+                <td class="d-none d-lg-table-cell">--</td>
+                <td class="d-none d-lg-table-cell">--</td>
+                <td class="d-none d-lg-table-cell">
+                  <ng-container *ngIf="hoveredIndex===index">
+                    <i data-toggle="tooltip"
+                      [title]="'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TOOLTIPS.REMOVE_SHARE_LINK' | translate"
+                      class="fal fa-lg fa-trash-alt actions__item" (click)="openInternalShareRemoveModal(share)"></i>
+                  </ng-container>
+                </td>
+                <td class="d-sm-table-cell d-md-table-cell d-lg-none">
+                  <a [href]="'#share-'+index" data-toggle="collapse" role="button" aria-expanded="false"
+                    aria-controls="share-0">
+                    <i data-toggle="tooltip" title="Details" class="fal fa-2x fa-ellipsis-v actions__item"></i>
+                  </a>
+                </td>
+              </tr>
+              <!-- Collapse details of share link for sm display -->
+              <tr class="d-sm-table-row d-md-table-row d-lg-none share-details-row">
+                <td colspan="10">
+                  <div class="collapse" [id]="'share-'+index">
+                    <div class="share-details">
+                      <div>
+                        <span>
+                          <strong>{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_HEADERS.UPDATED'
+                            | translate}}: </strong>
+                          {{ share.ctime | amDateFormat:'YYYY-MM-DD HH:mm:ss' }}
+                        </span>
+                      </div>
+                      <div>
+                        <span>
+                          <strong>{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_HEADERS.SIZE'
+                            | translate}}: </strong>
+                          --
+                        </span>
+                      </div>
+
+                      <div>
+                        <span>
+                          <strong>{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_HEADERS.SHARE_TO' | translate}}:
+                          </strong>
+                          <span *ngIf="share.room_share_type==='SHARED_TO_USER'">{{ share.share_to }}</span>
+                          <span *ngIf="share.room_share_type==='SHARED_TO_GROUP'">Group - {{ share.share_to }}</span>
+                        </span>
+                      </div>
+
+                      <div>
+                        <span>
+                          <strong>{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_HEADERS.SHARE_OWNER'
+                            | translate}}: </strong>
+                          {{ share.room_owner }}
+                        </span>
+                      </div>
+                      <div>
+                        <span>
+                          <strong>{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_HEADERS.PERMISSION'
+                            | translate}}: </strong>
+                        </span>
+                        --
+                      </div>
+                      <div>
+                        <span>
+                          <strong>{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_HEADERS.VISIT_COUNT'
+                            | translate}}: </strong>
+                          --
+                        </span>
+                      </div>
+                      <div>
+                        <span>
+                          <strong>{{'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TABLE_HEADERS.EXPIRED'
+                            | translate}}: </strong>
+                          --
+                        </span>
+                      </div>
+                      <div class="actions">
+                        <i data-toggle="tooltip"
+                          [title]="'ADMIN.PUBLIC_SHARES.LIST_PUBLIC_SHARE_LINKS.TOOLTIPS.REMOVE_SHARE_LINK' | translate"
+                          class="fal fa-lg fa-trash-alt actions__item"
+                          (click)="openInternalShareRemoveModal(share)"></i>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </ng-container>
+          </ng-container>
+        </tbody>
+      </table>
+    </ng-container>
+
+    <app-processing *ngIf="isProcessing"></app-processing>
+  </div>
+</div>
+
+<div class="data-table__footer">
+  <div class="wrapper__footer">
+    <!-- <pagination [itemsPerPage]="pagination.itemsPerPage" [boundaryLinks]="true" [maxSize]="maxSize" [totalItems]="length"
+      (pageChanged)="pageChanged($event)"></pagination> -->
+    <pagination *ngIf="config.paging && shareListForDisplay.length > 0" [(ngModel)]="pagination.page"
+      [itemsPerPage]="pagination.itemsPerPage" [boundaryLinks]="true" [maxSize]="maxSize" [totalItems]="length"
+      (pageChanged)="pageChanged($event)" (numPages)="numPages = $event"></pagination>
+  </div>
+</div>

@@ -1,0 +1,75 @@
+<div *ngIf="!isPageNotFound">
+  <app-share-link-audit *ngIf="hasAudit" [token]="token" [typeShareLink]="'u/d'" (sendDataAuditSuccess)="receiveDataAuditSuccess($event)"></app-share-link-audit>
+  <app-password-share-link *ngIf="hasPasswordProtected" [token]="token" [type]="'u/d'" (sendDataPassProtectedSuccess)="receiveDataPassProtectedSuccess($event)"></app-password-share-link>
+
+  <main *ngIf="(!hasAudit && dataShareUploadLink) || (!hasPasswordProtected && dataShareUploadLink)" class="main"
+    [attr.data-ma-theme]="maTheme">
+    <app-secondary-header></app-secondary-header>
+    <section class="content content--full">
+      <div class="title-upload">
+        <span class="title__header" [innerHTML]="'SHARE_LINK.UPLOAD_DIRECTORY.TITLE_PREFIX' | translate"></span>
+        <span class="color-folder">{{ dataShareUploadLink.dir_name }}</span>
+      </div>
+      <div class="content-share-by">
+        <span class="share__by" [innerHTML]="'SHARE_LINK.SHARE_BY' | translate"></span>:
+        <span class="user-name">{{ dataShareUploadLink.shared_by.user_name }}</span>
+        <!-- <img class="user__img" *ngIf="dataShareUploadLink.shared_by.avatar_url === 'http://localhost:8000/media/avatars/default.png'; else imageAvatar"
+            src="../assets/images/user_default.png" alt="dataShareUploadLink.shared_by.user_name"> -->
+      </div>
+
+      <div class="card">
+        <div class="center-dropzone">
+          <dropzone [config]="configShareUploadLink" [message]="'SHARE_LINK.UPLOAD_DIRECTORY.DROPZONE_NOTE' | translate"
+            (addedfile)="onAddedfile($event)" (queuecomplete)="onQueueComplete($event)" (complete)="onComplete($event)">
+          </dropzone>
+          <button type="button" class="btn btn-success btn--icon-text waves-effect pull-right" (click)="upload()">
+            <span [innerHTML]="'BUTTONS.UPLOAD' | translate"></span>
+          </button>
+        </div>
+
+        <div *ngIf="processedFiles.length > 0" class="card-block">
+          <table class="table table-sm table-hover">
+            <thead>
+              <tr>
+                <th class="sortable" style="width: 20%">
+                  {{ 'ADMIN.FOLDERS.ALL.TABLE.NAME' | translate}}
+                </th>
+                <th class="sortable" style="width: 20%">
+                  {{ 'ADMIN.FOLDERS.ALL.TABLE.SIZE'| translate}}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container *ngFor="let file of processedFiles; let index=index">
+                <tr (mouseover)="hoveredIndex=index" (mouseleave)="hoveredIndex=-1">
+                  <td class="d-none d-lg-table-cell">
+                    <div class="vertical-items">
+                      <div class="item-color-hover row-icon center-img icon-file">
+                        <a>
+                          <img *ngIf="file.dataURL" class="file-icon"
+                            src="{{ file.dataURL }}">
+                          <div *ngIf="!file.dataURL">
+                            <i class="{{ file.name | customFileIcon }}" id="icon--listview"></i>
+                          </div>
+                        </a>
+                      </div>
+                      <div class="name" data-toggle="tooltip" title="{{ file.name }}">
+                        <a>{{ file.name }}</a>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="d-none d-lg-table-cell">{{ file.size | customFileSize }} </td>
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+  <app-footer></app-footer>
+</div>
+
+<app-page-not-found *ngIf="isPageNotFound"></app-page-not-found>

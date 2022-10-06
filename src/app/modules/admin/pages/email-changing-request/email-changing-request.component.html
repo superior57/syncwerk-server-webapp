@@ -1,0 +1,95 @@
+<header class="content__title">
+  <h1 [innerHTML]="'ADMIN.EMAIL_CHANGES.TITLE' | translate"></h1>
+  <small [innerHTML]="'ADMIN.EMAIL_CHANGES.SUBTITLE' | translate"></small>
+</header>
+
+<div class="card">
+  <div class="card-block">
+    <div class="data-table__header d-flex justify-content-betwwen fl--custom">
+      <div class="form-group data-table__filter">
+        <input [placeholder]="'SEARCHS.ALL_COLUMNS' | translate" class="form-control"
+          (keyup)="onSearchFilterChange($event)" />
+        <i class="form-group__bar"></i>
+      </div>
+      <div class="row-selector">
+        <app-row-selector (changed)="onPerPageChanged($event)"></app-row-selector>
+      </div>
+    </div>
+
+    <ng-container *ngIf="!isProcessing">
+      <table class="table table-hover table-sm">
+        <thead>
+          <tr>
+            <th width="20%" class="sortable" (click)="triggerSort('user_id')">
+              {{'ADMIN.EMAIL_CHANGES.LIST_REQUEST.TABLE_HEADERS.REQUEST_OWNER' | translate}}
+              <ng-container *ngIf="searchSetting.orderBy==='user_id'">
+                <i *ngIf="searchSetting.orderType==='asc'" class="fal fa-sort-amount-up sort-icon d-none d-lg-table-cell"></i>
+                <i *ngIf="searchSetting.orderType==='desc'" class="fal fa-sort-amount-down sort-icon d-none d-lg-table-cell"></i>
+              </ng-container>
+            </th>
+            <th width="25%" class="sortable" (click)="triggerSort('new_email')">
+              {{'ADMIN.EMAIL_CHANGES.LIST_REQUEST.TABLE_HEADERS.NEW_EMAIL' | translate}}
+              <ng-container *ngIf="searchSetting.orderBy==='new_email'">
+                <i *ngIf="searchSetting.orderType==='asc'" class="fal fa-sort-amount-up sort-icon d-none d-lg-table-cell"></i>
+                <i *ngIf="searchSetting.orderType==='desc'" class="fal fa-sort-amount-down sort-icon d-none d-lg-table-cell"></i>
+              </ng-container>
+            </th>
+            <th width="20%" class="sortable" (click)="triggerSort('created_at')">
+              {{'ADMIN.EMAIL_CHANGES.LIST_REQUEST.TABLE_HEADERS.CREATED_AT' | translate}}
+              <ng-container *ngIf="searchSetting.orderBy==='created_at'">
+                <i *ngIf="searchSetting.orderType==='asc'" class="fal fa-sort-amount-up sort-icon d-none d-lg-table-cell"></i>
+                <i *ngIf="searchSetting.orderType==='desc'" class="fal fa-sort-amount-down sort-icon d-none d-lg-table-cell"></i>
+              </ng-container>
+            </th>
+            <th width="25%">{{'ADMIN.EMAIL_CHANGES.LIST_REQUEST.TABLE_HEADERS.STATUS' | translate}}</th>
+            <th width="10%"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let request of emailChangeRequests.list; let index=index" (mouseover)="hoveredIndex=index">
+            <td>{{ request.user_id }}</td>
+            <td>{{ request.new_email }}</td>
+            <td>{{ request.created_date | amDateFormat:'YYYY-MM-DD HH:mm:ss' }}</td>
+            <td>
+              <ng-container *ngIf="!request.request_completed">
+                <ng-container *ngIf="!request.new_email_confirmed">
+                  <span class="email-change-request-status__waiting">
+                      {{ 'ADMIN.EMAIL_CHANGES.LIST_REQUEST.STATUS.WAIT_FOR_CONFIRMATION' | translate }}
+                  </span>
+                </ng-container>
+                <ng-container *ngIf="request.new_email_confirmed">
+                  <button [disabled]="isEmailChangeInProcess" class="btn btn-success btn-change-email"
+                    (click)="triggerEmailChange(request)">
+                    <i class="fal fa-circle-notch fa-spin" *ngIf="request.isChanging"></i>
+                    <span *ngIf="!request.isChanging">{{ 'ADMIN.EMAIL_CHANGES.LIST_REQUEST.BUTTONS.CHANGE_EMAIL' | translate }}</span>
+                  </button>
+                </ng-container>
+              </ng-container>
+              <ng-container *ngIf="request.request_completed">
+                <span class="email-change-request-status__completed">
+                    {{ 'ADMIN.EMAIL_CHANGES.LIST_REQUEST.STATUS.COMPLETED' | translate }}
+                </span>
+              </ng-container>
+            </td>
+            <td>
+              <div class="actions">
+                <i data-toggle="tooltip"
+                  [title]="'ADMIN.EMAIL_CHANGES.LIST_REQUEST.TOOLTIPS.REMOVE_REQUEST' | translate"
+                  class="fal fa-lg fa-trash-alt actions__item" (click)="openRemoveRequestConfirmation(request)"></i>
+              </div>
+              <!-- <button (click)="openRemoveRequestConfirmation(request)">Remove</button> -->
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </ng-container>
+    <app-processing *ngIf="isProcessing"></app-processing>
+  </div>
+</div>
+
+<div class="data-table__footer">
+  <div class="wrapper__footer">
+    <pagination [itemsPerPage]="searchSetting.perPage" [boundaryLinks]="true" [maxSize]="maxSize"
+      [totalItems]="emailChangeRequests.totalRequest" (pageChanged)="pageChanged($event)"></pagination>
+  </div>
+</div>

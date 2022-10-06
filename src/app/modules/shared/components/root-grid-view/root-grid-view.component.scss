@@ -1,0 +1,100 @@
+.grid-folder-lock {
+  font-size: 30px;
+  color: white;
+  margin-top: 17px;
+  margin-left: -30px;
+  position: absolute;
+  cursor: pointer;
+}
+
+.grid-menu-button {
+  align-content: right;
+  position: absolute;
+  right: 15px;
+  top: 0px;
+  z-index: 2;
+}
+
+.tb-name-grid {
+  width: 70%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0 auto;
+  padding-bottom: 1rem;
+  a {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.grid-read-only {
+  font-size: 25px;
+  color: white;
+  margin-top: 52px;
+  margin-left: -32px;
+  position: absolute;
+  cursor: pointer;
+}
+.second-lock {
+  margin-top: 26px;
+  margin-left: -32px;
+}
+
+.z-11{
+      position: absolute;
+      top: -207px;
+      z-index: 19;
+}
+
+.lightbox__item {
+// background: #f2f2f2;
+margin-bottom: 2rem;
+}
+
+.center-img{
+position: relative;
+overflow: hidden;
+width: 100%;
+// height: 8rem;
+display: flex;
+justify-content: center;
+align-items: center;
+margin-bottom: 10px;
+cursor: pointer;
+}
+.lightbox__item.photos__item.text-center:hover {
+background: #f3f3f3;
+}
+
+@media(min-width: 1560px) and (max-width: 2880px) {
+.col-xl-3 {
+  flex: 0 0 16.66667%;
+  max-width: 16.66667%;
+}
+}
+
+@media(min-width: 2881px) {
+.col-xl-3 {
+  flex: 0 0 8.33333%;
+  max-width: 8.33333%;
+}
+}
+
+a.dropdown-item {
+  background: #fff;
+}
+
+.btn--custom {
+  background: #0067b3;
+  right:5px;
+  i.fal{
+    color: #fff;
+  }
+  &:hover{
+    background: #0067b3;
+  }
+}
+i.btn--custom{
+  color: #fff;
+}

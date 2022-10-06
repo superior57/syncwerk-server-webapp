@@ -1,0 +1,8 @@
+<div class="error">
+  <div class="error__inner">
+    <h1 style="color:black">{{errorCode}}</h1>
+    <h2>{{errorMessage}}</h2>
+    <a *ngIf="errorCode !== '502'" (click)="returnToHome()">{{ 'SERVER.BACK_TO_HOMEPAGE' | translate }}</a>
+    <a *ngIf="errorCode === '502'" (click)="returnToHome()">{{ returnToHomeMessage }}</a>
+  </div>
+</div>

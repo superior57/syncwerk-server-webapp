@@ -1,0 +1,9 @@
+<div *ngIf="showFull">
+  <select2 [data]="perPageSelectDataNotAll" [options]="perPageSelectOptions"
+  [value]="perPage" (valueChanged)="onValueChanged($event)"></select2>
+</div>
+
+<div *ngIf="!showFull">
+  <select2 [data]=" typeViewMode === true ? perPageSelectData : perPageSelectDataListView" [options]="perPageSelectOptions"
+  [value]="perPage" (valueChanged)="onValueChanged($event)"></select2>
+</div>

@@ -1,0 +1,65 @@
+.action-link {
+  color: #0067b3!important;
+  &:hover {
+    text-decoration: underline!important
+  }
+}
+
+.clear-space {
+  height: 1rem;
+}
+
+.tb-email {
+  font-weight: bold;
+  color: #0067b3;
+  &:hover {
+    //text-decoration: underline;
+  }
+}
+
+.dropdown-title .actions {
+  top: 0;
+  right: 0;
+}
+
+.action {
+  opacity: 0;
+  &.show {
+    opacity: 1;
+  }
+}
+
+.data-table {
+  margin-top: 30px;
+}
+
+td {
+  height: 65px;
+  vertical-align: middle;
+}
+
+.data-table__filter {
+  margin-right: 25px;
+  width: 100%;
+  max-width: 100%;
+}
+
+:host ::ng-deep {
+  .ng2-tag-input__text-input {
+    width: 200%;
+  }
+  pagination ul.pagination {
+    justify-content: flex-end;
+  }
+}
+
+.data-table_buttons {
+  margin: 10px 0 0 30px;
+  &.w-80px {
+    width: 80px;
+  }
+}
+
+.data-table__footer {
+  padding: 0 2.1rem;
+}

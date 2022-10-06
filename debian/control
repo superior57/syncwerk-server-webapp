@@ -1,0 +1,14 @@
+Source: syncwerk-server-webapp
+Section: utils
+Priority: optional
+Maintainer: ${MAINTAINER}
+Build-Depends: debhelper (>= 9)
+Standards-Version: ${DEBSTDVER}
+Homepage: https://www.syncwerk.com
+
+Package: syncwerk-server-webapp
+Architecture: any
+Depends: syncwerk-server (>=${FULLBUILDVER})
+Description: Syncwerk Web-App
+ Installs Syncwerk Web-App (Angular)
+

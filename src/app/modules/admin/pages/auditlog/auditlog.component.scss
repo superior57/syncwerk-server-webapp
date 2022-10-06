@@ -1,0 +1,402 @@
+.action-link {
+    &:hover {
+      text-decoration: underline!important
+    }
+  }
+  
+.clear-space {
+    height: 1rem;
+}
+    
+.dropdown-title .actions {
+    top: 0;
+    right: 0;
+}
+  
+.action {
+    opacity: 0;
+    display: none;
+    &.show {
+      opacity: 1;
+      display: block;
+    }
+}
+  
+.action.wrap__ico {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+  
+.ico--size {
+    font-size: 18px;
+    margin: 2px;
+}
+  
+td {
+  vertical-align: middle;
+}
+  
+.data-table {
+    margin-top: 30px;
+}
+  
+.data-table__filter {
+    margin-right: 25px;
+    width: calc(100% - 273px);
+    max-width: 70%;
+    margin-top: 4px;
+}
+  
+:host ::ng-deep {
+    pagination ul.pagination {
+      justify-content: flex-end;
+    }
+}
+  
+.data-table__footer {
+    padding: 0 2.1rem;
+}
+  
+.data-table_buttons {
+    width: auto;
+}
+  
+.push-right {
+    flex: 1;
+}
+  
+.btn {
+    margin-right: 5px;
+}
+  
+.form-group {
+    align-self: center;
+}
+  
+.count-items-checked {
+    font-weight: bold;
+    margin-right: 1rem;
+    color: #9E9E9E;
+}
+  
+.btn--custom {
+    width: auto;
+    height: 30px;
+    margin-top: 4px;
+    box-sizing: border-box;
+    i.actions__item.zmdi.zmdi-account-add {
+        color: #292b2c;
+        margin: -4px 0px 0px 0px;
+    }
+}
+  
+i.far.fa-crown {
+    margin: 7px 0px 0px 0px;
+    font-size: 18px;
+}
+
+i.fas.fa-crown{
+    margin: 7px 0px 0px 0px;
+    font-size: 18px;
+    color: #0067b3;
+}
+.ct--ico {
+    font-size: 18px;
+    margin: 1px;
+}
+i.actions__item.fas.fa-trash-alt {
+    line-height: 31px;
+}
+.sort-icon{
+    float: right;
+    color: #000;
+}
+
+.group-btn {
+  margin-top: 20px;
+}
+
+.btn-filter {
+  width: 100px;
+  margin-bottom: 20px;
+  text-align: left;
+  .fa {
+    float: right;
+  }
+}
+
+.btn-search {
+  background-color: #08f250;
+}
+
+.search-audit {
+  .form-search{
+    label {
+      justify-content: flex-start;
+    }
+  }
+    /**
+  * Make the field a flex-container, reverse the order so label is on top.
+  */
+  
+  .field {
+    display: flex;
+    flex-flow: column-reverse;
+    margin-bottom: 1em;
+    width: 25%;
+    input {
+      width: 90%;
+    }
+  }
+
+  .field-dropdown {
+    width: 25%;
+    .custom-select {
+      width: 95%;
+    }
+  }
+
+  .custom-field {
+    margin-bottom: 0;
+    padding-top: 5px;
+  }
+  .custom-field-start-date {
+    width: 12%;
+  }
+
+  .custom-field-end-date {
+    width: 13%;
+  }
+  
+  input {
+    font-size: 16px;
+    border: 0;
+    border-bottom: 1px solid #ccc;
+    font-family: inherit;
+    -webkit-appearance: none;
+    border-radius: 0;
+    padding: 3px;
+    cursor: text;
+  }
+
+  input:focus {
+    outline: 0;
+    border-bottom: 1px solid #666;
+  }
+
+  label {
+    font-size: 8px;
+  }
+  /**
+  * Translate down and scale the label up to cover the placeholder,
+  * when following an input (with placeholder-shown support).
+  * Also make sure the label is only on one row, at max 2/3rds of the
+  * field—to make sure it scales properly and doesn't wrap.
+  */
+  input:placeholder-shown + label {
+    cursor: text;
+    max-width: 66.66%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transform-origin: left bottom;
+    transform: translate(0, 2.125rem) scale(1.5);
+  }
+  /**
+  * By default, the placeholder should be transparent. Also, it should 
+  * inherit the transition.
+  */
+  ::-webkit-input-placeholder {
+    opacity: 0;
+    transition: inherit;
+  }
+  /**
+  * Show the placeholder when the input is focused.
+  */
+  input:focus::-webkit-input-placeholder {
+    opacity: 1;
+  }
+  /**
+  * When the element is focused, remove the label transform.
+  * Also, do this when the placeholder is _not_ shown, i.e. when 
+  * there's something in the input at all.
+  */
+  input:not(:placeholder-shown) + label,
+  input:focus + label {
+    transform: translate(0, 0) scale(1);
+    cursor: pointer;
+  }
+
+  .btn-form-search {
+    height: 40px;
+  }
+}
+
+.header-table {
+  font-size: 18px;
+}
+
+.icon-search {
+  color: white;
+}
+  .share-details-row {
+    padding: 0px;
+    td {
+      padding: 0px;
+      .share-details {
+        padding: 0.75rem 1rem;
+        border: solid 1px lightgrey;
+        text-align: left;
+        .actions {
+          margin-top: 1rem;
+          .actions__item {
+            width: auto;
+            margin-right: 10px;
+          }
+        }
+      }
+    }
+  }
+  
+  table{
+    tr{
+      th{
+        height: 70px;
+        @media (max-width: 991px) {
+          height: auto !important;
+        }
+      }
+      td{
+        height: 70px;
+        @media (max-width: 991px) {
+          height: auto !important;
+        }
+      }
+    }
+  }
+  
+  .wrapper__btn {
+    display: flex;
+    margin-right: 7px;
+    margin-top: 4px;
+    .btn--custom{
+      margin: 4px 2px;
+    }
+  
+    @media (max-width: 420px){
+      flex-wrap: wrap;
+    }
+  }
+  
+  @media (max-width:991px){
+    tr{
+      &:hover{
+        background-color: #efefef;
+      }
+      th{
+        &:first-child{
+          width: 1%;
+        }
+        &:nth-child(2){
+          text-align: left;
+        }
+        &:last-child{
+          text-align: right;
+        }
+      }
+      td{
+        &:first-child{
+          width: 1%;
+        }
+        &:nth-child(2){
+          text-align: left;
+        }
+        &:last-child{
+          text-align: right;
+        }
+      }
+    }
+  }
+  
+  i.fal.fa-2x.fa-ellipsis-v.actions__item {
+    color: #000;
+    width: 2.5rem;
+    height: 2.5rem;
+    background: #fefefe;
+    line-height: 2.5rem;
+    margin-right: 7px;
+  }
+  
+.break-word {
+  word-break: break-all;
+}
+
+@media (min-width: 992px){
+  td {
+    -ms-word-break: break-all;
+    word-break: break-all;
+    word-break: break-word;
+  }
+}
+
+  @media (max-width:500px){
+    tr{
+      th{
+        &:first-child{
+          padding-left: 0rem;
+        }
+        &:nth-child(2){
+          padding-left: 0px;
+        }
+      }
+      td{
+        &:first-child{
+          padding-left: 0rem;
+        }
+        &:nth-child(2){
+          padding-left: 0px;
+        }
+      }
+    }
+    .card-block{
+      padding: 1rem !important;
+    }
+    .custom-control{
+      padding-left: 1rem !important;
+      margin-right: 0px !important;
+    }
+  }
+  
+  @media (max-width: 768px){
+    .fl--custom{
+      flex-wrap: wrap;
+    }
+    .data-table__filter{
+      width: 100% !important;
+      max-width: 100% !important;
+      margin-right: 0px !important;
+      margin:10px 0px;
+    }
+    .row-selector {
+        position: absolute;
+        right: 15px !important;
+        top: 25px !important;
+    }
+  }
+  
+  @media (max-width: 620px){
+    .row-selector {
+        position: static;
+    }
+  }
+  
+  .row-selector {
+    margin-top: 4px;
+  }
+
+@media (min-width: 1200px) and (max-width: 1290px) {
+  .custom-card {
+    width: 1000px;
+  }
+}

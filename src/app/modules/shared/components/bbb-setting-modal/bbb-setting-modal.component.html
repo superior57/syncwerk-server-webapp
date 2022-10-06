@@ -1,0 +1,52 @@
+<div class="modal-content" id="modal-bbb-setting">
+  <div class="modal-header">
+     <h5 class="modal-title">
+      <strong>{{ groupInfo?.groupName || groupInfo?.name || tenantInfo?.name }}</strong>  {{ 'MEETING.PRIVATE_BBB_SETTING.TITLE' | translate }}
+      </h5>
+  </div>
+  <div class="tab-content">
+    <form autocomplete="off">
+      <div class="modal-body">
+         <div class="form-group" >
+            <label>{{ 'MEETING.PRIVATE_BBB_SETTING.ACTIVE_CUSTOM_SERVER' | translate }}</label>
+            <div class="toggle-switch toggle-switch--green">
+              <input  type="checkbox" class="toggle-switch__checkbox" [(ngModel)]="model.isActive" name="isActive" #isActive="ngModel">
+              <i class="toggle-switch__helper"></i>
+            </div>
+         </div>
+         <div class="form-group input" >
+              <label>{{ 'MEETING.PRIVATE_BBB_SETTING.SERVER_ADDRESS' | translate }}</label>
+              <input type="text" class="form-control"  [(ngModel)]="model.bbbServer" name="bbbServer" #bbbServer="ngModel">
+              <i class="form-group__bar"></i>
+        </div>
+
+      <div class="form-group input" >
+              <label>{{ 'MEETING.PRIVATE_BBB_SETTING.SECRET_KEY' | translate }}</label>
+              <input type="password" class="form-control"  [(ngModel)]="model.bbbSecret" name="bbbSecret" #bbbSecret="ngModel">
+              <i class="form-group__bar"></i>
+            </div>
+
+      </div>
+    </form>
+     <div class="modal-footer">
+        <button type="button" class="btn btn-success btn--icon-text waves-effect" (click)="updateBBBSetting()">{{ 'BUTTONS.SAVE_CHANGE' | translate }}</button>
+
+        <button (click)="testBBBConnection()"
+              class="btn btn-success btn-test-connection">
+              <span *ngIf="isTestingBBBConnection">
+                <i class="fal fa-circle-notch fa-spin"></i>
+              </span>
+              <span *ngIf="!isTestingBBBConnection">
+                {{ 'MEETING.PRIVATE_BBB_SETTING.TEST_CONNECTION' | translate }}
+              </span>
+            </button>
+
+         <button type="button" class="btn btn-secondary btn--icon-text waves-effect"  data-dismiss="modal" aria-label="Close" (click)="closeModal()">{{
+            'BUTTONS.CLOSE' | translate }}</button>
+
+      </div>
+
+
+
+  </div>
+</div>

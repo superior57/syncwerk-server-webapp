@@ -1,0 +1,189 @@
+.tb-permission {
+  padding-left: 0;
+  width: 45%;
+}
+
+.error-msg {
+	margin-left: 20px;
+  margin-top: -30px;
+}
+
+tag-input {
+  margin-top: 2px;
+}
+
+tag-input tag-input-dropdown ::ng-deep ng2-dropdown div.ng2-dropdown-menu {
+  top: inherit !important;
+  left: inherit !important;
+  .user-avt {
+    // float: left;
+    // margin-right: 10px;
+    margin-top: -5px;
+    img {
+      width: 32px;
+      height: 32px;
+      border-radius: 50px;
+    }
+  }
+  .user-detail {
+    height: 2rem;
+    margin-top: -10px;
+  }
+}
+.ng2-tag-input {
+  padding: 0.25rem 0 0.25rem 11px;
+}
+
+button.btn.btn-info.waves-effect {
+  margin-top: 4px;
+  width: 100px;
+}
+button.btn.btn-danger.btn--icon-text.waves-effect{
+  width: 100px;
+  margin-top:0px;
+}
+
+span.name--custom {
+  margin-left: 8px;
+}
+th.table__th--custom {
+  padding-left: 8px;
+}
+table.tb--custom{
+  tr{
+    td{
+      padding: 1rem 1.5rem 13px 0px;
+    }
+  }
+}
+
+@media (max-width:991px){
+    button.btn.btn-info.waves-effect[_ngcontent-c29] {
+      margin-top: 11px;
+      width: 100px;
+      margin-left: 54px;
+  }
+}
+
+@media (min-width:991px){
+  button.btn.btn-info.waves-effect[_ngcontent-c29] {
+      margin-top: 4px;
+      width: 100px;
+      position: absolute;
+      right: -123%;
+      top: -32px;
+  }
+}
+
+@media (max-width:476px){
+
+  :host ::ng-deep .ng2-tag-input {
+    width: calc(100vw - 18%) !important;
+  }
+
+  :host ::ng-deep .ng2-tag-input__text-input {
+    width: 100%;
+  }
+
+  .row--custom {
+      position: relative;
+      width: 93vw;
+      margin: 0px 2vw;
+  }
+  .card-share {
+      margin: 60px 18px;
+  }
+  p.modal__description {
+      width: 130%;
+  }
+
+  button.btn.btn-info.waves-effect {
+    margin-left: 62px;
+  }
+
+  table{
+    tr{
+      th{
+        &:first-child{
+          position: relative;
+          top: -16px;
+        }
+        &:nth-child(2){
+          position: relative;
+          top: 77px;
+          left: -58px;
+        }
+      }
+      td{
+        &:first-child{
+          position: relative;
+          top: -25px
+        }
+        &:nth-child(2){
+          position: relative;
+          top: 58px;
+          left: -89px;
+        }
+      }
+    }
+  }
+}
+
+.card-share{
+  position: relative;
+}
+
+button.btn.btn-success.btn--custom {
+  margin: 4px 0px 0px 8px;
+  width: 100px;
+}
+
+.wrapper__pemission {
+  margin-top: 16px;
+}
+
+p.p__per {
+  margin: 11px 0px 0px 0px;
+  font-weight: bolder;
+}
+
+.clearfix {
+  clear: both;
+  margin: 60px 0px;
+}
+
+:host ::ng-deep .ng2-tag-input__text-input {
+  padding: 0px !important;
+}
+
+.fl--custom{
+  flex-wrap: wrap !important;
+  margin: 16px 0px;
+}
+
+.gr__title__wrapper {
+  margin-right: 10px;
+  width: calc(100vw - 81vw);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-bottom: 10px;
+  @media (max-width:991px) {
+    width: calc(100vw - 65vw);
+  }
+  @media (max-width:700px) {
+    width: calc(100vw - 50vw);
+  }
+  @media (max-width:500px) {
+    width: calc(100vw - 35vw);
+  }
+  @media (max-width:400px) {
+    width: calc(100vw - 32vw);
+  }
+}
+.gr__per__wrapper {
+  margin: -6px 26px 6px 0px;
+}
+.gr__btn__wrapper {
+  margin: -2px 0px 0px 0px;
+}

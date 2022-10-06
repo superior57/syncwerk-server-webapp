@@ -1,0 +1,53 @@
+.folder-icon {
+  font-size: 35px;
+  float: left;
+  margin-top: -5px;
+  padding-right: 15px;
+}
+
+.file-icon {
+  margin-top: -5px;
+  max-width: 29px;
+  max-height: 30px;
+}
+
+.tb-name {
+  max-width: 0;
+  .name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.view-icon {
+  font-size: 2rem;
+}
+
+.copy-icon {
+  font-size: 1.33333333em;
+}
+
+td {
+  vertical-align: middle;
+}
+
+::ng-deep pagination ul.pagination {
+  justify-content: center;
+}
+
+.data-table__filter {
+  margin-right: 30px;
+  width: 100%;
+  max-width: 100%;
+}
+
+.data-table__footer {
+  position: absolute;
+  right: 0;
+  margin-top: 3.7rem;
+}
+
+.row-selector {
+  min-width: 13rem;
+}

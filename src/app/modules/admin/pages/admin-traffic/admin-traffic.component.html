@@ -1,0 +1,170 @@
+<header class="content__title">
+  <h1 [innerHTML]="'ADMIN.TRAFFIC.TITLE.TRAFFIC_HEADER' | translate"></h1>
+  <small [innerHTML]="'ADMIN.TRAFFIC.TITLE.TRAFFIC_HEADER_SUBTITLE' | translate"></small>
+</header>
+<div class="card">
+  <div class="card-block">
+    <div *ngIf="!isProcessing">
+      <div class="data-table__header d-flex justify-content-between fl--custom">
+        <div class="month d-flex">
+          <span class="month__title">{{ 'ADMIN.TRAFFIC.TITLE.TRAFFIC_MONTH' | translate }}</span>
+          <input type="text" [placeholder]="getDateTime" class="masked" (keyup)="onSearchDataByYearAndMonth($event)" />
+        </div>
+        <div class="form-group data-table__filter">
+          <input [placeholder]="'SEARCHS.ALL_COLUMNS' | translate" class="form-control"
+            (keyup)="onSearchFilterChange($event)" />
+          <i class="form-group__bar"></i>
+        </div>
+        <div class="row-selector">
+          <app-row-selector (changed)="onPerPageChanged($event)"></app-row-selector>
+        </div>
+      </div>
+
+      <div class="data-table">
+        <table class="table table-hover mb-0">
+          <thead>
+            <tr>
+              <th (click)="triggerSort('user_email')" width="20%">
+                {{ 'ADMIN.TRAFFIC.TITLE.TRAFFIC_USER' | translate }}
+                <ng-container *ngIf="sortConfig.column==='user_email'" class="d-none d-lg-table-cell">
+                  <i *ngIf="sortConfig.mode==='asc'" class="fal fa-sort-amount-up sort-icon d-none d-lg-table-cell"></i>
+                  <i *ngIf="sortConfig.mode==='desc'"
+                    class="fal fa-sort-amount-down sort-icon d-none d-lg-table-cell"></i>
+                </ng-container>
+              </th>
+              <th (click)="triggerSort('sync_upload')" width="12%" class="d-none d-lg-table-cell">
+                {{ 'ADMIN.TRAFFIC.TITLE.TRAFFIC_SYNC_UPLOAD' | translate }}
+                <ng-container *ngIf="sortConfig.column==='sync_upload'">
+                  <i *ngIf="sortConfig.mode==='asc'" class="fal fa-sort-amount-up sort-icon d-none d-lg-table-cell"></i>
+                  <i *ngIf="sortConfig.mode==='desc'"
+                    class="fal fa-sort-amount-down sort-icon d-none d-lg-table-cell"></i>
+                </ng-container>
+              </th>
+              <th (click)="triggerSort('sync_donwload')" width="12%" class="d-none d-lg-table-cell">
+                {{ 'ADMIN.TRAFFIC.TITLE.TRAFFIC_SYNC_DOWNLOAD' | translate }}
+                <ng-container *ngIf="sortConfig.column==='sync_donwload'">
+                  <i *ngIf="sortConfig.mode==='asc'" class="fal fa-sort-amount-up sort-icon d-none d-lg-table-cell"></i>
+                  <i *ngIf="sortConfig.mode==='desc'"
+                    class="fal fa-sort-amount-down sort-icon d-none d-lg-table-cell"></i>
+                </ng-container>
+              </th>
+              <th (click)="triggerSort('web_upload')" width="10%" class="d-none d-lg-table-cell">
+                {{ 'ADMIN.TRAFFIC.TITLE.TRAFFIC_WEB_UPLOAD' | translate }}
+                <ng-container *ngIf="sortConfig.column==='web_upload'">
+                  <i *ngIf="sortConfig.mode==='asc'" class="fal fa-sort-amount-up sort-icon d-none d-lg-table-cell"></i>
+                  <i *ngIf="sortConfig.mode==='desc'"
+                    class="fal fa-sort-amount-down sort-icon d-none d-lg-table-cell"></i>
+                </ng-container>
+              </th>
+              <th (click)="triggerSort('web_download')" width="12%" class="d-none d-lg-table-cell">
+                {{ 'ADMIN.TRAFFIC.TITLE.TRAFFIC_WEB_DOWNLOAD' | translate }}
+                <ng-container *ngIf="sortConfig.column==='web_download'">
+                  <i *ngIf="sortConfig.mode==='asc'" class="fal fa-sort-amount-up sort-icon d-none d-lg-table-cell"></i>
+                  <i *ngIf="sortConfig.mode==='desc'"
+                    class="fal fa-sort-amount-down sort-icon d-none d-lg-table-cell"></i>
+                </ng-container>
+              </th>
+              <th (click)="triggerSort('share_link_upload')" width="15%" class="d-none d-lg-table-cell">
+                {{ 'ADMIN.TRAFFIC.TITLE.TRAFFIC_SHARELINK_UPLOAD' | translate }}
+                <ng-container *ngIf="sortConfig.column==='share_link_upload'">
+                  <i *ngIf="sortConfig.mode==='asc'" class="fal fa-sort-amount-up sort-icon d-none d-lg-table-cell"></i>
+                  <i *ngIf="sortConfig.mode==='desc'"
+                    class="fal fa-sort-amount-down sort-icon d-none d-lg-table-cell"></i>
+                </ng-container>
+              </th>
+              <th (click)="triggerSort('share_link_download')" width="15%" class="d-none d-lg-table-cell">
+                {{ 'ADMIN.TRAFFIC.TITLE.TRAFFIC_SHARELINK_DOWNLOAD' | translate }}
+                <ng-container *ngIf="sortConfig.column==='share_link_download'">
+                  <i *ngIf="sortConfig.mode==='asc'" class="fal fa-sort-amount-up sort-icon d-none d-lg-table-cell"></i>
+                  <i *ngIf="sortConfig.mode==='desc'"
+                    class="fal fa-sort-amount-down sort-icon d-none d-lg-table-cell"></i>
+                </ng-container>
+              </th>
+              <th width="5%" class="d-sm-table-cell d-md-table-cell d-lg-none">{{'ADMIN.GROUPS.LIST_GROUPS.TABLE_HEADERS.ACTIONS'
+                | translate }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let items of listDataTrafficDisplay, let index = index">
+              <tr>
+                <td>
+                  <span [routerLink]="['/admin', 'users', 'info', items.user_email]"
+                    class="text--custom cursor-pointer">
+                    {{ items.user_email }}
+                  </span>
+                </td>
+                <td class="d-none d-lg-table-cell">{{ items.sync_upload | customFileSize}}</td>
+                <td class="d-none d-lg-table-cell">{{ items.sync_donwload | customFileSize}}</td>
+                <td class="d-none d-lg-table-cell">{{ items.web_upload | customFileSize}}</td>
+                <td class="d-none d-lg-table-cell">{{ items.web_download | customFileSize}}</td>
+                <td class="d-none d-lg-table-cell">{{ items.share_link_upload | customFileSize}}</td>
+                <td class="d-none d-lg-table-cell">{{ items.share_link_download | customFileSize}}</td>
+                <td class="d-sm-table-cell d-md-table-cell d-lg-none">
+                  <a [href]="'#traffic-'+index" data-toggle="collapse" role="button" aria-expanded="false"
+                    aria-controls="share-0">
+                    <i data-toggle="tooltip" title="Details" class="fal fa-2x fa-ellipsis-v actions__item"></i>
+                  </a>
+                </td>
+              </tr>
+
+              <!-- Collapse details of share link for sm display -->
+              <tr class="d-sm-table-row d-md-table-row d-lg-none share-details-row">
+                <td colspan="10">
+                  <div class="collapse" [id]="'traffic-'+index">
+                    <div class="share-details">
+                      <div>
+                        <span>
+                          <strong>{{ 'ADMIN.TRAFFIC.TITLE.TRAFFIC_SYNC_UPLOAD' | translate }}: </strong>
+                          {{ items.sync_upload | customFileSize}} </span>
+
+                      </div>
+                      <div>
+                        <span>
+                          <strong>{{ 'ADMIN.TRAFFIC.TITLE.TRAFFIC_SYNC_DOWNLOAD' | translate }}: </strong>
+                          {{ items.sync_donwload | customFileSize}} </span>
+                      </div>
+                      <div>
+                        <span>
+                          <strong>{{ 'ADMIN.TRAFFIC.TITLE.TRAFFIC_WEB_UPLOAD' | translate }}: </strong>
+                          {{ items.web_upload | customFileSize}} </span>
+                      </div>
+                      <div>
+                        <span>
+                          <strong>{{ 'ADMIN.TRAFFIC.TITLE.TRAFFIC_WEB_DOWNLOAD' | translate }}: </strong>
+                          {{ items.web_download | customFileSize}} </span>
+                      </div>
+                      <div>
+                        <span>
+                          <strong>{{ 'ADMIN.TRAFFIC.TITLE.TRAFFIC_SHARELINK_UPLOAD' | translate }}: </strong>
+                          {{ items.share_link_upload | customFileSize}} </span>
+                      </div>
+                      <div>
+                        <span>
+                          <strong>{{ 'ADMIN.TRAFFIC.TITLE.TRAFFIC_SHARELINK_DOWNLOAD' | translate }}: </strong>
+                          {{ items.share_link_download | customFileSize}} </span>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+
+      </div>
+      <!-- <app-empty-item *ngIf="listDeviceDisplay.length === 0 && this.listDevice.devices.length === 0" [messageTitle]="'ADMIN.DEVICES.EMPTY_ITEM.MOBILES.TITLE' | translate: params"></app-empty-item>
+      <app-empty-item *ngIf="listDeviceDisplay.length === 0 && this.listDevice.devices.length !==0 " [messageTitle]="'ADMIN.DEVICES.EMPTY_ITEM.MOBILES.DEVICE_NOT_FOUND' | translate: params"
+        [messageSub]="'ADMIN.DEVICES.EMPTY_ITEM.MOBILES.DEVICE_SUB_NOT_FOUND' | translate: params"></app-empty-item> -->
+
+    </div>
+
+    <app-processing *ngIf="isProcessing"></app-processing>
+  </div>
+</div>
+
+<div class="data-table__footer">
+  <div class="wrapper__footer">
+    <pagination [itemsPerPage]="pagination.itemsPerPage" [boundaryLinks]="true" [maxSize]="maxSize"
+      [totalItems]="pagination.totalResult" (pageChanged)="pageChanged($event)"></pagination>
+  </div>
+</div>

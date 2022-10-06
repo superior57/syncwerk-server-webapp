@@ -1,0 +1,72 @@
+<!-- <button data-placement="bottom" data-toggle="tooltip" [title]="'LIST_GROUPS.DISCUSSION' | translate" data-ma-action="aside-open"
+  data-ma-target="#group-discussions" class="btn btn-info fal fa-comments-alt" (click)="getGroupDiscussions()"></button> -->
+
+<a data-placement="bottom" data-toggle="tooltip" [title]="'LIST_GROUPS.DISCUSSION' | translate" data-ma-action="aside-open"
+  data-ma-target="#group-discussions" class="btn btn-secondary fal fa-comments-alt ico--custom" (click)="getGroupDiscussions()"></a>
+
+<aside id="group-discussions" class="chat">
+  <div class="messages">
+    <div class="messages__body">
+      <div class="messages__header">
+        <div class="toolbar toolbar--inner mb-0">
+          <div class="toolbar__label">
+            <span [innerHTML]="'LIST_GROUPS.DISCUSSION' | translate"></span>
+          </div>
+        </div>
+      </div>
+      <div #scrollDisccusions class="messages__content scrollbar-macosx">
+        <div class="todo">
+          <div class="listview listview--hover">
+            <a *ngIf="groupDiscussions.numberOfPages !== 0 && groupDiscussions.currentPage !== groupDiscussions.numberOfPages"
+              class="view-more" (click)="getGroupDiscussions(groupDiscussions.currentPage + 1)">
+              <span [innerHTML]="'LIST_GROUPS.OTHERS.MORE' | translate"></span>...</a>
+
+            <!-- Start List Messages -->
+            <div *ngFor="let message of groupDiscussions.messages; let index=index" class="listview__item" (mouseover)="hoveredIndex=index"
+              (mouseleave)="hoveredIndex=-1">
+              <label class="custom-control todo__item">
+                <a href="/user/profile/{{message.user_email}}">
+                  <span class="custom-control--char__helper">
+                    <img [src]="message.avatar_url" class="messages__avatar" alt="">
+                  </span>
+                </a>
+                <div class="todo__info">
+                  <small>
+                    <strong>{{ message.user_name }}</strong>
+                  </small>
+                  <span>{{ message.content }}</span>
+                  <small>
+                    <i class="zmdi zmdi-time"></i> {{ message.created_at | amTimeAgo }} </small>
+                </div>
+              </label>
+              <div *ngIf="hoveredIndex===index" class="listview__actions">
+                <div class="dropdown actions__item">
+                  <i class="fal fa-ellipsis-v" data-toggle="dropdown"></i>
+                  <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item dropdown-item--icon" (click)="replyDiscussion(message)">
+                      <i class="fal fa-reply fa-hc-lg"></i>
+                      <span [innerHTML]="'BUTTONS.REPLY' | translate"></span>
+                    </a>
+                    <a *ngIf="currentLoginUser.email === message.user_email || currentLoginUser.email === groupInfo.owner.email || groupInfo.admins.indexOf(currentLoginUser.email) !== -1"
+                      class="dropdown-item dropdown-item--icon" (click)="deleteDiscussion(message, index)">
+                      <i class="fal fa-trash-alt fa-hc-lg"></i>
+                      <span [innerHTML]="'BUTTONS.DELETE' | translate"></span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- End List Messages -->
+          </div>
+        </div>
+      </div>
+      <div class="messages__reply">
+        <textarea id="commentBox" [(ngModel)]="groupDiscussions.currentDiscussionContent" class="messages__reply__text scrollbar-outer"
+          [placeholder]="'LIST_GROUPS.OTHERS.ADD_DISCUSSION' | translate" (keyup.enter)="addGroupDiscussion()"></textarea>
+        <button class="btn btn-success btn--icon messages__reply__btn waves-effect" (click)="addGroupDiscussion()">
+          <i class="zmdi zmdi-mail-send"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</aside>

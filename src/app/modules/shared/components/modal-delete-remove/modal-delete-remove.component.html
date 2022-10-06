@@ -1,0 +1,60 @@
+<div class="modal fade" id="modal-delete-remove" tabindex="-1">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <ng-container *ngIf="typeDelete === 'Favorite'">
+          <h3 class="modal-title">
+            {{ 'MODALS.TITLES.REMOVE_FAVORITE' | translate }}
+          </h3>
+        </ng-container>
+        <ng-container *ngIf="typeDelete !== 'Favorite'">
+          <h3 class="modal-title">
+            {{ isDeleteModal ? ('MODALS.TITLES.DELETE' | translate: params) : ('MODALS.TITLES.REMOVE' | translate:
+            params) }} {{ typeDelete }}
+          </h3>
+        </ng-container>
+      </div>
+      <div class="modal-body">
+        <ng-container *ngIf="typeDelete === 'Favorite'">
+          <div [innerHTML]="'MODALS.VERIFY_QUESTIONS.REMOVE_FAVORITE' | translate:{itemName: itemName | splice_length: 15}"></div>
+        </ng-container>
+        <ng-container *ngIf="typeDelete !== 'Favorite'">
+          <div>
+            {{ 'MODALS.VERIFY_QUESTIONS.DELETE_REMOVE' | translate: params }}
+
+            <!-- Are you sure you want to -->
+
+            {{ isDeleteModal ? ('MODALS.TITLES.DELETE' | translate: params | lowercase) : ('MODALS.TITLES.REMOVE' |
+            translate: params | lowercase) }}
+            <!-- remove -->
+
+            {{ typeDelete === 'Share To User' ? ('MODAL_SHARE.NAVIGATIONS.SHARE_TO_USER' | translate: params |
+            lowercase)
+            : (typeDelete === 'Share To Group'
+            ? ('MODAL_SHARE.NAVIGATIONS.SHARE_TO_GROUP' | translate: params | lowercase) : (typeDelete === 'Share
+            Download
+            Link' ? ('MODAL_SHARE.NAVIGATIONS.DOWNLOAD_LINK' | translate: params | lowercase) : (typeDelete === 'Share
+            Upload
+            Link' ? ('MODAL_SHARE.NAVIGATIONS.UPLOAD_LINK' | translate: params | lowercase) : ''))) }}
+
+            <span class="modal-title-name">{{ itemName | splice_length: 15 }}</span>
+            {{ typeDelete === 'Favorite' ? ('MODALS.VERIFY_QUESTIONS.REMOVE_FROM_FAVORITE_SUFFIX' | translate: params)
+            :
+            '?' }}
+
+            <!-- from favorite -->
+
+          </div>
+        </ng-container>
+        <span class="modal-warning">{{ warningMessage }}</span>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger btn--icon-text waves-effect" (click)="submitDelete()" [disabled]="isProcessing ? 'disabled' : ''">
+          <i *ngIf="isProcessing" class="fal fa-refresh fa-spin" style="margin-right: 5px;"></i>{{ 'BUTTONS.YES' |
+          translate: params }}</button>
+        <button type="button" class="btn btn-secondary btn--icon-text waves-effect" data-dismiss="modal">{{'BUTTONS.NO'
+          | translate: params}}</button>
+      </div>
+    </div>
+  </div>
+</div>

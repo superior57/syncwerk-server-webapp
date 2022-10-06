@@ -1,0 +1,136 @@
+.page-loader {
+    background-color: #0067b31f!important;
+}
+
+body {
+    font-family: "Roboto", sans-serif;
+    font-size: 1.18rem;
+    color: #000710;
+    background-color: #0067b31f!important;
+}
+
+.navigation li a {
+    color: #1d0202de;
+}
+
+[data-ma-theme="blue-grey"] .navigation__sub--active > a, [data-ma-theme="blue-grey"] .navigation__active > a, [data-ma-theme="blue-grey"] .navigation__active:before {
+    color: #0067b3;
+    font-weight: bold;
+}
+.content__title > h1 {
+    text-transform: capitalize;
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #0067b3;
+}
+.content__title > small {
+    font-size: 1.1rem;
+    color: #1d0202de;
+}
+
+.footer__nav .nav-link {
+    color: #000710;
+}
+
+.actions:not(.actions--inverse) .actions__item {
+    color: #41454a;
+}
+
+.tb-name-desc {
+    color: #2f7bd2!important;
+}
+
+.navigation li i {
+    color: #636c72;
+}
+
+.fa-windows {
+    color: #4dc7ff!important;;
+}
+
+.fa-linux {
+    color: #000!important;;
+}
+
+.fa-android {
+    color: #7cb342!important;;
+}
+
+.fa-app-store-ios {
+    color: #2196f3!important;;
+}
+
+.dropdown-item {
+    color: #1c0707;
+}
+
+.detail {
+    color: #230909!important;
+}
+
+a.card__profile {
+    background: #fb5a5a!important;
+}
+
+span.folder_name:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.remember {
+  margin-left: 6px;
+  display: block;
+}
+
+.form-control {
+    border-bottom: 1px solid #0084e6;
+}
+
+.card.card__preview, .img--preview--custom {
+    background: #ffffff;
+}
+
+.navigation li:not(.navigation__active):not(.navigation__sub--active) a:hover {
+    background-color: #fff;
+}
+
+.date-separator {
+    font-size: 1.2rem!important;
+    font-weight: bold;
+    color: #0067b3!important;
+}
+
+.projects-container {
+    background: #F8F9FA;
+    background: #FFF!important;
+    padding: 20px 10px;
+}
+
+.card.grid--view {
+    background: #F8F9FA!important;
+    border-radius: 0!important;
+}
+
+.card.grid--view.create--project {
+    background: #EBF1F6!important;
+}
+
+.sidebar {
+    background-color: #e0ecf5!important;
+}
+
+.sidebar .fas.fa-folder.fa-fw {
+    color: #636c72!important;
+}
+
+.navigation > li > a > i {
+    top: 0.2rem;
+}
+
+.range__size {
+     display: none;
+}
+
+.search__inner {
+    width: 50%;
+}

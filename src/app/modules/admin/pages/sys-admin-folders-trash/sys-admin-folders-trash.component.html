@@ -1,0 +1,129 @@
+<header class="content__title">
+  <h1>
+    <span [innerHTML]="'TITLE_PAGE.FOLDERS' | translate: params"></span>
+    <i class="fal fa-chevron-right"></i>
+    <span [innerHTML]="'TITLE_PAGE.TRASH_LIB' | translate: params"></span>
+  </h1>
+  <small [innerHTML]="'ADMIN.FOLDERS.TRASH.TIP' | translate: params"></small>
+</header>
+
+<div class="card">
+  <div class="card-block">
+    <div *ngIf="!isProcessing">
+      <div class="data-table__header d-flex justify-content-between fl--custom">
+        <div class="form-group data-table__filter">
+          <input *ngIf="config.filtering" placeholder="Filter all columns" [(ngModel)]="config.filtering.filterString"
+            class="form-control" (keyup)="changeTable(config)" />
+          <i class="form-group__bar"></i>
+        </div>
+        <select2 class="select2-per-page" [data]="perPageSelectData" [options]="perPageSelectOptions" [value]="page.itemsPerPage"
+          (valueChanged)="onPerPageChanged($event)"></select2>
+        <div class="data-table_buttons actions" *ngIf="currentUserPermission.can_manage_folder !== false">
+          <i class="actions__item fal fa-trash-alt" data-toggle="tooltip" [title]="'TOOLTIPS.CLEAN_TRASH' | translate: params"
+            (click)="handleOpenModal('clean-trash')"></i>
+        </div>
+      </div>
+      <div *ngIf="rows.length > 0" class="data-table">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th *ngFor="let column of columns" [width]="column.width" [class]="column.class" (click)="column.sort!==false ? sortColumn(column, config) : ''">
+                <span [innerHTML]="column.title | translate"></span>
+                <!-- <i class="fal fa-hc-lg float-right" [ngClass]="{'zmdi-sort-amount-asc': column.sort==='asc', 'zmdi-sort-amount-desc': column.sort==='desc'}"></i> -->
+                <ng-container>
+                  <i *ngIf="column.sort==='asc'" class="fal fa-sort-amount-up sort-icon float-right ico--custom"></i>
+                  <i *ngIf="column.sort==='desc'" class="fal fa-sort-amount-down sort-icon float-right ico--custom"></i>
+                </ng-container>
+              </th>
+              <th *ngIf="currentUserPermission.can_manage_folder !== false" width="15%" class="cursor-text">
+                <span [innerHTML]="'TABLE.COLUMNS.ACTIONS' | translate: params"></span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let item of rows; let index=index">
+              <tr (mouseover)="hoveredIndex=index" (mouseleave)="hoveredIndex=-1">
+                <td class="vertical-items">
+                  <span class="icon-folder">
+                    <i class="fas fa-folder fa-fw tb-row-folder"></i>
+                    <i *ngIf="item.encrypted" class="fal fa-key tb-row-folder-lock" data-toggle="tooltip"
+                      [title]="'TOOLTIPS.ENCRYPTED_FOLDER' | translate: params"></i>
+                  </span>
+                  <span data-toggle="tooltip" class="text--custom" title="{{ item.name }}">{{ item.name | splice_length: 35 }}</span>
+                </td>
+                <td class="d-none d-lg-table-cell">
+                  <span [routerLink]="['/admin', 'users', 'info', item.owner]" class="cursor-pointer tb-owner">{{
+                    item.owner }}</span>
+                </td>
+                <td class="d-none d-lg-table-cell">
+                  <span data-toggle="tooltip" title="{{ item.delete_time | amDateFormat: 'ddd, D MMM YYYY HH:mm:ss ZZ' }}">{{
+                    item.delete_time | amDateFormat:'YYYY-MM-DD HH:mm:ss' }}</span>
+                </td>
+                <td class="tb-operations d-none d-lg-table-cell" *ngIf="currentUserPermission.can_manage_folder !== false">
+                  <div *ngIf="hoveredIndex === index">
+                    <i class="actions__item fal fa-trash-alt" data-toggle="tooltip" [title]="'TOOLTIPS.DELETE' | translate: params"
+                      (click)="deleteItem(item)"></i>
+                    <i class="actions__item zmdi zmdi-time-restore-setting font-aw--custom" data-toggle="tooltip" [title]="'TOOLTIPS.RESTORE' | translate: params"
+                      (click)="restoreItem(item)"></i>
+                  </div>
+                </td>
+                <td class="d-sm-table-cell d-md-table-cell d-lg-none">
+                  <a [href]="'#trash-'+index" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="share-0">
+                    <i data-toggle="tooltip" title="Details" class="fal fa-2x fa-ellipsis-v actions__item"></i>
+                  </a>
+                </td>
+              </tr>
+
+              <!-- Collapse details of share link for sm display -->
+              <tr class="d-sm-table-row d-md-table-row d-lg-none share-details-row">
+                <td colspan="10">
+                  <div class="collapse" [id]="'trash-'+index">
+                    <div class="share-details">
+                      <div>
+                        <span>
+                          <strong>{{'TABLE.COLUMNS.OWNER'
+                            | translate}}: </strong>
+                          {{item.owner }} </span>
+                      </div>
+                      <div>
+                        <span>
+                          <strong>{{'TABLE.COLUMNS.DELETED_TIME'
+                            | translate}}: </strong>
+                            {{item.owner }}</span>
+                      </div>
+                      <div class="actions">
+                          <i class="actions__item fal fa-trash-alt" data-toggle="tooltip" [title]="'TOOLTIPS.DELETE' | translate: params"
+                          (click)="deleteItem(item)"></i>
+                        <i class="actions__item zmdi zmdi-time-restore-setting" data-toggle="tooltip" [title]="'TOOLTIPS.RESTORE' | translate: params"
+                          (click)="restoreItem(item)"></i>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+
+        <app-modal-delete-remove *ngIf="isOpenModal.delete" [typeDelete]="'TYPE_FILES.FOLDER' | translate: params"
+          [itemName]="currentItem.name" (submitDeleteItem)="handleDeleteItem()"></app-modal-delete-remove>
+        <app-modal-restore *ngIf="isOpenModal.restore" [typeRestore]="'TYPE_FILES.FOLDER' | translate: params"
+          [itemName]="currentItem.name" (submitRestoreItem)="handleRestoreItem()"></app-modal-restore>
+        <app-modal-clean-trash *ngIf="isOpenModal.clean_trash" (submitCleanTrash)="handleCleanTrash()"></app-modal-clean-trash>
+      </div>
+
+      <app-empty-item *ngIf="rows.length === 0 && this.listReposTrash.length === 0" [messageTitle]="'ADMIN.FOLDERS.TRASH.EMPTY_ITEM.MSG_TITLE' | translate: params"></app-empty-item>
+      <app-empty-item *ngIf="rows.length === 0 && this.listReposTrash.length !== 0" [messageTitle]="'ADMIN.FOLDERS.TRASH.EMPTY_ITEM.TRASH_NOT_FOUND' | translate: params"
+        [messageSub]="'ADMIN.FOLDERS.TRASH.EMPTY_ITEM.TRASH_SUB_NOT_FOUND' | translate: params">
+      </app-empty-item>
+    </div>
+
+    <app-processing *ngIf="isProcessing"></app-processing>
+  </div>
+</div>
+
+<div *ngIf="!isProcessing && rows.length > 0" class="data-table__footer">
+  <pagination *ngIf="config.paging" [(ngModel)]="page.page" [totalItems]="length" [itemsPerPage]="page.itemsPerPage"
+    [maxSize]="maxSize" [boundaryLinks]="true" [rotate]="false" (pageChanged)="changeTable(config, $event)" (numPages)="numPages = $event">
+  </pagination>
+</div>

@@ -1,0 +1,234 @@
+<div *ngIf="!isProcessing">
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title" [innerHTML]="'ADMIN.SETTINGS.COLLAPSES.INFO' | translate: params"></h2>
+    </div>
+    <div class="card-block">
+      <div class="row mb-3rem">
+        <div class="col-3">
+          <h4 class="card-block__title" [innerHTML]="'ADMIN.INFO.VERSION' | translate: params"></h4>
+        </div>
+        <div class="col-9">
+          <p>{{infoData.server_version}}</p>
+        </div>
+      </div>
+
+      <div class="row mb-3rem">
+        <div class="col-3">
+          <h4 class="card-block__title">
+            <span [innerHTML]="'ADMIN.INFO.FOLDERS' | translate: params"></span> /
+            <span [innerHTML]="'ADMIN.INFO.FILES' | translate: params"></span>
+          </h4>
+        </div>
+        <div class="col-9">
+          <p>{{ infoData.repos_count }} / {{ infoData.total_files_count }}</p>
+        </div>
+      </div>
+
+      <div class="row mb-3rem">
+        <div class="col-3">
+          <h4 class="card-block__title" [innerHTML]="'ADMIN.INFO.STORAGE_USED' | translate: params"></h4>
+        </div>
+        <div class="col-9">
+          <p>{{ infoData.total_storage | customFileSize }}</p>
+        </div>
+      </div>
+
+      <div class="row mb-3rem">
+        <div class="col-3">
+          <h4 class="card-block__title">
+            <span [innerHTML]="'ADMIN.INFO.TOTAL_DEVICES' | translate: params"></span> /
+            <span [innerHTML]="'ADMIN.INFO.CURRENT_CONNECTED_DEVICES' | translate: params"></span>
+          </h4>
+        </div>
+        <div class="col-9">
+          <p>{{ infoData.total_devices_count }} / {{ infoData.current_connected_devices_count }}</p>
+        </div>
+      </div>
+
+      <div class="row mb-3rem">
+        <div class="col-3">
+          <h4 class="card-block__title">
+            <span [innerHTML]="'ADMIN.INFO.ACTIVE_USERS' | translate: params"></span> /
+            <span [innerHTML]="'ADMIN.INFO.TOTAL_USERS' | translate: params"></span> /
+            <span [innerHTML]="'ADMIN.INFO.LIMITS' | translate: params"></span>
+          </h4>
+        </div>
+        <div class="col-9">
+          <p>{{ infoData.active_users_count }} / {{ infoData.users_count }} / {{ infoData.license_json.allowed_users }}</p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-3">
+          <h4 class="card-block__title" [innerHTML]="'ADMIN.INFO.GROUPS' | translate: params"></h4>
+        </div>
+        <div class="col-9">
+          <p>{{ infoData.groups_count }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title" [innerHTML]=" 'ADMIN.INFO.SYSTEM_INFO' | translate "></h2>
+    </div>
+    <div class="card-block">
+      <!-- freeware license -->
+      <div *ngIf="infoData.license_json.edition === 'freeware'">
+        <div class="row mb-3rem">
+          <div class="col-3">
+            <h4 class="card-block__title">
+              <span [innerHTML]="'ADMIN.INFO.LICENSE_TYPE' | translate: params"></span>
+            </h4>
+          </div>
+          <div class="col-9">
+            <p>{{ 'ADMIN.INFO.LICENSE_TYPE_FREEWARE' | translate: params }}</p>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="infoData.license_json.edition === 'subscription'">
+        <div class="row mb-3rem">
+          <div class="col-3">
+            <h4 class="card-block__title">
+              <span [innerHTML]="'ADMIN.INFO.LICENSE_TYPE' | translate: params"></span>
+            </h4>
+          </div>
+          <div class="col-9">
+            <p>{{ 'ADMIN.INFO.LICENSE_TYPE_SUBSCRIPTION' | translate: params }}</p>
+          </div>
+        </div>
+        <div class="row mb-3rem">
+          <div class="col-3">
+            <h4 class="card-block__title">
+              <span [innerHTML]="'ADMIN.INFO.LICENSEE_NAME' | translate: params"></span>
+            </h4>
+          </div>
+          <div class="col-9">
+            <p>{{ infoData.license_json.owner_name }}</p>
+          </div>
+        </div>
+        <div class="row mb-3rem">
+          <div class="col-3">
+            <h4 class="card-block__title">
+              <span [innerHTML]="'ADMIN.INFO.LICENSEE_EMAIL' | translate: params"></span>
+            </h4>
+          </div>
+          <div class="col-9">
+            <p>{{ infoData.license_json.owner_email }}</p>
+          </div>
+        </div>
+        <div class="row mb-3rem">
+          <div class="col-3">
+            <h4 class="card-block__title">
+              <span [innerHTML]="'ADMIN.INFO.LICENSE_START_DATE' | translate: params"></span>
+            </h4>
+          </div>
+          <div class="col-9">
+            <p>{{ infoData.license_json.from_date }}</p>
+          </div>
+        </div>
+        <div class="row mb-3rem">
+          <div class="col-3">
+            <h4 class="card-block__title">
+              <span [innerHTML]="'ADMIN.INFO.LICENSE_END_DATE' | translate: params"></span>
+            </h4>
+          </div>
+          <div class="col-9">
+            <p>{{ infoData.license_json.to_date }}</p>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="infoData.license_json.edition === 'perpetual'">
+        <div class="row mb-3rem">
+          <div class="col-3">
+            <h4 class="card-block__title">
+              <span [innerHTML]="'ADMIN.INFO.LICENSE_TYPE' | translate: params"></span>
+            </h4>
+          </div>
+          <div class="col-9">
+            <p>{{ 'ADMIN.INFO.LICENSE_TYPE_PERPETUAL' | translate: params }}</p>
+          </div>
+        </div>
+        <div class="row mb-3rem">
+          <div class="col-3">
+            <h4 class="card-block__title">
+              <span [innerHTML]="'ADMIN.INFO.LICENSEE_NAME' | translate: params"></span>
+            </h4>
+          </div>
+          <div class="col-9">
+            <p>{{ infoData.license_json.owner_name }}</p>
+          </div>
+        </div>
+        <div class="row mb-3rem">
+          <div class="col-3">
+            <h4 class="card-block__title">
+              <span [innerHTML]="'ADMIN.INFO.LICENSEE_EMAIL' | translate: params"></span>
+            </h4>
+          </div>
+          <div class="col-9">
+            <p>{{ infoData.license_json.owner_email }}</p>
+          </div>
+        </div>
+        <div class="row mb-3rem">
+          <div class="col-3">
+            <h4 class="card-block__title">
+              <span [innerHTML]="'ADMIN.INFO.LICENSE_START_VERSION' | translate: params"></span>
+            </h4>
+          </div>
+          <div class="col-9">
+            <p>{{ infoData.license_json.from_sw_version }}</p>
+          </div>
+        </div>
+        <div class="row mb-3rem">
+          <div class="col-3">
+            <h4 class="card-block__title">
+              <span [innerHTML]="'ADMIN.INFO.LICENSE_END_VERSION' | translate: params"></span>
+            </h4>
+          </div>
+          <div class="col-9">
+            <p>{{ infoData.license_json.to_sw_version }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3rem">
+        <div class="col-3">
+          <h4 class="card-block__title">
+            <span [innerHTML]="'ADMIN.INFO.LICENSE_SERVER_ID' | translate: params"></span>
+          </h4>
+        </div>
+        <div class="col-9">
+          <p>{{ infoData.license_json.machine_id }}</p>
+        </div>
+      </div>
+      <div class="row mb-3rem">
+        <div class="col-3">
+          <h4 class="card-block__title">
+            <span [innerHTML]="'ADMIN.INFO.AVAILABLE_FEATRUES' | translate: params"></span>
+          </h4>
+        </div>
+        <div class="col-9">
+          <p>{{ availableFeatureStr }}</p>
+        </div>
+      </div>
+      <div class="row mb-3rem">
+        <div class="col-9 offset-3 ">
+          <p>
+            <input type="file" name="licence" id="licence" class="input-licence" (change)="onUploadLicense($event)">
+            <label class="btn btn-info waves-effect" for="licence">{{ 'BUTTONS.UPLOAD_LICENSE' | translate }} <i class="fa fa-upload"></i></label>
+            <input type="text" name="licence_text" id="licence-text" class="input-licence">
+            <label class="btn btn-info waves-effect ml-1" for="licence-text" (click)="showEnterLicenseModal()">
+              {{'BUTTONS.ENTER_LICENSE' | translate}} <i class="fa fa-edit"></i>
+            </label>
+          </p>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<app-processing *ngIf="isProcessing"></app-processing>

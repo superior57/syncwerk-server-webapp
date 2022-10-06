@@ -1,0 +1,14 @@
+.modal-sm {
+  max-width: 400px;
+}
+.modal-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+@media (max-width:911px){
+  .modal.show .modal-dialog {
+      width: 90%;
+      margin: 10px auto;
+  }
+}

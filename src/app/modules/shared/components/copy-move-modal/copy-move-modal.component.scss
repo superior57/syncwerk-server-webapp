@@ -1,0 +1,62 @@
+.color-black {
+  color: #000;
+}
+
+.tree .value-container {
+  display: none !important;
+}
+
+:host ::ng-deep .item-name {
+  color: #e10032;
+}
+
+.filename {
+  text-transform: none;
+}
+
+.font-size-content {
+  font-size: 2rem;
+}
+
+.tree-demo-app {
+  max-height: 250px;
+  overflow: hidden;
+
+  &:hover {
+    overflow: auto;
+  }
+
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    border-radius: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 6px;
+    background-color: #9E9E9E;
+  }
+}
+
+.modal-md {
+  max-width: 600px;
+}
+
+:host ::ng-deep tree-internal {
+  .tree {
+    li {
+      div {
+        white-space: nowrap!important;
+        i.fal.fa-folder {
+            color: gray;
+            margin-right: 6px;
+        }
+      }
+    }
+  }
+}
+
+.error-message {
+  margin-top: 1rem;
+  color: #e10032;
+}

@@ -1,0 +1,97 @@
+<header class="content__title">
+  <h1 [innerHTML]="'WIKIS.WIKI_LIST.TITLE' | translate"></h1>
+  <small [innerHTML]="'WIKIS.WIKI_LIST.SUBTITLE' | translate"></small>
+</header>
+
+<div class="card">
+  <div class="card-block">
+    <div class="data-table__header d-flex justify-content-betwwen">
+      <div class="form-group">
+        <div class="dropdown">
+          <button class="btn btn-secondary waves-effect btn--icon-text mr-25px" data-toggle="dropdown" aria-expanded="false">
+            {{'WIKIS.WIKI_LIST.BUTTONS.ADD_WIKI' | translate}}
+          </button>
+          <div class="dropdown-menu" x-placement="top-start">
+            <a (click)="openCreateNewWikiModal()" class="dropdown-item">{{'WIKIS.WIKI_LIST.BUTTONS.NEW_WIKI' |
+              translate}}</a>
+            <a (click)="openCreateWikiFromExistingFolderModal()" class="dropdown-item">{{'WIKIS.WIKI_LIST.BUTTONS.CHOOSE_FOLDER_AS_WIKI' | translate}}</a>
+          </div>
+        </div>
+      </div>
+      <div class="form-group data-table__filter">
+        <input [placeholder]="'SEARCHS.ALL_COLUMNS' | translate" class="form-control" (keyup)="onSearchFilterChange($event)" />
+        <i class="form-group__bar"></i>
+      </div>
+      <div class="row-selector">
+        <app-row-selector (changed)="onPerPageChanged($event)"></app-row-selector>
+      </div>
+    </div>
+
+    <!-- List view -->
+    <ng-container *ngIf="!isProcessing">
+      <table class="table table-sm table-hover" *ngIf="wikiListFromAPI.length !== 0 && wikiListForDisplay.length !== 0">
+        <thead>
+          <tr>
+            <th class="sortable" (click)="triggerSort('name')" width="30%">
+              {{'WIKIS.WIKI_LIST.HEADERS.NAME' | translate }}
+              <ng-container *ngIf="sortConfig.column==='name'">
+                <i *ngIf="sortConfig.mode==='asc'" class="fal fa-sort-amount-up sort-icon"></i>
+                <i *ngIf="sortConfig.mode==='desc'" class="fal fa-sort-amount-down sort-icon"></i>
+              </ng-container>
+            </th>
+            <th class="sortable" (click)="triggerSort('owner')" width="30%">
+              {{'WIKIS.WIKI_LIST.HEADERS.OWNER' | translate }}
+              <ng-container *ngIf="sortConfig.column==='owner'">
+                <i *ngIf="sortConfig.mode==='asc'" class="fal fa-sort-amount-up sort-icon"></i>
+                <i *ngIf="sortConfig.mode==='desc'" class="fal fa-sort-amount-down sort-icon"></i>
+              </ng-container>
+            </th>
+            <th class="sortable" (click)="triggerSort('last_update')" width="20%">
+              {{'WIKIS.WIKI_LIST.HEADERS.LAST_UPDATE' | translate }}
+              <ng-container *ngIf="sortConfig.column==='last_update'">
+                <i *ngIf="sortConfig.mode==='asc'" class="fal fa-sort-amount-up sort-icon"></i>
+                <i *ngIf="sortConfig.mode==='desc'" class="fal fa-sort-amount-down sort-icon"></i>
+              </ng-container>
+            </th>
+            <th>{{'WIKIS.WIKI_LIST.HEADERS.ACTIONS' | translate }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let wiki of wikiListForDisplay; let index=index" (mouseover)="hoveredIndex=index" (mouseleave)="hoveredIndex=-1">
+            <td>
+              <a [routerLink]="['/wikis', wiki.slug]">{{ wiki.name }}</a>
+            </td>
+            <td>
+              <a [routerLink]="['/user', 'profile', wiki.owner]">{{ wiki.owner }}</a>
+            </td>
+            <td>
+              {{ wiki.updated_at | amTimeAgo }}
+            </td>
+            <td>
+              <ng-container *ngIf="hoveredIndex === index">
+                <i data-toggle="tooltip" [title]="'WIKIS.WIKI_LIST.BUTTONS.RENAME_WIKI' | translate" class="fal fa-lg fa-pencil-alt actions__item"
+                  (click)="openRenameWikiModal(wiki)"></i>
+                <i data-toggle="tooltip" [title]="'WIKIS.WIKI_LIST.BUTTONS.REMOVE_WIKI' | translate" class="fal fa-lg fa-trash-alt actions__item"
+                  (click)="openRemoveWikiModal(wiki)"></i>
+              </ng-container>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- EMPTY ITEM -->
+      <app-empty-item *ngIf="wikiListForDisplay.length === 0 && wikiListFromAPI.length !== 0" [messageTitle]="'WIKIS.WIKI_LIST.NO_WIKI_FOUND_TITLE' | translate: params"
+        [messageSub]="'WIKIS.WIKI_LIST.NO_WIKI_FOUND_SUBTITLE' | translate: params"></app-empty-item>
+      <app-empty-item *ngIf="wikiListForDisplay.length === 0 && wikiListFromAPI.length === 0" [messageTitle]="'WIKIS.WIKI_LIST.NO_WIKI_TITLE' | translate: params"
+        [messageSub]="'WIKIS.WIKI_LIST.NO_WIKI_SUBTITLE' | translate: params"></app-empty-item>
+    </ng-container>
+
+
+
+    <app-processing *ngIf="isProcessing"></app-processing>
+  </div>
+</div>
+
+<div class="data-table__footer">
+  <pagination [itemsPerPage]="pagination.itemsPerPage" [totalItems]="wikiListFromAPI.length" (pageChanged)="pageChanged($event)"></pagination>
+</div>

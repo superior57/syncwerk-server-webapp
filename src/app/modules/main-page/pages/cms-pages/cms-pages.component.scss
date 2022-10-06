@@ -1,0 +1,49 @@
+.login__block__header__custom {
+  background: #0067b3;;
+  height: 72px;
+  padding: 12px 20px;
+  display: flex;
+  flex-direction: row;
+  line-height: 42px;
+  img.img--custom{
+    margin-left: 0px;
+    border-radius: 0px;
+    border: none;
+    width: 200px;
+    height: 50px;
+    box-shadow: none;
+  }
+}
+
+
+:host ::ng-deep select2 .select2-container--default .select2-selection--single .select2-selection__rendered {
+  color: #fff;
+  background: #0067b3;
+}
+:host ::ng-deep select2 .select2-container--default .select2-selection--single:before{
+  transform: rotate(45deg);
+  top: 15px;
+}
+:host ::ng-deep select2 .select2-container--default .select2-selection--single{
+  border-bottom: 0px solid transparent !important;
+}
+:host ::ng-deep select2 .select2-container--default .select2-selection--single .select2-selection__rendered{
+  padding:  14px 14px;
+}
+:host ::ng-deep select2  span{
+  width: 80px;
+}
+:host select2 ::ng-deep span#select2-5vko-container {
+  padding-left: 12px;
+}
+
+.select__languages {
+  position: absolute;
+  top: 12px;
+  right: 20px;
+}
+
+.container {
+  margin-top: 2rem;
+    min-height: calc(100vh - 250px);
+}

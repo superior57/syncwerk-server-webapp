@@ -1,0 +1,52 @@
+<table *ngIf="listMeetings.length > 0" class="table table-hover mb-0">
+  <thead>
+    <tr>
+      <th>
+        <span>{{ 'USERADMIN_INFO.MEETINGS.MEETING_NAME' | translate: params }}</span>
+      </th>
+      <th width="10%" class="d-none d-lg-table-cell">
+        <span>{{ 'USERADMIN_INFO.MEETINGS.CREATED_ON' | translate: params }}</span>
+      </th>
+      <th width="15%" class="d-none d-lg-table-cell">
+        <span>{{ 'USERADMIN_INFO.MEETINGS.STATUS' | translate: params }}</span>
+      </th>
+      <th  width="10%">
+        <span [innerHTML]="'USERADMIN_INFO.GROUPS.TABLE.OPERATIONS' | translate: params"></span>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <ng-container *ngFor="let item of listMeetings; let index = index">
+      <tr (mouseover)="hoveredIndex=index" (mouseleave)="hoveredIndex=-1">
+        <td class="tb-name">
+          <div class="vertical-items">
+            <i class="fal fa-users icon-users"></i>
+            <span class="text-ellipsis cursor-pointer">{{ item.room_name }}</span>
+          </div>
+        </td>
+        <td class="d-none d-lg-table-cell">{{ item.created_at |  date:'yyyy-MM-dd HH:mm:ss' }}</td>
+        <td class="d-none d-lg-table-cell">
+          {{displayStatus(item.status)}}
+        </td>
+        <td  class="tb-operations d-none d-lg-table-cell">
+          <div *ngIf="index === hoveredIndex">
+            <i data-toggle="tooltip" [title]="'TOOLTIPS.REMOVE' | translate: params" class="actions__item fal fa-trash-alt"
+              (click)="deleteItem(item)"></i>
+          </div>
+        </td>
+        <td class="d-sm-table-cell d-md-table-cell d-lg-none">
+          <a [href]="'#meetings-'+index" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="share-0">
+            <i data-toggle="tooltip" title="Details" class="fal fa-2x fa-ellipsis-v actions__item"></i>
+          </a>
+        </td>
+      </tr>
+
+
+    </ng-container>
+  </tbody>
+</table>
+
+<app-empty-item *ngIf="listMeetings.length === 0" [messageTitle]="'USERADMIN_INFO.MEETINGS.EMPTY_ITEM.MSG_TITLE' | translate: params"></app-empty-item>
+
+<app-modal-delete-remove *ngIf="isOpenModal.delete" [typeDelete]="'Meetings'" [itemName]="currentItem.room_name"
+  (submitDeleteItem)="onSubmitDeleteItem()"></app-modal-delete-remove>

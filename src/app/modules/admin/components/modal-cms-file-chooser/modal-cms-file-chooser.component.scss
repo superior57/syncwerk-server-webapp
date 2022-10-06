@@ -1,0 +1,18 @@
+.modal-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #0067b3;
+}
+
+.modal-body {
+    max-height: 50vh;
+    overflow-y: scroll;
+}
+
+table {
+    margin-bottom: 1rem;
+    td {
+        vertical-align: middle;
+        word-break: break-all;
+    }
+}

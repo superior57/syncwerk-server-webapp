@@ -1,0 +1,144 @@
+<header class="content__title">
+  <h1>
+    <i class="fal fa-caret-circle-left fa-hc-fw back-btn" [routerLink]="['/admin', 'meetings']"></i>
+    {{ 'MEETING.RECORDINGS.TITLE' | translate }}
+  </h1>
+</header>
+
+<div class="card">
+  <div class="card-block">
+    <div class="data-table__header d-flex justify-content-betwwen fl--custom">
+      <div class="form-group data-table__filter">
+        <input [placeholder]="'Filter'" class="form-control" (keyup)="onSearchFilterChange($event)" />
+        <i class="form-group__bar"></i>
+      </div>
+
+      <div class="row-selector">
+        <app-row-selector (changed)="onPerPageChanged($event)"></app-row-selector>
+      </div>
+    </div>
+
+    <!-- List view -->
+    <ng-container *ngIf="!isProcessing">
+      <table class="table table-hover"
+        *ngIf="recordingListFromAPI.length !== 0 && recordingListForDisplay.length !== 0">
+        <thead>
+          <tr>
+            <th></th>
+            <th>{{ 'MEETING.RECORDINGS.NAME' | translate }}</th>
+            <th class="d-none d-lg-table-cell">{{ 'MEETING.RECORDINGS.UPDATED' | translate }}</th>
+            <th class="d-none d-lg-table-cell">{{ 'MEETING.RECORDINGS.SIZE' | translate }}</th>
+            <th class="d-none d-lg-table-cell">{{ 'MEETING.RECORDINGS.OWNER' | translate }}</th>
+            <th class="d-none d-lg-table-cell">{{ 'MEETING.RECORDINGS.STATUS' | translate }}</th>
+            <th width="20%">{{ 'MEETING.RECORDINGS.ACTIONS' | translate }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let recording of recordingListForDisplay; let index=index">
+            <tr (mouseover)="hoveredIndex=index" (mouseleave)="hoveredIndex=-1">
+              <td>
+                <img *ngIf="recording.status=='published' && recording.thumbnail" src="{{recording.thumbnail}}"
+                  width="100" />
+                <i *ngIf="recording.status=='published' && !recording.thumbnail" class="fal fa-image fa-3x"></i>
+                <i *ngIf="recording.status=='unpublished'" class="fal fa-ban fa-5x" aria-hidden="true"></i>
+              </td>
+              <td class="text-ellipsis" data-toggle="tooltip" data-placement="top" [title]="recording.room_name + '('+ recording.number_of_participants +')'">
+                {{recording.room_name}} ({{recording.number_of_participants}})
+              </td>
+              <td class="d-none d-lg-table-cell text-ellipsis" data-toggle="tooltip" data-placement="top" [title]="recording.end_time | date:'yyyy-MM-dd HH:mm:ss'">
+                {{recording.end_time | date:'yyyy-MM-dd HH:mm:ss'}}
+              </td>
+              <td class="d-none d-lg-table-cell text-ellipsis" data-toggle="tooltip" data-placement="top" [title]="recording.size | customFileSize">{{recording.size | customFileSize}}</td>
+              <td class="d-none d-lg-table-cell text-ellipsis" data-toggle="tooltip" data-placement="top" [title]="recording.meeting_owner">{{recording.meeting_owner}}</td>
+              <td class="d-none d-lg-table-cell text-ellipsis" data-toggle="tooltip" data-placement="top" [title]="recording.status">{{recording.status}}</td>
+              <td class="d-none d-lg-table-cell">
+                <a href="{{recording.preview_link.trim()}}" target="_blank"><i title="Review"
+                    class="fal fa-eye actions__item"></i></a>
+                <i *ngIf="recording.status=='published'" title="Unpublish" (click)="publishRecording(recording, 'no')"
+                  class="fal fa-check actions__item"></i>
+                <i *ngIf="recording.status=='unpublished'" title="Publish" (click)="publishRecording(recording, 'yes')"
+                  class="fal fa-check actions__item"></i>
+                <i title="Delete recording" (click)="openDeleteRecordingModal(recording)"
+                  class="fal fa-trash actions__item"></i>
+
+                <div *ngIf="recording.isPublishing && !recording.isUnpublishing">
+                  <span>{{ 'MEETING.RECORDINGS.PUBLISHING' | translate }}</span>
+                </div>
+                <div *ngIf="!recording.isPublishing && recording.isUnpublishing">
+                  <span>{{ 'MEETING.RECORDINGS.UNPUBLISHING' | translate }}</span>
+                </div>
+              </td>
+              <td class="d-sm-table-cell d-md-table-cell d-lg-none">
+                <a [href]="'#meeting-room-recording'+index" data-toggle="collapse" role="button" aria-expanded="false"
+                  aria-controls="share-0">
+                  <i data-toggle="tooltip" title="Details" class="fal fa-2x fa-ellipsis-v actions__item"></i>
+                </a>
+              </td>
+            </tr>
+            <!-- Collapse details of share link for sm display -->
+            <tr class="d-sm-table-row d-md-table-row d-lg-none share-details-row">
+              <td colspan="10">
+                <div class="collapse" [id]="'meeting-room-recording'+index">
+                  <div class="share-details">
+                    <div>
+                      <span>
+                        <strong>{{'MEETING.RECORDINGS.UPDATED' | translate}}: </strong>
+                        {{recording.end_time | date:'yyyy-MM-dd HH:mm:ss'}} </span>
+                    </div>
+                    <div>
+                      <span>
+                        <strong>{{'MEETING.RECORDINGS.SIZE' | translate}}: </strong>
+                        {{recording.size | customFileSize}} </span>
+                    </div>
+                    <div>
+                      <span>
+                        <strong>{{'MEETING.RECORDINGS.OWNER' | translate}}: </strong>
+                        {{recording.meeting_owner}} </span>
+                    </div>
+                    <div>
+                      <span>
+                        <strong>{{'MEETING.RECORDINGS.STATUS' | translate}}: </strong>
+                        {{recording.status}} </span>
+                    </div>
+                    <div class="actions">
+                      <a href="{{recording.preview_link.trim()}}" target="_blank"><i title="Review"
+                          class="fal fa-eye actions__item"></i></a>
+                      <i *ngIf="recording.status=='published'" title="Unpublish"
+                        (click)="publishRecording(recording, 'no')" class="fal fa-check actions__item"></i>
+                      <i *ngIf="recording.status=='unpublished'" title="Publish"
+                        (click)="publishRecording(recording, 'yes')" class="fal fa-check actions__item"></i>
+                      <i title="Delete recording" (click)="openDeleteRecordingModal(recording)"
+                        class="fal fa-trash actions__item"></i>
+
+                      <div *ngIf="recording.isPublishing && !recording.isUnpublishing">
+                        <span>{{ 'MEETING.RECORDINGS.PUBLISHING' | translate }}</span>
+                      </div>
+                      <div *ngIf="!recording.isPublishing && recording.isUnpublishing">
+                        <span>{{ 'MEETING.RECORDINGS.UNPUBLISHING' | translate }}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+      <!-- EMPTY ITEM -->
+      <app-empty-item *ngIf="recordingListForDisplay.length === 0 && recordingListFromAPI.length !== 0"
+        [messageTitle]="'MEETING.RECORDINGS.NO_RECORDING_FOUND' | translate"></app-empty-item>
+      <app-empty-item *ngIf="recordingListForDisplay.length === 0 && recordingListFromAPI.length === 0"
+        [messageTitle]="'MEETING.RECORDINGS.NO_RECORDING_CREATED' | translate"
+        [messageSub]="'MEETING.RECORDINGS.NO_RECORDING_CREATED_SUB' | translate"></app-empty-item>
+    </ng-container>
+
+    <app-processing *ngIf="isProcessing"></app-processing>
+  </div>
+</div>
+
+<div class="data-table__footer">
+  <div class="footer__wrapper">
+    <pagination [itemsPerPage]="pagination.itemsPerPage" [boundaryLinks]="true" [maxSize]="maxSize"
+      [totalItems]="recordingListFromAPI.length" (pageChanged)="pageChanged($event)"></pagination>
+  </div>
+</div>

@@ -1,0 +1,22 @@
+<div class="modal fade" id="dismiss-leave-group-modal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">
+          <span *ngIf="typeModal === 'dismiss'">{{'LIST_GROUPS.OTHERS.DISMISS_GROUP' | translate}}</span>
+          <span *ngIf="typeModal === 'leave'">{{'LIST_GROUPS.OTHERS.LEAVE_GROUP' | translate}}</span>
+        </h5>
+      </div>
+      <div class="modal-body">
+        <div *ngIf="typeModal === 'dismiss'" [innerHTML]="'GROUP_MANAGEMENT.DISMISS_GROUP' | translate : params"></div>
+        <div *ngIf="typeModal === 'leave'" [innerHTML]="'GROUP_MANAGEMENT.LEAVE_GROUP' | translate : params"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger btn--icon-text waves-effect" (click)="submitDismissLeaveGroup()">
+          <i *ngIf="isProcessing" class="fal fa-sync-alt fa-spin"></i> {{'BUTTONS.YES' | translate}}
+        </button>
+        <button type="button" class="btn btn-secondary btn--icon-text waves-effect" data-dismiss="modal">{{'BUTTONS.NO' | translate}}</button>
+      </div>
+    </div>
+  </div>
+</div>

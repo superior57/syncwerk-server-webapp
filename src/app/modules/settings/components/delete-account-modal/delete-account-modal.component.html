@@ -1,0 +1,20 @@
+<div class="modal fade" id="delete-account-modal" tabindex="-1">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" [innerHTML]="'SETTINGS.DELETE_ACCOUNT.SETTING_TITLE' | translate"></h5>
+      </div>
+      <div class="modal-body">
+        <div [innerHTML]="'SETTINGS.DELETE_ACCOUNT.MODAL_CONFIRMATION' | translate"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger btn--icon-text waves-effect" (click)="deleteAccount()">
+          <span [innerHTML]="'SETTINGS.DELETE_ACCOUNT.MODAL_YES' | translate"></span>
+        </button>
+        <button type="button" class="btn btn-secondary btn--icon-text waves-effect" data-dismiss="modal">
+          <span [innerHTML]="'SETTINGS.DELETE_ACCOUNT.MODAL_NO' | translate"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,82 @@
+<div class="card">
+  <div class="card-block">
+    <div *ngIf="!isProcessing">
+      <div class="data-table__header d-flex justify-content-betwwen">
+        <div class="form-group data-table__filter">
+          <input *ngIf="config.filtering" [placeholder]="'SEARCHS.ALL_COLUMNS' | translate: params" [(ngModel)]="config.filtering.filterString"
+            class="form-control" (keyup)="changeTable(config)" />
+          <i class="form-group__bar"></i>
+        </div>
+        <app-row-selector (changed)="onPerPageChanged($event)"></app-row-selector>
+      </div>
+
+      <div *ngIf="listFavoriteDisplay.length > 0" class="data-table">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th *ngFor="let column of columns" [width]="column.width" (click)="column.sort!==false ? sortColumn(column, config) : ''">
+                <span [innerHTML]="column.title | translate"></span>
+                <!-- <i class="fal fa-hc-lg float-right" [ngClass]="{'zmdi-sort-amount-asc': column.sort==='asc', 'zmdi-sort-amount-desc': column.sort==='desc'}"></i> -->
+                <ng-container>
+                  <i *ngIf="column.sort==='asc'" class="fal fa-sort-amount-up sort-icon float-right icon--custom"></i>
+                  <i *ngIf="column.sort==='desc'" class="fal fa-sort-amount-down sort-icon float-right icon--custom"></i>
+                </ng-container>
+              </th>
+              <th width="10%">
+                <span [innerHTML]="'TABLE.COLUMNS.ACTIONS' | translate: params"></span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of listFavoriteDisplay; let index=index" (mouseover)="hoveredIndex=index" (mouseleave)="hoveredIndex=-1"
+              [ngClass]="{'hl':index==hoveredIndex}">
+              <td class="vertical-items">
+                <div class="tb-icons">
+                  <a (click)="openFilePreview(item)">
+                    <img *ngIf="!item.imgError || (item.imgError && item.imgError != 1)" (error)="setErrorImg(index)"
+                      class="file-icon" src="{{ item.file_name | customFileIcon: false: item.link_img }}">
+                    <div *ngIf="(item.imgError && item.imgError === 1 ) ">
+                      <i class="{{ item.file_name | customFileIcon }}" id="icon--custom--listview"></i>
+                    </div>
+                  </a>
+                </div>
+                <div class="tb-name vertical-items">
+                  <a (click)="openFilePreview(item)" class="name" data-toggle="tooltip" title="{{ item.file_name }}">{{
+                    item.file_name | splice_length:65 }}</a>
+                </div>
+              </td>
+              <td>{{ item.size | customFileSize }}</td>
+              <td>
+                <span data-toggle="tooltip" title="{{ item.mtime * 1000 | date: 'EEEE, d MMM yyyy - HH:mm:ss Z' }}">{{
+                  item.mtime * 1000 | date: 'dd.MM.yyyy - HH:mm:ss' }}</span>
+              </td>
+              <td class="cut-string-in-a-line" data-toggle="tooltip" title="{{ item.repo_name }}">
+                <a [routerLink]="[ '/folders', item.repo_id ]">{{ item.repo_name | splice_length:65 }}</a>
+              </td>
+              <td>
+                <a *ngIf="hoveredIndex===index" data-toggle="tooltip" [title]="'FAVORITE.UNSTAR_TOOLTIP' | translate:params"
+                  (click)="handleOpenModal('remove', item)">
+                  <i class="actions__item fal fa-trash-alt green-color-hover"></i>
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <app-modal-delete-remove *ngIf="isOpenModal.remove" [typeDelete]="'Favorite'" [isDeleteModal]="false"
+          [itemName]="currentItemFavorite.file_name" (submitRemoveItem)="onRemoveItem()"></app-modal-delete-remove>
+      </div>
+
+      <app-empty-item *ngIf="listFavoriteDisplay.length === 0 && this.listFavorites.length === 0" [messageTitle]="'FAVORITE.NO_STARRED_FILE_HEADER' | translate:params"
+        [messageSub]="'FAVORITE.NO_STARRED_FILE_DESCRIPTION' | translate:params"></app-empty-item>
+      <app-empty-item *ngIf="listFavoriteDisplay.length === 0 && this.listFavorites.length !== 0" [messageTitle]="'FAVORITE.FILTER_FILE_NOT_FOUND' | translate:params"
+        [messageSub]="'FAVORITE.FILTER_SUB_FILE_NOT_FOUND' | translate:params"></app-empty-item>
+    </div>
+
+    <app-processing *ngIf="isProcessing"></app-processing>
+  </div>
+</div>
+
+<pagination *ngIf="config.paging" [(ngModel)]="page.page" [totalItems]="length" [itemsPerPage]="page.itemsPerPage"
+  [maxSize]="maxSize" [boundaryLinks]="true" [rotate]="false" (pageChanged)="changeTable(config, $event)" (numPages)="numPages = $event">
+</pagination>

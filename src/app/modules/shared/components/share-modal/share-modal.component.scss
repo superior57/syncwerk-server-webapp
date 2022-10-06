@@ -1,0 +1,115 @@
+.share-menu {
+    left: 0;
+    height: 100%;
+    overflow: hidden;
+    z-index: 9;
+    float: left;
+    width: 20%;
+}
+
+.share-li {
+    width: 80%;
+    text-align: left;
+    margin-top: 5px;
+    border: none;
+    box-shadow: none;
+    border-radius: 2px;
+    padding: 8px;
+    p {
+        margin: 0;
+    }
+}
+
+.share-li-active {
+    @extend .share-li;
+    background-color: #f3f3f3;
+}
+
+:host ::ng-deep .ng2-tag-input__text-input {
+  width: 200%;
+}
+
+.cusor-p {
+    cursor: pointer;
+    margin-top: -2px;
+
+}
+
+.content-share-modal {
+    float: left;
+    width: 80%;
+}
+
+.modal-title-name {
+    font-weight: bold;
+    word-break: break-all;
+    display: inline-block;
+    margin: 0px 4px;
+}
+
+.modal-title.pull-left {
+    font-size: 16px;
+}
+
+@media (min-width: 992px){
+  .md--custom {
+      max-width: 940px;
+  }
+}
+
+@media (max-width:575px){
+  .modal-content {
+      position: relative;
+      left: -5px;
+      width: 98vw;
+  }
+}
+
+@media (max-width: 476px){
+  .modal.show .modal-dialog {
+      margin: 20px calc(100vw - 98vw);
+  }
+  .navigation {
+      display: flex;
+      position: absolute;
+      top: 2px;
+      margin: -1px 5px 0px 16px !important;
+  }
+  .modal-body{
+    padding: 25px 0px !important;
+  }
+  li.share-li {
+      font-size: 14px;
+      width: 100%;
+      padding: 3px;
+  }
+
+  .modal-content {
+      top: 50%;
+      left: -1%;
+  }
+  .navigation {
+      margin-left: -9px;
+      margin-top: -12px;
+  }
+}
+
+// @media (max-width:414px){
+//   .navigation {
+//       margin-left: -9px;
+//       margin-top: -12px;
+//   }
+// }
+
+// @media (max-width:375px){
+//   .modal-content {
+//       top: 50%;
+//       left: -3%;
+//   }
+//   .modal-footer{
+//     padding-top: 130px !important;
+//   }
+// }
+
+
+

@@ -1,0 +1,300 @@
+<div *ngIf="listFolders.length > 0" class="data-table">
+  <table class="table table-hover">
+    <thead>
+      <tr class="tr__thead">
+        <th *ngFor="let column of columns" [width]="column.width" [class]="column.class" (click)="column.sort!==false ? sortColumnSelected(column) : ''">
+          <span [innerHTML]="column.title | translate: params"></span>
+          <!-- <i class="fal fa-hc-lg float-right" [ngClass]="{'zmdi-sort-amount-asc': column.sort==='asc', 'zmdi-sort-amount-desc': column.sort==='desc'}"></i> -->
+          <ng-container>
+            <i *ngIf="column.sort==='asc'" class="fal fa-sort-amount-up sort-icon float-right icon--custom"></i>
+            <i *ngIf="column.sort==='desc'" class="fal fa-sort-amount-down sort-icon float-right icon--custom"></i>
+          </ng-container>
+        </th>
+        <th class="cursor-text" width="15%" [innerHTML]="'TABLE.COLUMNS.ACTIONS' | translate: params"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let r of listFolders; let index=index">
+        <tr (mouseover)="hoveredIndex=index" (mouseleave)="hoveredIndex=-1" [ngClass]="{'hl':index==hoveredIndex}"
+          class="tr__lg__size">
+          <!-- NAME -->
+          <td class="td--custom" style="padding-left: 3rem;">
+            <div class="row r--custom">
+              <div class="icon-folder">
+                <a *ngIf="rename != index && editDescription != index" (click)="openFolder(r.id, r.encrypted)" class="folder-color-hover">
+                  <i class="fas fa-folder fa-fw fa-fw tb-row-folder i--custom"></i>
+                  <i *ngIf="r.encrypted" class="fal fa-key tb-row-folder-lock" data-toggle="tooltip" [title]="'TOOLTIPS.ENCRYPTED_FOLDER' | translate: params"></i>
+                  <i *ngIf="r.permission === 'r'" class="fal fa-eye tb-row-folder-read-only" [ngClass]="{'second-lock':r.encrypted}"
+                    data-toggle="tooltip" [title]="'TOOLTIPS.READ_ONLY_FOLDER' | translate: params"></i>
+                </a>
+              </div>
+
+              <div [ngClass]="{'shink_line': r.desc}" class="list--detail">
+                <div *ngIf="rename != index && editDescription != index">
+                  <div [class]=" r.desc ? 'tb-name-title-desc' : 'tb-name-title'">
+                    <a (click)="openFolder(r.id,r.encrypted)" class="folder-color-hover" data-toggle="tooltip" title="{{r.name}}">{{r.name
+                      | splice_length: 65}}</a>
+                  </div>
+                  <div *ngIf="r.desc" class="tb-name">
+                    <small class="tb-name-desc folder-color-hover" data-toggle="tooltip" title="{{r.desc}}">{{r.desc |
+                      splice_length: 85}}</small>
+                  </div>
+                </div>
+                <div *ngIf="rename == index" class="input-group edit-name-action">
+                  <div class="form-group">
+                    <input #renameInput type="text" class="form-control form-control-sm" [value]="r.name" (keyup.esc)="rename = -1"
+                      (keypress)="onKeyPress($event)" (keyup.enter)="changeName(r)" (focusout)="rename = -1" maxlength="255"
+                      [(ngModel)]="model.change_name" #renameInput="ngModel">
+                    <i class="form-group__bar"></i>
+                  </div>
+                  &nbsp;
+                  <button class="btn btn-success waves-effect" (mousedown)="triggerNameChange(r)">
+                    <i class="fal fa-check"></i>
+                  </button>
+                  <!-- <button class="btn btn-success waves-effect" (click)="changeName(r)">
+                    <i class="fal fa-check"></i>
+                  </button> -->
+                  &nbsp;
+                  <button class="btn btn-danger waves-effect" (click)="rename = -1">
+                    <i class="fal fa-times"></i>
+                  </button>
+                </div>
+                <div *ngIf="editDescription == index">
+                  <div class="input-group edit-name-action">
+                    <div class="form-group form-group--float">
+                      <input #editDescriptionInput type="text" class="form-control form-control-sm form-control--active"
+                        [value]="r.desc" (keyup.esc)="editDescription = -1" (keyup.enter)="changeDescription(r)"
+                        maxlength="255" [(ngModel)]="model.change_description" #editDescriptionInput="ngModel">
+                      <label class="folder-color-hover">{{r.name}}</label>
+                      <i class="form-group__bar"></i>
+                    </div>
+                    &nbsp;
+                    <!-- <button class="btn btn-success waves-effect" (mousedown)="triggerDescriptionChange()">
+                      <i class="fal fa-check"></i>
+                    </button> -->
+                    <button class="btn btn-success waves-effect" (click)="changeDescription(r)">
+                      <i class="fal fa-check"></i>
+                    </button>
+                    &nbsp;
+                    <button class="btn btn-danger waves-effect" (click)="editDescription = -1">
+                      <i class="fal fa-times"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </td>
+
+          <!-- UPDATED -->
+          <td *ngIf="!groupList" class="d-none d-lg-table-cell">
+            <span data-toggle="tooltip" title="{{ r.mtime * 1000 | date: 'EEEE, d MMM yyyy - HH:mm:ss Z' }}">{{ r.mtime
+              *
+              1000 | date: 'dd.MM.yyyy - HH:mm:ss' }}</span>
+          </td>
+          <!-- SIZE -->
+          <td class="folder-color-hover" class="d-none d-lg-table-cell">
+            {{ r.size | customFileSize }}
+          </td>
+          <!-- LAST UPDATE -->
+          <td *ngIf="groupList" class="d-none d-lg-table-cell">
+            <span data-toggle="tooltip" title="{{ r.mtime * 1000 | date: 'EEEE, d MMM yyyy - HH:mm:ss Z' }}">{{ r.mtime
+              *
+              1000 | date: 'dd.MM.yyyy - HH:mm:ss' }}</span>
+          </td>
+          <!-- OWNER -->
+          <td *ngIf="!groupList" class="d-none d-lg-table-cell folder-color-hover td--hide">
+            {{ r.owner_edited }}
+          </td>
+          <!-- PERMISSTIONS -->
+          <td *ngIf="!groupList" class="d-none d-lg-table-cell td--hide">
+            <span *ngIf="r.permission === 'rw'" [innerHTML]="'PERMISSIONS.READ_WRITE' | translate: params"></span>
+            <span *ngIf="r.permission === 'r'" [innerHTML]="'PERMISSIONS.READ' | translate: params"></span>
+          </td>
+
+          <td *ngIf="groupList" class="d-none d-lg-table-cell folder-color-hover">
+            <span>{{ r.owner }}</span>
+          </td>
+          <td class="d-none d-lg-table-cell td__options">
+            <!-- START HOVER ACTIONS -->
+            <div class="vertical-items">
+              <div *ngIf="index==hoveredIndex && r.type === 'repo'" class="manager__width">
+                <a data-target="#share-modal" (click)="shareFolder(r,index)" data-toggle="tooltip" [title]="'TOOLTIPS.SHARE' | translate: params">
+                  <i class="actions__item fal fa-share-alt"></i>
+                </a>
+                <a data-target="#remove-folder-modal" (click)="removeFolder(r,index)" data-toggle="tooltip" [title]="'TOOLTIPS.DELETE' | translate: params">
+                  <i class="actions__item fal fa-trash-alt"></i>
+                </a>
+                <div class="dropup actions__item">
+                  <span data-toggle="tooltip" [title]="'TOOLTIPS.MORE_OPERATIONS' | translate: params">
+                    <i data-toggle="dropdown" class="actions__item fal fa-ellipsis-v"></i>
+                    <div class="dropdown-menu dropdown-menu-right">
+                      <a [routerLink]="" role="button" class="dropdown-item" (click)="rename = index" (click)="clickOnNameChange(r.name)" [innerHTML]="'BUTTONS.RENAME' | translate: params"></a>
+                      <a [routerLink]="" role="button" class="dropdown-item" (click)="editDescription = index" (click)="clickOnEditDescription(r.desc)"
+                        [innerHTML]="'BUTTONS.EDIT_DESCRIPTION' | translate: params"></a>
+                      <a [routerLink]="" role="button" class="dropdown-item" (click)="transferFolder(r,index)"
+                        [innerHTML]="'BUTTONS.TRANSFER' | translate: params"></a>
+                      <a [routerLink]="" role="button" class="dropdown-item" (click)="historySetting(r,index)"
+                        [innerHTML]="'BUTTONS.HISTORY_SETTING' | translate: params"></a>
+                      <a [routerLink]="" role="button" class="dropdown-item" *ngIf="!r.encrypted" (click)="viewShareLinks(r,index)" [innerHTML]="'BUTTONS.SHARE_LINKS' | translate: params"></a>
+                      <a [routerLink]="" role="button" class="dropdown-item" *ngIf="r.encrypted" (click)="changePassword(r,index)"
+                        [innerHTML]="'BUTTONS.CHANGE_PASSWORD' | translate: params"></a>
+                      <a [routerLink]="" role="button" class="dropdown-item" (click)="viewDetails(r)" [innerHTML]="'BUTTONS.DETAILS' | translate: params"></a>
+                      <a [routerLink]="" role="button" class="dropdown-item" (click)="copyInternalLinkToClipboard(r)" [innerHTML]="'BUTTONS.COPY_INTERNAL_LINK' | translate: params"></a>
+                    </div>
+                  </span>
+                </div>
+              </div>
+              <!-- END HOVER ACTIONS -->
+
+              <!-- LEAVE SHARE WITH ME -->
+              <div *ngIf="index===hoveredIndex && r.type === 'srepo'">
+                <a (click)="leaveShare(r)" data-toggle="tooltip" [title]="'TOOLTIPS.LEAVE_SHARE' | translate: params">
+                  <i class="actions__item fal fa-trash-alt"></i>
+                </a>
+              </div>
+
+              <!-- UNSHARE GROUP -->
+              <div *ngIf="index===hoveredIndex && groupList">
+                <a *ngIf="isStaff || r.share_from_me" (click)="unShareGroup(r)" data-toggle="tooltip" [title]="'TOOLTIPS.UNSHARE' | translate: params">
+                  <i class="actions__item fal fa-trash-alt"></i>
+                </a>
+              </div>
+
+              <!-- UNSHARE SHARED WITH GROUP -->
+              <div *ngIf="index===hoveredIndex && r.type === 'grepo' && r.groupid">
+                <a (click)="unSharedWithGroup(r)" data-toggle="tooltip" [title]="'TOOLTIPS.UNSHARE' | translate: params">
+                  <i class="actions__item fal fa-trash-alt"></i>
+                </a>
+              </div>
+
+              <!-- UNSHARE ORGANIZATION -->
+              <div *ngIf="index===hoveredIndex && r.type==='grepo' && r.share_type==='public'">
+                <a (click)="unShareOrg(r)" data-toggle="tooltip" [title]="'TOOLTIPS.UNSHARE' | translate: params">
+                  <i class="actions__item fal fa-trash-alt"></i>
+                </a>
+              </div>
+            </div>
+            <!-- END VERTICAL -->
+          </td>
+          <td class="d-sm-table-cell d-md-table-cell d-lg-none">
+            <a [href]="'#folders-'+index" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="share-0">
+              <i data-toggle="tooltip" title="Details" class="fal fa-2x fa-ellipsis-v actions__item"></i>
+            </a>
+          </td>
+        </tr>
+
+        <!-- Collapse details of share link for sm display -->
+        <tr class="d-sm-table-row d-md-table-row d-lg-none share-details-row">
+          <td colspan="10">
+            <div class="collapse" [id]="'folders-'+index">
+              <div class="share-details">
+                <div *ngIf="!groupList">
+                  <span data-toggle="tooltip" title="{{ r.mtime * 1000 | date: 'EEEE, d MMM yyyy - HH:mm:ss Z' }}">
+                    <strong>{{'TABLE.COLUMNS.UPDATED'
+                      | translate}}: </strong>
+                    {{ r.mtime
+                    *
+                    1000 | date: 'dd.MM.yyyy - HH:mm:ss' }} </span>
+                </div>
+                <div>
+                  <span>
+                    <strong>{{'TABLE.COLUMNS.SIZE'
+                      | translate}}: </strong>
+                    {{ r.size | customFileSize }} </span>
+
+                </div>
+                <div *ngIf="groupList">
+                  <span data-toggle="tooltip" title="{{ r.mtime * 1000 | date: 'EEEE, d MMM yyyy - HH:mm:ss Z' }}">
+                    <strong>{{'TABLE.COLUMNS.UPDATED'
+                      | translate}}: </strong>
+                    {{ r.mtime
+                    *
+                    1000 | date: 'dd.MM.yyyy - HH:mm:ss' }} </span>
+                </div>
+                <div *ngIf="!groupList">
+                  <span>
+                    <strong>{{'TABLE.COLUMNS.OWNER'
+                      | translate}}: </strong>
+                    {{ r.owner_edited }} </span>
+                </div>
+                <div *ngIf="!groupList">
+                  <span>
+                    <strong>{{'TABLE.COLUMNS.PERMISSIONS' |
+                      translate: params}}: </strong>
+                    <span *ngIf="r.permission === 'rw'" [innerHTML]="'PERMISSIONS.READ_WRITE' | translate: params"></span>
+                    <span *ngIf="r.permission === 'r'" [innerHTML]="'PERMISSIONS.READ' | translate: params"></span>
+                  </span>
+                </div>
+                <div *ngIf="groupList">
+                  <span>
+                    <strong>{{'TABLE.COLUMNS.OWNER'
+                      | translate}}: </strong>
+                    {{ r.owner }} </span>
+                </div>
+
+                <div class="actions">
+                  <ng-container *ngIf="r.type === 'repo'">
+                    <a data-target="#share-modal" (click)="shareFolder(r,index)" data-toggle="tooltip" [title]="'TOOLTIPS.SHARE' | translate: params">
+                      <i class="actions__item fal fa-share-alt"></i>
+                    </a>
+                    <a data-target="#remove-folder-modal" (click)="removeFolder(r,index)" data-toggle="tooltip"
+                      [title]="'TOOLTIPS.DELETE' | translate: params">
+                      <i class="actions__item fal fa-trash-alt"></i>
+                    </a>
+                    <div class="dropup actions__item">
+                      <span data-toggle="tooltip" [title]="'TOOLTIPS.MORE_OPERATIONS' | translate: params">
+                        <i data-toggle="dropdown" class="actions__item fal fa-ellipsis-v"></i>
+                        <div class="dropdown-menu dropdown-menu-right">
+                          <a [routerLink]="" role="button" class="dropdown-item" (click)="rename = index" (click)="clickOnNameChange(r.name)"
+                            [innerHTML]="'BUTTONS.RENAME' | translate: params"></a>
+                          <a [routerLink]="" role="button" class="dropdown-item" (click)="editDescription = index" (click)="clickOnEditDescription(r.desc)"
+                            [innerHTML]="'BUTTONS.EDIT_DESCRIPTION' | translate: params"></a>
+                          <a [routerLink]="" role="button" class="dropdown-item" (click)="transferFolder(r,index)"
+                            [innerHTML]="'BUTTONS.TRANSFER' | translate: params"></a>
+                          <a [routerLink]="" role="button" class="dropdown-item" (click)="historySetting(r,index)"
+                            [innerHTML]="'BUTTONS.HISTORY_SETTING' | translate: params"></a>
+                          <a [routerLink]="" role="button" class="dropdown-item" *ngIf="!r.encrypted" (click)="viewShareLinks(r,index)" [innerHTML]="'BUTTONS.SHARE_LINKS' | translate: params"></a>
+                          <a [routerLink]="" role="button" class="dropdown-item" *ngIf="r.encrypted"
+                            (click)="changePassword(r,index)" [innerHTML]="'BUTTONS.CHANGE_PASSWORD' | translate: params"></a>
+                          <a [routerLink]="" role="button" class="dropdown-item" (click)="viewDetails(r)" [innerHTML]="'BUTTONS.DETAILS' | translate: params"></a>
+                          <a [routerLink]="" role="button" class="dropdown-item" (click)="copyInternalLinkToClipboard(r)" [innerHTML]="'BUTTONS.COPY_INTERNAL_LINK' | translate: params"></a>
+                        </div>
+                      </span>
+                    </div>
+                  </ng-container>
+                  <!-- LEAVE SHARE WITH ME -->
+                  <ng-container *ngIf="r.type === 'srepo'">
+                    <a (click)="leaveShare(r)" data-toggle="tooltip" [title]="'TOOLTIPS.LEAVE_SHARE' | translate: params">
+                      <i class="actions__item fal fa-trash-alt"></i>
+                    </a>
+                  </ng-container>
+                  <!-- UNSHARE GROUP -->
+                  <ng-container *ngIf="groupList">
+                    <a *ngIf="isStaff || r.share_from_me" (click)="unShareGroup(r)" data-toggle="tooltip" [title]="'TOOLTIPS.UNSHARE' | translate: params">
+                      <i class="actions__item fal fa-trash-alt"></i>
+                    </a>
+                  </ng-container>
+                  <!-- UNSHARED WITH GROUP -->
+                  <ng-container *ngIf="r.type === 'grepo' && r.groupid">
+                    <a (click)="unSharedWithGroup(r)" data-toggle="tooltip" [title]="'TOOLTIPS.UNSHARE' | translate: params">
+                      <i class="actions__item fal fa-trash-alt"></i>
+                    </a>
+                  </ng-container>
+                  <!-- UNSHARE ORGANIZATION -->
+                  <ng-container *ngIf="r.type === 'grepo' && r.share_type === 'public'">
+                    <a (click)="unShareOrg(r)" data-toggle="tooltip" [title]="'TOOLTIPS.UNSHARE' | translate: params">
+                      <i class="actions__item fal fa-trash-alt"></i>
+                    </a>
+                  </ng-container>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+</div>
+
+<app-unshare-modal *ngIf="openUnshareModal" [type]="'Folder'" [name]="currentItem.name" [data]="currentItem.id"
+  (UnshareCallBack)="unshareCallBack($event)"></app-unshare-modal>

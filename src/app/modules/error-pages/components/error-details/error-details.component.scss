@@ -1,0 +1,11 @@
+.page-404 {
+  background-color: #f3f3f4;
+  height: 100vh;
+}
+
+a {
+  color: #0067b3 !important;
+  &:hover {
+    text-decoration: underline!important;
+  }
+}

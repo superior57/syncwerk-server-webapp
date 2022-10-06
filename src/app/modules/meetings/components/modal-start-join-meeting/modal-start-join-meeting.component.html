@@ -1,0 +1,21 @@
+<div class="modal-content">
+  <div class="modal-body">
+    <div *ngIf="is_starting_joining_meeting">
+      <div *ngIf="mode === 'START'">{{ 'MEETING.START_JOIN_MEETING_MODAL.STARTING_MEETING' | translate }}</div>
+      <div *ngIf="mode === 'JOIN'">{{ 'MEETING.START_JOIN_MEETING_MODAL.JOINING_MEETING' | translate }}</div>
+    </div>
+    <div *ngIf="!is_starting_joining_meeting && show_password_field">
+      <div class="form-group">
+        <label>{{ 'MEETING.START_JOIN_MEETING_MODAL.PROVIDE_PASSWORD' | translate }}</label>
+        <input appFocus class="form-control" type="password" [(ngModel)]="meetingPassword"/>
+        <i class="form-group__bar"></i>
+      </div>
+      <div class="form-group">
+        <button type="button" class="btn btn-success btn-block btn--icon-text waves-effect" (click)="startJoinMeeting()">
+          <!-- <i *ngIf="isProcessing" class="fal fa-refresh fa-spin" style="margin-right: 5px;"></i> -->
+          <span>{{ 'BUTTONS.SUBMIT' | translate }}</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

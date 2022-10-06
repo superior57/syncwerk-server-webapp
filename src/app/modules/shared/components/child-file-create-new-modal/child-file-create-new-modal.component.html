@@ -1,0 +1,37 @@
+<div class="modal fade" id="modal-create-child-file" tabindex="-1">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h5 class="modal-title pull-left custom-title">
+          <span *ngIf="createType === 'File'">{{'CREATE_FILE_FOLDER_MODAL.NEW_FILE' | translate}}</span>
+          <span *ngIf="createType === 'Folder'">{{'CREATE_FILE_FOLDER_MODAL.NEW_FOLDER' | translate}}</span>
+          <span *ngIf="createType !== 'File' && createType !=='Folder'">{{'CREATE_FILE_FOLDER_MODAL.NEW' | translate}}
+            {{createType}} {{'CREATE_FILE_FOLDER_MODAL.FILE' | translate}}</span>
+        </h5>
+
+      </div>
+      <!-- Modal Body -->
+      <div class="modal-body">
+        <form #folderForm="ngForm" (keyup.enter)="create(nameFolderFormControl.value)">
+
+          <div class="form-group" [ngClass]="{'has-danger':((nameFolderFormControl.errors || errors) && nameFolderFormControl.touched)}">
+            <label [innerHTML]="'FORMS.INPUTS.NAME' | translate"></label>
+            <input #name type="text" class="form-control input-mask" maxlength="255" [formControl]="nameFolderFormControl"
+              required [ngClass]="{'form-control-danger': ((nameFolderFormControl.errors || errors) && nameFolderFormControl.touched)}">
+            <i class="form-group__bar"></i>
+          </div>
+          <p class="error-msg">{{errors}}</p>
+          <p class="sub-error-msg">{{ subError }}</p>
+        </form>
+      </div>
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success btn--icon-text waves-effect" (click)="create(nameFolderFormControl.value)">
+          <span [innerHTML]="'BUTTONS.CREATE' | translate"></span>
+        </button>
+        <button type="button" class="btn btn-secondary btn--icon-text waves-effect" (click)="closeModal()" [innerHTML]="'CREATE_FILE_FOLDER_MODAL.CLOSE_MODAL' | translate"></button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,21 @@
+.modal-sm {
+  max-width: 400px;
+}
+
+.custom-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.sub-error-msg {
+	line-height: 1rem;
+}
+
+@media screen and (max-width:575px){
+  .modal-dialog {
+      position: relative;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) !important;
+  }
+}

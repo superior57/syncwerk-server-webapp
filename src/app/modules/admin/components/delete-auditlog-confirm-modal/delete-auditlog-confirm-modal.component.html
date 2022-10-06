@@ -1,0 +1,20 @@
+<div class="modal fade" id="delete-auditlog-confirm-modal" tabindex="-1">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" [innerHTML]="'ADMIN.AUDIT_LOG.MODAL.HEADER' | translate"></h3>
+      </div>
+
+      <div class="modal-body" [innerHTML]="'ADMIN.AUDIT_LOG.MODAL.BODY' | translate">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger btn--icon-text waves-effect" (click)="deleteAuditLog()">
+          <span [innerHTML]="'BUTTONS.YES' | translate"></span>
+        </button>
+        <button type="button" class="btn btn-secondary btn--icon-text waves-effect" data-dismiss="modal">
+          <span [innerHTML]="'BUTTONS.NO' | translate"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

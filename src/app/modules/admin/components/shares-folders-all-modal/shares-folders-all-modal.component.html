@@ -1,0 +1,42 @@
+<div class="modal fade" id="shares-folders-all-modal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          <span [innerHTML]="'MODALS.TITLES.SHARE' | translate: params"></span>
+          <span class="modal-title-name">{{ shareItem.name }}</span>
+        </h5>
+      </div>
+      <div class="modal-body">
+        <aside class="share-menu">
+          <div class="scrollbar-inner">
+            <ul class="navigation">
+              <li class="share-li" [ngClass]="{'share-li-active':currentContentTab === 0}" (click)="changeTab(0)">
+                <p class="cusor-p" [innerHTML]="'MODAL_SHARE.NAVIGATIONS.SHARE_TO_USER' | translate: params"></p>
+              </li>
+              <li class="share-li" [ngClass]="{'share-li-active':currentContentTab === 1}" (click)="changeTab(1)">
+                <p class="cusor-p" [innerHTML]="'MODAL_SHARE.NAVIGATIONS.SHARE_TO_GROUP' | translate: params"></p>
+              </li>
+            </ul>
+          </div>
+        </aside>
+        <div class="content-share-modal">
+          <form #folderForm="ngForm">
+            <app-share-to-user-folders-all *ngIf="currentContentTab === 0" [repoID]="shareItem.repoID" [emailOwner]="shareItem.owner"
+              (dfUser)="deleteFolderUser($event)"></app-share-to-user-folders-all>
+            <app-share-to-group-folders-all *ngIf="currentContentTab === 1" [repoID]="shareItem.repoID" [emailOwner]="shareItem.owner"
+              (dfGroup)="deleteFolderGroup($event)"></app-share-to-group-folders-all>
+          </form>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-link" data-dismiss="modal">
+          <span [innerHTML]="'BUTTONS.CLOSE' | translate: params"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-modal-delete-remove *ngIf="showRequired" [typeDelete]="typeShare === 'user' ? 'Share To User' : (typeShare === 'group' ? 'Share To Group' : '')"
+  [itemName]="nameDelete" (submitDeleteItem)="onSubmitDeleteItem()"></app-modal-delete-remove>

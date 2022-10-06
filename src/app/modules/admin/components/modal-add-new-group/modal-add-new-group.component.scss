@@ -1,0 +1,35 @@
+.modal-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #0067b3;
+}
+
+tag-input tag-input-dropdown ::ng-deep ng2-dropdown div.ng2-dropdown-menu {
+  top: inherit !important;
+  left: inherit !important;
+  max-height: 300px;
+  .user-avt {
+    // float: left;
+    // margin-right: 10px;
+    margin-top: -5px;
+    img {
+      width: 32px;
+      height: 32px;
+      border-radius: 50px;
+    }
+  }
+  .user-detail {
+    height: 2rem;
+    margin-top: -10px;
+  }
+}
+
+
+:host ::ng-deep tag-input-form {
+  width: 100%;
+}
+
+
+:host ::ng-deep .ng2-tag-input__text-input {
+  width: 100%;
+}

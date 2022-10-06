@@ -1,0 +1,20 @@
+.card {
+  width: 80%;
+  @extend .transform-x-y-center;
+
+  .card-header {
+    text-align: center;
+    padding: 70px;
+    font-size: 1.2rem;
+  }
+}
+
+.transform-x-y-center {
+	top: 50%;
+	left: 50%;
+	position: absolute;
+	transform: translate(-50%, -50%);
+	-o-transform: translate(-50%, -50%);
+	-moz-transform: translate(-50%, -50%);
+	-webkit-transform: translate(-50%, -50%);
+}

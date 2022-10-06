@@ -1,0 +1,58 @@
+.modal-sm {
+  max-width: 420px;
+  .modal-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #0067b3;
+    .modal-title-name {
+      font-weight: bold;
+      word-break: break-all;
+      margin: 0px 5px;
+    }
+  }
+  .modal-body {
+    font-size: 14px;
+  }
+}
+
+.error-msg {
+  margin-top: 0px;
+  color: #e10032;
+}
+
+tag-input tag-input-dropdown ::ng-deep ng2-dropdown div.ng2-dropdown-menu {
+  top: inherit !important;
+  left: inherit !important;
+  max-height: 300px;
+  .user-avt {
+    // float: left;
+    // margin-right: 10px;
+    margin-top: -5px;
+    img {
+      width: 32px;
+      height: 32px;
+      border-radius: 50px;
+    }
+  }
+  .user-detail {
+    height: 2rem;
+    margin-top: -10px;
+  }
+}
+
+:host ::ng-deep tag-input-form {
+  width: 100%;
+  .ng2-tag-input__text-input {
+    width: 100%;
+  }
+}
+.ng2-tag-input.text-input.ng-untouched.ng-pristine.ng-valid{
+  width: 100%;
+}
+
+.modal.show .modal-dialog {
+  @media (max-width: 575px) {
+    width: 90%;
+    margin: 20px auto;
+  }
+}

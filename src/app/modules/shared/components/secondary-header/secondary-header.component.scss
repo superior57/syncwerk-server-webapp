@@ -1,0 +1,29 @@
+.header__logo {
+  a {
+    color: white;
+  }
+}
+
+:host ::ng-deep select2 .select2-container--default .select2-selection--single .select2-selection__rendered {
+  color: #fff;
+ }
+ :host ::ng-deep select2 .select2-container--default .select2-selection--single:before{
+   transform: rotate(45deg);
+   top: 15px;
+ }
+ :host ::ng-deep select2 .select2-container--default .select2-selection--single{
+   border-bottom: 0px solid transparent !important;
+ }
+ :host ::ng-deep select2 .select2-container--default .select2-selection--single .select2-selection__rendered{
+   padding:  14px 14px;
+ }
+ :host ::ng-deep select2  span{
+   width: 80px;
+ }
+ :host select2 ::ng-deep span#select2-5vko-container {
+   padding-left: 12px;
+ }
+
+.header-items {
+  width: 100%;
+}

@@ -1,0 +1,173 @@
+<header class="content__title">
+  <h1 class="d-flex align-items-center" data-toggle="tooltip">
+    <i class="fal fa-caret-circle-left fa-hc-fw icon-back-folders" (click)="backPage()"></i>
+    <strong>{{ repoName }}</strong> &nbsp;
+    <span class="modification" [innerHTML]="'HISTORY.TITLE' | translate: params"> </span>
+  </h1>
+  <small [innerHTML]="'HISTORY.TIP' | translate:params"></small>
+</header>
+
+<div class="card">
+  <div class="card-block">
+    <div class="data-table__header d-flex justify-content-betwwen">
+      <div class="form-group data-table__filter">
+        <input *ngIf="config.filtering" [placeholder]="'SEARCHS.ALL_COLUMNS' | translate: params" class="form-control"
+          (keyup)="onSearchFilterChange($event)" />
+        <i class="form-group__bar"></i>
+      </div>
+      <div class="row-selector">
+        <select2 class="select2-per-page" [data]="perPageSelectData" [options]="perPageSelectOptions" (valueChanged)="onPerPageChanged($event)"></select2>
+      </div>
+      <div class="expand">
+        <button type="button" class="btn btn-secondary waves-effect btn--icon-text mr-25px">
+          {{ 'BUTTONS.EXPAND_ALL' | translate }}
+        </button>
+      </div>
+    </div>
+
+    <!-- <table class="table table-hover mb-0">
+      <thead>
+        <tr>
+          <th *ngFor="let column of columns" [width]="column.width" (click)="column.sort!==false ? sortColumn(column, config) : ''">
+            <span [innerHTML]="column.title | translate"></span>
+            <ng-container>
+              <i *ngIf="column.sort==='asc'" class="fal fa-sort-amount-up sort-icon float-right ico--custom"></i>
+              <i *ngIf="column.sort==='desc'" class="fal fa-sort-amount-down sort-icon float-right ico--custom"></i>
+            </ng-container>
+          </th>
+          <th *ngIf="dir_permission === 'rw' && allowViewSnapshot">
+            <span [innerHTML]="'TABLE.COLUMNS.ACTIONS' | translate: params"></span>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of listHistoryDisplay; let index=index" (mouseover)="hoveredIndex=index" (mouseleave)="hoveredIndex=-1">
+          <th scope="row">
+            <div>
+              <span class="item-description"> {{item.description | splice_length: 35}}</span>
+              <span class="details" (click)="viewHistoryDetail(item)" [innerHTML]="'BUTTONS.DETAILS' | translate: params"></span>
+            </div>
+          </th>
+          <td>
+            <span data-toggle="tooltip" title="{{item.time  | amDateFormat:'ddd, D MMM YYYY HH:mm:ss ZZ'}}">{{item.time|
+              amTimeAgo}}</span>
+          </td>
+          <td class="td--custom">
+            <div *ngIf="item.name === ''; else existsName">Unknown</div>
+            <ng-template #existsName>
+              <i class="fal fa-user-alt ico--cus"></i>
+              <a (click)="profileName(item.contact_email)" class="name">
+                {{item.name}}
+              </a>
+            </ng-template>
+          </td>
+          <td>
+            <div *ngIf="item.client_version !== null; else nullClientVersion">
+              {{item.device_name}} / {{item.client_version}}
+            </div>
+            <ng-template #nullClientVersion>
+              Webapp
+            </ng-template>
+          </td>
+          <td *ngIf="dir_permission === 'rw' && allowViewSnapshot" style="padding-top: 0px;padding-bottom: 0px;width:20%">
+            <button class="btn btn-secondary" style="margin-top: 8px;" (click)="openSnapshot(item)" *ngIf="index === hoveredIndex && (item !== listHistoryDisplay[0] || page !== 1)">
+              {{ 'BUTTONS.VIEW_SNAPSHOT' | translate: params }}
+            </button>
+            <label class="current-version" *ngIf="index === hoveredIndex && item === listHistoryDisplay[0] && page === 1">
+              {{ 'BUTTONS.CURRENT_VERSION' | translate: params }}
+            </label>
+          </td>
+        </tr>
+      </tbody>
+    </table> -->
+
+    <!-- start accordion -->
+
+    <div id="accordion">
+
+      <div class="card" *ngFor="let item of listHistoryDisplay; let index=index">
+        <div class="card-header">
+          <a class="card-link" [ngClass]="{'preventClick': item.number_of_changes === 0}" data-toggle="collapse" [href]="this.slash + this.symbol + index"
+            (click)="viewHistoryDetail(item)">
+            {{item.time | amDateFormat:'DD.MM.YYYY - HH:mm:ss'}}-
+          </a>
+          <div class="box__items">
+            <a class="items__des" *ngIf="item.number_of_changes === 1">{{item.number_of_changes}} {{'HISTORY.CHANGE' |
+              translate}} -
+              {{item.description}}</a>
+            <a class="items__des" *ngIf="item.number_of_changes !== 1">{{item.number_of_changes}} {{'HISTORY.CHANGES' |
+              translate}}</a>
+          </div>
+          <a class="items__detail" data-toggle="collapse" [href]="this.slash + this.symbol + index" *ngIf="item.number_of_changes > 1"
+            (click)="viewHistoryDetail(item)">
+            {{ 'HISTORY.SHOW_DETAIL' | translate }}
+          </a>
+          -
+          <a *ngIf=" allowViewSnapshot" (click)="openSnapshot(item)" class="view__snap">{{ 'BUTTONS.VIEW_SNAPSHOT' | translate: params }}</a>
+          <div class="fl-right">
+            <div *ngIf="item.name === ''; else existsName">Unknown</div>
+            <ng-template #existsName>
+              <a (click)="profileName(item.contact_email)" class="name">
+                {{item.name}}
+              </a>
+            </ng-template>
+          </div>
+          <span class="card-link"></span>
+        </div>
+        <div [id]="this.symbol + index" class="collapse">
+          <div class="card-body">
+            <table class="table table-sm">
+              <thead>
+                <tr>
+                  <th width="80%">{{'HISTORY.ITEM_NAME' | translate}}</th>
+                  <th width="20%">{{'HISTORY.OPERATION' | translate}}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let operation of item.detailsForDisplay">
+                  <td class="td__item__name">{{operation.itemName}}</td>
+                  <td class="td__item__operation" *ngIf="operation.type === 'new'">{{'HISTORY.OPERATION_TYPE.NEW' |
+                    translate}}</td>
+                  <td class="td__item__operation" *ngIf="operation.type === 'removed'">{{'HISTORY.OPERATION_TYPE.REMOVE'
+                    |
+                    translate}}</td>
+                  <td class="td__item__operation" *ngIf="operation.type === 'newdir'">{{'HISTORY.OPERATION_TYPE.NEW_DIR'
+                    |
+                    translate}}</td>
+                  <td class="td__item__operation" *ngIf="operation.type === 'renamed'">{{'HISTORY.OPERATION_TYPE.RENAME'
+                    |
+                    translate}}</td>
+                  <td class="td__item__operation" *ngIf="operation.type === 'modified'">{{'HISTORY.OPERATION_TYPE.MODIFIED'
+                    |
+                    translate}}</td>
+                  <td class="td__item__operation" *ngIf="operation.type === 'deldir'">{{'HISTORY.OPERATION_TYPE.DELETE_DIR'
+                    |
+                    translate}}</td>
+                </tr>
+              </tbody>
+            </table>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- end accordion -->
+
+  </div>
+</div>
+<!--
+<div align="right">
+  <button (click)="prevPage()" [disabled]="page.page<=1" class="btn btn-info btn--icon-text waves-effect">
+    <i class="zmdi zmdi-arrow-back"></i>
+    <span [innerHTML]="'BUTTONS.PREV' | translate: params"></span>
+  </button>
+  <button (click)="nextPage()" [disabled]="!more" class="btn btn-info btn--icon-text waves-effect">
+    <i class="zmdi zmdi-arrow-forward"></i>
+    <span [innerHTML]="'BUTTONS.NEXT' | translate: params"></span>
+  </button>
+</div> -->
+
+<pagination [itemsPerPage]="pagination.itemsPerPage" [totalItems]="pagination.totalNumberOfResult" (pageChanged)="pageChanged($event)"></pagination>
+
+<app-processing *ngIf="isProcessing"></app-processing>
+<app-history-details-modal [Data]="detailsData"></app-history-details-modal>

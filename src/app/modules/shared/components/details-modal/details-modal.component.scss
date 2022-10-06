@@ -1,0 +1,44 @@
+.modal-sm {
+    max-width: 500px;
+}
+
+.modal-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #0067b3;
+}
+.modal-title-name {
+    font-weight: bold;
+    word-break: break-all;
+    margin: 0px 5px 0px 0px;
+}
+
+.modal-body {
+    font-size: 14px;
+}
+
+.grid-item{
+    font-size: 7rem;
+    text-align: center;
+    cursor: pointer;
+}
+.asside-left {
+    left: 0;
+    height: 100%;
+    overflow: hidden;
+    z-index: 9;
+    float: left;
+    width: 25%;
+}
+.content-details-modal {
+    padding-top: 10px;
+    float: left;
+    width: 75%;
+}
+.left-icon {
+    width: 90px;
+}
+
+i#icon--custom {
+  font-size: 7rem;
+}

@@ -1,0 +1,44 @@
+
+
+.tb-padding-right {
+  padding-right: 5px;
+}
+
+.tb-row-menu-name {
+  text-align: center;
+  font-size: 20px;
+  width: 200px;
+  .vertical-tooltip {
+    @extend .item-vertically;
+  }
+}
+
+.card-header {
+  .actions {
+    right: 27px;
+    top: 26px;
+  }
+  .card-title {
+    padding-top: .75rem;
+    padding-bottom: .25rem;
+  }
+}
+
+
+.item-vertically {
+  top: 50%;
+  position: relative;
+  transform: translateY(-50%);
+  -o-transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+}
+
+
+
+.actions.list-grid-custom {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  top:12px;
+}

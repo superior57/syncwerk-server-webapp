@@ -1,0 +1,66 @@
+@media (min-width: 576px) {
+  .modal-dialog {
+    max-width: 700px;
+  }
+}
+
+.user-name {
+  .user-avatar {
+    margin-right: 0.7rem;
+    width: 2rem;
+    border-radius: 1rem;
+    padding-top: 3px;
+    padding-bottom: 3px;
+  }
+  &:hover {
+    //text-decoration: underline;
+  }
+  cursor: pointer;
+}
+
+tag-input tag-input-dropdown ::ng-deep ng2-dropdown div.ng2-dropdown-menu {
+  top: inherit !important;
+  left: inherit !important;
+  .user-avt {
+    // float: left;
+    // margin-right: 10px;
+    margin-top: -5px;
+    img {
+      width: 32px;
+      height: 32px;
+      border-radius: 50px;
+    }
+  }
+  .user-detail {
+    height: 2rem;
+    margin-top: -10px;
+  }
+}
+
+td {
+  vertical-align: middle;
+}
+
+.members-list {
+  height: auto;
+  max-height:  calc(100vh - 350px);
+  overflow-x: hidden;
+  width: 100% !important;
+}
+
+.fa-hc-1dot5 {
+  line-height: .75em;
+  vertical-align: -15%;
+  cursor: pointer;
+}
+
+.or {
+  padding: 0 10px;
+}
+
+:host ::ng-deep .select2-container .select2-selection--single {
+  height: 32px;
+}
+:host ::ng-deep .select2-container--default .select2-selection--single:before {
+  right: 5px;
+}

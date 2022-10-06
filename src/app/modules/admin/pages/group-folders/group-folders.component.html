@@ -1,0 +1,115 @@
+<header class="content__title">
+  <h1>
+    <i class="fal fa-caret-circle-left fa-hc-fw back-btn" [routerLink]="['/admin', 'groups']"></i>
+    <strong>{{ currentGroupInfo.groupName }}</strong> {{'ADMIN.GROUPS.TITLE.GROUP_FOLDERS' | translate}}
+  </h1>
+  <small>{{'ADMIN.GROUPS.SUBTITLE.GROUP_FOLDERS' | translate}}</small>
+</header>
+
+<div class="card">
+  <div class="card-block">
+    <div class="data-table__header d-flex justify-content-betwwen fl--custom">
+      <div class="form-group data-table__filter">
+        <input [placeholder]="'SEARCHS.ALL_COLUMNS' | translate" class="form-control" (keyup)="onSearchFilterChange($event)" />
+        <i class="form-group__bar"></i>
+      </div>
+      <div class="row-selector">
+        <app-row-selector (changed)="onPerPageChanged($event)"></app-row-selector>
+      </div>
+    </div>
+
+    <ng-container *ngIf="!isProcessing">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th width="40%">{{'ADMIN.GROUPS.LIST_GROUP_FOLDERS.TABLE_HEADERS.FOLDER_NAME' | translate}}</th>
+            <th width="25%" class="d-none d-lg-table-cell">{{'ADMIN.GROUPS.LIST_GROUP_FOLDERS.TABLE_HEADERS.SIZE' |
+              translate}}</th>
+            <th width="25%" class="d-none d-lg-table-cell">{{'ADMIN.GROUPS.LIST_GROUP_FOLDERS.TABLE_HEADERS.SHARED_BY'
+              | translate}}</th>
+            <th *ngIf="currentUserPermission.can_manage_folder !== false">
+              {{'ADMIN.GROUPS.LIST_GROUP_FOLDERS.TABLE_HEADERS.ACTION'
+              | translate}}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let folder of listFolderForDisplayed; let index=index">
+            <tr (mouseover)="hoveredIndex=index" (mouseleave)="hoveredIndex=-1">
+              <td class="tb-name">
+                <ng-container *ngIf="!settings.ENABLE_SYS_ADMIN_VIEW_REPO">
+                  <span class="icon-folder">
+                    <i class="fas fa-folder fa-fw tb-row-folder"></i>
+                    <i *ngIf="folder.encrypted" class="fal fa-key tb-row-folder-lock" data-toggle="tooltip"
+                      [title]="'TOOLTIPS.ENCRYPTED_FOLDER' | translate: params"></i>
+                  </span>
+                  <span class="name-folder">{{folder.name }}</span>
+                </ng-container>
+                <ng-container *ngIf="settings.ENABLE_SYS_ADMIN_VIEW_REPO">
+                  <span class="icon-folder" [ngClass]="{'cursor-pointer': !folder.encrypted }" (click)="!folder.encrypted ? viewFolders(folder) : ''">
+                    <i class="fas fa-folder fa-fw tb-row-folder"></i>
+                    <i *ngIf="folder.encrypted" class="fal fa-key tb-row-folder-lock" data-toggle="tooltip"
+                      [title]="'TOOLTIPS.ENCRYPTED_FOLDER' | translate: params"></i>
+                  </span>
+                  <span class="name-folder" [ngClass]="{'cursor-pointer': !folder.encrypted}" (click)="!folder.encrypted ? viewFolders(folder) : ''">{{
+                    folder.name }}</span>
+                </ng-container>
+              </td>
+              <td class="d-none d-lg-table-cell">
+                {{ folder.size | customFileSize }}
+              </td>
+              <td class="d-none d-lg-table-cell">
+                <a [routerLink]="['/admin','users','info', folder.shared_by]">{{ folder.shared_by }}</a>
+              </td>
+              <td *ngIf="currentUserPermission.can_manage_folder !== false" class="d-none d-lg-table-cell">
+                <ng-container *ngIf="hoveredIndex === index">
+                  <i data-toggle="toolip" [title]="'GROUP_MANAGEMENT.BUTTON_GROUP.UN_SHARE' | translate" class="fal fa-lg fa-trash-alt actions__item"
+                    (click)="openUnshareModal(folder)"></i>
+                </ng-container>
+              </td>
+              <td class="d-sm-table-cell d-md-table-cell d-lg-none">
+                <a [href]="'#folder-'+index" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="share-0">
+                  <i data-toggle="tooltip" title="Details" class="fal fa-2x fa-ellipsis-v actions__item"></i>
+                </a>
+              </td>
+            </tr>
+
+            <!-- Collapse details of share link for sm display -->
+            <tr class="d-sm-table-row d-md-table-row d-lg-none share-details-row">
+              <td colspan="10">
+                <div class="collapse" [id]="'folder-'+index">
+                  <div class="share-details">
+                    <div>
+                      <span>
+                        <strong>{{'ADMIN.GROUPS.LIST_GROUP_FOLDERS.TABLE_HEADERS.SIZE' |
+                          translate}}: </strong>
+                        <span>{{ folder.size | customFileSize }}</span>
+                      </span>
+                    </div>
+                    <div>
+                      <span>
+                        <strong>{{'ADMIN.GROUPS.LIST_GROUP_FOLDERS.TABLE_HEADERS.SHARED_BY'
+                          | translate}}: </strong>
+                        <span>{{ folder.shared_by }}</span>
+                      </span>
+                    </div>
+                    <div class="actions">
+                      <i data-toggle="toolip" [title]="'GROUP_MANAGEMENT.BUTTON_GROUP.UN_SHARE' | translate" class="fal fa-lg fa-trash-alt actions__item"
+                        (click)="openUnshareModal(folder)"></i> </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </ng-container>
+    <app-processing *ngIf="isProcessing"></app-processing>
+  </div>
+</div>
+
+<div class="data-table__footer">
+  <div class="wrapper__footer">
+    <pagination [itemsPerPage]="pagination.itemsPerPage" [boundaryLinks]="true" [maxSize]="maxSize" [totalItems]="listFolderFromAPI.length" (pageChanged)="pageChanged($event)"></pagination>
+  </div>
+</div>

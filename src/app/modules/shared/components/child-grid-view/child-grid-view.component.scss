@@ -1,0 +1,130 @@
+.grid-folder-lock {
+  font-size: 30px;
+  color: white;
+  margin-top: 47px;
+  margin-left: -30px;
+  position: absolute;
+}
+
+.grid-file-lock {
+  font-size: 30px;
+  margin-top: 11px;
+  margin-left: -59px;
+  position: absolute;
+}
+
+.file-lock {
+  font-size: 30px;
+  margin-top: -30px;
+  /* margin-left: -59px; */
+  position: absolute;
+}
+
+.grid-menu-button{
+  align-content: right;
+  position: absolute;
+  right: 20px;
+  z-index: 5;
+  top: 35px;
+  &.custom-control {
+    padding-left: 0;
+  }
+  &.custom-checkbox {
+    top: 3px;
+    .custom-control-input {
+      width: 31px;
+      height: 30px;
+      margin-left: -17px;
+    }
+    .custom-control-indicator {
+      border: 1px solid #0067b3;
+      width: 31px;
+      height: 30px;
+      margin-left: -17px;
+      &:before {
+        font-size: 1.8rem;
+        padding-top: 7px;
+      }
+    }
+  }
+}
+
+.tb-name-grid {
+  width: 70%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0 auto;
+  padding-bottom: 15px;
+  a {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+.grid-item{
+  text-align: center;
+  // cursor: pointer;
+  margin-bottom: 2rem;
+  // background: #f2f2f2;
+}
+.file-icon {
+  max-width: 150px;
+  max-height: 90px;
+}
+
+#icon--custom{
+  font-size: 84px;
+}
+
+.center-img{
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  // height: 8rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.btn-outline-info {
+  background-color: #f3f3f3;
+}
+
+.btn-outline-info:hover {
+  background-color: #0067b3;
+}
+
+.photos__item:hover {
+  background-color: #f3f3f3;
+}
+
+// .no-padding {
+//   padding-bottom: 0;
+//   padding-left: 0;
+//   padding-right: 0;
+// }
+
+@media(min-width: 1560px) and (max-width: 2880px) {
+  .col-xl-3 {
+    flex: 0 0 16.66667%;
+    max-width: 16.66667%;
+  }
+}
+
+@media(min-width: 2881px) {
+  .col-xl-3 {
+    flex: 0 0 8.33333%;
+    max-width: 8.33333%;
+  }
+}
+
+.file-starred {
+  font-weight: bold!important;
+}
+
+.btn--custom {
+  background: #0067b3;
+  color: #fff;
+}
+

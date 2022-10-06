@@ -1,0 +1,81 @@
+<!-- Use this sharing form to share existing folder on the cloud to the user.
+
+ -->
+
+<div class="card-block card-share">
+  <p class="modal__description" [innerHTML]="'MEETING.SHARE.USER_LINK_TEXT' | translate"></p>
+  <div class="wrapper">
+    <strong [innerHTML]="'TABLE.COLUMNS.USER' | translate">
+    </strong>
+    <p class="notice">{{ 'SEARCHS.NOTICE_INPUT_UNSER' | translate }}</p>
+    <span>
+      <tag-input [placeholder]="'+ ' + ('ADMIN.SETTINGS.COLLAPSES.USER' | translate)"
+        [secondaryPlaceholder]="(ENABLE_GLOBAL_ADDRESSBOOK ? 'SEARCHS.USER' : 'SEARCHS.USER_NO_ADDRESSBOOK') | translate"
+        [allowDupes]="false" [(ngModel)]="userListForShare" [onlyFromAutocomplete]="false" (keyup.enter)="onEnter()"
+        (onAdd)="onItemAdded($event)" [clearOnBlur]="false" [addOnPaste]="true">
+        <tag-input-dropdown [appendToBody]="false"
+          [autocompleteObservable]="ENABLE_GLOBAL_ADDRESSBOOK ? autocompleteUserList : null"
+          [matchingFn]="autoCompleteUserListMatching">
+          <ng-template let-item="item" let-index="index">
+            <div class="row">
+              <div class="col-md-2">
+                <div class="user-avt">
+                  <img [src]="item.templateData.avatar_url" />
+                </div>
+              </div>
+              <div class="col-md-10">
+                <div class="user-detail">
+                  <strong>{{ item.templateData.name }}</strong>
+                </div>
+                <div class="user-detail">
+                  ({{ item.templateData.email }})
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </tag-input-dropdown>
+      </tag-input>
+    </span>
+    <div class="d-flex fl--custom">
+      <div class="wrapper__permission">
+        <strong class="tb-permission" [innerHTML]="'MEETING.SHARE.ROLE' | translate"></strong>
+        <span>
+          <select2 class="select2-per-page" [data]="roleSelectData" [options]="roleSelectOptions" [value]="selectedRole"
+            (valueChanged)="onRoleSelectChange($event)"></select2>
+        </span>
+      </div>
+    </div>
+    <div>
+      <ng-container>
+        <button [disabled]="userListForShare.length <= 0" type="button" class="btn btn-info waves-effect btn--custom"
+          (click)="submitShareToUser()">
+          <span [innerHTML]="'BUTTONS.SUBMIT' | translate"></span>
+        </button>
+      </ng-container>
+    </div>
+  </div>
+  <div class="wrapper share-table-entry">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>{{'TABLE.COLUMNS.USER' | translate}}</th>
+          <th>{{'TABLE.COLUMNS.ROLE' | translate}}</th>
+          <th width="10%"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let shareEntry of userSharedFromAPI; let index=index" (mouseover)="hoveredIndex=index"
+          (mouseleave)="hoveredIndex=-1">
+          <td>{{ shareEntry.nickname }}</td>
+          <td>{{ shareEntry.role === 'ATTENDEE' ? 'Attendee' : 'Moderator' }}</td>
+          <td>
+            <!-- <ng-container *ngIf="hoveredIndex === index"> -->
+            <i data-toggle="tooltip" title="Remove" class="fal fa-lg fa-trash-alt actions__item"
+              (click)="removeShareToUserEntry(shareEntry)"></i>
+            <!-- </ng-container> -->
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

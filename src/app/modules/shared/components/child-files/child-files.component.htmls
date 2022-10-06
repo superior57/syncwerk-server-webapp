@@ -1,0 +1,350 @@
+<header *ngIf="validLib" class="content__title">
+  <h1 class="d-flex align-items-center" data-toggle="tooltip" title="{{ 'BUTTONS.GO_BACK' | translate}}">
+    <!-- data-toggle="tooltip" title="{{ titleReplaceFinal }}" -->
+    <i class="fal fa-caret-circle-left  icon-back-folders" (click)="goBack()"></i>
+    <!-- {{ titlePage }} -->
+    {{titleReplaceFinal}}
+  </h1>
+  <!-- <h1 *ngIf="typeRepo.includes('group--')">{{ 'TITLE_PAGE.GROUPS' | translate: params }}</h1> -->
+  <div class="actions">
+    <input *ngIf="!isListView" type="range" min="100" max="160" class="slider" [(ngModel)]="rangeSizeGrid" />
+    <app-list-grid-button (onChangeViewMode)="onChangeViewMode($event)"></app-list-grid-button>
+    <!-- <a class="actions__item fal fa-image"></a> -->
+  </div>
+  <app-breadcrumbs [breadcrumbs]="breadcrumbs" (sendDataBreadcrumbs)="receiveDataNavigateBreadcrumbs($event)"></app-breadcrumbs>
+</header>
+
+<app-password-folder-modal [repoId]="repoId" (OpenEncryptedFolderCallBack)="openEncryptedFolderCallBack($event)"></app-password-folder-modal>
+
+<div *ngIf="validLib" class="card" [ngClass]="{ 'encrypt' : isEncrypt }" (dragenter)="onDragEnter()" (dragleave)="isDropzoneShow = false">
+  <div class="card-block">
+    <div *ngIf="!isProcessing">
+      <div class="data-table__header d-flex justify-content-betwwen">
+
+        <!-- NON CHECK OPTIONS -->
+
+        <div class="non__check__options" *ngIf="countCheckedItem === 0">
+          <!-- NEW AND UPLOAD BUTTON -->
+          <div class="new__button items--1">
+            <button type="button" class="btn btn-secondary waves-effect margin-right-15px" data-toggle="dropdown"
+              data-toogle="tooltip" [title]="'TOOLTIPS.CREATE_NEW' | translate: params">
+              <span [innerHTML]="'TOOLTIPS.CREATE_NEW' | translate: params"></span>
+            </button>
+            <ul class="dropdown-menu dropdown-margin">
+              <li>
+                <a class="dropdown-item" (click)="openModalCreate('Folder')">
+                  <span [innerHTML]="'BUTTONS.NEW_FOLDER' | translate: params"></span>
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" (click)="openModalCreate('File')">
+                  <span [innerHTML]="'BUTTONS.NEW_FILE' | translate: params"></span>
+                </a>
+              </li>
+              <li class="divider dropdown-divider"></li>
+              <li>
+                <a class="dropdown-item" (click)="openModalCreate('Markdown')">
+                  <span [innerHTML]="'BUTTONS.NEW_MARKDOWN_FILE' | translate: params"></span>
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" (click)="openModalCreate('Excel')">
+                  <span [innerHTML]="'BUTTONS.NEW_EXCEL_FILE' | translate: params"></span>
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" (click)="openModalCreate('PowerPoint')">
+                  <span [innerHTML]="'BUTTONS.NEW_POWERPOINT_FILE' | translate: params"></span>
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" (click)="openModalCreate('Word')">
+                  <span [innerHTML]="'BUTTONS.NEW_WORD_FILE' | translate: params"></span>
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div *ngIf="countCheckedItem === 0" class="form-group items--2">
+            <button class="btn btn-secondary waves-effect margin-right-25px" (click)="openUpload()" *ngIf="dir_permission === 'rw'"
+              data-toogle="tooltip" [title]="'TOOLTIPS.UPLOAD' | translate: params">
+              <span [innerHTML]="'TOOLTIPS.UPLOAD' | translate: params"></span>
+            </button>
+          </div>
+
+          <!-- SEARCH -->
+          <div *ngIf="countCheckedItem === 0" class="form-group data-table__filter form-group items--3">
+            <input *ngIf="config.filtering" [placeholder]="'SEARCHS.ALL_COLUMNS' | translate: params" [(ngModel)]="config.filtering.filterString"
+              class="form-control items" (keyup)="changeTable(config)" />
+            <i class="form-group__bar"></i>
+          </div>
+
+          <!-- SELECT ROW -->
+          <div *ngIf="countCheckedItem === 0" class="row-selector form-group items--4">
+            <app-row-selector (changed)="onPerPageChanged($event)"></app-row-selector>
+          </div>
+
+          <!-- TRASH AND HISTORY -->
+          <div *ngIf="countCheckedItem === 0" class="data-table_buttons actions form-group items--5">
+            <i class="actions__item fal fa-trash-alt" (click)="trash()" *ngIf="dir_permission === 'rw'" data-toggle="tooltip"
+              [title]="'TOOLTIPS.TRASH' | translate: params"></i>
+            <i class="actions__item fal fa-history" *ngIf="parentPath==='/' && allowToViewHistory === true" (click)="history()"
+              data-toggle="tooltip" [title]="'TOOLTIPS.HISTORY' | translate: params"></i>
+          </div>
+
+        </div>
+        <!-- END NON CHECK OPTIONS -->
+
+        <!-- CHECK LIST OPTIONS -->
+        <div class="check__list__options" *ngIf="countCheckedItem > 0">
+
+          <!-- COUNT -->
+          <div *ngIf="countCheckedItem > 0" class="form-group">
+            <span class="count-items-checked">{{ countCheckedItem }} items selected </span>
+          </div>
+          <!-- MOVE -->
+          <div *ngIf="countCheckedItem > 0" class="form-group">
+            <button (click)="copyMoveChecked('move')" class="btn btn-secondary waves-effect btn--custom" data-toggle="tooltip"
+              [title]="'TOOLTIPS.MOVE' | translate: params">
+              <span [innerHTML]="'TOOLTIPS.MOVE' | translate: params"></span>
+            </button>
+          </div>
+
+          <!-- COPY -->
+          <div *ngIf="countCheckedItem > 0" class="form-group">
+            <button (click)="copyMoveChecked('copy')" class="btn btn-secondary waves-effect btn--custom" data-toggle="tooltip"
+              [title]="'TOOLTIPS.COPY' | translate: params">
+              <span [innerHTML]="'TOOLTIPS.COPY' | translate: params"></span>
+            </button>
+          </div>
+
+          <!-- DELETE -->
+          <div *ngIf="countCheckedItem > 0" class="form-group">
+            <button (click)="deleteChecked()" class="btn btn-secondary waves-effect btn--custom" data-toggle="tooltip"
+              [title]="'TOOLTIPS.DELETE' | translate: params">
+              <span [innerHTML]="'TOOLTIPS.DELETE' | translate: params"></span>
+            </button>
+          </div>
+
+          <!-- DOWNLOAD -->
+          <div *ngIf="countCheckedItem > 0" class="form-group">
+            <button (click)="downloadChecked()" class="btn btn-secondary waves-effect btn--custom" data-toggle="tooltip"
+              [title]="'TOOLTIPS.DOWNLOAD' | translate: params">
+              <span [innerHTML]="'TOOLTIPS.DOWNLOAD' | translate: params"></span>
+            </button>
+          </div>
+
+          <!-- FAVORITE -->
+          <div *ngIf="countCheckedItem > 0" class="form-group push-right" data-toggle="tooltip">
+            <button (click)="batchMarkFileStarred()" class="btn btn-secondary waves-effect btn--custom" data-toggle="tooltip"
+              [title]=" (checkFolderFavorite  ? 'TOOLTIPS.NOT_MARK_FAVORITE' : 'TOOLTIPS.FAVORITE') | translate: params"
+              [disabled]="checkFolderFavorite">
+              <span [innerHTML]=" 'TOOLTIPS.FAVORITE' | translate: params"></span>
+            </button>
+          </div>
+
+          <!-- SELECT ALL -->
+          <div *ngIf="countCheckedItem > 0" class="form-group">
+            <button (click)="checkAll()" class="btn btn-secondary waves-effect" data-toggle="tooltip" [title]="'TOOLTIPS.DOWNLOAD' | translate: params">
+              <span [innerHTML]="'BUTTONS.SELECT_ALL' | translate: params"></span>
+            </button>
+          </div>
+
+          <!-- UNSELECT ALL -->
+          <div *ngIf="countCheckedItem > 0" class="form-group">
+            <button (click)="uncheckAll()" class="btn btn-secondary waves-effect" data-toggle="tooltip" [title]="'TOOLTIPS.DOWNLOAD' | translate: params">
+              <span [innerHTML]="'BUTTONS.UNSELECT_ALL' | translate: params"></span>
+            </button>
+          </div>
+
+        </div>
+        <!-- END CHECK LIST OPTIONS -->
+      </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+      <!-- Start non checked list item -->
+      <div *ngIf="countCheckedItem === 0" class="form-group">
+
+        <!-- <button type="button" class="btn btn-secondary waves-effect margin-right-15px" data-toggle="dropdown"
+            data-toogle="tooltip" [title]="'TOOLTIPS.CREATE_NEW' | translate: params">
+            <span [innerHTML]="'TOOLTIPS.CREATE_NEW' | translate: params"></span>
+          </button>
+          <ul class="dropdown-menu dropdown-margin">
+            <li>
+              <a class="dropdown-item" (click)="openModalCreate('Folder')">
+                <span [innerHTML]="'BUTTONS.NEW_FOLDER' | translate: params"></span>
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" (click)="openModalCreate('File')">
+                <span [innerHTML]="'BUTTONS.NEW_FILE' | translate: params"></span>
+              </a>
+            </li>
+            <li class="divider dropdown-divider"></li>
+            <li>
+              <a class="dropdown-item" (click)="openModalCreate('Markdown')">
+                <span [innerHTML]="'BUTTONS.NEW_MARKDOWN_FILE' | translate: params"></span>
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" (click)="openModalCreate('Excel')">
+                <span [innerHTML]="'BUTTONS.NEW_EXCEL_FILE' | translate: params"></span>
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" (click)="openModalCreate('PowerPoint')">
+                <span [innerHTML]="'BUTTONS.NEW_POWERPOINT_FILE' | translate: params"></span>
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" (click)="openModalCreate('Word')">
+                <span [innerHTML]="'BUTTONS.NEW_WORD_FILE' | translate: params"></span>
+              </a>
+            </li>
+          </ul>DOWNLOAD
+
+        </div>
+        <div *ngIf="countCheckedItem === 0" class="form-group">
+          <button class="btn btn-secondary waves-effect margin-right-25px" (click)="openUpload()" *ngIf="dir_permission === 'rw'"
+            data-toogle="tooltip" [title]="'TOOLTIPS.UPLOAD' | translate: params">
+            <span [innerHTML]="'TOOLTIPS.UPLOAD' | translate: params"></span>
+          </button>
+        </div> -->
+
+        <!-- End non checked list item -->
+
+        <!-- Start checked list item -->
+        <!-- <div *ngIf="countCheckedItem > 0" class="form-group">
+          <span class="count-items-checked">{{ countCheckedItem }} items selected </span>
+        </div>
+
+        <div *ngIf="countCheckedItem > 0" class="form-group">
+          <button (click)="copyMoveChecked('move')" class="btn btn-secondary waves-effect btn--custom" data-toggle="tooltip"
+            [title]="'TOOLTIPS.MOVE' | translate: params">
+            <span [innerHTML]="'TOOLTIPS.MOVE' | translate: params"></span>
+          </button>
+        </div>
+        <div *ngIf="countCheckedItem > 0" class="form-group">
+          <button (click)="copyMoveChecked('copy')" class="btn btn-secondary waves-effect btn--custom" data-toggle="tooltip"
+            [title]="'TOOLTIPS.COPY' | translate: params">
+            <span [innerHTML]="'TOOLTIPS.COPY' | translate: params"></span>
+          </button>
+        </div>
+        <div *ngIf="countCheckedItem > 0" class="form-group">
+          <button (click)="deleteChecked()" class="btn btn-secondary waves-effect btn--custom" data-toggle="tooltip"
+            [title]="'TOOLTIPS.DELETE' | translate: params">
+            <span [innerHTML]="'TOOLTIPS.DELETE' | translate: params"></span>
+          </button>
+        </div>
+        <div *ngIf="countCheckedItem > 0" class="form-group">
+          <button (click)="downloadChecked()" class="btn btn-secondary waves-effect btn--custom" data-toggle="tooltip"
+            [title]="'TOOLTIPS.DOWNLOAD' | translate: params">
+            <span [innerHTML]="'TOOLTIPS.DOWNLOAD' | translate: params"></span>
+          </button>
+        </div>
+        <div *ngIf="countCheckedItem > 0" class="form-group push-right" data-toggle="tooltip">
+          <button (click)="batchMarkFileStarred()" class="btn btn-secondary waves-effect btn--custom" data-toggle="tooltip"
+            [title]=" (checkFolderFavorite  ? 'TOOLTIPS.NOT_MARK_FAVORITE' : 'TOOLTIPS.FAVORITE') | translate: params"
+            [disabled]="checkFolderFavorite">
+            <span [innerHTML]=" 'TOOLTIPS.FAVORITE' | translate: params"></span>
+          </button>
+        </div>
+        <div *ngIf="countCheckedItem > 0" class="form-group">
+          <button (click)="checkAll()" class="btn btn-secondary waves-effect" data-toggle="tooltip" [title]="'TOOLTIPS.DOWNLOAD' | translate: params">
+            <span [innerHTML]="'BUTTONS.SELECT_ALL' | translate: params"></span>
+          </button>
+        </div>
+        <div *ngIf="countCheckedItem > 0" class="form-group">
+          <button (click)="uncheckAll()" class="btn btn-secondary waves-effect" data-toggle="tooltip" [title]="'TOOLTIPS.DOWNLOAD' | translate: params">
+            <span [innerHTML]="'BUTTONS.UNSELECT_ALL' | translate: params"></span>
+          </button>
+        </div> -->
+        <!-- End checked list item -->
+        <!-- <div *ngIf="countCheckedItem === 0" class="form-group data-table__filter margin-right-25px">
+          <input *ngIf="config.filtering" [placeholder]="'SEARCHS.ALL_COLUMNS' | translate: params" [(ngModel)]="config.filtering.filterString"
+            class="form-control" (keyup)="changeTable(config)" />
+          <i class="form-group__bar"></i>
+        </div> -->
+        <!-- <div *ngIf="countCheckedItem === 0" class="row-selector">
+          <app-row-selector (changed)="onPerPageChanged($event)"></app-row-selector>
+        </div> -->
+
+        <!-- <div *ngIf="countCheckedItem === 0" class="data-table_buttons actions">
+          <i class="actions__item fal fa-trash-alt" (click)="trash()" *ngIf="dir_permission === 'rw'" data-toggle="tooltip"
+            [title]="'TOOLTIPS.TRASH' | translate: params"></i>
+          <i class="actions__item fal fa-history" *ngIf="parentPath==='/' && allowToViewHistory === true" (click)="history()"
+            data-toggle="tooltip" [title]="'TOOLTIPS.HISTORY' | translate: params"></i>
+        </div> -->
+      </div>
+      <div *ngIf="isDropzoneShow && dir_permission === 'rw'" class="tab-content file-drop-container">
+        <file-drop headertext="" (onFileDrop)="onfileDrop($event)">
+          <div class="row text-center">
+            <div class="col-12">
+              <div>
+                <i class="fal fa-cloud-upload fa-3x"></i>
+              </div>
+              <div>
+                <h3>
+                  <strong>
+                    <span [innerHTML]="'FILE_DROP.INTRUCTION' | translate: params"></span>
+                  </strong>
+                </h3>
+              </div>
+            </div>
+          </div>
+        </file-drop>
+      </div>
+
+      <div *ngIf="!isDropzoneShow">
+        <div *ngIf="listChildFileDisplay">
+          <div *ngIf="listChildFileDisplay.length > 0">
+            <!-- LIST VIEW -->
+            <app-child-list-view *ngIf="isListView" [listFiles]="listChildFileDisplay" [columns]="columns"
+              (ClickModalAction)="modalAction($event)" (SendInfoChecked)="handleInfoChecked($event)" [repoEncrypted]="repoEncrypted"
+              (sorted)="sortColumn($event, config)"></app-child-list-view>
+            <!-- GRID VIEW -->
+            <app-child-grid-view *ngIf="!isListView" [dataSource]="listChildFileDisplay" [rangeSize]="rangeSizeGrid"
+              (ClickModalAction)="modalAction($event)" (SendInfoChecked)="handleInfoChecked($event)" [repoEncrypted]="repoEncrypted"></app-child-grid-view>
+          </div>
+          <!-- 'ADMIN_AREA.FOLDERS.CHILD_SYSTEM.EMPTY_ITEM.DROP_FILES' | translate: params -->
+          <!-- EMPTY ITEM -->
+          <app-empty-item *ngIf="listChildFileDisplay.length === 0 && this.listFiles.length === 0" [messageTitle]="(listType === 'folder' ? 'EMPTY_MESSAGE.FOLDER_EMPTY_TITLE' : 'EMPTY_MESSAGE.SUBFOLDER_EMPTY_TITLE') | translate: params"
+            [messageSub]="(listType === 'folder' ? 'EMPTY_MESSAGE.FOLDER_EMPTY_SUBTITLE' : 'EMPTY_MESSAGE.SUBFOLDER_EMPTY_SUBTITLE') | translate: params"></app-empty-item>
+          <app-empty-item *ngIf="listChildFileDisplay.length === 0 && this.listFiles.length !== 0" [messageTitle]="'EMPTY_MESSAGE.FILE_NOT_FOUND' | translate: params"
+            [messageSub]="'EMPTY_MESSAGE.FILE_SUB_NOT_FOUND' | translate: params"></app-empty-item>
+        </div>
+
+        <div class="tips-drop">
+          <span [innerHTML]="'ADMIN_AREA.FOLDERS.CHILD_SYSTEM.EMPTY_ITEM.DROP_FILES' | translate: params"></span>
+        </div>
+
+        <app-child-file-create-new-modal [id]="repoId" [parentPath]="parentPath" [listFiles]="listChildFileDisplay"
+          [nameFolderFormControl]="nameFolderFormControl" [createType]="createType" [tail]="tail" (created)="loadListChildFile()"></app-child-file-create-new-modal>
+        <app-share-modal *ngIf="isOpenChildFilesModal.share" [shareItem]="currentShareItem"></app-share-modal>
+        <app-delete-file-modal *ngIf="isOpenChildFilesModal.delete" [Data]="currentData" [RepoId]="repoId" [Path]="parentPath"
+          [IsFolder]="false" (deleted)="loadListChildFile()"></app-delete-file-modal>
+        <app-details-modal *ngIf="isOpenChildFilesModal.detail" [Data]="currentData" [IsFolder]="false"></app-details-modal>
+        <app-child-file-upload-modal *ngIf="isOpenChildFilesModal.upload" [currentRepoId]="repoId" [currentPath]="parentPath"
+          (uploaded)="loadListChildFile()"></app-child-file-upload-modal>
+        <app-copy-move-modal *ngIf="isOpenChildFilesModal.copy_move" [dataCopyMove]="currentData" [parentPath]="parentPath"
+          [typeOperation]="typeCopyMove" (onCopyMovedSuccess)="onCopyMovedSuccess($event)"></app-copy-move-modal>
+      </div>
+    </div>
+    <app-processing *ngIf="isProcessing"></app-processing>
+  </div>
+</div>
+
+<pagination *ngIf="!isProcessing && config.paging && listChildFileDisplay.length > 0 && validLib" [(ngModel)]="page.page"
+  [totalItems]="length" [itemsPerPage]="page.itemsPerPage" [maxSize]="maxSize" [boundaryLinks]="true" [rotate]="false"
+  (pageChanged)="changeTable(config, $event)" (numPages)="numPages = $event"></pagination>

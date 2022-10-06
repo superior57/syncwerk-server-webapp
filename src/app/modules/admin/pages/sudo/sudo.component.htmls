@@ -1,0 +1,29 @@
+<div class="row">
+  <div class="col">
+  </div>
+  <div class="col-5">
+    <div class="card">
+      <div class="card-block">
+
+        <h4 class="card-title">{{ 'ADMIN.SUDO.TITLE' | translate }}</h4>
+        <div class="form-group">
+          <input appFocus [(ngModel)]="password" type="password" [placeholder]="'ADMIN.SUDO.PLACEHOLDER' | translate" class="form-control" (keyup)="onKeyup($event)" />
+          <i class="form-group__bar"></i>
+        </div>
+        <p>
+          <strong>{{ 'ADMIN.SUDO.TIPS_TITLE' | translate }}:</strong>
+          {{ 'ADMIN.SUDO.TIPS' | translate }}
+        </p>
+
+        <div class="actions">
+          <button [disabled]="isProcessing" class="btn btn-primary" (click)="unlockAdmin()">
+            <i *ngIf="isProcessing" class="fal fa-circle-o-notch fa-spin"></i>
+            <span [innerHTML]="'BUTTONS.SUBMIT' | translate"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col">
+  </div>
+</div>

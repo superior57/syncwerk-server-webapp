@@ -1,0 +1,40 @@
+.hight-light-text {
+  color: #FF5722 !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+}
+
+.modal-md {
+  max-width: 420px;
+
+  .modal-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #0067b3;
+  }
+
+  .modal-body {
+    font-size: 14px;
+
+    .modal-title-name {
+      font-weight: bold;
+      color: #e10032;
+      word-break: break-all;
+    }
+
+    .modal-warning {
+      color: #e10032;
+      word-break: break-word;
+      font-size: 13px;
+      font-weight: bold;
+    }
+  }
+}
+
+.modal.show .modal-dialog {
+  @media (max-width: 575px) {
+    width: 90%;
+    margin: 20px auto;
+  }
+}

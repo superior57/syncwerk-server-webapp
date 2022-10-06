@@ -1,0 +1,151 @@
+<header class="content__title">
+  <h1 [innerHTML]="'HOME.TITLE' | translate"></h1>
+  <small [innerHTML]="'HOME.SUBTITLE' | translate"></small>
+</header>
+
+<div class="card">
+  <div class="card-block">
+
+    <div class="data-table__header d-flex justify-content-betwwen">
+      <div class="form-group data-table__filter">
+        <input [placeholder]="'SEARCHS.ALL_COLUMNS' | translate" class="form-control" (keyup)="onSearchFilterChange($event)" />
+        <i class="form-group__bar"></i>
+      </div>
+      <div class="row-selector">
+        <app-row-selector (changed)="onPerPageChanged($event)"></app-row-selector>
+      </div>
+      <div class="form-group">
+        <button (click)="exportToCsv()" class="btn btn-secondary waves-effect btn--icon-text mr-25px">
+          {{'HOME.LOG_LIST.BTN_CSV_EXPORT' | translate}}</button>
+      </div>
+    </div>
+
+    <!-- List view -->
+    <ng-container *ngIf="!isProcessing">
+      <table class="table table-sm">
+        <tbody>
+          <ng-container *ngFor="let activity of activityLogListForDisplay; let index=index">
+            <ng-container *ngIf="index===0">
+              <tr>
+                <td class="date-separator" colspan="3">
+                  {{ activity.datetime | amDateFormat:'DD.MM.YYYY' }}
+                </td>
+              </tr>
+            </ng-container>
+            <ng-container *ngIf="index > 0 && activity.date !== activityLogListForDisplay[index-1].date">
+              <tr>
+                <td class="date-separator" colspan="3">
+                  {{ activity.datetime | amDateFormat:'DD.MM.YYYY' }}
+                </td>
+              </tr>
+            </ng-container>
+            <!-- Log source user-notifications -->
+            <ng-container *ngIf="activity.log_source==='user-notifications'">
+              <tr>
+                <td width="5%">
+                  <a *ngIf="!activity.detail.msg_from.is_default_avatar" routerLink="/user/profile/{{activity.detail.msg_from.email}}">
+                    <img src="{{activity.detail.msg_from.avatar_url}}" class="user-avatar" alt="">
+                  </a>
+                  <a *ngIf="activity.detail.msg_from.is_default_avatar" routerLink="/user/profile/{{activity.detail.msg_from.email}}"
+                    class="card__profile">
+                    <i class="fal fa-user"></i>
+                  </a>
+                </td>
+                <td width="80%">
+                  <div *ngIf="activity.detail.msg_type==='repo_share'" [routerLink]="['/files', 'shared-files', activity.detail.detail.repo_id]">
+                    <a [innerHTML]="'HEADER.NOTI_REPO_SHARE' | translate: {titleName: activity.detail.msg_from.name, folderName: activity.detail.detail.repo_name } "></a>
+                  </div>
+                  <div *ngIf="activity.detail.msg_type==='file_comment'" (click)="openFilePreview(activity.detail.detail.repo_id, activity.detail.detail.file_path)">
+                    <a [innerHTML]="'HEADER.NOTI_FILE_COMMENT' | translate: {fileName: activity.detail.detail.file_name, userName: activity.detail.msg_from.name }">
+                    </a>
+                  </div>
+                  <div *ngIf="activity.detail.msg_type==='add_user_to_group'" [routerLink]="['/files','groups', activity.detail.detail.group_id]">
+                    <a [innerHTML]="'HEADER.NOTI_ADD_USER_TO_GROUP' | translate: {userName: activity.detail.msg_from.name, groupName: activity.detail.detail.group_name}"></a>
+                  </div>
+                  <div *ngIf="activity.detail.msg_type==='repo_share_to_group'" [routerLink]="['/files','groups',activity.detail.detail.group_id]">
+                    <a [innerHTML]="'HEADER.NOTI_SHARE_TO_GROUP' | translate: {userName: activity.detail.msg_from.name, folderName: activity.detail.detail.repo_name, groupName: activity.detail.detail.group_name}"></a>
+                  </div>
+                  <div *ngIf="activity.detail.msg_type==='group_msg'">
+                    <div *ngIf="activity.detail.msg_from; else msg_unknown" [routerLink]="['/files','groups',activity.detail.detail.group_id]">
+                      <a [innerHTML]="'HEADER.NOTI_POSTER_DISCUSSION' | translate:{userName: activity.detail.msg_from.name, groupName: activity.detail.detail.group_name, messText: activity.detail.detail.message}"></a>
+                    </div>
+                    <ng-template #msg_unknown>
+                      <div [routerLink]="['/files','groups', activity.detail.detail.group_id]">
+                        <a [innerHTML]="'HEADER.NOTI_POSTER_DISCUSSION_UNKNOW' | translate: {groupName: activity.detail.detail.group_name, messText: detail.message}"></a>
+                      </div>
+                    </ng-template>
+                  </div>
+                  <div *ngIf="activity.detail.msg_type==='file_uploaded'">
+                    <div *ngIf="activity.detail.detail.repo_id !== 'undefined'" ; else upload_unknown [routerLink]="['/folders',activity.detail.detail.repo_id]">
+                      <a [innerHTML]="'HEADER.NOTI_FILE_UPLOADED' | translate: {fileName: activity.detail.detail.file_name, folderName:  activity.detail.detail.name}"></a>
+                    </div>
+                    <ng-template #upload_unknown>
+                      <div [routerLink]="[activity.detail.detail.file_name]">
+                        <a [innerHTML]="'HEADER.NOTI_FILE_UPLOADED_UNKNOW' | translate: {fileName: activity.detail.detail.file_name}"></a>
+                      </div>
+                    </ng-template>
+                  </div>
+                </td>
+                <td>
+                  {{ activity.datetime | amDateFormat:'YYYY-MM-DD - HH:mm:ss' }}
+                </td>
+              </tr>
+            </ng-container>
+            <!-- Log source comes from admin log -->
+            <ng-container *ngIf="activity.log_source==='admin-logs'">
+              <tr>
+                <td width="5%">
+                  <a *ngIf="!activity.user_info.is_default_avatar" routerLink="/user/profile/{{activity.user_info.email}}">
+                    <img src="{{activity.user_info.avatar_url}}" class="user-avatar" alt="">
+                  </a>
+                  <a *ngIf="activity.user_info.is_default_avatar" routerLink="/user/profile/{{activity.user_info.email}}"
+                    class="card__profile">
+                    <i class="fal fa-user"></i>
+                  </a>
+                </td>
+                <td width="80%">
+                  <ng-container *ngIf="activity.type==='group_transfer'">
+                    <div *ngIf="currentUserInfo.email === activity.detail.from.email">
+                      <a [innerHTML]="'HOME.LOG_LIST.LOG_GROUP_TRANSFER_TO' | translate: activity.detail"></a>
+                    </div>
+                    <div *ngIf="currentUserInfo.email === activity.detail.to.email">
+                      <a [innerHTML]="'HOME.LOG_LIST.LOG_GROUP_TRANSFER_FROM' | translate: activity.detail"></a>
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf="activity.type==='repo_transfer'">
+                    <div *ngIf="currentUserInfo.email === activity.detail.from.email">
+                      <a [innerHTML]="'HOME.LOG_LIST.LOG_REPO_TRANSFER_TO' | translate: activity.detail"></a>
+                    </div>
+                    <div *ngIf="currentUserInfo.email === activity.detail.to.email">
+                      <a [innerHTML]="'HOME.LOG_LIST.LOG_REPO_TRANSFER_FROM' | translate: activity.detail"></a>
+                    </div>
+                  </ng-container>
+                  <div *ngIf="activity.type==='repo_create'">
+                    <a [innerHTML]="'HOME.LOG_LIST.LOG_REPO_CREATE' | translate: activity.detail"></a>
+                  </div>
+                  <div *ngIf="activity.type==='repo_delete'">
+                    <a [innerHTML]="'HOME.LOG_LIST.LOG_REPO_DELETE' | translate: activity.detail"></a>
+                  </div>
+                  <div *ngIf="activity.type==='group_create'">
+                    <a [innerHTML]="'HOME.LOG_LIST.LOG_GROUP_CREATE' | translate: activity.detail"></a>
+                  </div>
+                  <div *ngIf="activity.type==='group_delete'">
+                    <a [innerHTML]="'HOME.LOG_LIST.LOG_GROUP_DELETE' | translate: activity.detail"></a>
+                  </div>
+                </td>
+                <td>
+                  {{ activity.datetime | amDateFormat:'YYYY-MM-DD - HH:mm:ss' }}
+                </td>
+              </tr>
+            </ng-container>
+          </ng-container>
+        </tbody>
+      </table>
+    </ng-container>
+    <app-processing *ngIf="isProcessing"></app-processing>
+  </div>
+</div>
+
+<div class="data-table__footer">
+  <pagination [itemsPerPage]="pagination.itemsPerPage" [totalItems]="pagination.totalItems" (pageChanged)="pageChanged($event)"></pagination>
+</div>

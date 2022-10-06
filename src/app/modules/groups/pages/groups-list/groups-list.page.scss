@@ -1,0 +1,433 @@
+.title-group {
+  font-weight: bold;
+}
+
+.contacts__item {
+  cursor: pointer;
+
+  .name-group {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+  }
+}
+
+.pad-height {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+
+  .title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #8c8c8c;
+  }
+
+  .card-subtitle {
+    font-size: 14px;
+  }
+}
+
+.loading {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  background: #083142;
+  opacity: 0.8;
+  z-index: 10;
+
+  img {
+    width: 20rem;
+    @extend .transform-x-y-center;
+  }
+}
+
+tr{
+  &:hover{
+    .list--options{
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+}
+
+.transform-x-y-center {
+	top: 50%;
+	left: 50%;
+	position: absolute;
+	transform: translate(-50%, -50%);
+	-o-transform: translate(-50%, -50%);
+	-moz-transform: translate(-50%, -50%);
+	-webkit-transform: translate(-50%, -50%);
+}
+
+.contacts__img > img {
+  max-width: 80px;
+  max-height: 80px;
+}
+
+.icon-empty {
+  background-color: lightgrey;
+}
+
+.group-action {
+  position: absolute;
+  right: 25px;
+  z-index: 2;
+  top: 15px;
+  color: lightgrey;
+  :hover {
+    color: grey;
+  }
+  @media (max-width:400px) {
+    right: 1px;
+  }
+}
+
+.img-loading {
+  height: 200px;
+  @extend .item-center;
+  img {
+    width: 100px;
+  }
+}
+
+.form-group {
+  .mr-25px{
+    margin-top: 4px;
+  }
+}
+
+.item-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.groups__item {
+  background-color: #fafafa;
+}
+
+.groups__info strong {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+table {
+  .groups__img {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .text-ellipsis {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  td {
+    vertical-align: middle;
+    max-width: 0;
+  }
+
+  th {
+    padding-left: 6px;
+  }
+}
+
+.groups__img {
+  width: 7rem;
+  display: flex !important;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 0px auto;
+  .avatar-img {
+    margin: 3px;
+  }
+}
+
+.empty--member {
+  width: 3rem;
+  height: 3rem;
+  background:gray;
+  margin: 3px;
+}
+
+.data-table__header {
+  .data-table__filter {
+    margin-right: 25px;
+    width: 100%;
+    max-width: 100%;
+  }
+  .row-selector {
+    min-width: 11rem;
+  }
+  .data-table_buttons {
+    margin: 10px 0 0 30px;
+  }
+}
+
+
+:host ::ng-deep {
+  pagination {
+    ul.pagination {
+      padding-right: 2rem;
+      justify-content: flex-end;
+    }
+  }
+}
+
+@media(min-width: 1560px) and (max-width: 2880px) {
+  .col-xl-3 {
+    flex: 0 0 16.66667%;
+    max-width: 16.66667%;
+  }
+}
+
+@media(min-width: 2881px) {
+  .col-xl-3 {
+    flex: 0 0 8.33333%;
+    max-width: 8.33333%;
+  }
+}
+a.a--custom {
+  color: #9c9c9c;
+}
+.list--options {
+  line-height: 43px;
+  opacity: 0;
+  visibility: hidden;
+  i.fa {
+      padding: 10px 0px;
+  }
+}
+
+.table-sm td {
+  padding: 0.75rem 0.5rem;
+  @media (max-width: 991px) {
+    padding: 0px;
+  }
+}
+
+ @media (max-width:991px){
+  tr{
+    &:hover{
+      background-color: #efefef;
+    }
+    th{
+      &:last-child{
+        text-align: right;
+      }
+    }
+    td{
+      .share-details:hover {
+          background: #fff;
+      }
+      &:last-child{
+        text-align: right;
+      }
+    }
+  }
+}
+
+.share-details-row {
+  padding: 0px;
+  td {
+    padding: 0px;
+    .share-details {
+      text-align: left;
+      padding: 0.75rem 1rem;
+      border: solid 1px lightgrey;
+      text-align: left;
+      .actions {
+        margin-top: 1rem;
+        .actions__item {
+          width: auto;
+          margin-right: 10px;
+        }
+      }
+    }
+  }
+}
+
+
+i.fal.fa-2x.fa-ellipsis-v.actions__item {
+  color: #000;
+  width: 2.5rem;
+  height: 2.5rem;
+  background: #fefefe;
+  line-height: 2.5rem;
+  margin-right: 7px;
+}
+
+@media (max-width: 768px){
+  .fl--custom{
+    flex-wrap: wrap;
+  }
+  .data-table__filter{
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-right: 0px !important;
+    margin-bottom: 0px;
+  }
+  .form-group {
+      margin-bottom: 10px;
+  }
+  .row-selector {
+      position: absolute;
+      top: 23px;
+      right: 15px;
+  }
+}
+
+@media (max-width: 360px){
+  .row-selector {
+      position: static;
+  }
+}
+
+.card-block{
+  position: relative;
+}
+
+small.text-truncate {
+  display: block;
+}
+
+@media (max-width:519px){
+  .empty--member, .avatar-img, .avatar-char{
+    width: 21px;
+    height: 21px;
+    line-height: 21px;
+  }
+  td{
+    padding: 4px 0px !important;
+  }
+}
+
+@media (max-width:359px){
+  .empty--member, .avatar-img, .avatar-char{
+    width: 15px;
+    height: 15px;
+    line-height: 15px;
+  }
+}
+
+.actions.list-grid-custom {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  top:12px;
+}
+
+.slider {
+  -webkit-appearance: none;
+  margin-top: 13px;
+  margin-right: 10px;
+  height: 2px;
+  border-radius: 5px;
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+  // background: #e10032;
+
+  @media (max-width:320px){
+    width:80px;
+    margin-top:15px;
+  }
+}
+
+input[type=range] {
+  /*removes default webkit styles*/
+  -webkit-appearance: none;
+  /*fix for FF unable to apply focus style bug */
+  // border: 1px solid white;
+  /*required for proper track sizing in FF*/
+  width: 90%;
+  margin-right: 10px;
+  margin-top: -13px;
+  @media (max-width:600px) {
+    margin-right: -40px;
+  }
+}
+input[type=range]::-webkit-slider-runnable-track {
+  width: 47%;
+  height: 2px; // 5
+  background: #ddd;
+  border: none;
+  border-radius: 3px;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  border: none;
+  height: 12px;
+  width: 12px;
+  border-radius: 0px;
+  background: #0067b3;;
+  margin-top: -4px;
+}
+input[type=range]:focus {
+  outline: none;
+}
+input[type=range]:focus::-webkit-slider-runnable-track {
+  background: #ccc;
+}
+
+input[type=range]::-moz-range-track {
+  width: 64px;
+  height: 5px;
+  background: #ddd;
+  border: none;
+  border-radius: 3px;
+}
+input[type=range]::-moz-range-thumb {
+  border: none;
+  height: 12px;
+  width: 12px;
+  border-radius: 0px;
+  background: #0067b3;;
+}
+
+/*hide the outline behind the border*/
+input[type=range]:-moz-focusring{
+  outline: 1px solid white;
+  outline-offset: -1px;
+}
+
+input[type=range]::-ms-track {
+  width: 64px;
+  height: 5px;
+  /*remove bg colour from the track, we'll use ms-fill-lower and ms-fill-upper instead */
+  background: transparent;
+  /*leave room for the larger thumb to overflow with a transparent border */
+  border-color: transparent;
+  border-width: 6px 0;
+  /*remove default tick marks*/
+  color: transparent;
+}
+input[type=range]::-ms-fill-lower {
+  background: #d3d3d3;
+  border-radius: 10px;
+}
+input[type=range]::-ms-fill-upper {
+  background: #ddd;
+  border-radius: 10px;
+}
+input[type=range]::-ms-thumb {
+  border: none;
+  height: 12px;
+  width: 12px;
+  border-radius: 0px;
+  background:#0067b3;;
+}
+input[type=range]:focus::-ms-fill-lower {
+  background: #888;
+}
+input[type=range]:focus::-ms-fill-upper {
+  background: #ccc;
+}
+

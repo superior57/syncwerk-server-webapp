@@ -1,0 +1,105 @@
+<div class="modal fade" id="manage-group-members" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">
+          <span style="font-weight: bold;">{{ groupInfo.name }}</span> Members
+        </h5>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-5">
+            <div class="form-group">
+              <tag-input placeholder="+ User" secondaryPlaceholder="{{'MODALS.TRANSFER.TYPE_TO_SEARCH_USER' | translate}}"
+                [allowDupes]="false" [(ngModel)]="memberListToAdd" [onlyFromAutocomplete]="true">
+                <tag-input-dropdown [matchingFn]="autoCompleteUserListMatching" [appendToBody]="false" [autocompleteObservable]="autocompleteUserList">
+                  <ng-template let-item="item" let-index="index">
+                    <div class="row">
+                      <div class="col-md-2">
+                        <div class="user-avt">
+                          <img [src]="item.templateData.avatar_url" />
+                        </div>
+                      </div>
+                      <div class="col-md-10">
+                        <div class="user-detail">
+                          <strong>{{ item.templateData.name }}</strong>
+                        </div>
+                        <div class="user-detail">
+                          ({{ item.templateData.email }})
+                        </div>
+                      </div>
+                    </div>
+                  </ng-template>
+                </tag-input-dropdown>
+              </tag-input>
+            </div>
+          </div>
+          <div class="col-md-7">
+            <div style="margin-top: 10px;">
+              <button type="button" class="btn btn-info btn--icon-text waves-effect" (click)="addMemberToGroup()">
+                Add
+              </button>
+              <span class="or">or</span>
+              <app-import-members-modal [groupInfo]="groupInfo" (onImportMembersSuccess)="importMembersSuccess()"></app-import-members-modal>
+              <!-- <div class="btn-group">
+                <input appInputFileLabel type="file" name="file" id="csv-file-selector" accept=".csv" pattern="*.csv" class="inputfile" (change)="onFileChange($event)"
+                />
+                <label class="btn btn-info btn--icon-text waves-effect" for="csv-file-selector">
+                  Choose a file
+                </label>
+                <button type="button" class="btn btn-info waves-effect fal fa-upload" data-toggle="tooltip" title="Import Members">
+                  Import Members
+                </button>
+                <button type="button" class="btn btn-info waves-effect fal fa-download" data-toggle="tooltip" title="Download CSV Example">
+                </button>
+              </div> -->
+            </div>
+          </div>
+        </div>
+        <div class="row members-list scrollable-menu scrollbar-macosx">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th width="32.5%">Name</th>
+                <th width="32.5%">Email</th>
+                <th width="25%">Role</th>
+                <th width="10%"></th>
+              </tr>
+            </thead>
+            <tbody *ngIf="groupMemberList.length > 0 && currentLoginUser !== null">
+              <tr *ngFor="let member of groupMemberList; let index=index" (mouseover)="hoveredIndex=index" (mouseleave)="hoveredIndex=-1">
+                <td>
+                  <span class="user-name" (click)="openUserProfile(member.email)">
+                    <img class="user-avatar" [src]="member.avatar_url" alt="">{{ member.name }}
+                  </span>
+                </td>
+                <td>{{ member.email }}</td>
+                <td (focusout)="editRoleIndex===-1">
+                  <div *ngIf="member.role.toLowerCase() !== 'owner' && (editRoleIndex === -1 || editRoleIndex === undefined || editRoleIndex === null || editRoleIndex !== index)">
+                    <span style="margin-right: 10px;">{{ member.role }}</span>
+                    <i *ngIf="hoveredIndex===index && canChangeRole(member)" class="fal fa-pen fa-hc-1dot5"
+                      (click)="editRoleIndex=index" data-toggle="tooltip" title="Edit"></i>
+                  </div>
+                  <div *ngIf="editRoleIndex===index && canChangeRole(member)">
+                    <select2 [data]="exampleData" [options]="options" [value]="member.is_admin" [cssImport]="true"
+                      [width]="100" (valueChanged)="changeGroupMemberRole(member, $event)" (focusout)="onFocusOut()"></select2>
+                  </div>
+                </td>
+                <td>
+                  <div *ngIf="hoveredIndex === index && canRemove(member)">
+                    <a (click)="removeMember(member, index)" data-toggle="tooltip" title="Delete">
+                      <i class="fal fa-trash-alt fa-hc-1dot5"></i>
+                    </a>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer text-right">
+        <button type="button" class="btn btn-secondary btn--icon-text waves-effect" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

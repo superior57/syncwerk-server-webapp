@@ -1,0 +1,23 @@
+<div class="modal fade" id="upload-child-file-modal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left" [innerHTML]="'UPLOAD_FILES_FOLDERS.TITLE' | translate"></h5>
+      </div>
+      <div class="modal-body">
+        <dropzone [config]="configUploadLink" [message]="'UPLOAD_FILES_FOLDERS.DESC' | translate" (addedfile)="onAddedfile($event)"
+          (queuecomplete)="onQueueComplete($event)" (complete)="onComplete($event)" (removedfile)="onRemoveFile($event)">
+        </dropzone>
+      </div>
+      <div class="modal-footer">
+        <button [disabled]="isProcessing" type="button" class="btn btn-success btn--icon-text waves-effect" (click)="upload()">
+          <i *ngIf="isProcessing" class="zmdi zmdi-rotate-right fa-hc-spin"></i>
+          <span [innerHTML]="'BUTTONS.UPLOAD' | translate"></span>
+        </button>
+        <button type="button" class="btn btn-secondary btn--icon-text waves-effect" data-dismiss="modal">
+          <span [innerHTML]="'BUTTONS.CLOSE' | translate"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

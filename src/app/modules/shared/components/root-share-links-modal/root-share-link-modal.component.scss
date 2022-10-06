@@ -1,0 +1,88 @@
+.share-menu {
+    left: 0;
+    height: 100%;
+    overflow: hidden;
+    z-index: 9;
+    float: left;
+    width: 20%;
+}
+
+.share-li {
+    width: 80%;
+    text-align: left;
+    margin-top: 5px;
+    border: none;
+    box-shadow: none;
+    border-radius: 2px;
+    padding: 8px;
+    p {
+        margin: 0;
+    }
+}
+
+.share-li-active {
+    @extend .share-li;
+    background-color: #f3f3f3;
+}
+
+.cusor-p {
+    cursor: pointer;
+    margin-top: -2px;
+
+}
+
+.content-share-modal {
+    float: left;
+    width: 80%;
+}
+
+.modal-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #0067b3;
+}
+
+.modal-title-name {
+    font-weight: bold;
+    word-break: break-all;
+    margin: 0px 5px 0px 0px;
+}
+
+i#icon--listview {
+  font-size: 34px;
+  margin-left: 4px;
+}
+
+.table-narrow {
+    td {
+        padding: 0.75rem;
+    }
+    th {
+        padding: 0.75rem;
+    }
+    table-layout: fixed;
+}
+
+.row-icon {
+  float: left;
+
+  .folder-icon {
+    font-size: 30px;
+    float: left;
+    margin-top: -5px;
+  }
+
+  .file-icon {
+    margin-top: -5px;
+    max-width: 29px;
+    max-height: 30px;
+  }
+}
+
+.tb-name {
+  word-break: break-all;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-left:10px;
+  white-space: nowrap;
+}

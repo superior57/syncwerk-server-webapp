@@ -1,0 +1,89 @@
+<header class="content__title">
+  <h1>
+    <i class="fal fa-caret-circle-left fa-hc-fw icon-back-folders" (click)="goBack()"></i>
+    {{ currentFolderName }}
+  </h1>
+  <app-breadcrumbs2 [breadcrumbs]="breadcrumbs"></app-breadcrumbs2>
+</header>
+
+<div class="card">
+  <div class="card-block">
+    <div *ngIf="!isProcessing">
+      <div *ngIf="!getErr" [ngClass]="{ 'encrypt' : isEncrypt }">
+        <div class="data-table">
+          <div class="data-table__header d-flex justify-content-between">
+            <div class="form-group data-table__filter">
+              <input *ngIf="config.filtering" [placeholder]="'SEARCHS.ALL_COLUMNS' | translate: params" [(ngModel)]="config.filtering.filterString"
+                class="form-control" (keyup)="changeTable(config)" />
+              <i class="form-group__bar"></i>
+            </div>
+            <select2 class="select2-per-page" [data]="perPageSelectData" [options]="perPageSelectOptions" [value]="page.itemsPerPage"
+              (valueChanged)="onPerPageChanged($event)"></select2>
+          </div>
+        </div>
+
+        <table *ngIf="listChildFoldersDisplay.length > 0" class="table table-hover">
+          <thead>
+            <tr>
+              <th *ngFor="let column of columns" [width]="column.width" (click)="column.sort!==false ? sortColumn(column, config) : ''">
+                <span [innerHTML]="column.title | translate"></span>
+                <i class="fal fa-hc-lg float-right" [ngClass]="{'zmdi-sort-amount-asc': column.sort==='asc', 'zmdi-sort-amount-desc': column.sort==='desc'}"></i>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of listChildFoldersDisplay; let index=index" (mouseover)="hoveredIndex=index"
+              (mouseleave)="hoveredIndex=-1">
+              <td class="tb-name">
+                <div class="row">
+                  <div class="col-12 col-md-9 vertical-items">
+                    <div *ngIf="item.type==='dir'" class="icon-tb-name cursor-pointer" (click)="openFolder(item.name)">
+                      <i class="fas fa-folder fa-fw icon-folder icon--custom"></i>
+                    </div>
+                    <div *ngIf="item.type==='file'" class="icon-tb-name vertical-items">
+                      <img *ngIf="!item.imgError || (item.imgError && item.imgError !==1 ) " style="transition: all 0.5s"
+                        [ngStyle]="{ 'transform': 'scale(' + rangeTransformScale + ')'} " (error)="setErrorImg(index) "
+                        class="icon-file" max-height="90px " src="{{ item.name | fileIconPath: false: repoID: parentPath + item.name: 500 }} ">
+                      <!-- <img *ngIf="(item.imgError && item.imgError === 1)" class="icon-file" src="{{ item.name | customFileIcon }}"> -->
+                      <div *ngIf="(item.imgError && item.imgError===1 ) ">
+                        <i class="{{ item.name | customFileIcon }}" id="icon--custom--listview"></i>
+                      </div>
+                    </div>
+                    <span (click)="item.type==='dir' && openFolder(item.name)" [ngClass]="{'cursor-pointer': item.type==='dir'}">{{
+                      item.name }}</span>
+                  </div>
+                  <div class="col-6 col-md-3 vertical-items">
+                    <div *ngIf="index===hoveredIndex">
+                      <!-- <i class="actions__item fal fa-trash-alt green-color-hover" (click)="deleteItem(item)"></i> -->
+                      <i *ngIf="item.type==='file'" class="actions__item fal fa-download green-color-hover" (click)="downloadFile(item.name)"></i>
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <span *ngIf="item.type==='file'">{{ item.size | customFileSize }}</span>
+              </td>
+              <td>
+                <span data-toggle="tooltip" title="{{ item.mtime * 1000 | date: 'EEEE, d MMM yyyy - HH:mm:ss Z' }}">{{
+                  item.mtime * 1000 | date: 'dd.MM.yyyy - HH:mm:ss' }}</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <app-empty-item *ngIf="listChildFoldersDisplay.length === 0" [messageTitle]="'ADMIN_AREA.FOLDERS.CHILD_SYSTEM.EMPTY_ITEM.MSG_TITLE' | translate: params"
+          [messageSub]="'ADMIN_AREA.FOLDERS.CHILD_SYSTEM.EMPTY_ITEM.MSG_SUB_TITLE' | translate: params"></app-empty-item>
+      </div>
+    </div>
+    <app-processing *ngIf="isProcessing"></app-processing>
+    <app-password-folder-modal [repoId]="repoID" [isAdminView]="true" (OpenEncryptedFolderCallBack)="loadData()"></app-password-folder-modal>
+
+    <div *ngIf="getErr" class="alert alert-danger" role="alert">{{ errMsg }}</div>
+  </div>
+</div>
+
+<div *ngIf="listChildFoldersDisplay.length > 0" class="data-table__footer">
+  <pagination *ngIf="config.paging" [(ngModel)]="page.page" [totalItems]="length" [itemsPerPage]="page.itemsPerPage"
+    [maxSize]="maxSize" [boundaryLinks]="true" [rotate]="false" (pageChanged)="changeTable(config, $event)" (numPages)="numPages = $event">
+  </pagination>
+</div>

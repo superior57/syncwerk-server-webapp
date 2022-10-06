@@ -1,0 +1,322 @@
+<header class="content__title">
+  <h1 [innerHTML]="'LINKED_DEVICE.PAGE_TITLE' | translate:params"></h1>
+  <small [innerHTML]="'DEVICES.DESC' | translate:params"></small>
+  <div class="actions">
+    <app-list-grid-button (onChangeViewMode)="onChangeViewMode($event)"></app-list-grid-button>
+  </div>
+</header>
+
+<div class="card">
+  <div class="card-block">
+    <div *ngIf="!isProcessing">
+      <!-- FILTER -->
+      <div class="data-table__header d-flex justify-content-between">
+        <div class="form-group data-table__filter">
+          <input *ngIf="config.filtering" [placeholder]="'SEARCHS.ALL_COLUMNS' | translate: params" [(ngModel)]="config.filtering.filterString"
+            class="form-control" (keyup)="changeTable(config)" />
+          <i class="form-group__bar"></i>
+        </div>
+        <div>
+          <app-row-selector (changed)="onPerPageChanged($event)"></app-row-selector>
+        </div>
+      </div>
+
+      <!-- LIST VIEW -->
+
+      <div *ngIf="isListView === true">
+        <table *ngIf="listLinkedDevicesDisplay.length > 0" class="table table-hover mb-0">
+          <thead>
+            <tr>
+              <th *ngFor="let column of columns" [width]="column.width" class="cursor-pointer" (click)="column.sort!==false ? sortColumn(column, config) : ''">
+                {{ column.title | translate }}
+                <!-- <i class="fal fa-hc-lg float-right" [ngClass]="{'zmdi-sort-amount-asc': column.sort==='asc', 'zmdi-sort-amount-desc': column.sort==='desc'}"></i> -->
+                <ng-container>
+                  <i *ngIf="column.sort==='asc'" class="fal fa-sort-amount-up sort-icon float-right ico--custom"></i>
+                  <i *ngIf="column.sort==='desc'" class="fal fa-sort-amount-down sort-icon float-right ico--custom"></i>
+                </ng-container>
+              </th>
+              <th width="15%">{{ 'TABLE.COLUMNS.ACTIONS' | translate: params }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let device of listLinkedDevicesDisplay; let index=index" (mouseover)="hoveredIndex=index"
+              (mouseleave)="hoveredIndex=-1">
+              <td>{{ device.platform }}</td>
+              <td>{{ device.device_name }}</td>
+              <td>{{ device.last_login_ip }}</td>
+              <td>{{ device.last_accessed | amTimeAgo}}</td>
+              <td>
+                <a *ngIf="hoveredIndex === index" data-toggle="tooltip" [title]="'LINKED_DEVICE.UNLINK_TOOLTIP' | translate:param"
+                  (click)="handleOpenModal('remove', device)">
+                  <i class="actions__item fal fa-trash-alt fa-hc-lg"></i>
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- GRID VIEW -->
+
+      <div *ngIf="isListView !== true">
+        <div class="row lightbox photo">
+          <div *ngFor="let device of listLinkedDevicesDisplay" class="col-xl-3 col-lg-3 col-sm-4 col-6">
+            <div class="grid__items text-center">
+              <div *ngIf="device.platform === 'android'" class="text-center" data-toggle="tooltip" [title]="device.last_login_ip">
+                <i class="fab fa-android lg--size"></i>
+              </div>
+              <div *ngIf="device.platform === 'ios'" class="text-center">
+                <i class="fab fa-app-store-ios lg--size"></i>
+              </div>
+              <p>{{ device.device_name}}</p>
+              <a data-toggle="tooltip" [title]="'LINKED_DEVICE.UNLINK_TOOLTIP' | translate:param" (click)="handleOpenModal('remove', device)"
+                class="un__link">
+                <i class="actions__item fal fa-trash-alt fa-hc-lg"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- end grid view -->
+
+      <div *ngIf="listLinkedDevicesDisplay.length <= 0 && this.linkedDevices.length === 0" class="card text-center card-empty-item"
+        style="background-color: aliceblue">
+        <div class="card-header">
+          <h2 class="card-title">{{ 'LINKED_DEVICE.NO_DEVICE_HEADER' | translate:params }}</h2>
+          <small class="card-subtitle">{{ 'LINKED_DEVICE.NO_DEVICE_DESCRIPTION' | translate:params }}</small>
+          <small class="card-subtitle">{{ 'LINKED_DEVICE.APP_DOWNLOAD_DESC' | translate:params }}</small>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="grid-item">
+              <a href="https://play.google.com/store/apps/details?id=com.seafile.seadroid2">
+                <i class="fab fa-android" id="icon--logo"></i>
+              </a>
+              <div>
+                <p>
+                  <b>Android</b>
+                </p>
+              </div>
+              <div>
+                {{ 'LINKED_DEVICE.APP_REQUIREMENT_ANDROID' | translate:params }}
+              </div>
+              <hr>
+              <div>
+                <a href="https://play.google.com/store/apps/details?id=com.seafile.seadroid2">
+                  <button class="btn btn--icon-text btn-success">{{ 'LINKED_DEVICE.BUTTON_ANDROID' | translate:params
+                    }}</button>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="grid-item">
+              <a href="https://itunes.apple.com/de/app/SyncwerkApp/id1347288270?mt=8">
+                <i class="fab fa-app-store-ios" id="icon--logo"></i>
+              </a>
+              <div>
+                <p>
+                  <b>iOS</b>
+                </p>
+              </div>
+              <div>
+                {{ 'LINKED_DEVICE.APP_REQUIREMENT_IOS' | translate:params }}
+              </div>
+              <hr>
+              <div>
+                <a href="https://itunes.apple.com/de/app/SyncwerkApp/id1347288270?mt=8">
+                  <button class="btn btn--icon-text btn-success">{{ 'LINKED_DEVICE.BUTTON_IOS' | translate:params }}</button>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="grid-item">
+              <a href="https://repo.syncwerk.com/syncwerk-app-win-latest">
+                <i class="fab fa-windows" id="icon--logo"></i>
+              </a>
+              <div>
+                <p>
+                  <b>Windows</b>
+                </p>
+              </div>
+              <div>
+                {{ 'LINKED_DEVICE.APP_REQUIREMENT_WINDOWS' | translate:params }}
+              </div>
+              <hr>
+              <div>
+                <a href="https://repo.syncwerk.com/syncwerk-app-win-latest">
+                  <button class="btn btn--icon-text btn-success">{{ 'LINKED_DEVICE.BUTTON_WINDOWS' | translate:params
+                    }}</button>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="grid-item">
+              <a href="https://repo.syncwerk.com/syncwerk-app-mac-latest">
+                <i class="fab fa-apple" id="icon--logo"></i>
+              </a>
+              <div>
+                <p>
+                  <b>macOS</b>
+                </p>
+              </div>
+              <div>
+                {{ 'LINKED_DEVICE.APP_REQUIREMENT_MAC' | translate:params }}
+              </div>
+              <hr>
+              <div>
+                <a href="https://repo.syncwerk.com/syncwerk-app-mac-latest">
+                  <button class="btn btn--icon-text btn-success">{{ 'LINKED_DEVICE.BUTTON_MAC' | translate:params }}</button>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="grid-item">
+              <a href="https://repo.syncwerk.com">
+                <i class="fab fa-linux" id="icon--logo"></i>
+              </a>
+              <div>
+                <p>
+                  <b>Linux</b>
+                </p>
+              </div>
+              <div>
+                {{ 'LINKED_DEVICE.APP_REQUIREMENT_LINUX' | translate:params }}
+              </div>
+              <hr>
+              <div>
+                <a href="https://repo.syncwerk.com">
+                  <button class="btn btn--icon-text btn-success">{{ 'LINKED_DEVICE.BUTTON_LINUX' | translate:params }}</button>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!-- END ngIF -->
+      <div *ngIf="listLinkedDevicesDisplay.length <= 0 && this.linkedDevices.length !== 0" class="card text-center card-empty-item"
+        style="background-color: aliceblue">
+        <div class="card-header">
+          <h2 class="card-title">{{ 'LINKED_DEVICE.DEVICE_NOT_FOUND' | translate:params }}</h2>
+          <small class="card-subtitle">{{ 'LINKED_DEVICE.DEVICE_SUB_NOT_FOUND' | translate:params }}</small>
+          <small class="card-subtitle">{{ 'LINKED_DEVICE.APP_DOWNLOAD_DESC' | translate:params }}</small>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="grid-item">
+              <img class="os-icon inline aligncenter" src="/assets/img/icons/google-play-brands.svg" alt="Google Play Logo">
+              <div>
+                <p>
+                  <b>Android</b>
+                </p>
+              </div>
+              <div>
+                {{ 'LINKED_DEVICE.APP_REQUIREMENT_ANDROID' | translate:params }}
+              </div>
+              <hr>
+              <div>
+                <a href="https://play.google.com/store/apps/details?id=com.seafile.seadroid2">
+                  <button class="btn btn--icon-text btn-success">{{ 'LINKED_DEVICE.BUTTON_ANDROID' | translate:params
+                    }}</button>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="grid-item">
+              <img class="os-icon inline aligncenter" src="/assets/img/icons/app-store-ios-brands.svg" alt="Apple App Store Logo">
+              <div>
+                <p>
+                  <b>iOS</b>
+                </p>
+              </div>
+              <div>
+                {{ 'LINKED_DEVICE.APP_REQUIREMENT_IOS' | translate:params }}
+              </div>
+              <hr>
+              <div>
+                <a href="https://itunes.apple.com/de/app/SyncwerkApp/id1347288270?mt=8">
+                  <button class="btn btn--icon-text btn-success">{{ 'LINKED_DEVICE.BUTTON_IOS' | translate:params }}</button>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="grid-item">
+              <img class="os-icon inline aligncenter" src="/assets/img/icons/windows-brands.svg" alt="Windows Logo">
+              <div>
+                <p>
+                  <b>Windows</b>
+                </p>
+              </div>
+              <div>
+                {{ 'LINKED_DEVICE.APP_REQUIREMENT_WINDOWS' | translate:params }}
+              </div>
+              <hr>
+              <div>
+                <a href="https://repo.syncwerk.com/syncwerk-app-win-latest">
+                  <button class="btn btn--icon-text btn-success">{{ 'LINKED_DEVICE.BUTTON_WINDOWS' | translate:params
+                    }}</button>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="grid-item">
+              <img class="os-icon inline aligncenter" src="/assets/img/icons/apple-brands.svg" alt="Apple Logo">
+              <div>
+                <p>
+                  <b>Mac</b>
+                </p>
+              </div>
+              <div>
+                {{ 'LINKED_DEVICE.APP_REQUIREMENT_MAC' | translate:params }}
+              </div>
+              <hr>
+              <div>
+                <a href="https://repo.syncwerk.com/syncwerk-app-mac-latest">
+                  <button class="btn btn--icon-text btn-success">{{ 'LINKED_DEVICE.BUTTON_MAC' | translate:params }}</button>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="grid-item">
+              <img class="os-icon inline aligncenter" src="/assets/img/icons/linux-brands.svg" alt="Linux Logo">
+              <div>
+                <p>
+                  <b>Linux</b>
+                </p>
+              </div>
+              <div>
+                {{ 'LINKED_DEVICE.APP_REQUIREMENT_LINUX' | translate:params }}
+              </div>
+              <hr>
+              <div>
+                <a href="https://repo.syncwerk.com">
+                  <button class="btn btn--icon-text btn-success">{{ 'LINKED_DEVICE.BUTTON_LINUX' | translate:params }}</button>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- end ngIf -->
+
+      <app-modal-unlink-device *ngIf="isOpenModal.remove" [device]="currentDevice" (unlinked)="loadData()"></app-modal-unlink-device>
+    </div>
+
+    <app-processing *ngIf="isProcessing"></app-processing>
+  </div>
+</div>
+
+<pagination *ngIf="config.paging && listLinkedDevicesDisplay.length > 0" [(ngModel)]="page.page" [totalItems]="length"
+  [itemsPerPage]="page.itemsPerPage" [maxSize]="maxSize" [boundaryLinks]="true" [rotate]="false" (pageChanged)="changeTable(config, $event)"
+  (numPages)="numPages = $event">
+</pagination>

@@ -1,0 +1,12 @@
+<div class="btn-group">
+  <input appInputFileLabel type="file" name="file" id="csv-file-selector" accept=".csv" pattern="*.csv" class="inputfile" (change)="onFileChange($event)"
+  />
+  <label class="btn btn-info btn--icon-text waves-effect" for="csv-file-selector">
+    <i *ngIf="!isProcessing" class="fal fa-upload"></i>
+    <i *ngIf="isProcessing" class="fal fa-sync-alt fa-spin"></i>
+    {{ 'GROUP_MANAGEMENT.IMPORT_MEMBER_FROM_CSV' | translate}}
+  </label>
+  <a href="/assets/files/emails_csv_example.csv" class="btn btn-info waves-effect" data-toggle="tooltip" title="Download CSV Example">
+    <i class="fal fa-download"></i>
+  </a>
+</div>

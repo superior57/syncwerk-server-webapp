@@ -1,0 +1,87 @@
+<table class="table table-hover" class="table table-hover mb-0">
+  <thead>
+    <tr>
+      <th *ngFor="let column of columns" [width]="column.width" class="cursor-pointer" (click)="column.sort!==false ? onSortColumn(column) : ''">
+        <span [innerHTML]="column.title | translate"></span>
+        <!-- <i class="fal fa-hc-lg float-right" [ngClass]="{'zmdi-sort-amount-asc': column.sort==='asc', 'zmdi-sort-amount-desc': column.sort==='desc'}"></i> -->
+        <ng-container>
+          <i *ngIf="column.sort ==='asc'" class="fal fa-sort-amount-up sort-icon float-right icon--custom"></i>
+          <i *ngIf="column.sort ==='desc'" class="fal fa-sort-amount-down sort-icon float-right icon--custom"></i>
+        </ng-container>
+      </th>
+      <th width="12.5%">
+        <span [innerHTML]="'TABLE.COLUMNS.ACTIONS' | translate: params"></span>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let r of listShares; let i = index" (mouseover)="hoveredIndex=i" (mouseleave)="hoveredIndex=-1" class="tr--custom">
+      <td class="tb-name">
+        <div class="vertical-items" (click)="routerLinkShares(r)" data-toggle="tooltip" [title]="r.tooltip_item_name">
+          <div class="vertical-items icon-tb-name cursor-pointer">
+            <span *ngIf="r.is_dir!==false">
+              <i class="fas fa-folder fa-fw folder-icon"></i>
+              <i *ngIf="r.encrypted" class="fal fa-key custom" data-toggle="tooltip" [title]="'TOOLTIPS.ENCRYPTED_FOLDER' | translate: params"></i>
+              <!-- fal fa-key tb-row-folder-lock -->
+              <i *ngIf="r.share_permission === 'r' && !r.encrypted" class="fal fa-eye tb-row-folder-read-only"
+                data-toggle="tooltip" [title]="'TOOLTIPS.READ_ONLY_FOLDER' | translate: params"></i>
+            </span>
+            <span *ngIf="r.type==='download-link' && r.is_dir===false" class="flex-center">
+              <img *ngIf="!r.imgError || (r.imgError && r.imgError != 1)" (error)="setErrorImg(i)" class="icon-file"
+                src="{{ r.item_name | fileIconPath: false: r.repo_id: r.path }}">
+              <!-- <img *ngIf="(r.imgError && r.imgError === 1)" class="icon-file" src="{{ r.item_name | customFileIcon }}"> -->
+              <div *ngIf="(r.imgError && r.imgError === 1)" class="icon-file">
+                <i class="{{ r.item_name | customFileIcon }}"></i>
+              </div>
+            </span>
+          </div>
+
+          <div class="box  ellipsis  reverse-ellipsis">
+            <span>{{ r.displayed_item_name }}</span>
+          </div>
+        </div>
+      </td>
+      <td>
+        <span data-toggle="tooltip" title="{{ (r.mtime | amFromUnix) | amDateFormat:'ddd, D MMM YYYY HH:mm:ss' }}">{{
+          (r.mtime |
+          amFromUnix) | amTimeAgo }}</span>
+      </td>
+      <td>
+        {{ r.size | customFileSize }}
+      </td>
+      <td>
+        {{ r.share_to }}
+      </td>
+      <td>
+        <span *ngIf="editPermissionIndex===-1 || editPermissionIndex!==i">
+          <span *ngIf="r.share_permission==='rw'" [innerHTML]="'PERMISSIONS.READ_WRITE' | translate: params"></span>
+          <span *ngIf="r.share_permission==='r'" [innerHTML]="'PERMISSIONS.READ' | translate: params"></span>
+          <!-- <span *ngIf="r.share_permission==='w'" [innerHTML]="'PERMISSIONS.WRITE' | translate: params"></span> -->
+        </span>
+        <i *ngIf="i===hoveredIndex && editPermissionIndex!==i && r.type!=='download-link' && r.type!=='upload-link'"
+          class="fal fa-pen" (click)="this.editPermissionIndex=i" data-toggle="tooltip" [title]="'TOOLTIPS.EDIT_PERMISSION' | translate: params"></i>
+        <select2 (focusout)="onFocusOut()" *ngIf="editPermissionIndex===i" [data]="exampleData" [options]="options"
+          [value]="r.share_permission" [cssImport]="true" [width]="120" (valueChanged)="changePermission(r.share_type, $event, r)"></select2>
+      </td>
+      <td>{{ r.view_cnt }}</td>
+      <td>{{ r.expire_date }}</td>
+      <td>
+        <div *ngIf="i===hoveredIndex">
+          <i *ngIf="r.type==='download-link' || r.type==='upload-link'" class="actions__item item-color-hover fal fa-envelope view-icon"
+            data-toggle="tooltip" [title]="'TOOLTIPS.VIEW' | translate: params" (click)="onOpenModal('share', r)"></i>
+          <i *ngIf="r.type==='download-link' || r.type==='upload-link'" class="actions__item item-color-hover fal fa-copy copy-icon"
+            data-toggle="tooltip" [title]="'TOOLTIPS.COPY_TO_CLIPBOARD' | translate: params" ngxClipboard [cbContent]="getLink(r)"
+            (click)="copyLinks()"></i>
+          <i *ngIf="r.type==='repo' || r.type==='folder'" class="actions__item item-color-hover fal fa-trash-alt"
+            (click)="onOpenModal('unshare', r)" data-toggle="tooltip" [title]="'TOOLTIPS.UNSHARE' | translate: params"
+            data-placement="bottom"></i>
+          <i *ngIf="r.type==='download-link' || r.type==='upload-link'" class="actions__item item-color-hover fal fa-trash-alt"
+            (click)="onOpenModal('remove', r)" data-toggle="tooltip" [title]="'TOOLTIPS.REMOVE' | translate: params"
+            data-placement="bottom"></i>
+          <i [routerLink]="['/folders',r.repo_id]" class="fal fa-external-link-square ico--custom" data-toggle="tooltip"
+            [title]="'TOOLTIPS.VISIT' | translate: params"></i>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>

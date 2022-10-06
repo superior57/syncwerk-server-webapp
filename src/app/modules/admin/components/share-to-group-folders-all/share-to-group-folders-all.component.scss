@@ -1,0 +1,92 @@
+.tb-permission {
+  padding-top: 10px;
+  padding-left: 0;
+  width: 45%;
+}
+
+.selected {
+  border: solid #0067b3 1px;
+  float: left;
+  margin: 2px;
+  padding: 2px 15px;
+}
+
+.selected a {
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.scroll-user {
+  overflow-y: auto;
+  max-height: 250px;
+}
+
+.error-msg {
+  margin-left: 20px;
+  margin-top: -30px;
+}
+
+tag-input tag-input-dropdown ::ng-deep ng2-dropdown div.ng2-dropdown-menu {
+  top: inherit !important;
+  left: inherit !important;
+  .user-avt {
+    // float: left;
+    // margin-right: 10px;
+    margin-top: -5px;
+    img {
+      width: 32px;
+      height: 32px;
+      border-radius: 50px;
+    }
+  }
+  .user-detail {
+    height: 2rem;
+    margin-top: -10px;
+  }
+}
+
+td {
+  padding: 0.8rem 1.5rem;
+  vertical-align: middle;
+}
+
+:host ::ng-deep tag {
+  max-width: 305px;
+}
+
+.btn--custom {
+  margin-left: 22px;
+  @media (max-width:450px) {
+    margin-left: 4px;
+  }
+}
+
+.clearfix {
+  margin: 34px 0px;
+}
+
+.wrapper__user {
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+p.p--bold {
+  margin: 0px;
+  font-weight: 600;
+}
+
+.wrapper__per {
+  width: 100%;
+  margin: 5px 0px 20px 0px;
+}
+
+span.select--elm {
+  width: 50%;
+}
+
+span.btn--elm {
+  width: 50%;
+  text-align: right;
+}

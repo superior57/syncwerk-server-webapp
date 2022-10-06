@@ -1,0 +1,35 @@
+.dropdown-menu {
+    margin-top: 60px;
+}
+
+.user__name_email {
+	max-width: 77%;
+}
+
+.child-navigation {
+  ul li a {
+    padding-left: 4.5rem;
+  }
+}
+
+.scrollable-menu {
+  height: auto;
+  max-height:  calc(100vh - 195px);
+  overflow-x: hidden;
+}
+
+:host ::ng-deep .scrollbar-macosx .scroll-element.scroll-y .scroll-bar {
+	left: -6px;
+	min-height: 10px;
+	width: 5px;
+}
+
+li.space {
+  a {
+    cursor: default;
+    background: transparent;
+    &:hover {
+      background: transparent;
+    }
+  }
+}

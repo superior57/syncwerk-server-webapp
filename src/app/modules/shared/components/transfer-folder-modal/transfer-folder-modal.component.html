@@ -1,0 +1,52 @@
+<div class="modal fade" id="transfer-folder-modal" tabindex="-1">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          <span [innerHTML]="'MODALS.TITLES.TRANSFER.FROM' | translate: params"></span>
+          <span *ngIf="dataTransfer" class="modal-title-name">{{ (dataTransfer ? dataTransfer.name : '') |
+            splice_length: 20 }}</span>
+          <span *ngIf="itemName" class="modal-title-name">{{ itemName | splice_length: 20 }}</span>
+          <span [innerHTML]="'MODALS.TITLES.TRANSFER.TO' | translate: params"></span>
+        </h5>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <span>{{ 'MODALS.WARNINGS.TRANSFER_NOTE' | translate }}</span>
+        </div>
+        <tag-input [maxItems]="1" placeholder="+ User" [secondaryPlaceholder]="'SEARCHS.USER' | translate: params"
+          [allowDupes]="false" [(ngModel)]="userListForShare" [onlyFromAutocomplete]="false">
+          <tag-input-dropdown [matchingFn]="autoCompleteUserListMatching" [appendToBody]="false" [autocompleteObservable]="ENABLE_GLOBAL_ADDRESSBOOK ? autocompleteUserList : null">
+            <ng-template let-item="item" let-index="index" class="search__input--custom">
+              <div class="row">
+                <div class="col-md-2">
+                  <div class="user-avt">
+                    <img [src]="item.templateData.avatar_url" />
+                  </div>
+                </div>
+                <div class="col-md-10">
+                  <div class="user-detail">
+                    <strong>{{ item.templateData.name }}</strong>
+                  </div>
+                  <div class="user-detail">
+                    ({{ item.templateData.email }})
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+          </tag-input-dropdown>
+        </tag-input>
+        <span *ngIf="errorMessage" class="error-msg">{{ errorMessage | translate: params }}</span>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success btn--icon-text waves-effect" (click)="submitTransfer()" [disabled]="isProcessing ? 'disabled' : ''">
+          <i *ngIf="isProcessing" class="fal fa-sync-alt fa-spin" style="margin-right: 5px;"></i>
+          <span [innerHTML]="'BUTTONS.SUBMIT' | translate: params"></span>
+        </button>
+        <button type="button" class="btn btn-secondary waves-effect" data-dismiss="modal">
+          <span [innerHTML]="'BUTTONS.CLOSE' | translate: params"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

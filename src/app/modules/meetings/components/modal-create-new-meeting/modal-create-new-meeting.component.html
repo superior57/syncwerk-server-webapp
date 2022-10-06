@@ -1,0 +1,188 @@
+<div id="createEditMeetingModal" class="modal-blur">
+  <div class="modal-header">
+    <h3 class="modal-title">
+      <strong *ngIf="!isEdit">{{'MEETING.FORM.ADD_NEW' | translate}}</strong>
+      <strong *ngIf="isEdit">{{'MEETING.FORM.EDIT' | translate}}</strong>
+    </h3>
+  </div>
+  <form novalidate [formGroup]="addMeetingForm" (submit)="addMeeting()">
+    <div class="modal-body">
+      <div class="form-group" *ngIf="!isEdit || (isEdit && meetingInfoToEdit.room_share_type === 'OWN')">
+        <label>{{'MEETING.FORM.BBB_SETTING' | translate}}</label>
+        <select formControlName="privateSetting" class="form-control">
+          <option *ngFor="let bbbSetting of privateSettingSelect" [value]="bbbSetting.id">
+            <span>{{ bbbSetting.setting_name }} ({{ bbbSetting.bbb_server_domain_name }})</span>
+            <!-- <span *ngIf="bbbSetting.type==='SYSTEM'">{{'MEETING.FORM.SYSTEM_SETTING' | translate}}</span>
+          <span *ngIf="bbbSetting.type==='PERSONAL'">{{'MEETING.FORM.PERSONAL_SETTING' | translate}} - {{bbbSetting.user_id}}</span>
+          <span *ngIf="bbbSetting.type==='GROUP'">{{'MEETING.FORM.GROUP_SETTING' | translate}} - {{bbbSetting.group_name}}</span>
+          <span *ngIf="bbbSetting.type==='TENANT'">{{'MEETING.FORM.TENANT_SETTING' | translate}} - {{bbbSetting.tenant_name}}</span> -->
+          </option>
+        </select>
+        <!-- <input #meetingPrivateSetting appFocus appFormControlFloat formControlName="private_setting" class="form-control" type="text" /> -->
+        <i class="form-group__bar"></i>
+      </div>
+      <div class="form-group" *ngIf="isEdit && meetingInfoToEdit.room_share_type !== 'OWN'">
+        <label>{{'MEETING.FORM.BBB_SETTING' | translate}}</label>
+        <div>{{ meetingInfoToEdit.private_setting_info?.setting_name }}</div>
+        <!-- <input #meetingPrivateSetting appFocus appFormControlFloat formControlName="private_setting" class="form-control" type="text" /> -->
+      </div>
+      <div class="form-group form-group--float">
+        <input #meetingName appFocus appFormControlFloat formControlName="meetingName" class="form-control"
+          type="text" />
+        <label>{{'MEETING.FORM.NAME' | translate}}</label>
+        <i class="form-group__bar"></i>
+      </div>
+      <div class="form-group input-group">
+        <div class="form-group form-group--float">
+          <input #modMeetingPIN appFormControlFloat formControlName="pinModerator" class="form-control" type="text" readonly />
+          <label>{{'MEETING.FORM.PIN_MODERATOR' | translate}}</label>
+          <i class="form-group__bar"></i>
+        </div>
+        <span class="input-group-addon cursor-pointer" (click)="generatePin('moderator')">
+          <i class="fal fa-magic"></i>
+        </span>
+      </div>
+      <div class="form-group input-group">
+        <div class="form-group form-group--float">
+          <input #attendeeMeetingPIN appFormControlFloat formControlName="pinAttendees" class="form-control"
+            type="text" readonly />
+          <label>{{'MEETING.FORM.PIN_ATTENDEES' | translate}}</label>
+          <i class="form-group__bar"></i>
+        </div>
+        <span class="input-group-addon cursor-pointer" (click)="generatePin('attendees')">
+          <i class="fal fa-magic"></i>
+        </span>
+      </div>
+      <div class="form-group">
+        <div class="listview__item" style="padding: 0">
+          <label class="custom-control custom-checkbox">
+            <input appFormControlFloat formControlName="allowStreaming" type="checkbox"
+              class="custom-control-input">
+            <span class="custom-control-indicator"></span>
+          </label>
+          <div class="listview__content">
+            <p>{{'MEETING.FORM.OPTION_ALLOW_STREAMING' | translate}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="listview__item" style="padding: 0">
+          <label class="custom-control custom-checkbox">
+            <input appFormControlFloat formControlName="allowStreamingFeedback" type="checkbox"
+              class="custom-control-input">
+            <span class="custom-control-indicator"></span>
+          </label>
+          <div class="listview__content">
+            <p>{{'MEETING.FORM.OPTION_ALLOW_STREAMING_FEEDBACK' | translate}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="listview__item" style="padding: 0">
+          <label class="custom-control custom-checkbox">
+            <input appFormControlFloat formControlName="requirePasswordToJoin" type="checkbox"
+              class="custom-control-input">
+            <span class="custom-control-indicator"></span>
+          </label>
+          <div class="listview__content">
+            <p>{{'MEETING.FORM.OPTION_REQUIRE_PASSWORD' | translate}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="listview__item" style="padding: 0">
+          <label class="custom-control custom-checkbox">
+            <input appFormControlFloat formControlName="muteParticipants" type="checkbox" class="custom-control-input">
+            <span class="custom-control-indicator"></span>
+          </label>
+          <div class="listview__content">
+            <p>{{'MEETING.FORM.OPTION_MUTE_PARTICIPANT' | translate}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="listview__item" style="padding: 0">
+          <label class="custom-control custom-checkbox">
+            <input appFormControlFloat formControlName="moderatorApproval" type="checkbox" class="custom-control-input">
+            <span class="custom-control-indicator"></span>
+          </label>
+          <div class="listview__content">
+            <p>{{'MEETING.FORM.OPTION_REQUIRE_MODERATOR_APPROVAL' | translate}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="listview__item" style="padding: 0">
+          <label class="custom-control custom-checkbox">
+            <input appFormControlFloat formControlName="allowUserStart" type="checkbox" class="custom-control-input">
+            <span class="custom-control-indicator"></span>
+          </label>
+          <div class="listview__content">
+            <p>{{'MEETING.FORM.OPTION_ALLOW_START' | translate}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="listview__item" style="padding: 0">
+          <label class="custom-control custom-checkbox">
+            <input appFormControlFloat formControlName="usersJoinAsModerator" type="checkbox"
+              class="custom-control-input">
+            <span class="custom-control-indicator"></span>
+          </label>
+          <div class="listview__content">
+            <p>{{'MEETING.FORM.OPTION_JOIN_AS_MODERATOR' | translate}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="form-group" *ngIf="globalAllowMeeting">
+        <div class="listview__item" style="padding: 0">
+          <label class="custom-control custom-checkbox">
+            <input appFormControlFloat formControlName="allowRecording" type="checkbox" class="custom-control-input">
+            <span class="custom-control-indicator"></span>
+          </label>
+          <div class="listview__content">
+            <p>{{'MEETING.FORM.OPTION_ALLOW_RECORDING' | translate}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="form-group form-group--float">
+        <input #maxParticipants appFormControlFloat formControlName="maxParticipants" class="form-control"
+          type="number" />
+        <label>{{'MEETING.FORM.MAX_AMOUNT' | translate}}</label>
+        <i class="form-group__bar"></i>
+      </div>
+      <div class="form-group">
+        <label>{{'MEETING.FORM.WELCOME_MESSAGE_PLACEHOLDER' | translate}}</label>
+        <textarea formControlName="welcomeMessage" class="form-control" rows="5"></textarea>
+        <i class="form-group__bar"></i>
+      </div>
+      <div class="form-group">
+        <span class="btn btn-secondary btn--icon-text waves-effect" (click)="choosePresentationFile()">
+          {{'MEETING.FORM.CHOOSE_PRESENTATION_FILES' | translate}}
+        </span>
+      </div>
+      <table class="table table-sm table-hover">
+        <tbody>
+          <tr *ngFor="let file of files; let index=index">
+            <td width="90%">
+              <span *ngIf="index===0"><b>{{'MEETING.FORM.DEFAULT_FILE' | translate}}: {{file}}</b></span>
+              <span *ngIf="index!==0">{{file}}</span>
+            </td>
+            <td><i class="fal fa-times actions__item" (click)="removeFile(file)"></i></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-success btn--icon-text waves-effect" (click)="addMeeting()"
+        [disabled]="isProcessing ? 'disabled' : ''">
+        <i *ngIf="isProcessing" class="fal fa-refresh fa-spin" style="margin-right: 5px;"></i>
+        <span>{{'BUTTONS.SUBMIT' | translate}}</span>
+      </button>
+      <button type="button" class="btn btn-secondary btn--icon-text waves-effect" (click)="closeModal()">
+        <span [innerHTML]="'BUTTONS.CLOSE' | translate"></span>
+      </button>
+    </div>
+  </form>
+</div>

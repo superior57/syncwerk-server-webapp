@@ -1,0 +1,150 @@
+<header class="header">
+  <div class="header__logo hidden-sm-down">
+    <div>
+      <strong class="filename">{{ fileDetails.file_name | CutStringAny: 100: 85: 10 }}</strong>
+    </div>
+    <div *ngIf="typePreview === 'history'">
+      <span [innerHTML]="'PREVIEW.UPDATED_ON' | translate"></span> {{ (fileDetails.current_commit.time |
+      amLocale:choosenLanguage | amCalendar).toLowerCase() }}
+    </div>
+    <div *ngIf="typePreview === 'trash'">
+      <span [innerHTML]="'PREVIEW.CURRENT_PATH' | translate"></span>:
+      <span [innerHTML]="'TRASH.TITLE' | translate"></span>
+    </div>
+    <div>
+      <!-- <a>Detail</a> -->
+    </div>
+  </div>
+
+
+  <ul class="top-nav">
+    <li>
+      <button class="btn btn-primary btn--icon-text waves-effect" (click)="downloadRevision()">
+        <i class="fal fa-download"></i>
+        <span [innerHTML]="'BUTTONS.DOWNLOAD' | translate"></span>
+      </button>
+    </li>
+  </ul>
+</header>
+
+<section class="content content--full">
+  <header class="content__title" *ngIf="showCodeMirrorPreview">
+    <div class="actions">
+      <div class="form-group form-group--select form-inline">
+        <label [innerHTML]="'PREVIEW.ENCODING' | translate">:</label>
+        <div class="select">
+          <!-- <select [(ngModel)]="fileDetails.encoding" class="form-control">
+            <option *ngFor="let encOpt of fileDetails.file_encoding_list" [selected]="fileDetails.encoding === encOpt">{{ encOpt }}</option>
+          </select> -->
+          <select2 class="float-right" [data]="select2Encode" [options]="encodeOptions" [value]="fileDetails.encoding"
+            [width]="120"></select2>
+        </div>
+      </div>
+    </div>
+  </header>
+  <!-- Download button -->
+  <div class="card card__download text-center" *ngIf="showDownloadButton">
+    <div class="card-block">
+      <div class="row">
+        <div class="col-sm-12">
+          <button class="btn btn-primary btn--icon-text waves-effect" (click)="downloadFile()">
+            <i class="fal fa-download"></i>
+            <span [innerHTML]="'BUTTONS.DOWNLOAD' | translate"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Preview area -->
+  <div class="card card__preview" *ngIf="showCodeMirrorPreview">
+    <div class="card-block">
+      <div class="row">
+        <div class="col-sm-12">
+          <ngx-codemirror [(ngModel)]="fileDetails.file_content" [options]="codeMirrorConfig">
+          </ngx-codemirror>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Mark down preview -->
+  <div class="card card__preview" *ngIf="showMarkdownPreview">
+    <div class="card-block">
+      <div class="row">
+        <div class="col-sm-12">
+          <markdown [data]="fileDetails.file_content">
+          </markdown>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Image preview -->
+  <div class="row" *ngIf="showImagePreview">
+    <div class="col-md-12 image-preview">
+      <img [src]="fileDetails.raw_path" alt="">
+    </div>
+  </div>
+  <!-- PDF preview -->
+  <div class="card card__preview" *ngIf="showPDFPreview">
+    <div class="card-block">
+      <div class="row">
+        <div class="col-sm-12">
+          <pdf-viewer [src]="fileDetails.raw_path" [render-text]="false" (after-load-complete)="onPDFLoadingComplete($event)"></pdf-viewer>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Audio player -->
+  <div class="card" *ngIf="showAudioPreview">
+    <div class="card-block">
+      <div class="row">
+        <div class="col-sm-12">
+          <vg-player style="height: 50px;">
+            <vg-controls>
+              <vg-play-pause></vg-play-pause>
+              <vg-time-display vgProperty="current" vgFormat="mm:ss"></vg-time-display>
+              <vg-scrub-bar [vgSlider]="false" [vgFor]="my-media">
+                <vg-scrub-bar-current-time [vgFor]="my-media"></vg-scrub-bar-current-time>
+                <!-- <vg-scrub-bar-buffering-time [vgFor]="my-media"></vg-scrub-bar-buffering-time> -->
+              </vg-scrub-bar>
+              <vg-time-display vgProperty="total" vgFormat="mm:ss"></vg-time-display>
+              <vg-mute></vg-mute>
+              <vg-volume></vg-volume>
+              <vg-fullscreen></vg-fullscreen>
+            </vg-controls>
+
+            <audio #media [vgMedia]="media" id="my-media" preload="auto">
+              <source [src]="fileDetails.raw_path">
+            </audio>
+          </vg-player>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- video player -->
+  <div class="card" *ngIf="showVideoPreview">
+    <div class="card-block">
+      <div class="row">
+        <div class="col-sm-12">
+          <vg-player>
+            <vg-controls>
+              <vg-play-pause></vg-play-pause>
+              <vg-time-display vgProperty="current" vgFormat="mm:ss"></vg-time-display>
+              <vg-scrub-bar [vgSlider]="false" [vgFor]="my-media">
+                <vg-scrub-bar-current-time [vgFor]="my-media"></vg-scrub-bar-current-time>
+                <!-- <vg-scrub-bar-buffering-time [vgFor]="my-media"></vg-scrub-bar-buffering-time> -->
+              </vg-scrub-bar>
+              <vg-mute></vg-mute>
+              <vg-volume></vg-volume>
+              <vg-fullscreen></vg-fullscreen>
+            </vg-controls>
+            <video #myMedia [vgMedia]="myMedia" id="my-video" preload="auto">
+              <source [src]="fileDetails.raw_path" type="video/mp4">
+            </video>
+          </vg-player>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>

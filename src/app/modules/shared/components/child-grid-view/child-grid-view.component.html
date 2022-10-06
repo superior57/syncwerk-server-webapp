@@ -1,0 +1,125 @@
+<div *ngIf="dataSource.length > 0" class="row lightbox photos">
+  <div *ngFor="let r of dataSource; let index=index" class="col-xl-3 col-md-3 col-sm-6 col-xs-12" [ngClass]="classRangeSize"
+    (mouseover)="hoveredIndex=index" (mouseleave)="hoveredIndex=-1">
+    <div class="lightbox__item photos__item text-center">
+      <label *ngIf="index===hoveredIndex || r.isChecked" class="custom-control custom-checkbox grid-menu-button">
+        <input type="checkbox" class="custom-control-input cursor-pointer" (click)="handleChecked(r)" name="optionChecked"
+          [checked]="r.isChecked">
+        <span class="custom-control-indicator"></span>
+      </label>
+      <div *ngIf="index===hoveredIndex" class="dropup actions__item grid-menu-button">
+        <span data-placement="right" data-toggle="tooltip" [title]="'TOOLTIPS.MORE_OPERATIONS' | translate: params">
+          <button data-toggle="dropdown" class="btn btn-secondary waves-effect btn--custom" style="width: 31px;">
+            <i class="fal fa-ellipsis-v"></i>
+          </button>
+          <div class="dropdown-menu dropdown-menu-right">
+            <a [routerLink]="" role="button" class="dropdown-item" *ngIf="r.permission === 'rw'" (click)="downloadItem(r)">
+              <span [innerHTML]="'BUTTONS.DOWNLOAD' | translate: params"></span>
+            </a>
+            <a [routerLink]="" role="button" class="dropdown-item" *ngIf="r.permission === 'rw'" (click)="rename = index" (click)="clickOnNameChange(r)">
+              <span [innerHTML]="'BUTTONS.RENAME' | translate: params"></span>
+            </a>
+            <a [routerLink]="" role="button" class="dropdown-item" *ngIf="r.permission === 'rw'" (click)="moveFileFolder(r, index)">
+              <span [innerHTML]="'BUTTONS.MOVE' | translate: params"></span>
+            </a>
+            <a [routerLink]="" role="button" class="dropdown-item" (click)="copyFileFolder(r)">
+              <span [innerHTML]="'BUTTONS.COPY' | translate: params"></span>
+            </a>
+            <a [routerLink]="" role="button" class="dropdown-item" *ngIf="r.type === 'file' && !r.is_locked" (click)="lockFile(r, index)">
+              <span [innerHTML]="'BUTTONS.LOCK' | translate: params"></span>
+            </a>
+            <a [routerLink]="" role="button" class="dropdown-item" *ngIf="r.type === 'file' && r.is_locked && (r.locked_by_me || checkFileLockByMe(r.name))" (click)="unlockFile(r, index)">
+              <span [innerHTML]="'BUTTONS.UNLOCK' | translate: params"></span>
+            </a>
+            <a [routerLink]="" role="button" class="dropdown-item" *ngIf="r.permission === 'rw' && r.type === 'file'" (click)="historyFile(r.name)">
+              <span [innerHTML]="'BUTTONS.HISTORY' | translate: params"></span>
+            </a>
+            <a [routerLink]="" role="button" class="dropdown-item" *ngIf="r.encrypted">
+              <span [innerHTML]="'BUTTONS.CHANGE_PASSWORD' | translate: params"></span>
+            </a>
+            <a [routerLink]="" role="button" class="dropdown-item" (click)="viewDetails(r)">
+              <span [innerHTML]="'BUTTONS.DETAILS' | translate: params"></span>
+            </a>
+            <a [routerLink]="" role="button" class="dropdown-item" *ngIf="r.permission === 'rw' && r.type === 'file' && r.starred === false" (click)="markFileStarred(r.name, index)">
+              <span [innerHTML]="'FILE_BROWSER.CONTEXT_MENU.MARK_FAVORITE' | translate"></span>
+            </a>
+            <a [routerLink]="" role="button" class="dropdown-item" *ngIf="r.permission === 'rw' && r.type === 'file' && r.starred === true" (click)="removeFileStarred(r.name, index)">
+              <span [innerHTML]="'FILE_BROWSER.CONTEXT_MENU.REMOVE_FAVORITE' | translate"></span>
+            </a>
+            <a [routerLink]="" role="button" class="dropdown-item" (click)="copyInternalLinkToClipboard(r)" [innerHTML]="'BUTTONS.COPY_INTERNAL_LINK' | translate: params"></a>
+            <!-- <a [routerLink]="" role="button" class="dropdown-item" *ngIf="r.permission === 'rw'">Open via Client</a> -->
+          </div>
+        </span>
+        <!-- chi hien thi neu la folder hoac (la file va co quyen tao download link) -->
+        <button *ngIf="!repoEncrypted && (r.type === 'dir' || (r.type === 'file' && currentUserPermission.can_generate_share_link !== false)) && isEnabledPubliclShare"
+          (click)="shareFolder(r,index)" class="btn btn-secondary waves-effect btn--custom" style="padding: 8.4px; width: 31px;"
+          data-toggle="tooltip" [title]="'TOOLTIPS.SHARE' | translate: params">
+          <i class="fal fa-share-alt"></i>
+        </button>
+
+        <button *ngIf="r.permission === 'r'" (click)="downloadItem(r)" class="btn btn-secondary waves-effect btn--custom"
+          style="padding: 8.4px; width: 31px;" data-toggle="tooltip" [title]="'TOOLTIPS.DOWNLOAD' | translate: params">
+          <i class="fal fa-download"></i>
+        </button>
+
+        <button *ngIf="r.permission === 'rw'" (click)="removeFolder(r,index)" data-target="#delete-file-modal" class="btn btn-secondary waves-effect btn--custom"
+          data-toggle="tooltip" [title]="'TOOLTIPS.DELETE' | translate: params" style="padding: 8.6px; width: 31px;">
+          <i class="fal fa-trash-alt"></i>
+        </button>
+      </div>
+
+      <div class="grid-item ">
+        <div *ngIf="r.type==='dir' ; else icon_file_content " class="center-img " style="font-size: 100px; " [ngStyle]="{'height': rangeHeightPx} ">
+          <a (click)="!isSingleClick && openFolder(r.name, r.type)" class="name ">
+            <i class="fas fa-folder fa-fw text-center " style="transition: all 0.5s " [ngStyle]="{ 'transform': 'scale(' + rangeTransformScale + ')'} "></i>
+            <i *ngIf="r.encrypted || r.permission==='r' " class="fal fa-eye grid-folder-lock " style="transition: all 0.5s"
+              [ngStyle]="{ 'transform': 'scale(' + rangeTransformScale + ')'} "></i>
+          </a>
+        </div>
+
+        <ng-template #icon_file_content>
+          <div class="center-img " [ngStyle]="{ 'height': rangeHeightPx} ">
+            <a target=" _blank " class="name " (click)="isEnabledFilePreview && !isSingleClick && openFilePreview(r) ">
+              <div>
+                <ng-container *ngIf="isRepoEncrypted">
+                  <div *ngIf="(r.imgError && r.imgError===1 ) || isRepoEncrypted">
+                    <i class="{{ r.name | customFileIcon }}" id="icon--custom" style="transition: all 0.5s" [ngStyle]="{ 'transform': 'scale(' + rangeTransformScale + ')'} "></i>
+                  </div>
+                </ng-container>
+                <ng-container *ngIf="!isRepoEncrypted">
+                  <img *ngIf="!r.imgError || (r.imgError && r.imgError !==1)" style="transition: all 0.5s" [ngStyle]="{ 'transform': 'scale(' + rangeTransformScale + ')'} "
+                    (error)="setErrorImg(index) " class="file-icon right" max-height="90px " src="{{ r.name | fileIconPath: false: repoId: parentPath + r.name: 500 }} ">
+                  <div *ngIf="(r.imgError && r.imgError===1 ) || isRepoEncrypted">
+                    <i class="{{ r.name | customFileIcon }}" id="icon--custom" style="transition: all 0.5s" [ngStyle]="{ 'transform': 'scale(' + rangeTransformScale + ')'} "></i>
+                  </div>
+                </ng-container>
+                <!-- <img *ngIf="!r.imgError || (r.imgError && r.imgError !==1)" style="transition: all 0.5s" [ngStyle]="{ 'transform': 'scale(' + rangeTransformScale + ')'} "
+                  (error)="setErrorImg(index) " class="file-icon right" max-height="90px " src="{{ r.name | fileIconPath: false: repoId: parentPath + r.name: 500 }} ">
+                <div *ngIf="(r.imgError && r.imgError===1 ) || isRepoEncrypted">
+                  <i class="{{ r.name | customFileIcon }}" id="icon--custom" style="transition: all 0.5s" [ngStyle]="{ 'transform': 'scale(' + rangeTransformScale + ')'} "></i>
+                </div> -->
+              </div>
+              <i class=" fal fa-eye grid-file-lock
+                    " *ngIf=" r.encrypted || r.permission==='r'"></i>
+              <i class="fal fa-lock file-lock" *ngIf="r.is_locked && r.type ==='file'"></i>
+            </a>
+          </div>
+        </ng-template>
+        <div>
+          <div class="
+                    tb-name-grid">
+            <a *ngIf="rename !== index && r.type==='dir'" (click)="isEnabledFilePreview && !isSingleClick && openFolder(r.name, r.type)"
+              class="name" data-toggle="tooltip" data-title="{{ r.name }}">{{r.name}}</a>
+            <a *ngIf="rename !== index && r.type==='file'" [ngClass]="{'file-starred':r.starred}" (click)="isEnabledFilePreview && !isSingleClick && openFilePreview(r)"
+              class="name" data-toggle="tooltip" data-title="{{ r.name }}">{{r.name}}</a>
+            <div class="tb-name-input form-group" style="margin-top: -8px;" *ngIf="rename===index">
+              <input #renameInput type="text" class="form-control text-center" value={{r.name}} (keypress)="onKeyPress($event, r.type)"
+                (keyup.esc)="rename = -1" (keyup.enter)="changeName(r, $event, index)" (focusout)="rename=-1" maxlength="225">
+              <i class="form-group__bar "></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

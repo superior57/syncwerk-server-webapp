@@ -1,0 +1,10 @@
+<div class="modal-content">
+  <div class="modal-body">
+    <span [innerHTML]="disclaimerContent"></span>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn__close" data-dismiss="alert" aria-label="Close" (click)="closeModal()">
+      {{ 'BUTTONS.CLOSE' | translate }}
+    </button>
+  </div>
+</div>

@@ -1,0 +1,71 @@
+<header class="content__title">
+  <h1 [innerHTML]="'TITLE_PAGE.DEVICES' | translate: params"></h1>
+  <small [innerHTML]="'ADMIN.DEVICES.DESC' | translate: params"></small>
+</header>
+
+<div class="card">
+  <div class="card-block">
+    <div *ngIf="!isProcessing">
+      <div class="data-table__header d-flex justify-content-between">
+        <div class="form-group data-table__filter">
+          <input *ngIf="config.filtering" [placeholder]="'SEARCHS.ALL_COLUMNS' | translate: params" [(ngModel)]="config.filtering.filterString"
+            class="form-control" (keyup)="changeTable(config)" />
+          <i class="form-group__bar"></i>
+        </div>
+        <app-row-selector (changed)="onPerPageChanged($event)"></app-row-selector>
+        <!-- <select2 class="select2-per-page" [data]="perPageSelectData" [options]="perPageSelectOptions" (valueChanged)="onPerPageChanged($event)"></select2> -->
+      </div>
+
+      <div *ngIf="listDeviceDisplay.length > 0" class="data-table">
+        <table class="table table-hover mb-0">
+          <thead>
+            <tr>
+              <th *ngFor="let column of columns" [width]="column.width" [ngClass]="{'cursor-text': column.sort===false}"
+                (click)="column.sort!==false ? sortColumn(column, config) : ''">
+                <span [innerHTML]="column.title | translate: params"></span>
+                <!-- <i class="fal fa-hc-lg float-right" [ngClass]="{'zmdi-sort-amount-asc': column.sort==='asc', 'zmdi-sort-amount-desc': column.sort==='desc'}"></i> -->
+                <ng-container>
+                  <i *ngIf="column.sort==='asc'" class="fal fa-sort-amount-up sort-icon float-right ico--custom"></i>
+                  <i *ngIf="column.sort==='desc'" class="fal fa-sort-amount-down sort-icon float-right ico--custom"></i>
+                </ng-container>
+              </th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let device of listDeviceDisplay; let index = index" (mouseover)="hoveredIndex=index"
+              (mouseleave)="hoveredIndex=-1">
+              <td class="tb-user">{{ device.user }}</td>
+              <td>{{ device.platform }} / {{ device.client_version }}</td>
+              <td>{{ device.device_name }}</td>
+              <td>{{ device.last_login_ip }}</td>
+              <td>
+                <span data-toggle="tooltip" title="{{ device.last_accessed | date: 'EEEE, d MMM yyyy - HH:mm:ss Z' }}">{{
+                  device.last_accessed | date: 'dd.MM.yyyy - HH:mm:ss' }}</span>
+              </td>
+              <td>
+                <i *ngIf="index === hoveredIndex" class="fal fa-trash-alt fa-hc-1dot5 cursor-pointer" (click)="handleModalUnlink(device)"
+                  data-toggle="tooltip" [title]="'TOOLTIPS.UNLINK' | translate: params"></i>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- <app-unlink-device-modal *ngIf="openModalUnlink" [dataDevices]="currentDevice" (removed)="onReloadList()"></app-unlink-device-modal> -->
+        <app-modal-unlink-device *ngIf="openModalUnlink" [device]="currentDevice" (unlinked)="onReloadList()"></app-modal-unlink-device>
+      </div>
+      <app-empty-item *ngIf="listDeviceDisplay.length === 0 && this.listDevice.devices.length === 0" [messageTitle]="'ADMIN.DEVICES.EMPTY_ITEM.MOBILES.TITLE' | translate: params"></app-empty-item>
+      <app-empty-item *ngIf="listDeviceDisplay.length === 0 && this.listDevice.devices.length !==0 " [messageTitle]="'ADMIN.DEVICES.EMPTY_ITEM.MOBILES.DEVICE_NOT_FOUND' | translate: params"
+        [messageSub]="'ADMIN.DEVICES.EMPTY_ITEM.MOBILES.DEVICE_SUB_NOT_FOUND' | translate: params"></app-empty-item>
+
+    </div>
+
+    <app-processing *ngIf="isProcessing"></app-processing>
+  </div>
+</div>
+
+<div *ngIf="!isProcessing && listDeviceDisplay.length > 0" class="data-table__footer">
+  <pagination *ngIf="config.paging" [(ngModel)]="page.page" [totalItems]="length" [itemsPerPage]="page.itemsPerPage"
+    [maxSize]="maxSize" [boundaryLinks]="true" [rotate]="false" (pageChanged)="changeTable(config, $event)" (numPages)="numPages = $event">
+  </pagination>
+</div>

@@ -1,0 +1,74 @@
+<div class="modal fade" id="modal-create-folder" tabindex="-1">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left custom-title">{{ 'MODALS.TITLES.NEW_FOLDER' | translate: params }}</h5>
+      </div>
+      <div class="modal-body">
+        <form #folderForm="ngForm" (keyup.enter)="createFolder()">
+          <div class="form-group input" [ngClass]="{'has-danger':nameErrorMessage !== ''}">
+            <label data-toggle="tooltip" title="required">{{ 'FORMS.INPUTS.NAME' | translate: params }} (*)</label>
+            <input #name type="text" (keypress)="keyPressName($event)" class="form-control input-mask" maxlength="255"
+              required [(ngModel)]="model.name" name="name" #name="ngModel">
+            <i class="form-group__bar"></i>
+          </div>
+          <div class="error-msg">{{ nameErrorMessage | translate: params }}</div>
+
+          <div class="form-group input">
+            <label>{{ 'FORMS.INPUTS.DESCRIPTION' | translate: params }}</label>
+            <input type="text" class="form-control input-mask" maxlength="255" name="description" [(ngModel)]="model.description">
+            <i class="form-group__bar"></i>
+          </div>
+
+          <div *ngIf="hasPermission()" class="form-group">
+            <label>Share Permission</label>
+            <select2 [data]="permissionData" [options]="options" [value]="permission" [cssImport]="true" [width]="340"
+              (valueChanged)="changedSettingPermission($event)"></select2>
+            <i class="form-group__bar"></i>
+          </div>
+
+          <!-- Start Encrypt -->
+          <div class="listview__item" style="padding: 0 0 15px 0;" *ngIf="modalConfig.ENABLE_ENCRYPTED_FOLDER">
+            <label class="custom-control custom-checkbox">
+              <input type="checkbox" class="custom-control-input" [checked]="model.encrypted" name="encrypted"
+                 (click)="handleFocus(model.encrypted)">
+              <span class="custom-control-indicator"></span>
+            </label>
+            <div class="listview__content">
+              <p>{{ 'FORMS.CHECK_BOXS.ENCRYPT' | translate: params }}</p>
+            </div>
+          </div>
+          <div *ngIf="model.encrypted">
+            <div class="form-group input" [ngClass]="{'has-danger':passErrorMessage !== ''}">
+              <label>{{ 'FORMS.INPUTS.PASSWORD' | translate: params }}</label>
+              <input #password type="password" class="form-control input-mask padding-tex-input" required [(ngModel)]="model.password"
+                name="password" #password="ngModel">
+              <i class="form-group__bar"></i>
+            </div>
+            <div class="error-msg">{{ passErrorMessage | translate: params }}</div>
+
+            <div class="form-group input" [ngClass]="{'has-danger':repeatErrorMessage !== ''}">
+              <label>{{ 'FORMS.INPUTS.REPEAT_PASSWORD' | translate: params }}</label>
+              <input type="password" class="form-control input-mask padding-tex-input" required [(ngModel)]="model.repeat"
+                name="repeat" #repeat="ngModel" #repeat>
+              <i class="form-group__bar"></i>
+            </div>
+            <div class="error-msg">{{ repeatErrorMessage | translate: params }}</div>
+          </div>
+          <!-- End Encrypt -->
+        </form>
+      </div>
+      <div class="modal-footer">
+        <div>
+          <button type="button" class="btn btn-success waves-effect margin-right" (click)="createFolder()" [disabled]="isProcessing ? 'disabled' : ''">
+            <i *ngIf="isProcessing" class="fal fa-refresh fa-spin" style="margin-right: 5px;"></i>
+            <i *ngIf="!isProcessing" style="margin-right: 5px;"></i>{{ 'BUTTONS.CREATE' |
+            translate: params }}
+          </button>
+          <button type="button" class="btn btn-secondary btn--icon-text waves-effect" (click)="closeModal()" [disabled]="isProcessing ? 'disabled' : ''">{{
+            'BUTTONS.CLOSE' | translate: params }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,95 @@
+<!-- <header>
+  <div class="login__block__header__custom">
+    <a data-toggle="tooltip" [routerLink]="'/'"><img [src]="logoURL"
+        (error)="logoErrorHandler($event)" height="30rem" alt=""></a>
+    <div class="select__languages">
+      <select2 [data]="select2TranslateData" [options]="translateOptions" [value]="choosenLanguage" [width]="88"
+        (valueChanged)="switchLanguage($event)"></select2>
+    </div>
+  </div>
+</header> -->
+
+<app-secondary-header></app-secondary-header>
+
+<div class="login">
+  <!-- Login -->
+  <div class="login__block active" id="l-login" *ngIf="isProcessing === false && isError === false && isMeetingNotStarted == false">
+    <div class="login__block__header">
+      <i class="fal fa-video"></i> {{ 'MEETING.PUBLIC_LINK_PAGE.JOIN_A_MEETING' | translate }}
+    </div>
+    <div class="login__block__body" (keyup.enter)="submitFullName()">
+      <div class="form-group" [ngClass]="{'has-danger': errorMessage }">
+        <label class="lbl--custom">{{ 'MEETING.PUBLIC_LINK_PAGE.PROVIDE_FULLNAME' | translate }}</label>
+        <!-- <input #password type="password" class="form-control input-mask input-center" [ngClass]="{ 'form-control-danger': errorMessage }"
+          [(ngModel)]="model.password" name="password" #password="ngModel" required autofocus="true"> -->
+        <input type="text" class="form-control input-mask input-center"
+          [ngClass]="{ 'form-control-danger': errorMessage }" name="fullname" required autofocus="true" [(ngModel)]="fullName">
+        <i class="form-group__bar"></i>
+      </div>
+      <div *ngIf="meetingInfo.require_meeting_password" class="form-group" [ngClass]="{'has-danger': errorMessage }">
+        <label class="lbl--custom">{{ 'MEETING.PUBLIC_LINK_PAGE.PROVIDE_PASSWORD' | translate }}</label>
+        <!-- <input #password type="password" class="form-control input-mask input-center" [ngClass]="{ 'form-control-danger': errorMessage }"
+          [(ngModel)]="model.password" name="password" #password="ngModel" required autofocus="true"> -->
+        <input type="password" class="form-control input-mask input-center"
+          [ngClass]="{ 'form-control-danger': errorMessage }" name="joinPassword" required [(ngModel)]="joinPassword">
+        <i class="form-group__bar"></i>
+      </div>
+      <div class="form-group form-group--float form-group--centered text-left">
+        <input class="terms" [(ngModel)]="acceptTerms" required name="terms" type="checkbox">
+        <span *ngIf="choosenLanguage==='en'" class="terms" [innerHTML]="settings.REGISTER_PAGE_TERM_AND_CONDITION_CHECKBOX_TEXT_EN">
+        </span>
+        <span *ngIf="choosenLanguage==='de'" class="terms" [innerHTML]="settings.REGISTER_PAGE_TERM_AND_CONDITION_CHECKBOX_TEXT_DE">
+        </span>
+      </div>
+      <a (click)="submitJoinMeeting()" class="btn btn--icon login__block__btn bgi_white" *ngIf="isJoiningMeeting == false">
+        {{ 'MEETING.PUBLIC_LINK_PAGE.JOIN_MEETING' | translate }}
+      </a>
+      <a disabled="disabled" class="btn btn--icon login__block__btn bgi_white" *ngIf="isJoiningMeeting == true">
+        <i class="fal fa-circle-notch fa-spin"></i>
+      </a>
+    </div>
+    <!-- <div class="login__block__header">
+      <i class="fal fa-key"></i> HaHAHaHAHHAHAHAHA
+    </div> -->
+    <!-- <div class="login__block__body" (keyup.enter)="submitPasswordProtected()">
+
+      <p class="mt-4">{{ 'NOTIFICATION_MESSAGE.SHARE_LINK_PASSWORD_DESCRIPTION' | translate}}</p>
+      <div class="form-group" [ngClass]="{'has-danger': errorMessage }">
+        <label class="lbl--custom">{{ 'NOTIFICATION_MESSAGE.PASSWORD_PROTECTED' | translate }}</label>
+        <input #password type="password" class="form-control input-mask input-center" [ngClass]="{ 'form-control-danger': errorMessage }"
+          [(ngModel)]="model.password" name="password" #password="ngModel" required autofocus="true">
+        <i class="form-group__bar"></i>
+      </div>
+      <p class="msg_error" *ngIf="errorMessage">
+        {{ errorMessage }}</p>
+
+      <a (click)="submitPasswordProtected()" class="btn btn--icon login__block__btn bgi_white">
+        <i class="fal fa-chevron-right"></i>
+        {{ 'NOTIFICATION_MESSAGE.PASSWORD_CHECK_BUTTON' | translate }}
+      </a>
+
+    </div> -->
+  </div>
+  <div class="login__block active" id="l-login" *ngIf="isProcessing === true">
+    <div class="login__block__header">
+      <i class="fal fa-circle-notch fa-spin"></i> {{ 'MEETING.PUBLIC_LINK_PAGE.LOADING' | translate }}
+    </div>
+  </div>
+  <div class="login__block active" id="l-login" *ngIf="isProcessing === false && isJoiningMeeting == true && isMeetingNotStarted === true">
+    <div class="login__block__header">
+      <i class="fal fa-circle-notch fa-spin"></i>
+      <h5>{{ 'MEETING.PUBLIC_LINK_PAGE.MEETING_NOT_STARTED' | translate }}</h5>
+      <p>{{ 'MEETING.PUBLIC_LINK_PAGE.AUTO_JOIN_WHEN_STARTED' | translate }}</p>
+    </div>
+  </div>
+  <div class="login__block active" id="l-login" *ngIf="isProcessing === false && isError === true">
+    <div class="login__block__header">
+      <i class="fal fa-times"></i>
+      <p>{{ errorMessage }}</p>
+    </div>
+  </div>
+</div>
+
+<div class="footer ft--custom">
+  <app-footer></app-footer>
+</div>

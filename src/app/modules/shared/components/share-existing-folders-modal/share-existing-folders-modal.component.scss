@@ -1,0 +1,24 @@
+.modal-sm {
+  max-width: 600px;
+}
+
+.custom-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #0067b3;
+}
+
+.custom-checkbox.custom-control {
+  padding-left: 15px;
+}
+
+td {
+  vertical-align: middle;
+}
+
+.tb-name {
+  max-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

@@ -1,0 +1,42 @@
+<div class="share__download__link">
+  <p [innerHTML]="'MODAL_SHARE.DIRECT_DOWNLOAD_LINK_DESCRIPTION' | translate"></p>
+  <!-- Checkbox password protection -->
+  <app-share-password-protect *ngIf="!isData" (GenerateAction)="generateDownloadLink($event)"></app-share-password-protect>
+  <div *ngIf="isData && isLoading">
+    <p [innerHTML]="'MODAL_SHARE.LINK' | translate: params"></p>
+    <div>
+      <textarea autosize #copyLinkDownload class="input-custom" value="{{ data ? getLink() : '' }}" readonly
+        [ngxClipboard]="copyLinkDownload" (click)="submitCopy()" data-toggle="tooltip" [title]="'TOOLTIPS.COPY_TO_CLIPBOARD' | translate: params"></textarea>
+      <button [ngxClipboard]="copyLinkDownload" (click)="submitCopy()" type="button" class="btn btn-info btn--icon-text waves-effect mg-t7px btn--custom"
+        data-toggle="tooltip" [title]="'TOOLTIPS.COPY_TO_CLIPBOARD' | translate: params">
+        <span [innerHTML]="'BUTTONS.COPY' | translate: params"></span>
+      </button>
+    </div>
+    <div *ngIf="!data.is_dir">
+      <p [innerHTML]="'MODAL_SHARE.DIRECT_DOWNLOAD_LINK' | translate: params"></p>
+      <div>
+        <textarea autosize #copyFileLinkDownload class="input-custom" value="{{ data ? getLink() : '' }}?dl=1" readonly
+          [ngxClipboard]="copyFileLinkDownload" (click)="submitCopy()" data-toggle="tooltip" [title]="'TOOLTIPS.COPY_TO_CLIPBOARD' | translate: params"></textarea>
+        <button [ngxClipboard]="copyFileLinkDownload" (click)="submitCopy()" type="button" class="btn btn-info btn--icon-text waves-effect"
+          data-toggle="tooltip" [title]="'TOOLTIPS.COPY_TO_CLIPBOARD' | translate: params">
+          <span [innerHTML]="'BUTTONS.COPY' | translate: params"></span>
+        </button>
+      </div>
+    </div>
+    <div *ngIf="data.expire_date">
+      <p>
+        <span [innerHTML]="'MODAL_SHARE.EXPIRE_DATE' | translate: param"></span> {{ data.expire_date }}</p>
+    </div>
+
+    <div class="btn-demo" *ngIf="!isSendMail">
+      <button type="button" class="btn btn-success btn--icon-text waves-effect mg-r4px" (click)="openFormSend()">
+        <span [innerHTML]="'BUTTONS.SEND' | translate: params"></span>
+      </button>
+      <button type="button" class="btn btn-danger btn--icon-text waves-effect mg-r4px" (click)="deleteLink()">
+        <span [innerHTML]="'BUTTONS.REMOVE' | translate: params"></span>
+      </button>
+    </div>
+  </div>
+  <!-- Send Email -->
+  <app-share-send-share-link *ngIf="isSendMail" type="download" [data]="data" (closeSend)="cancelSendEmail()"></app-share-send-share-link>
+</div>

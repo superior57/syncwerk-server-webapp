@@ -1,0 +1,42 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h3 class="modal-title">
+      <strong>{{ 'WIKIS.WIKI_LIST.MODALS.WIKI_FROM_FOLDER_TITLE' | translate }}</strong>
+    </h3>
+  </div>
+
+  <div class="modal-body">
+    <ng-container *ngIf="!processes.isLoadingFolder">
+      <table class="table table-sm">
+        <thead>
+          <tr>
+            <th width="10%"></th>
+            <th width="50%">Folder Name</th>
+            <th width="40%">Last Updated</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let folder of listFolderToChoose; let index=index">
+            <td>
+              <label class="custom-control custom-radio">
+                <input type="radio" class="custom-control-input" name="optionChecked"
+                  (change)="chooseFolder(folder)">
+                <span class="custom-control-indicator"></span>
+              </label>
+            </td>
+            <td>{{ folder.name }}</td>
+            <td>{{ (folder.mtime | amFromUnix) | amTimeAgo }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </ng-container>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-success btn--icon-text waves-effect" (click)="createWikiFromFolder()"
+      [disabled]="processes.isProceesingCreateWiki ? 'disabled' : ''">
+      <i *ngIf="processes.isProceesingCreateWiki" class="fal fa-circle-notch fa-spin" style="margin-right: 5px;"></i>
+      <span [innerHTML]="'BUTTONS.SUBMIT' | translate"></span>
+    </button>
+  </div>
+
+</div>

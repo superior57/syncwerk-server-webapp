@@ -1,0 +1,360 @@
+.data-table__header {
+    .data-table__filter {
+      margin-right: 25px;
+      width: 100%;
+      max-width: 100%;
+    }
+    .row-selector {
+      min-width: 11rem;
+    }
+    .data-table_buttons {
+      margin: 10px 0 0 30px;
+    }
+  }
+
+  a {
+    color: #707070;
+  }
+
+  table {
+    td {
+      vertical-align: middle;
+      word-break: break-all;
+      &.wiki__name__custom{
+        a.wiki--name {
+            margin-left: 7px;
+            line-height: 24px;
+        }
+      }
+    }
+    th.sortable {
+      cursor: pointer;
+      &:first-child{
+        border-bottom: 1px;
+      }
+    }
+    .sort-icon {
+      float: right;
+      color: black;
+    }
+  }
+
+  .actions__item {
+    height: 0;
+  }
+
+  @media screen and (max-width:502px){
+    .data-table__header{
+      flex-wrap: wrap;
+    }
+  }
+
+@media screen and (max-width:575px){
+  .modal-dialog.modal-md {
+      width: 90vw;
+      margin: 0px auto;
+      position: relative;
+      top: calc(100vh - 68vh);
+  }
+}
+
+.card-body {
+  margin: 13px 0px 0px 0px;
+}
+
+a.a--direct {
+  text-align: center;
+  display: block;
+  clear: both;
+  color: #6f6f6f;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.form-group{
+  .mr-25px{
+    margin-top: 4px;
+  }
+}
+
+.card.grid--view {
+  position: relative;
+  box-shadow: 0px 2px rgba(200, 191, 191, 0.2);
+  padding: 10px 0px;
+  z-index: 1;
+  &:hover{
+    .btn--custom{
+      opacity: 1;
+    }
+  }
+}
+
+a.a--direct.owner {
+  font-size: 0.9rem;
+  color: #9c9c9c;
+  word-break: break-all;
+}
+
+i.fal.fa-book.fa-7x.text-center {
+  color: #b5b5b5b5;
+  cursor: pointer;
+}
+
+.btn--custom {
+  width: 39px;
+  position: absolute;
+  right: 4px;
+  top: 1px;
+  margin-bottom: 2px;
+  opacity: 0;
+  z-index: 2;
+  background: #0067b3;
+  color: #fff;
+}
+
+.btn--custom--second{
+  @extend .btn--custom;
+  top: 35px;
+  z-index: 2;
+}
+
+.ico-gray{
+  color: #707070;
+}
+
+
+@media (max-width:991px){
+  tr{
+    &:hover{
+      background-color: #efefef;
+    }
+    th{
+      &:first-child{
+        width: 70% !important;
+      }
+      &:last-child{
+        text-align: right;
+      }
+    }
+    td{
+      .share-details:hover {
+          background: #fff;
+      }
+      &:last-child{
+        text-align: right;
+      }
+    }
+  }
+}
+
+i.fal.fa-2x.fa-ellipsis-v.actions__item {
+  color: #000;
+  width: 2.5rem;
+  height: 2.5rem;
+  background: #fefefe;
+  line-height: 2.5rem;
+  margin-right: 7px;
+}
+
+i.fa-gray{
+  color: #707070;
+}
+
+i.ico--custom {
+  margin: 0px -2px;
+}
+
+.share-details-row {
+  padding: 0px;
+  td {
+    height: auto !important;
+    padding: 0px;
+    .share-details {
+      text-align: left;
+      padding: 0.75rem 1rem;
+      border: solid 1px lightgrey;
+      .actions {
+        margin-top: 1rem;
+        .actions__item {
+          width: auto;
+          margin-right: 10px;
+        }
+      }
+    }
+  }
+}
+
+
+.data-table__footer {
+  position: relative;
+  .footer__wrapper {
+      position: absolute;
+      right: 2rem;
+      top: 0px;
+  }
+}
+
+.modal.show .modal-dialog {
+  width: 90%;
+  margin: 20px calc(100vw - 95vw);
+}
+
+@media (max-width: 768px){
+  .fl--custom{
+    flex-wrap: wrap;
+  }
+  .data-table__filter{
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-right: 0px !important;
+    margin-bottom: 0px;
+  }
+  .row-selector {
+      position: absolute;
+      right: 15px !important;
+      top: 25px !important;
+  }
+  .form-group {
+      margin-bottom: 10px;
+  }
+}
+
+@media (max-width: 374px){
+  .row-selector {
+      position: static;
+  }
+}
+
+.actions.list-grid-custom {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  top:12px;
+}
+
+.slider {
+  -webkit-appearance: none;
+  margin-top: 13px;
+  margin-right: 10px;
+  height: 2px;
+  border-radius: 5px;
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+  // background: #e10032;
+
+  @media (max-width:320px){
+    width:80px;
+    margin-top:15px;
+  }
+}
+
+input[type=range] {
+  /*removes default webkit styles*/
+  -webkit-appearance: none;
+
+  /*fix for FF unable to apply focus style bug */
+  // border: 1px solid white;
+
+  /*required for proper track sizing in FF*/
+  width: 90%;
+
+  margin-right: 10px;
+  margin-top: -13px;
+  @media (max-width:600px) {
+    margin-right: -40px;
+  }
+}
+input[type=range]::-webkit-slider-runnable-track {
+  width: 47%;
+  height: 2px; // 5
+  background: #ddd;
+  border: none;
+  border-radius: 3px;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  border: none;
+  height: 12px;
+  width: 12px;
+  border-radius: 0px;
+  background: #0067b3;;
+  margin-top: -4px;
+}
+input[type=range]:focus {
+  outline: none;
+}
+input[type=range]:focus::-webkit-slider-runnable-track {
+  background: #ccc;
+}
+
+input[type=range]::-moz-range-track {
+  width: 64px;
+  height: 5px;
+  background: #ddd;
+  border: none;
+  border-radius: 3px;
+}
+input[type=range]::-moz-range-thumb {
+  border: none;
+  height: 12px;
+  width: 12px;
+  border-radius: 0px;
+  background: #0067b3;;
+}
+
+/*hide the outline behind the border*/
+input[type=range]:-moz-focusring{
+  outline: 1px solid white;
+  outline-offset: -1px;
+}
+
+input[type=range]::-ms-track {
+  width: 64px;
+  height: 5px;
+
+  /*remove bg colour from the track, we'll use ms-fill-lower and ms-fill-upper instead */
+  background: transparent;
+
+  /*leave room for the larger thumb to overflow with a transparent border */
+  border-color: transparent;
+  border-width: 6px 0;
+
+  /*remove default tick marks*/
+  color: transparent;
+}
+input[type=range]::-ms-fill-lower {
+  background: #d3d3d3; // 777
+  border-radius: 10px;
+}
+input[type=range]::-ms-fill-upper {
+  background: #ddd;
+  border-radius: 10px;
+}
+input[type=range]::-ms-thumb {
+  border: none;
+  height: 12px;
+  width: 12px;
+  border-radius: 0px;
+  background:#0067b3;;
+}
+input[type=range]:focus::-ms-fill-lower {
+  background: #888;
+}
+input[type=range]:focus::-ms-fill-upper {
+  background: #ccc;
+}
+
+.center-img{
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+  cursor: pointer;
+}

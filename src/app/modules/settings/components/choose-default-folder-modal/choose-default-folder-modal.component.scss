@@ -1,0 +1,67 @@
+.color-black {
+  color: #000;
+}
+.color-gray{
+  color: gray;
+}
+
+.tree .value-container {
+  display: none !important;
+}
+
+.filename {
+  text-transform: none;
+}
+
+.font-size-content {
+  font-size: 2rem;
+}
+
+.tree-demo-app {
+  height: 250px;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    border-radius: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 6px;
+    background-color: #9E9E9E;
+  }
+}
+
+.modal-md {
+  max-width: 600px;
+}
+
+:host ::ng-deep tree-internal {
+  .tree {
+    i.fal.fa-folder {
+      color: gray;
+      margin-right: 4px;
+    }
+    i.fas.fa-file {
+        color: gray;
+        margin-right: 3px;
+    }
+
+    li {
+      div {
+        white-space: nowrap !important;
+      }
+    }
+  }
+}
+
+.modal.show .modal-dialog{
+  @media (max-width:600px) {
+    width: 90%;
+  }
+
+  @media (max-width:575px) {
+    margin: 20px auto;
+  }
+}

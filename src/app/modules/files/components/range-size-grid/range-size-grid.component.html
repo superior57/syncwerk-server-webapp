@@ -1,0 +1,2 @@
+<input *ngIf="!isListView" #size type="range" min="{{ sizeMin }}" max="{{ sizeMax }}" class="slider" (ngModelChange)="onChangeSize(size.value)"
+  [(ngModel)]="rangeDefaultValue" />

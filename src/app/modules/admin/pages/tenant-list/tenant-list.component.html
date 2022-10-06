@@ -1,0 +1,133 @@
+<header class="content__title">
+  <h1 [innerHTML]="'ADMIN.INSTITUTIONS.TITLE.INSTITUTION_LIST' | translate"></h1>
+  <small [innerHTML]="'ADMIN.INSTITUTIONS.SUBTITLE.INSTITUTION_LIST' | translate"></small>
+</header>
+
+<div class="card">
+  <div class="card-block">
+    <div class="data-table__header d-flex justify-content-betwwen fl--custom">
+      <div class="form-group">
+        <button (click)="openCreateTenantModal()" class="btn btn-secondary waves-effect btn--icon-text mr-25px">
+          {{'ADMIN.INSTITUTIONS.LIST_INSTITUTIONS.BUTTONS.ADD_NEW_INSTITUTION' | translate}}</button>
+      </div>
+      <div class="form-group data-table__filter">
+        <input [placeholder]="'SEARCHS.ALL_COLUMNS' | translate" class="form-control" (keyup)="onSearchFilterChange($event)" />
+        <i class="form-group__bar"></i>
+      </div>
+      <div class="row-selector">
+        <app-row-selector (changed)="onPerPageChanged($event)"></app-row-selector>
+      </div>
+    </div>
+
+    <ng-container *ngIf="!isProcessing">
+      <table class="table table-hover" *ngIf="tenantListFromAPI.length !== 0 && tenantListForDisplay.length !== 0">
+        <thead>
+          <tr>
+            <th class="sortable" width="40%" (click)="triggerSort('name')">
+              {{'ADMIN.INSTITUTIONS.LIST_INSTITUTIONS.TABLE_HEADERS.NAME' | translate}}
+              <ng-container *ngIf="sortConfig.column==='name'">
+                <i *ngIf="sortConfig.mode==='asc'" class="fal fa-sort-amount-up sort-icon d-none d-lg-table-cell"></i>
+                <i *ngIf="sortConfig.mode==='desc'" class="fal fa-sort-amount-down sort-icon d-none d-lg-table-cell"></i>
+              </ng-container>
+            </th>
+            <th width="20%" (click)="triggerSort('space_usage')" class="sortable d-none d-lg-table-cell">
+              {{'ADMIN.INSTITUTIONS.LIST_INSTITUTIONS.TABLE_HEADERS.USAGE' | translate}} /
+              {{'ADMIN.INSTITUTIONS.LIST_INSTITUTIONS.TABLE_HEADERS.QUOTA' | translate}}
+              <ng-container *ngIf="sortConfig.column==='space_usage'">
+                <i *ngIf="sortConfig.mode==='asc'" class="fal fa-sort-amount-up sort-icon d-none d-lg-table-cell"></i>
+                <i *ngIf="sortConfig.mode==='desc'" class="fal fa-sort-amount-down sort-icon d-none d-lg-table-cell"></i>
+              </ng-container>
+            </th>
+            <th width="20%" (click)="triggerSort('ctime')" class="sortable d-none d-lg-table-cell">
+              {{'ADMIN.INSTITUTIONS.LIST_INSTITUTIONS.TABLE_HEADERS.CREATED_AT' | translate }}
+              <ng-container *ngIf="sortConfig.column==='ctime'">
+                <i *ngIf="sortConfig.mode==='asc'" class="fal fa-sort-amount-up sort-icon d-none d-lg-table-cell"></i>
+                <i *ngIf="sortConfig.mode==='desc'" class="fal fa-sort-amount-down sort-icon d-none d-lg-table-cell"></i>
+              </ng-container>
+            </th>
+            <th width="20%">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let inst of tenantListForDisplay; let index=index">
+            <tr (mouseover)="hoveredIndex=index" (mouseleave)="hoveredIndex=-1">
+              <td>
+                <a [routerLink]="['/admin','tenants',inst.id]">{{ inst.name }}</a>
+              </td>
+              <td class="d-none d-lg-table-cell">
+                {{ inst.space_usage | customFileSize }}
+                /
+                {{ inst.space_quota ? (inst.space_quota | customFileSize) : '--' }}
+                <ng-container *ngIf="hoveredIndex === index">
+                  <span style="cursor: pointer;" (click)="openChangeQuotaModal(inst)">
+                    <i class="fal fa-pen"></i>
+                  </span>
+                </ng-container>
+
+              </td>
+              <td class="d-none d-lg-table-cell">{{ inst.ctime | amDateFormat:'YYYY-MM-DD HH:mm:ss' }}</td>
+              <td class="d-none d-lg-table-cell">
+                <ng-container *ngIf="hoveredIndex === index">
+                  <i data-toggle="tooltip" [title]="'ADMIN.INSTITUTIONS.LIST_INSTITUTIONS.TOOLTIPS.REMOVE_INSTITUTION' | translate"
+                    class="fal fa-lg fa-trash-alt actions__item" (click)="openRemoveTenantModal(inst)"></i>
+                </ng-container>
+              </td>
+              <td class="d-sm-table-cell d-md-table-cell d-lg-none">
+                <a [href]="'#tenant-'+index" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="share-0">
+                  <i data-toggle="tooltip" title="Details" class="fal fa-2x fa-ellipsis-v actions__item"></i>
+                </a>
+              </td>
+            </tr>
+
+            <!-- Collapse details of share link for sm display -->
+            <tr class="d-sm-table-row d-md-table-row d-lg-none share-details-row">
+              <td colspan="10">
+                <div class="collapse" [id]="'tenant-'+index">
+                  <div class="share-details">
+                    <div>
+                      <span>
+                        <strong>{{'ADMIN.INSTITUTIONS.LIST_INSTITUTIONS.TABLE_HEADERS.NAME' |
+                          translate
+                          }}: </strong>
+                        {{ inst.space_usage | customFileSize }}
+                        /
+                        {{ inst.space_quota ? (inst.space_quota | customFileSize) : '--' }}
+                      </span>
+                    </div>
+                    <div>
+                      <span>
+                        <strong>{{'ADMIN.INSTITUTIONS.LIST_INSTITUTIONS.TABLE_HEADERS.USAGE'
+                          |
+                          translate
+                          }}
+                          /
+                          {{'ADMIN.INSTITUTIONS.LIST_INSTITUTIONS.TABLE_HEADERS.QUOTA' |
+                          translate
+                          }}: </strong>
+                        <span>{{ inst.ctime | amDateFormat:'YYYY-MM-DD HH:mm:ss' }}</span>
+                      </span>
+
+                    </div>
+                    <div class="actions">
+                      <i data-toggle="tooltip" [title]="'ADMIN.INSTITUTIONS.LIST_INSTITUTIONS.TOOLTIPS.REMOVE_INSTITUTION' | translate"
+                        class="fal fa-lg fa-trash-alt actions__item" (click)="openRemoveTenantModal(inst)"></i>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </ng-container>
+
+    <app-processing *ngIf="isProcessing"></app-processing>
+  </div>
+</div>
+
+<div class="data-table__footer">
+  <div class="wrapper__footer">
+    <pagination [itemsPerPage]="pagination.itemsPerPage" [boundaryLinks]="true" [maxSize]="maxSize" [totalItems]="tenantListFromAPI.length"
+      (pageChanged)="pageChanged($event)"></pagination>
+  </div>
+</div>

@@ -1,0 +1,75 @@
+<header class="content__title">
+  <h1>
+    <i class="fal fa-caret-circle-left fa-hc-fw back-btn" [routerLink]="['/admin', 'groups']"></i>
+    <strong>{{ currentGroupInfo.groupName }}</strong> {{'ADMIN.GROUPS.TITLE.GROUP_FOLDERS' | translate}}
+  </h1>
+  <small>{{'ADMIN.GROUPS.SUBTITLE.GROUP_FOLDERS' | translate}}</small>
+</header>
+
+<div class="card">
+  <div class="card-block">
+    <div class="data-table__header d-flex justify-content-betwwen">
+      <div class="form-group data-table__filter">
+        <input [placeholder]="'SEARCHS.ALL_COLUMNS' | translate" class="form-control" (keyup)="onSearchFilterChange($event)" />
+        <i class="form-group__bar"></i>
+      </div>
+      <div class="row-selector">
+        <app-row-selector (changed)="onPerPageChanged($event)"></app-row-selector>
+      </div>
+    </div>
+
+    <ng-container *ngIf="!isProcessing">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th width="40%">{{'ADMIN.GROUPS.LIST_GROUP_FOLDERS.TABLE_HEADERS.FOLDER_NAME' | translate}}</th>
+            <th width="25%">{{'ADMIN.GROUPS.LIST_GROUP_FOLDERS.TABLE_HEADERS.SIZE' | translate}}</th>
+            <th width="25%">{{'ADMIN.GROUPS.LIST_GROUP_FOLDERS.TABLE_HEADERS.SHARED_BY' | translate}}</th>
+            <th *ngIf="currentUserPermission.can_manage_folder !== false"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let folder of listFolderForDisplayed; let index=index" (mouseover)="hoveredIndex=index"
+            (mouseleave)="hoveredIndex=-1">
+            <td class="tb-name">
+              <ng-container *ngIf="!settings.ENABLE_SYS_ADMIN_VIEW_REPO">
+                <span class="icon-folder">
+                  <i class="fas fa-folder fa-fw tb-row-folder"></i>
+                  <i *ngIf="folder.encrypted" class="fal fa-key tb-row-folder-lock" data-toggle="tooltip"
+                    [title]="'TOOLTIPS.ENCRYPTED_FOLDER' | translate: params"></i>
+                </span>
+                <span class="name-folder">{{folder.name }}</span>
+              </ng-container>
+              <ng-container *ngIf="settings.ENABLE_SYS_ADMIN_VIEW_REPO">
+                <span class="icon-folder" [ngClass]="{'cursor-pointer': !folder.encrypted }" (click)="!folder.encrypted ? viewFolders(folder) : ''">
+                  <i class="fas fa-folder fa-fw tb-row-folder"></i>
+                  <i *ngIf="folder.encrypted" class="fal fa-key tb-row-folder-lock" data-toggle="tooltip"
+                    [title]="'TOOLTIPS.ENCRYPTED_FOLDER' | translate: params"></i>
+                </span>
+                <span class="name-folder" [ngClass]="{'cursor-pointer': !folder.encrypted}" (click)="!folder.encrypted ? viewFolders(folder) : ''">{{
+                  folder.name }}</span>
+              </ng-container>
+            </td>
+            <td>
+              {{ folder.size | customFileSize }}
+            </td>
+            <td>
+              <a [routerLink]="['/admin','users','info', folder.shared_by]">{{ folder.shared_by }}</a>
+            </td>
+            <td *ngIf="currentUserPermission.can_manage_folder !== false">
+              <ng-container *ngIf="hoveredIndex === index">
+                <i data-toggle="toolip" [title]="'GROUP_MANAGEMENT.BUTTON_GROUP.UN_SHARE' | translate" class="fal fa-lg fa-trash-alt actions__item"
+                  (click)="openUnshareModal(folder)"></i>
+              </ng-container>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </ng-container>
+    <app-processing *ngIf="isProcessing"></app-processing>
+  </div>
+</div>
+
+<div class="data-table__footer">
+  <pagination [itemsPerPage]="pagination.itemsPerPage" [totalItems]="listFolderFromAPI.length" (pageChanged)="pageChanged($event)"></pagination>
+</div>

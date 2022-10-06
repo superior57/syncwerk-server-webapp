@@ -1,0 +1,276 @@
+@import "src/app/app.component.scss";
+
+
+.content {
+  margin: 0rem 1rem 0rem 1rem;
+  min-height: calc(100vh - 72px);
+
+  .header-share-link {
+    margin-bottom: 20px;
+
+    .name-share-link {
+      color: #0067b3;
+      font-size: 25px;
+      font-weight: bold;
+    }
+
+    .user__img {
+      width: 2.3rem;
+      height: 2.3rem;
+      margin-left: 0.2rem;
+      margin-right: 0.2rem;
+    }
+  }
+  .name-file-folder {
+      display: flex;
+      cursor: pointer;
+      i#icon--custom {
+        font-size: 2.2rem;
+    }
+  }
+
+
+
+  td {
+    vertical-align:middle;
+
+    .icon-folder {
+      cursor: pointer;
+
+      .tb-row-folder {
+        font-size: 37px;
+        float: left;
+      }
+
+      .file-icon {
+        width: 30px;
+        padding-top: 2px;
+        padding-bottom: 2px;
+      }
+
+      .tb-row-file {
+        float: left;
+      }
+    }
+
+    .tb-name {
+      word-break: break-all;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding-left:10px;
+      display: table-cell;
+      vertical-align: middle;
+      height: 37px;
+      cursor: pointer;
+    }
+  }
+
+  .zmdi {
+    cursor: pointer;
+  }
+}
+
+:host ::ng-deep .breadcrumb {
+  font-size: 15px;
+}
+
+.item-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.actions {
+  position: absolute;
+  z-index: 2;
+  top: 18px;
+  left: 21px;
+}
+
+i.custom{
+  font-size: 1.7rem;
+  margin-right: 5px;
+}
+
+h1.h1--custom{
+  font-size: 1.15rem;
+  color: #676767;
+  margin-bottom: 0px;
+  margin-left: 3px;
+}
+
+.share__own {
+  margin-top: -17px;
+  margin-left: 2px;
+}
+
+.content__header {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+}
+
+button.btn.btn-primary.waves-effect.btn--custom {
+  color: #000;
+  background: #fff;
+  box-shadow: 1px 1px 3px 2px rgba(0, 0, 0, 0.06);
+  border: 1px solid #efefef;
+
+  &:hover {
+    background-color: #f7f7f7;
+  }
+}
+
+.control_board {
+  position: absolute;
+  right: 0px;
+}
+
+.grid-item {
+  text-align: center;
+  cursor: pointer;
+  margin-bottom: 1.5rem;
+  margin-top: 1.5rem;
+  .center-img{
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    margin-bottom: 10px;
+    font-size: 100px;
+    @extend .item-center;
+    .file-icon {
+      max-width: 150px;
+      max-height: 90px;
+    }
+  }
+  .tb-name-grid {
+    width: 70%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 0 auto;
+    a {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+}
+
+@media(min-width: 1560px) and (max-width: 2880px) {
+  .col-xl-3 {
+    flex: 0 0 16.66667%;
+    max-width: 16.66667%;
+  }
+}
+
+@media(min-width: 2881px) {
+  .col-xl-3 {
+    flex: 0 0 8.33333%;
+    max-width: 8.33333%;
+  }
+}
+
+img.img--listview {
+  width: 50px;
+  height: 30px;
+}
+i#icon--listview {
+  font-size: 3rem;
+}
+
+
+
+.share-details-row {
+  padding: 0px;
+  td {
+    padding: 0px;
+    .share-details {
+      text-align: left;
+      padding: 0.75rem 1rem;
+      border: solid 1px lightgrey;
+      text-align: left;
+      .actions {
+        margin-top: 1rem;
+        .actions__item {
+          width: auto;
+          margin-right: 10px;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width:991px){
+
+  table{
+    border: none;
+    thead.thead-default{
+      tr{
+        border: none;
+        th{
+          border: none;
+        }
+      }
+    }
+  }
+  tr{
+    &:hover{
+      background-color: #efefef;
+    }
+    th{
+      &:last-child{
+        text-align: right;
+      }
+    }
+    td{
+      padding: 1rem 0.5rem !important;
+      .share-details:hover {
+          background: #fff;
+      }
+      &:last-child{
+        text-align: right;
+      }
+    }
+  }
+}
+
+i.fal.fa-2x.fa-ellipsis-v.actions__item {
+  color: #000;
+  width: 2.5rem;
+  height: 2.5rem;
+  background: #fefefe;
+  line-height: 2.5rem;
+  margin-right: 7px;
+}
+
+span.username {
+  margin: 0px 4px;
+}
+.grid-menu-button{
+  align-content: right;
+  position: absolute;
+  right: 20px;
+  z-index: 5;
+  top: 35px;
+  &.custom-control {
+    padding-left: 0;
+  }
+  &.custom-checkbox {
+    top: 3px;
+    .custom-control-input {
+      width: 31px;
+      height: 30px;
+      margin-left: -17px;
+    }
+    .custom-control-indicator {
+      border: 1px solid #0067b3;
+      width: 31px;
+      height: 30px;
+      margin-left: -17px;
+      &:before {
+        font-size: 1.8rem;
+        padding-top: 7px;
+      }
+    }
+  }
+}

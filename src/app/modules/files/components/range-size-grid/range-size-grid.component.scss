@@ -1,0 +1,127 @@
+// .slider {
+//   -webkit-appearance: none;
+//   margin-top: 13px;
+//   margin-right: 10px;
+//   height: 2px;
+//   border-radius: 5px;
+//   background: #d3d3d3;
+//   outline: none;
+//   opacity: 0.7;
+//   -webkit-transition: .2s;
+//   transition: opacity .2s;
+//   &:hover {
+//     opacity: 1;
+//   }
+//   &::-webkit-slider-thumb {
+//     -webkit-appearance: none;
+//     appearance: none;
+//     width: 12px;
+//     height: 12px;
+//     //border-radius: 50%;
+//     background: #0067b3;
+//     cursor: pointer;
+//   }
+//   &::-moz-range-thumb {
+//     width: 12px;
+//     height: 12px;
+//     //border-radius: 50%;
+//     background: #0067b3;
+//     cursor: pointer;
+//   }
+// }
+
+input[type=range] {
+  /*removes default webkit styles*/
+  -webkit-appearance: none;
+
+  /*fix for FF unable to apply focus style bug */
+  // border: 1px solid white;
+
+  /*required for proper track sizing in FF*/
+  width: 90%;
+
+  margin-right: 10px;
+  margin-top: -13px;
+  @media (max-width:600px) {
+    margin-right: -40px;
+  }
+}
+input[type=range]::-webkit-slider-runnable-track {
+  width: 47%;
+  height: 2px; // 5
+  background: #ddd;
+  border: none;
+  border-radius: 3px;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  border: none;
+  height: 12px;
+  width: 12px;
+  border-radius: 0px;
+  background: #0067b3;;
+  margin-top: -4px;
+}
+input[type=range]:focus {
+  outline: none;
+}
+input[type=range]:focus::-webkit-slider-runnable-track {
+  background: #ccc;
+}
+
+input[type=range]::-moz-range-track {
+  width: 64px;
+  height: 5px;
+  background: #ddd;
+  border: none;
+  border-radius: 3px;
+}
+input[type=range]::-moz-range-thumb {
+  border: none;
+  height: 12px;
+  width: 12px;
+  border-radius: 0px;
+  background: #0067b3;;
+}
+
+/*hide the outline behind the border*/
+input[type=range]:-moz-focusring{
+  outline: 1px solid white;
+  outline-offset: -1px;
+}
+
+input[type=range]::-ms-track {
+  width: 64px;
+  height: 5px;
+
+  /*remove bg colour from the track, we'll use ms-fill-lower and ms-fill-upper instead */
+  background: transparent;
+
+  /*leave room for the larger thumb to overflow with a transparent border */
+  border-color: transparent;
+  border-width: 6px 0;
+
+  /*remove default tick marks*/
+  color: transparent;
+}
+input[type=range]::-ms-fill-lower {
+  background: #d3d3d3; // 777
+  border-radius: 10px;
+}
+input[type=range]::-ms-fill-upper {
+  background: #ddd;
+  border-radius: 10px;
+}
+input[type=range]::-ms-thumb {
+  border: none;
+  height: 12px;
+  width: 12px;
+  border-radius: 0px;
+  background:#0067b3;;
+}
+input[type=range]:focus::-ms-fill-lower {
+  background: #888;
+}
+input[type=range]:focus::-ms-fill-upper {
+  background: #ccc;
+}

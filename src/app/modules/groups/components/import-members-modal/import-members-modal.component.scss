@@ -1,0 +1,20 @@
+.inputfile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+  z-index: -1;
+  & + label {
+    cursor: pointer;
+  }
+}
+
+label.btn {
+  margin-bottom: 0px;
+}
+
+.btn-group button {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}

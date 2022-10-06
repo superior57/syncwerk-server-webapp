@@ -1,0 +1,104 @@
+<table *ngIf="listSharedLibs.length > 0" class="table table-hover mb-0">
+  <thead>
+    <tr>
+      <th>
+        <span [innerHTML]="'USERADMIN_INFO.SHARED_LIBS.TABLE.NAME' | translate: params"></span>
+      </th>
+      <th width="15%" class="d-none d-lg-table-cell">
+        <span [innerHTML]="'USERADMIN_INFO.SHARED_LIBS.TABLE.SHARE_BY' | translate: params"></span>
+      </th>
+      <th width="15%" class="d-none d-lg-table-cell">
+        <span [innerHTML]="'USERADMIN_INFO.SHARED_LIBS.TABLE.SHARE_TO' | translate: params"></span>
+      </th>
+      <th width="15%" class="d-none d-lg-table-cell">
+        <span [innerHTML]="'USERADMIN_INFO.SHARED_LIBS.TABLE.SIZE' | translate: params"></span>
+      </th>
+      <th width="20%" class="d-none d-lg-table-cell">
+        <span [innerHTML]="'USERADMIN_INFO.SHARED_LIBS.TABLE.LAST_UPDATE' | translate: params"></span>
+      </th>
+      <th width="10%" class="d-sm-table-cell d-md-table-cell d-lg-none">
+        <span [innerHTML]="'USERADMIN_INFO.SHARED_LINKS.TABLE.OPERATIONS' | translate: params"></span>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <ng-container *ngFor="let item of listSharedLibs; let index = index">
+      <tr (mouseover)="hoveredIndex=index" (mouseleave)="hoveredIndex=-1">
+        <td class="tb-name">
+          <ng-container *ngIf="enableViewRepo">
+            <div class="vertical-items item-link" [routerLink]="['/admin', 'folders', item.id]">
+              <div class="icon-folder">
+                <!-- <a [routerLink]="['/folders', item.id]" class="a--link"> -->
+                <i class="fas fa-folder fa-fw tb-row-folder"></i>
+                <i *ngIf="item.encrypted" class="fal fa-key tb-row-folder-lock" data-toggle="tooltip"
+                  title="Encrypted"></i>
+                <i *ngIf="item.permission==='r' && !item.encrypted" class="fal fa-eye fa-hc-fw tb-row-folder-lock"
+                  data-toggle="tooltip" title="Read-Only"></i>
+                <!-- </a> -->
+              </div>
+              <span class="text-ellipsis" data-toggle="tooltip" title="{{ item.name }}">{{ item.name }}</span>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="!enableViewRepo">
+            <div class="vertical-items">
+              <div class="icon-folder">
+                <!-- <a [routerLink]="['/folders', item.id]" class="a--link"> -->
+                <i class="fas fa-folder fa-fw tb-row-folder"></i>
+                <i *ngIf="item.encrypted" class="fal fa-key tb-row-folder-lock" data-toggle="tooltip"
+                  title="Encrypted"></i>
+                <i *ngIf="item.permission==='r' && !item.encrypted" class="fal fa-eye fa-hc-fw tb-row-folder-lock"
+                  data-toggle="tooltip" title="Read-Only"></i>
+                <!-- </a> -->
+              </div>
+              <span class="text-ellipsis" data-toggle="tooltip" title="{{ item.name }}">{{ item.name }}</span>
+            </div>
+          </ng-container>
+        </td>
+        <td class="d-none d-lg-table-cell">{{ item.props.from ? (item.share_type == 'group' ? 'Group - '+ item.props.from : item.props.from) : "--"}}</td>
+        <td class="d-none d-lg-table-cell">{{ item.props.to ? (item.share_type == 'group' ? 'Group - '+ item.props.to : item.props.to) : "--"}}</td>
+        <td class="d-none d-lg-table-cell">{{ item.size | customFileSize }}</td>
+        <td class="d-none d-lg-table-cell">
+          <span data-toggle="tooltip" title="{{ (item.last_modify | amFromUnix) | amDateFormat: 'ddd, D MMM YYYY HH:mm:ss ZZ' }}">{{
+            (item.last_modify | amFromUnix) | amDateFormat:'YYYY-MM-DD HH:mm:ss' }}</span>
+        </td>
+        <td class="d-sm-table-cell d-md-table-cell d-lg-none">
+          <a [href]="'#link-'+index" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="share-0">
+            <i data-toggle="tooltip" title="Details" class="fal fa-2x fa-ellipsis-v actions__item"></i>
+          </a>
+        </td>
+      </tr>
+
+      <!-- Collapse details of share link for sm display -->
+      <tr class="d-sm-table-row d-md-table-row d-lg-none share-details-row">
+        <td colspan="10">
+          <div class="collapse" [id]="'link-'+index">
+            <div class="share-details">
+              <div>
+                <span>
+                  <strong>{{ 'USERADMIN_INFO.SHARED_LIBS.TABLE.SHARE_BY' | translate}}: </strong>
+                  {{ item.props.from }}
+                </span>
+              </div>
+              <div>
+                <span>
+                  <strong>{{ 'USERADMIN_INFO.SHARED_LIBS.TABLE.SIZE' | translate}}: </strong>
+                  {{ item.size | customFileSize }}
+                </span>
+              </div>
+              <div>
+                <span>
+                  <strong>{{ 'USERADMIN_INFO.SHARED_LIBS.TABLE.LAST_UPDATE' | translate}}: </strong>
+                  <span data-toggle="tooltip" title="{{ (item.last_modify | amFromUnix) | amDateFormat: 'ddd, D MMM YYYY HH:mm:ss ZZ' }}">{{
+                      (item.last_modify | amFromUnix) | amDateFormat:'YYYY-MM-DD HH:mm:ss' }}</span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </ng-container>
+
+  </tbody>
+</table>
+
+<app-empty-item *ngIf="listSharedLibs.length === 0" [messageTitle]="'USERADMIN_INFO.SHARED_LIBS.EMPTY_ITEM.MSG_TITLE' | translate: params"></app-empty-item>

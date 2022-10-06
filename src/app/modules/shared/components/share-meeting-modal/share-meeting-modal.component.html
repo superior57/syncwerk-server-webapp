@@ -1,0 +1,51 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h5 [innerHTML]="'MEETING.SHARE.TITLE' | translate" class="modal-title pull-left"></h5>
+  </div>
+  <div class="modal-body">
+    <aside class="share-menu">
+      <div class="scrollbar-inner">
+        <ul class="navigation">
+          <li class="share-li" [ngClass]="{'share-li-active':currentTab === 'publicShare'}" (click)="switchTab('publicShare')">
+            <p class="cusor-p" [innerHTML]="'MEETING.SHARE.PUBLIC_LINK' | translate">Public link</p>
+          </li>
+          <li class="share-li" [ngClass]="{'share-li-active':currentTab === 'shareToUser'}" (click)="switchTab('shareToUser')">
+            <p class="cusor-p" [innerHTML]="'MEETING.SHARE.USERS' | translate"></p>
+          </li>
+          <li class="share-li" [ngClass]="{'share-li-active':currentTab === 'shareToGroup'}" (click)="switchTab('shareToGroup')">
+            <p class="cusor-p" [innerHTML]="'MEETING.SHARE.GROUPS' | translate"></p>
+          </li>
+        </ul>
+      </div>
+      <!-- <div class="scrollbar-inner">
+            <ul class="navigation">
+              <li class="share-li" [ngClass]="{'share-li-active':currentContentTab === 0}" (click)="changeTab(0)" *ngIf="isDownloadLink && isEnabledPubliclShare">
+                <p class="cusor-p" [innerHTML]="'MODAL_SHARE.NAVIGATIONS.DOWNLOAD_LINK' | translate: params"></p>
+              </li>
+              <li class="share-li" [ngClass]="{'share-li-active':currentContentTab === 1}" (click)="changeTab(1)" *ngIf="isUploadLink && isEnabledPubliclShare">
+                <p class="cusor-p" [innerHTML]="'MODAL_SHARE.NAVIGATIONS.UPLOAD_LINK' | translate: params"></p>
+              </li>
+              <li class="share-li" [ngClass]="{'share-li-active':currentContentTab === 2}" (click)="changeTab(2)" *ngIf="isShareUser && isEnabledInternalShare">
+                <p class="cusor-p" [innerHTML]="'MODAL_SHARE.NAVIGATIONS.SHARE_TO_USER' | translate: params"></p>
+              </li>
+              <li class="share-li" [ngClass]="{'share-li-active':currentContentTab === 3}" (click)="changeTab(3)" *ngIf="isShareGroup && isEnabledInternalShare">
+                <p class="cusor-p" [innerHTML]="'MODAL_SHARE.NAVIGATIONS.SHARE_TO_GROUP' | translate: params"></p>
+              </li>
+              <li class="share-li" [ngClass]="{'share-li-active':currentContentTab === 4}" (click)="changeTab(4)" *ngIf="isShareAll && isEnabledPubliclShare">
+                <p class="cusor-p" [innerHTML]="'MODAL_SHARE.NAVIGATIONS.SHARE_TO_ALL' | translate: params"></p>
+              </li>
+            </ul>
+          </div> -->
+    </aside>
+    <div class="content-share-modal">
+      <app-share-meeting-modal-public *ngIf="currentTab === 'publicShare'" [meetingRoomId]="selectedMeetingRoomId" [isAdministration]="isAdministration" ></app-share-meeting-modal-public>
+      <app-share-meeting-modal-user *ngIf="currentTab === 'shareToUser'" [meetingRoomId]="selectedMeetingRoomId" [isAdministration]="isAdministration" ></app-share-meeting-modal-user>
+      <app-share-meeting-modal-group *ngIf="currentTab === 'shareToGroup'" [meetingRoomId]="selectedMeetingRoomId" [isAdministration]="isAdministration" ></app-share-meeting-modal-group>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-link" (click)="closeModal()">
+      <span [innerHTML]="'BUTTONS.CLOSE' | translate"></span>
+    </button>
+  </div>
+</div>

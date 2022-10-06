@@ -1,0 +1,75 @@
+<div *ngIf="linksList.length > 0">
+  <!-- FILTER -->
+  <div class="data-table__header d-flex justify-content-between">
+    <div class="form-group data-table__filter">
+      <input *ngIf="config.filtering" [placeholder]="'SEARCHS.ALL_COLUMNS' | translate: params" [(ngModel)]="config.filtering.filterString"
+        class="form-control" (keyup)="changeTable(config)" />
+      <i class="form-group__bar"></i>
+    </div>
+    <div class="row-selector">
+      <label>
+        {{ 'FORMS.INPUTS.SHOW' | translate: params }}
+        <select2 class="select2-per-page" [data]="perPageSelectData" [options]="perPageSelectOptions" [value]="page.itemsPerPage"
+          (valueChanged)="onPerPageChanged($event)"></select2>
+      </label>
+    </div>
+  </div>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th *ngFor="let column of columns" [width]="column.width" class="cursor-pointer" (click)="column.sort!==false ? sortColumn(column, config) : ''">
+          {{ column.title | translate }}
+          <i class="fal fa-hc-lg float-right" [ngClass]="{'zmdi-sort-amount-asc': column.sort==='asc', 'zmdi-sort-amount-desc': column.sort==='desc'}"></i>
+        </th>
+        <th width="15%">{{ 'TABLE.COLUMNS.ACTIONS' | translate: params }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let link of linksListDisplay; let i = index" (mouseover)="hoveredIndex=i" (mouseleave)="hoveredIndex=-1">
+        <td class="tb-name">
+          <div class="vertical-items">
+            <div class="vertical-items icon-tb-name d-inline-block cursor-pointer" (click)="openObject(link.is_dir, link.repo_id, link.path)">
+              <i *ngIf="link.is_dir" class="fas fa-folder fa-fw icon-folder"></i>
+              <i *ngIf="!link.is_dir">
+                <img *ngIf="!link.imgError || (link.imgError && link.imgError != 1)" (error)="setErrorImg(i)" class="icon-file" src="{{ link.obj_name | fileIconPath: false: link.repo_id: link.path }}">
+                <img *ngIf="(link.imgError && link.imgError === 1)" class="icon-file" src="{{ link.obj_name | customFileIcon }}">
+              </i>
+            </div>
+            <span class="text-ellipsis green-color-link" (click)="openObject(link.is_dir, link.repo_id, link.path)" data-toggle="tooltip"
+              title="{{ link.obj_name }}">{{ link.obj_name }}</span>
+          </div>
+        </td>
+        <td class="tb-name text-ellipsis">
+          <span class="green-color-link" data-toggle="tooltip" title="{{ link.repo_name }}" (click)="openObject(true, link.repo_id, '')">{{ link.repo_name }}</span>
+        </td>
+        <td>{{link.view_cnt}}</td>
+        <td>{{link.expire_date ? link.expire_date : '--'}}</td>
+        <td>
+          <div *ngIf="i===hoveredIndex">
+            <!-- <i class="actions__item item-color-hover zmdi zmdi-link view-icon" data-toggle="tooltip" [title]="'TOOLTIPS.VIEW' | translate: params"
+              (click)="handleOpenModal('view', getLink(link))"></i> -->
+            <i class="actions__item item-color-hover fal fa-trash-alt fa-hc-1dot5" data-toggle="tooltip" [title]="'TOOLTIPS.REMOVE' | translate: params"
+              (click)="handleOpenModal('remove', link)"></i>
+            <i class="actions__item item-color-hover fal fa-copy copy-icon" data-toggle="tooltip" [title]="'TOOLTIPS.COPY_TO_CLIPBOARD' | translate: params"
+              ngxClipboard [cbContent]="getLink(link)" (click)="copyLinks(getLink(link))"></i>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- PAGINATION -->
+  <div class="data-table__footer">
+    <pagination *ngIf="config.paging" [(ngModel)]="page.page" [totalItems]="length" [itemsPerPage]="page.itemsPerPage" [maxSize]="maxSize"
+      [boundaryLinks]="true" [rotate]="false" (pageChanged)="changeTable(config, $event)" (numPages)="numPages = $event">
+    </pagination>
+  </div>
+
+  <!-- Modals -->
+  <!-- <app-view-link-modal *ngIf="isOpenModal.view" [link]="currentShareLink" [type]="linkType"></app-view-link-modal> -->
+  <app-modal-delete-remove *ngIf="isOpenModal.remove" [isDeleteModal]="false" [typeDelete]="'Download Link'" [itemName]="currentShareLink.obj_name"
+    (submitRemoveItem)="onRemoveItem()"></app-modal-delete-remove>
+</div>
+<app-empty-item *ngIf="linksList.length === 0" [messageTitle]="'EMPTY_ITEMS.MSG_TITLES.SHARES_DOWNLOAD_LINK' | translate: params"
+  [messageSub]="'EMPTY_ITEMS.MSG_SUB_TITLES.SHARES_DOWNLOAD_LINK' | translate: params"></app-empty-item>

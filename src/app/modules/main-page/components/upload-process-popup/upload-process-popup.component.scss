@@ -1,0 +1,40 @@
+.card {
+  position: fixed;
+  width: 40%;
+  height: 15rem;
+  right: 2.3rem;
+  bottom: 0rem;
+  margin-bottom: 0;
+  border: solid 1px lightgray;
+  border-bottom: none;
+  border-radius: 0.2rem;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  z-index: 999;
+  .card-header {
+    padding: 1rem;
+    padding-bottom: 0;
+    .actions {
+      top: 0.5rem;
+    }
+  }
+  perfect-scrollbar {
+    height: 90%;
+  }
+  .card-block {
+    padding: 1rem;
+    padding-top: 0;
+    // max-height: 100%;
+    // // min-height: 15rem;
+    position: relative;
+  }
+  .card-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #0067b3;
+  }
+}
+
+mwlResizable {
+  box-sizing: border-box; // required for the enableGhostResize option to work
+}

@@ -1,0 +1,32 @@
+<div class="modal fade" id="modal-create-new-folder" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left custom-title" [innerHTML]="'MODALS.TITLES.NEW_FOLDER' | translate"></h5>
+      </div>
+      <div class="modal-body">
+        <form #folderForm="ngForm" (keyup.enter)="submitCreateFolder()">
+          <div class="form-group input" [ngClass]="{'has-danger':nameErrorMessage !== ''}">
+            <label data-toggle="tooltip" title="required" [innerHTML]="'FORMS.INPUTS.NAME' | translate"> (*)</label>
+            <input #name type="text" class="form-control input-mask" maxlength="255" required [(ngModel)]="model.name" name="name" #name="ngModel"
+              [ngClass]="{'form-control-danger':nameErrorMessage !== ''}">
+            <i class="form-group__bar"></i>
+          </div>
+          <p class="error-msg">{{ nameErrorMessage }}</p>
+          <p class="sub-error-msg">{{ subError }}</p>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <div>
+          <button type="button" class="btn btn-success waves-effect" (click)="submitCreateFolder()" [disabled]="isProcessing ? 'disabled' : ''">
+            <i *ngIf="isProcessing" class="fal fa-sync-alt fa-spin"></i>
+            <span [innerHTML]="'BUTTONS.CREATE' | translate"></span>
+          </button>
+          <button type="button" class="btn btn-secondary btn--icon-text waves-effect" data-dismiss="modal" [disabled]="isProcessing ? 'disabled' : ''">
+            <span [innerHTML]="'BUTTONS.CLOSE' | translate"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

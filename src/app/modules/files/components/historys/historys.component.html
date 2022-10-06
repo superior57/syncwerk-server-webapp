@@ -1,0 +1,149 @@
+<header class="content__title">
+  <h1 class="d-flex align-items-center" data-toggle="tooltip">
+    <i class="fal fa-caret-circle-left fa-hc-fw icon-back-folders" (click)="backPage()"></i>
+    <strong>{{ repoName }}</strong> &nbsp;
+    <span class="modification" [innerHTML]="'HISTORY.TITLE' | translate: params"> </span>
+  </h1>
+  <small [innerHTML]="'HISTORY.TIP' | translate:params"></small>
+</header>
+
+<div class="card">
+  <div class="card-block">
+    <div class="data-table__header d-flex justify-content-betwwen fl--custom">
+      <div class="form-group data-table__filter">
+        <input *ngIf="config.filtering" [placeholder]="'SEARCHS.ALL_COLUMNS' | translate: params" class="form-control"
+          (keyup)="onSearchFilterChange($event)" />
+        <i class="form-group__bar"></i>
+      </div>
+      <div class="row-selector">
+        <select2 class="select2-per-page" [data]="perPageSelectData" [options]="perPageSelectOptions" (valueChanged)="onPerPageChanged($event)"></select2>
+      </div>
+      <div class="expand">
+        <button type="button" class="btn btn-secondary waves-effect btn--icon-text" (click)="onExpandCollapseAll()">
+          {{ 'BUTTONS.EXPAND_ALL' | translate }}
+        </button>
+      </div>
+    </div>
+
+    <!-- start accordion -->
+
+    <div id="accordion">
+
+      <div class="card" *ngFor="let item of listHistoryDisplay; let index=index">
+        <a data-toggle="collapse" [href]="this.slash + this.symbol + index" class="toogle__accordion">
+          <div class="card-header">
+            <a class="card-link" [ngClass]="{'preventClick': item.number_of_changes === 0}" data-toggle="collapse" [href]="this.slash + this.symbol + index">
+              {{item.time | amDateFormat:'D.MM.YYYY - HH.mm.ss'}} :
+            </a>
+
+            <div class="box__items">
+              <a class="items__des" *ngIf="item.number_of_changes === 1">{{item.number_of_changes}} {{'HISTORY.CHANGE' |
+                translate}}  &#8208;
+                {{item.description}}</a>
+              <a class="items__des" *ngIf="item.number_of_changes !== 1">{{item.number_of_changes}} {{'HISTORY.CHANGES' |
+                translate}}</a>
+            </div>
+
+            <a class="items__detail" data-toggle="collapse" [href]="this.slash + this.symbol + index" *ngIf="item.number_of_changes > 1">
+              &#8208; {{ 'HISTORY.SHOW_DETAIL' | translate }}
+            </a>
+            <a class="space"> &#8208;</a>
+            <a *ngIf=" allowViewSnapshot " (click)="openSnapshot(item)" class="view__snap">{{ 'BUTTONS.VIEW_SNAPSHOT' | translate: params }}</a>
+            <a *ngIf=" item.currentSnapshot " class="space"> &#8208;</a>
+            <a *ngIf=" allowViewSnapshot && item.currentSnapshot " class="current__snap">
+            {{ 'HISTORY.CURRENT_SNAPSHOT' | translate: params }}
+              </a>
+            <div class="fl-right">
+              <div *ngIf="item.name === ''; else existsName">Unknown</div>
+              <ng-template #existsName>
+                <a (click)="profileName(item.contact_email)" class="name">
+                  {{item.email}}
+                </a>
+              </ng-template>
+            </div>
+            <span class="card-link"></span>
+          </div>
+        </a>
+        <div [id]="this.symbol + index" class="collapse">
+          <div class="card-body">
+            <div class="">
+              <strong>{{ 'HISTORY.DEVICE_INFO' | translate }}</strong>
+              <p *ngIf="!item.device_name">Web App</p>
+              <p *ngIf="item.device_name">{{ item.device_name }}</p>
+            </div>
+
+            <div *ngIf="item.number_of_changes === 0">
+              <strong>{{ 'HISTORY.DESCRIPTION' | translate}}</strong>
+              <p>{{ item.description }}</p>
+            </div>
+
+            <div *ngIf="item.details.newdir.length > 0">
+              <strong>{{ 'HISTORY.OPERATION_TYPE.NEW_DIR' | translate }}</strong>
+              <ol class="item-list">
+                <li *ngFor="let itemName of item.details.newdir ">{{ itemName }}</li>
+              </ol>
+            </div>
+
+            <div *ngIf="item.details.new.length > 0">
+              <strong>{{ 'HISTORY.OPERATION_TYPE.NEW' | translate }}</strong>
+              <ol class="item-list">
+                <li *ngFor="let itemName of item.details.new ">{{ itemName }}</li>
+              </ol>
+            </div>
+
+            <div *ngIf="item.details.modified.length > 0">
+              <strong>{{ 'HISTORY.OPERATION_TYPE.MODIFIED' | translate }}</strong>
+              <ol class="item-list">
+                <li *ngFor="let itemName of item.details.modified ">{{ itemName }}</li>
+              </ol>
+            </div>
+
+            <div *ngIf="item.details.renamed.length > 0">
+              <strong>{{ 'HISTORY.OPERATION_TYPE.RENAME' | translate }}</strong>
+              <ol class="item-list">
+                <li *ngFor="let itemName of item.details.renamed ">{{ itemName }}</li>
+              </ol>
+            </div>
+
+            <div *ngIf="item.details.deldir.length > 0">
+              <strong>{{ 'HISTORY.OPERATION_TYPE.DELETE_DIR' | translate }}</strong>
+              <ol class="item-list">
+                <li *ngFor="let itemName of item.details.deldir ">{{ itemName }}</li>
+              </ol>
+            </div>
+
+            <div *ngIf="item.details.removed.length > 0">
+              <strong>{{ 'HISTORY.OPERATION_TYPE.REMOVE' | translate }}</strong>
+              <ol class="item-list">
+                <li *ngFor="let itemName of item.details.removed ">{{ itemName }}</li>
+              </ol>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- end accordion -->
+
+  </div>
+</div>
+<!--
+<div align="right">
+  <button (click)="prevPage()" [disabled]="page.page<=1" class="btn btn-info btn--icon-text waves-effect">
+    <i class="zmdi zmdi-arrow-back"></i>
+    <span [innerHTML]="'BUTTONS.PREV' | translate: params"></span>
+  </button>
+  <button (click)="nextPage()" [disabled]="!more" class="btn btn-info btn--icon-text waves-effect">
+    <i class="zmdi zmdi-arrow-forward"></i>
+    <span [innerHTML]="'BUTTONS.NEXT' | translate: params"></span>
+  </button>
+</div> -->
+
+<div class="wrapper_pagination">
+  <div class="pagination--custom">
+      <pagination [itemsPerPage]="pagination.itemsPerPage" [boundaryLinks]="true" [maxSize]="maxSize" [totalItems]="pagination.totalNumberOfResult" (pageChanged)="pageChanged($event)"></pagination>
+  </div>
+</div>
+
+<app-processing *ngIf="isProcessing"></app-processing>
+<app-history-details-modal [Data]="detailsData"></app-history-details-modal>

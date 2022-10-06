@@ -1,0 +1,122 @@
+header {
+  padding: 0px 15rem;
+  .filename {
+    font-size: 16px;
+    padding-right: 1.5rem;
+  }
+  .logo-image {
+    margin-left: -13.3rem;
+  }
+  .header-language {
+    position: absolute;
+    top: 1.3rem;
+    right: 2rem;
+  }
+}
+
+.content {
+  margin: 0rem 2rem 0rem 2rem;
+  &__title {
+    padding-bottom: 2rem;
+  }
+}
+
+.card {
+  &__download {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+  &__preview {
+    min-height: 500px;
+  }
+}
+
+.image-preview {
+  height: 400px;
+  text-align: center;
+  img {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: calc(100% - 4px);
+  }
+}
+
+
+vg-controls {
+  vg-scrub-bar-current-time {
+    background-color: gray;
+  }
+}
+
+::ng-deep .select2-container--default .select2-selection--single .select2-selection__rendered {
+  color: #fff;
+}
+
+header{
+  position: relative;
+  background: #0067b3;
+}
+:host ::ng-deep select2 .select2-container--default .select2-selection--single .select2-selection__rendered {
+ color: #fff;
+ background: #0067b3;
+}
+:host ::ng-deep select2 .select2-container--default .select2-selection--single:before{
+  transform: rotate(45deg);
+  top: 15px;
+}
+:host ::ng-deep select2 .select2-container--default .select2-selection--single{
+  border-bottom: 0px solid transparent !important;
+}
+:host ::ng-deep select2 .select2-container--default .select2-selection--single .select2-selection__rendered{
+  padding:  14px 14px;
+}
+:host ::ng-deep select2  span{
+  width: 80px;
+}
+:host select2 ::ng-deep span#select2-5vko-container {
+  padding-left: 12px;
+}
+
+.card {
+  & .office-preview {
+    height: calc(100vh - 200px);
+    & iframe {
+      height: calc(100vh - 200px);
+    }
+  }
+}
+
+section.content.content--full {
+  min-height: calc(100vh - 150px);
+}
+
+i.ico--custom{
+  font-size: 1.4rem;
+  margin-right: 5px;
+  cursor: pointer;
+}
+
+.content__video {
+  padding-top: 10px;
+  width: 90%;
+  margin: auto
+}
+
+.vgplayer__video {
+  height: calc(100vh - 16rem);
+}
+
+.videoWrapper {
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 */
+  height: 0;
+  height: calc(100vh - 16rem);
+}
+.videoWrapper .video-js {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}

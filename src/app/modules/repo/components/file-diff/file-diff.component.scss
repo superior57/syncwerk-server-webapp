@@ -1,0 +1,108 @@
+.content {
+  margin: 0rem 7rem 0rem 7rem;
+  &__title {
+    padding-left: 0rem;
+  }
+}
+
+.header-modification {
+  margin-bottom: 20px;
+
+  .caption-modification {
+    margin-top: 10px;
+    padding-left: 4rem;
+    font-size: 13px;
+    color: #7a7a7a;
+  }
+  .name-modification {
+    color: #706f71;
+    font-weight: bold;
+    margin-right: 5px;
+    text-transform: uppercase;
+  }
+  .modification {
+    // font-size: 25px;
+    // font-weight: bold;
+    color: gray;
+    text-transform: uppercase;
+  }
+  .margin-btn-back {
+    float: left;
+    margin-right: 10px;
+  }
+}
+
+.commit-author:hover {
+  strong {
+    //text-decoration: underline;
+  }
+}
+
+.btn-back {
+  margin: 8rem 0rem 0rem 7rem;
+  position: absolute;
+}
+
+.filename {
+  text-transform: none;
+}
+
+.breadcrumb {
+  padding-left: 0rem;
+  border: none;
+  .breadcrumb-title {
+    float: left;
+    margin-right: 5px;
+  }
+  .breadcrumb-item {
+    font-weight: 600;
+    color: orange;
+  }
+  .breadcrumb-item:hover {
+    //text-decoration: underline;
+  }
+}
+
+:host ::ng-deep .table__file-diff {
+  width: 100%;
+  table-layout: fixed;
+  tbody {
+    tr {
+      td {
+        border: none;
+        word-wrap: break-word;
+        padding: 2px 3px;
+      }
+    }
+  }
+  .diff-header {
+    background-color: #ebebeb;
+    text-align: right;
+  }
+  .diff-add {
+    color:#080;
+    width: 100%;
+  }
+  .diff-sub {
+    color:#c00;
+    width: 100%;
+  }
+}
+
+.icon-back-folders {
+  font-size: 1.7rem;
+  cursor: pointer;
+  margin-right: 5px;
+  margin-top: -2px;
+}
+
+.header-modification {
+  display: flex;
+}
+span.caption-modification {
+  margin: -11px 0px 0px 0px;
+}
+a.commit-author {
+  margin-right: 6px;
+}
+

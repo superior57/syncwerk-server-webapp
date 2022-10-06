@@ -1,0 +1,55 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h3 class="modal-title">
+      <strong>{{ 'ADMIN.GROUPS.LIST_GROUPS.TABLE_HEADERS.GROUP_NAME' | translate }}</strong>
+    </h3>
+  </div>
+  <div class="modal-body">
+    <div class="form-group">
+      <label>{{ 'ADMIN.GROUPS.TITLE.GROUP_NEW' | translate}}</label>
+      <input [(ngModel)]="groupName" type="text" class="form-control">
+
+      <i class="form-group__bar"></i>
+    </div>
+    <div class="form-group">
+      <label>
+        {{ 'ADMIN.GROUPS.LIST_GROUPS.TABLE_HEADERS.OWNER' | translate }}
+        <small>{{ 'ADMIN.GROUPS.LIST_GROUPS.TABLE_HEADERS.DESCRIPTION' | translate }}</small>
+      </label>
+
+      <tag-input [placeholder]="'+ ' + ('ADMIN.SETTINGS.COLLAPSES.USER' | translate)" [secondaryPlaceholder]="'SEARCHS.USER' | translate"
+        [allowDupes]="false" [(ngModel)]="selectedUsers" [onlyFromAutocomplete]="true" maxItems="1">
+        <tag-input-dropdown [matchingFn]="autoCompleteUserListMatching" [appendToBody]="false" [autocompleteObservable]="autocompleteUserList">
+          <ng-template let-item="item" let-index="index">
+            <div class="row">
+              <div class="col-md-2">
+                <div class="user-avt">
+                  <img [src]="item.templateData.avatar_url" />
+                </div>
+              </div>
+              <div class="col-md-10">
+                <div class="user-detail">
+                  <strong>{{ item.templateData.name }}</strong>
+                </div>
+                <div class="user-detail">
+                  ({{ item.templateData.email }})
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </tag-input-dropdown>
+      </tag-input>
+
+      <br>
+      <p class="notice">{{ 'SEARCHS.NOTICE_INPUT_UNSER' | translate }}</p>
+
+      <i class="form-group__bar"></i>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-success btn--icon-text waves-effect" (click)="addGroups()" [disabled]="isProcessing ? 'disabled' : ''">
+      <i *ngIf="isProcessing" class="fal fa-refresh fa-spin" style="margin-right: 5px;"></i>
+      <span [innerHTML]="'BUTTONS.SUBMIT' | translate"></span>
+    </button>
+  </div>
+</div>

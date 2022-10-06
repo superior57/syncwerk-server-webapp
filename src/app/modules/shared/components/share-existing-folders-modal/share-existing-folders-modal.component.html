@@ -1,0 +1,56 @@
+<div class="modal fade" id="share-existing-folders-modal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left custom-title">Select folders to share</h5>
+      </div>
+      <div class="modal-body">
+        <table class="table table-bordered" style="height: 100px;">
+          <thead class="thead-default">
+            <tr>
+              <th style="width: 30px; padding: 1rem">
+                <label class="custom-control custom-checkbox">
+                  <input #checkAll type="checkbox" class="custom-control-input" name="checkAll" (click)="handleCheckAll()">
+                  <span class="custom-control-indicator"></span>
+                </label>
+              </th>
+              <th>Name</th>
+              <th style="width: 22%">Last Update</th>
+              <th style="width: 22%">Permission</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let r of shareData; let i = index">
+              <td style="padding: 1rem">
+                <label class="custom-control custom-checkbox">
+                  <input type="checkbox" class="custom-control-input" (click)="handleChecked(r)" name="optionChecked" [checked]="r.isChecked">
+                  <span class="custom-control-indicator"></span>
+                </label>
+              </td>
+              <td class="tb-name" data-toggle="tooltip" title="{{ r.name }}">{{ r.name }}</td>
+              <td>
+                <div [innerHTML]="r.mtime_relative"></div>
+              </td>
+              <td>
+                <select2 [data]="exampleData" [options]="options" [value]="r.permission" [cssImport]="true" [width]="120" (valueChanged)="changedSettingPermission($event, i)"></select2>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success waves-effect" (click)="submitShareExisting()" [disabled]="isProcessing ? 'disabled' : ''">
+          <i *ngIf="isProcessing" class="fal fa-refresh fa-spin" style="margin-right: 5px;"></i>Submit
+        </button>
+        <button type="button" class="btn btn-secondary btn--icon-text waves-effect" data-dismiss="modal">Close</button>
+        <!-- <div>
+          <button type="button" class="btn btn-success waves-effect" (click)="createFolder()" [disabled]="isProcessing ? 'disabled' : ''">
+            <i *ngIf="isProcessing" class="fal fa-refresh fa-spin" style="margin-right: 5px;"></i>
+            <i *ngIf="!isProcessing" class="fal fa-plus-circle" style="margin-right: 5px;"></i>Create
+          </button>
+          <button type="button" class="btn btn-secondary btn--icon-text waves-effect" (click)="closeModal()" [disabled]="isProcessing ? 'disabled' : ''">Close</button>
+        </div> -->
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,146 @@
+<div *ngIf="!isPageNotFound">
+  <app-share-link-audit *ngIf="hasAudit" [token]="token" [typeShareLink]="'d'" (sendDataAuditSuccess)="receiveDataAuditSuccess($event)"></app-share-link-audit>
+  <app-password-share-link *ngIf="hasPasswordProtected" [token]="token" [type]="'d'" (sendDataPassProtectedSuccess)="receiveDataPassProtectedSuccess($event)"></app-password-share-link>
+
+  <main *ngIf="(!hasAudit && dataDownload) || (!hasPasswordProtected && dataDownload)" class="main"
+    [attr.data-ma-theme]="maTheme">
+    <app-secondary-header></app-secondary-header>
+    <section class="content content--full">
+      <div class="content__header">
+        <div class="header-share-link">
+
+          <!-- <span class="name-share-link">{{ dataDownload.dir_name }}</span> -->
+          <h1 class="d-flex align-items-center h1--custom" data-toggle="tooltip" title="{{ dataDownload.dir_name  }}">
+            {{ titlePage }}
+          </h1>
+
+
+          <app-breadcrumbs [breadcrumbs]="breadcrumbsObj" (sendDataBreadcrumbs)="clickNavigateBreadcrumbs($event)"></app-breadcrumbs>
+          <div class="share__own" style="font-size: 15px">
+            <span [innerHTML]="'SHARE_LINK.SHARE_BY' | translate: params">: </span>
+
+            <!-- <img class="user__img" *ngIf="dataDownload.shared_by.avatar_url === 'http://localhost:8000/media/avatars/default.png'; else imageAvatar"
+              src="../assets/images/user_default.png" alt="">
+            <ng-template #imageAvatar>
+              <img class="user__img" src="{{ dataDownload.shared_by.avatar_url }}">
+            </ng-template> -->
+
+            <span>{{ dataDownload.shared_by.user_name }}</span>
+          </div>
+          <div style="font-size: 15px" *ngIf="dataDownload.expire_date">
+            <span>Expire date: </span>
+            <span>{{ dataDownload.expire_date }}</span>
+          </div>
+        </div>
+        <div class="control_board">
+          <app-range-size-grid *ngIf="!isListView" (onRangeSize)="changeTypeCol($event)"></app-range-size-grid>
+          <app-list-grid-button (onChangeViewMode)="onChangeViewMode($event)"></app-list-grid-button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+
+          <div class="actions" style="margin-right: 12px">
+            <div>
+              <button type="button " class="btn btn-primary waves-effect btn--custom" (click)="zipShareLinkFolder(dataDownload.path) ">
+                <span [innerHTML]="'BUTTONS.ZIP_AND_DOWNLOAD' | translate: params"></span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- GRID VIEW -->
+
+        <div *ngIf="!isListView && fileFolderList.length !== 0" class="card-block">
+          <div class="row lightbox photos">
+            <div [ngClass]="dataRangeSizeGrid.rangeClass" *ngFor="let item of fileFolderList; let index = index; let url of listUrlImg">
+              <div class="lightbox__item photos__item">
+                <div class="grid-item" (click)="openFileFolder(item.obj_name, item.type, dataDownload.path)" [ngStyle]="{'height': dataRangeSizeGrid.rangeHeightPx}">
+                  <div class="center-img" [ngStyle]="{'height': dataRangeSizeGrid.rangeHeightPx}">
+                    <a target="_blank" class="name" [ngStyle]="{ 'transform': 'scale(' + dataRangeSizeGrid.rangeTransformScale + ')'}">
+                      <i *ngIf="item.type==='dir' ; else icon_file_content " class="fas fa-folder fa-fw"></i>
+                    </a>
+                    <div *ngIf="item.is_img === true">
+                      <img src="{{ item.obj_name | fileIconPath:false: repoId: parentPathFromApi + parentPath + item.obj_name:100 }}"
+                        [ngStyle]="{ 'transform': 'scale(' + dataRangeSizeGrid.rangeTransformScale + ')'}" alt="{{item.obj_name}}">
+                    </div>
+                    <div *ngIf="item.is_img === null">
+                      <i class="{{ item.obj_name | customFileIcon }}" id="icon--custom" style="transition: all 0.5s"
+                        [ngStyle]="{ 'transform': 'scale(' + dataRangeSizeGrid.rangeTransformScale + ')'} "></i>
+                    </div>
+                  </div>
+                  <div class="tb-name-grid">
+                    <a class="name" data-toggle="tooltip" data-title="{{ item.obj_name }}">{{item.obj_name}}</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- END GRIDVIEW -->
+
+        <div class="card-block " *ngIf="isListView">
+          <!-- list item -->
+          <table *ngIf="fileFolderList.length !== 0" id="myfiletb " class="table table-bordered">
+            <thead class="thead-default ">
+              <tr>
+                <th style="width: 60%;" [innerHTML]="'TABLE.COLUMNS.NAME' | translate: params"></th>
+                <th [innerHTML]="'TABLE.COLUMNS.SIZE' | translate: params"></th>
+                <th [innerHTML]="'TABLE.COLUMNS.LAST_UPDATE' | translate: params"></th>
+                <th [innerHTML]="'TABLE.COLUMNS.OPERATIONS' | translate: params"></th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr *ngFor="let item of fileFolderList; let index=index " (mouseover)="hoveredIndex=index
+              "
+                (mouseleave)="hoveredIndex=-1 " [ngClass]="{ 'hl':index===hoveredIndex} ">
+                <td>
+                  <div class="name-file-folder">
+                    <div class="icon-folder " *ngIf="item.type==='dir' ; else icon_file_content " (click)="openFileFolder(item.obj_name,item.type, dataDownload.path) ">
+                      <i class="fas fa-folder fa-fw tb-row-folder "></i>
+                    </div>
+                    <div *ngIf="item.is_img && item.type==='file'">
+                      <img src="{{ item.obj_name | fileIconPath:false: repoId: parentPathFromApi + parentPath + item.obj_name:80 }}" class="img--listview"
+                        alt="{{item.obj_name}}">
+                    </div>
+                    <div *ngIf="!item.is_img && item.type==='file'">
+                      <i class="{{ item.obj_name | customFileIcon }}" id="icon--listview" style="transition: all 0.5s"
+                        [ngStyle]="{ 'transform': 'scale(' + dataRangeSizeGrid.rangeTransformScale + ')'} "></i>
+                    </div>
+
+                    <div class="tb-name name--custom" (click)="openFileFolder(item.obj_name, item.type, dataDownload.path) ">{{
+                      item.obj_name }}</div>
+                  </div>
+                </td>
+                <td>
+                  <div *ngIf="item.type==='file' ">{{ item.file_size | customFileSize }}</div>
+                </td>
+                <td>
+                  <div [innerHTML]="item.last_modified "></div>
+                </td>
+                <td style="font-size: 25px; ">
+                  <div *ngIf="index===hoveredIndex" class="hover-green" (click)="item.type==='dir' ? zipShareLinkFolder(parentPath, item.obj_name) : downloadFile(dataDownload.path, item.obj_name)">
+                    <i class="fal fa-download"></i>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card-block" *ngIf="fileFolderList.length === 0">
+          <!-- empty item -->
+          <app-empty-item [messageTitle]="'SHARE_LINK.DOWNLOAD_DIRECTORY.EMPTY_ITEM.MSG_TITLE' | translate: params"
+            [messageSub]="'SHARE_LINK.DOWNLOAD_DIRECTORY.EMPTY_ITEM.MSG_SUB_TITLE' | translate: params"></app-empty-item>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <app-footer></app-footer>
+</div>
+
+<app-page-not-found *ngIf="isPageNotFound"></app-page-not-found>
+<!-- <app-zip-progress></app-zip-progress> -->

@@ -1,0 +1,39 @@
+<div *ngIf="!isAuthChecking">
+  <div *ngIf="!isAccessAllowed" class="alert alert-danger text-center" role="alert">
+    <h4 class="alert-heading" [innerHTML]="'NOTIFY_MSG.DANGER.ACCESS_DENINED.TITLE' | translate: params"></h4>
+    <p class="mb-0" [innerHTML]="'NOTIFY_MSG.DANGER.ACCESS_DENINED.SUB_TITLE' | translate: params"></p>
+  </div>
+
+  <div *ngIf="isAccessAllowed">
+    <!-- <header class="content__title">
+      <h1>{{ 'ADMIN.HEADER_TITLE' | translate: params }}</h1>
+    </header> -->
+
+    <router-outlet></router-outlet>
+
+    <!-- <div class="card">
+      <div class="card-header">
+        <div class="tab-container tab-container--green">
+
+          <ul class="nav nav-tabs nav-fill" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="tab" role="tab" routerLink="settings" routerLinkActive="active">{{ 'ADMIN.HEADER_TAB.SETTINGS' | translate: params }}</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="tab" role="tab" routerLink="devices" routerLinkActive="active">{{ 'ADMIN.HEADER_TAB.DEVICES' | translate: params }}</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="tab" role="tab" routerLink="folders" routerLinkActive="active">{{ 'ADMIN.HEADER_TAB.FOLDERS' | translate: params }}</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="tab" role="tab" routerLink="useradmin" routerLinkActive="active">{{ 'ADMIN.HEADER_TAB.USERS' | translate: params }}</a>
+            </li>
+          </ul>
+        </div>
+        <div class="tab-content">
+          <router-outlet></router-outlet>
+        </div>
+      </div>
+    </div> -->
+  </div>
+</div>

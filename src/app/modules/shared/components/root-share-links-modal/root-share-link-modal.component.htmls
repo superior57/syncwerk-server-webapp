@@ -1,0 +1,88 @@
+<div class="modal fade" id="share-link-modal">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          <span class="modal-title-name">{{ (Folder ? Folder.name : '') | splice_length: 20 }}</span>
+          <span [innerHTML]="'USERADMIN_INFO.SHARED_LINKS.TITLE' | translate"></span>
+        </h5>
+      </div>
+      <div class="modal-body">
+        <aside class="share-menu">
+          <div class="scrollbar-inner">
+            <ul class="navigation">
+              <li class="share-li" [ngClass]="{'share-li-active':currentTab === 0}" (click)="changeTab(0)">
+                <p class="cusor-p" [innerHTML]="'MODAL_SHARE.NAVIGATIONS.DOWNLOAD_LINK' | translate"></p>
+              </li>
+              <li class="share-li" [ngClass]="{'share-li-active':currentTab === 1}" (click)="changeTab(1)">
+                <p class="cusor-p" [innerHTML]="'MODAL_SHARE.NAVIGATIONS.UPLOAD_LINK' | translate"></p>
+              </li>
+            </ul>
+          </div>
+        </aside>
+        <div class="content-share-modal">
+          <table class="table table-hover table-narrow" *ngIf="currentList">
+            <thead>
+              <tr>
+                <th width="45%" [innerHTML]="'USERADMIN_INFO.SHARED_LINKS.TABLE.NAME' | translate"></th>
+                <th width="20%" [innerHTML]="'USERADMIN_INFO.SHARED_LINKS.TABLE.CREATED_BY' | translate"></th>
+                <th width="15%" [innerHTML]="'USERADMIN_INFO.SHARED_LINKS.TABLE.SIZE' | translate"></th>
+                <th width="9%" [innerHTML]="'USERADMIN_INFO.SHARED_LINKS.TABLE.VISITS' | translate"></th>
+                <th width="11%"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let l of currentList; let index=index" (mouseover)="hoveredIndex=index" (mouseleave)="hoveredIndex=-1">
+                <td class="hover-color">
+                  <div *ngIf="(l.share_type && l.share_type === 'f') else icon_folder;" class="item-color-hover row-icon">
+                    <a (click)="openObject(l.share_type, l.path)">
+                      <img *ngIf="!l.imgError || (l.imgError && l.imgError != 1)" (error)="setErrorImg(index)" class="file-icon" src="{{ l.name | fileIconPath: false: repoId: l.path }}">
+                      <img *ngIf="(l.imgError && l.imgError === 1)" class="file-icon" src="{{ l.name | customFileIcon }}">
+                    </a>
+                  </div>
+                  <ng-template #icon_folder>
+                    <div class="item-color-hover row-icon">
+                      <a (click)="openObject(l.share_type, l.path)">
+                        <i class="fas fa-folder fa-fw folder-icon"></i>
+                      </a>
+                    </div>
+                  </ng-template>
+                  <div class="item-color-hover tb-name" data-toggle="tooltip" title="{{ l.name }}">
+                    <a (click)="openObject(l.share_type, l.path)">{{l.name}} </a>
+                  </div>
+                </td>
+                <td class="hover-color">
+                  <a class="item-color-hover tb-name" data-toggle="tooltip" title="{{ l.create_by }}" (click)="viewUserProfile(l.create_by)">
+                    {{ l.creator_name }}
+                  </a>
+                </td>
+                <td>
+                  <span *ngIf="l.size && l.size !== ''"> {{ l.size | customFileSize }}</span>
+                </td>
+                <td>
+                  {{ l.view_count }}
+                </td>
+                <td>
+                  <div *ngIf="index==hoveredIndex">
+                    <!-- <a class="hover-color" data-toggle="tooltip" title="Copy Link to Clipboard" (click)="copyClipboard(l.link)">
+                      <i class="item-color-hover fal fa-clipboard fa-hc-lg"></i>
+                    </a>
+                    &nbsp; -->
+                    <a class="hover-color" data-toggle="tooltip" [title]="'TOOLTIPS.REMOVE' | translate" (click)="removeLinks(l, index)">
+                      <i class="item-color-hover fal fa-trash fa-hc-lg"></i>
+                    </a>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-link" data-dismiss="modal">
+          <span [innerHTML]="'BUTTONS.CLOSE' | translate"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

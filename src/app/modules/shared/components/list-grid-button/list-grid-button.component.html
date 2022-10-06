@@ -1,0 +1,12 @@
+<!-- <button class="btn btn-secondary waves-effect" [ngClass]="{'btn-success':isListView}" (click)="changeListView(true)" data-toggle="tooltip"
+  [title]="'TOOLTIPS.LIST_VIEW' | translate: params" data-placement="bottom">
+  <i class="zmdi zmdi-menu"></i>
+</button>
+<button class="btn btn-secondary waves-effect" [ngClass]="{'btn-success':!isListView}" (click)="changeListView(false)" data-toggle="tooltip"
+  [title]="'TOOLTIPS.GRID_VIEW' | translate: params" data-placement="bottom">
+  <i class="zmdi zmdi-apps"></i>
+</button> -->
+<a class="actions__item fal fa-th" [ngClass]="{'active' : !isListView}" (click)="changeListView(false)" data-toggle="tooltip"
+  [title]="'TOOLTIPS.GRID_VIEW' | translate: params"></a>
+<a class="actions__item fal fa-th-list" [ngClass]="{'active' : isListView}" (click)="changeListView(true)" data-toggle="tooltip"
+  [title]="'TOOLTIPS.LIST_VIEW' | translate: params"></a>

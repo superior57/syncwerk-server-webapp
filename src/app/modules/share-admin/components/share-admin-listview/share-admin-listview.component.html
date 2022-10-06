@@ -1,0 +1,210 @@
+<table class="table table-hover" class="table table-hover mb-0">
+  <thead>
+    <tr>
+      <th *ngFor="let column of columns" [width]="column.width" [class]="column.class" (click)="column.sort!==false ? onSortColumn(column) : ''">
+        <span [innerHTML]="column.title | translate"></span>
+        <!-- <i class="fal fa-hc-lg float-right" [ngClass]="{'zmdi-sort-amount-asc': column.sort==='asc', 'zmdi-sort-amount-desc': column.sort==='desc'}"></i> -->
+        <ng-container>
+          <i *ngIf="column.sort ==='asc'" class="fal fa-sort-amount-up sort-icon float-right icon--custom"></i>
+          <i *ngIf="column.sort ==='desc'" class="fal fa-sort-amount-down sort-icon float-right icon--custom"></i>
+        </ng-container>
+      </th>
+      <th width="15%">
+        <span [innerHTML]="'TABLE.COLUMNS.ACTIONS' | translate: params"></span>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <ng-container *ngFor="let r of listShares; let i = index">
+      <tr (mouseover)="hoveredIndex=i" (mouseleave)="hoveredIndex=-1" class="tr--custom">
+        <td class="tb-name">
+          <div class="vertical-items">
+            <div *ngIf="r.type!=='meeting-private-share'&&r.type!=='meeting-public-share'" class="vertical-items icon-tb-name cursor-pointer"  data-toggle="tooltip" [title]="r.tooltip_item_name">
+              <span *ngIf="r.is_dir!==false" (click)="routerLinkShares(r)" class="parent-icon">
+                <i class="fas fa-folder fa-fw folder-icon"></i>
+                <i *ngIf="r.encrypted" class="fal fa-key key--custom" data-toggle="tooltip" [title]="'TOOLTIPS.ENCRYPTED_FOLDER' | translate: params"></i>
+                <!-- fal fa-key tb-row-folder-lock -->
+                <i *ngIf="r.share_permission === 'r'" class="fal fa-eye tb-row-folder-read-only" [ngClass]="{'second-lock':r.encrypted}"
+                  data-toggle="tooltip" [title]="'TOOLTIPS.READ_ONLY_FOLDER' | translate: params"></i>
+              </span>
+              <span *ngIf="r.type==='download-link' && r.is_dir===false" class="flex-center" (click)="isEnabledFilePreview && routerLinkShares(r)">
+                <img *ngIf="!r.imgError || (r.imgError && r.imgError != 1)" (error)="setErrorImg(i)" class="icon-file"
+                  src="{{ r.item_name | fileIconPath: false: r.repo_id: r.path }}">
+                <!-- <img *ngIf="(r.imgError && r.imgError === 1)" class="icon-file" src="{{ r.item_name | customFileIcon }}"> -->
+                <div *ngIf="(r.imgError && r.imgError === 1)" class="icon-file">
+                  <i class="{{ r.item_name | customFileIcon }}"></i>
+                </div>
+              </span>
+            </div>
+            <div *ngIf="r.type==='meeting-private-share' || r.type==='meeting-public-share'" class="vertical-items icon-tb-name cursor-pointer"  data-toggle="tooltip" [title]="r.meeting_name">
+              <span [routerLink]="['/meetings']" class="parent-icon">
+                <i class="fal fa-video fa-fw folder-icon"></i>
+                <!-- <i *ngIf="r.encrypted" class="fal fa-key key--custom" data-toggle="tooltip" [title]="'TOOLTIPS.ENCRYPTED_FOLDER' | translate: params"></i> -->
+                <!-- fal fa-key tb-row-folder-lock -->
+                <!-- <i *ngIf="r.share_permission === 'r'" class="fal fa-eye tb-row-folder-read-only" [ngClass]="{'second-lock':r.encrypted}" -->
+                  <!-- data-toggle="tooltip" [title]="'TOOLTIPS.READ_ONLY_FOLDER' | translate: params"></i> -->
+              </span>
+            </div>
+
+            <div class="box  ellipsis  reverse-ellipsis">
+              <span *ngIf="r.type!=='meeting-private-share'&&r.type!=='meeting-public-share'">{{ r.displayed_item_name }}</span>
+              <span *ngIf="r.type==='meeting-private-share'||r.type==='meeting-public-share'">{{ r.meeting_name }}</span>
+            </div>
+          </div>
+        </td>
+        <td class="d-none d-lg-table-cell">
+          <span data-toggle="tooltip" title="{{ (r.mtime | amFromUnix) | amDateFormat:'ddd, D MMM YYYY HH:mm:ss' }}">{{
+            (r.mtime |
+            amFromUnix) | amTimeAgo }}</span>
+        </td>
+        <td class="d-none d-lg-table-cell">
+          <span *ngIf="r.type!=='meeting-private-share'&&r.type!=='meeting-public-share'">{{ r.size | customFileSize }}</span>
+          <span *ngIf="r.type==='meeting-private-share'||r.type==='meeting-public-share'">-</span>
+
+        </td>
+        <td class="d-none d-lg-table-cell text--custom" data-toggle="tooltip" [title]="r.share_to">
+          <span *ngIf="r.type!=='meeting-private-share' && r.type!=='meeting-public-share'">{{ r.share_to | splice_length: 30 }}</span>
+          <span *ngIf="r.type==='meeting-private-share'">
+            <span *ngIf="r.share_type==='SHARED_TO_GROUP'">GROUP - {{ r.share_to | splice_length: 30 }}</span>
+            <span *ngIf="r.share_type==='SHARED_TO_USER'">{{ r.share_to | splice_length: 30 }}</span>
+          </span>
+          <span *ngIf="r.type==='meeting-public-share'">
+            Public
+          </span>
+
+        </td>
+        <td class="d-none d-lg-table-cell">
+          <span *ngIf="editPermissionIndex===-1 || editPermissionIndex!==i">
+            <span *ngIf="r.share_permission==='rw'" [innerHTML]="'PERMISSIONS.READ_WRITE' | translate: params"></span>
+            <span *ngIf="r.share_permission==='r'" [innerHTML]="'PERMISSIONS.READ' | translate: params"></span>
+            <!-- <span *ngIf="r.share_permission==='w'" [innerHTML]="'PERMISSIONS.WRITE' | translate: params"></span> -->
+          </span>
+          <i *ngIf="i===hoveredIndex && editPermissionIndex!==i && r.type!=='download-link' && r.type!=='upload-link' && r.type!=='meeting-private-share' && r.type!=='meeting-public-share'"
+            class="fal fa-pen" (click)="this.editPermissionIndex=i" data-toggle="tooltip" [title]="'TOOLTIPS.EDIT_PERMISSION' | translate: params"></i>
+          <select2 (focusout)="onFocusOut()" *ngIf="editPermissionIndex===i" [data]="exampleData" [options]="options"
+            [value]="r.share_permission" [cssImport]="true" [width]="120" (valueChanged)="changePermission(r.share_type, $event, r)"></select2>
+        </td>
+        <td class="d-none d-lg-table-cell text-center">{{ r.view_cnt }}</td>
+        <td class="d-none d-lg-table-cell text-center">{{ r.expire_date }}</td>
+        <td class="d-none d-lg-table-cell">
+          <div *ngIf="r.type!=='meeting-public-share' && r.type!=='meeting-private-share'" class="d-flex action__buttons">
+            <i *ngIf="r.type==='download-link' || r.type==='upload-link'" class="actions__item item-color-hover fal fa-envelope view-icon"
+              data-toggle="tooltip" [title]="'TOOLTIPS.VIEW' | translate: params" (click)="onOpenModal('share', r)"></i>
+            <i *ngIf="r.type==='download-link' || r.type==='upload-link'" class="actions__item item-color-hover fal fa-copy copy-icon"
+              data-toggle="tooltip" [title]="'TOOLTIPS.COPY_TO_CLIPBOARD' | translate: params" ngxClipboard [cbContent]="getLink(r)"
+              (click)="copyLinks()"></i>
+            <i *ngIf="r.type==='repo' || r.type==='folder'" class="actions__item item-color-hover fal fa-trash-alt"
+              (click)="onOpenModal('unshare', r)" data-toggle="tooltip" [title]="'TOOLTIPS.UNSHARE' | translate: params"
+              data-placement="bottom"></i>
+            <i *ngIf="r.type==='download-link' || r.type==='upload-link'" class="actions__item item-color-hover fal fa-trash-alt"
+              (click)="onOpenModal('remove', r)" data-toggle="tooltip" [title]="'TOOLTIPS.REMOVE' | translate: params"
+              data-placement="bottom"></i>
+            <i [routerLink]="['/folders', r.repo_id]" class="fal fa-external-link-square ico--custom"
+              data-toggle="tooltip" [title]="'TOOLTIPS.VISIT' | translate: params"></i>
+          </div>
+          <div *ngIf="r.type=='meeting-public-share'" class="d-flex action__buttons">
+            <i class="actions__item item-color-hover fal fa-trash-alt" (click)="onOpenModal('remove', r)"
+              data-toggle="tooltip" [title]="'TOOLTIPS.REMOVE' | translate: params"></i>
+            <i [routerLink]="['/share-link', 'm', r.share_token]" class="fal fa-external-link-square ico--custom"
+              data-toggle="tooltip" [title]="'TOOLTIPS.VISIT' | translate: params"></i>
+          </div>
+          <div *ngIf="r.type=='meeting-private-share'" class="d-flex action__buttons">
+            <i class="fal fa-trash-alt actions__item" (click)="onOpenModal('remove', r)"
+              data-toggle="tooltip" [title]="'TOOLTIPS.REMOVE' | translate: params"></i>
+          </div>
+        </td>
+        <td class="d-sm-table-cell d-md-table-cell d-lg-none">
+          <a [href]="'#shareManager-'+i" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="share-0">
+            <i data-toggle="tooltip" title="Details" class="fal fa-2x fa-ellipsis-v actions__item"></i>
+          </a>
+        </td>
+      </tr>
+
+      <!-- Collapse details of share link for sm display -->
+      <tr class="d-sm-table-row d-md-table-row d-lg-none share-details-row">
+        <td colspan="10">
+          <div class="collapse" [id]="'shareManager-'+i">
+            <div class="share-details">
+              <div>
+                <span>
+                  <strong>{{ 'TABLE.COLUMNS.UPDATED' | translate}}: </strong>
+                  <span data-toggle="tooltip" title="{{ (r.mtime | amFromUnix) | amDateFormat:'ddd, D MMM YYYY HH:mm:ss' }}">{{
+                    (r.mtime |
+                    amFromUnix) | amTimeAgo }}</span>
+                </span>
+              </div>
+              <div *ngIf="r.type!=='meeting-private-share' && r.type!=='meeting-public-share'">
+                <span>
+                  <strong>{{ 'TABLE.COLUMNS.SIZE' | translate}}: </strong>
+                  {{ r.size ? (r.size | customFileSize) : "-" }}
+                </span>
+              </div>
+              <div *ngIf="r.type!=='meeting-private-share' && r.type!=='meeting-public-share'">
+                <span class="text--custom">
+                  <strong>{{ 'TABLE.COLUMNS.SHARE_TO' | translate }}: </strong>
+                  {{ r.share_to }}
+                </span>
+              </div>
+              <div *ngIf="r.type==='meeting-private-share' || r.type==='meeting-public-share'">
+                <span class="text--custom">
+                  <strong>{{ 'TABLE.COLUMNS.SHARE_TO' | translate }}: </strong>
+                  {{ r.type==='meeting-private-share' ? r.share_to : 'Public link' }}
+                </span>
+              </div>
+              <div *ngIf="r.type!=='meeting-private-share' && r.type!=='meeting-public-share'">
+                <span>
+                  <strong>{{ 'TABLE.COLUMNS.PERMISSIONS' | translate}}: </strong>
+                  <span *ngIf="editPermissionIndex===-1 || editPermissionIndex!==i">
+                    <span *ngIf="r.share_permission==='rw'" [innerHTML]="'PERMISSIONS.READ_WRITE' | translate: params"></span>
+                    <span *ngIf="r.share_permission==='r'" [innerHTML]="'PERMISSIONS.READ' | translate: params"></span>
+                    <!-- <span *ngIf="r.share_permission==='w'" [innerHTML]="'PERMISSIONS.WRITE' | translate: params"></span> -->
+                  </span>
+                  <i *ngIf="i===hoveredIndex && editPermissionIndex!==i && r.type!=='download-link' && r.type!=='upload-link'"
+                    class="fal fa-pen" (click)="this.editPermissionIndex=i" data-toggle="tooltip" [title]="'TOOLTIPS.EDIT_PERMISSION' | translate: params"></i>
+                  <select2 (focusout)="onFocusOut()" *ngIf="editPermissionIndex===i" [data]="exampleData" [options]="options"
+                    [value]="r.share_permission" [cssImport]="true" [width]="120" (valueChanged)="changePermission(r.share_type, $event, r)"></select2>
+                </span>
+              </div>
+              <div *ngIf="r.type!=='meeting-private-share' && r.type!=='meeting-public-share'">
+                <span>
+                  <strong>{{ 'TABLE.COLUMNS.VISITS' | translate }}: </strong>
+                  {{ r.view_cnt }} </span>
+              </div>
+              <div *ngIf="r.type!=='meeting-private-share' && r.type!=='meeting-public-share'">
+                <span>
+                  <strong>{{'TABLE.COLUMNS.EXPIRES' | translate}}: </strong>
+                  {{ r.expire_date }}
+                </span>
+              </div>
+              <div class="actions" *ngIf="r.type!=='meeting-private-share' && r.type!=='meeting-public-share'">
+                <i *ngIf="r.type==='download-link' || r.type==='upload-link'" class="actions__item item-color-hover fal fa-envelope view-icon"
+                  data-toggle="tooltip" [title]="'TOOLTIPS.VIEW' | translate: params" (click)="onOpenModal('share', r)"></i>
+                <i *ngIf="r.type==='download-link' || r.type==='upload-link'" class="actions__item item-color-hover fal fa-copy copy-icon"
+                  data-toggle="tooltip" [title]="'TOOLTIPS.COPY_TO_CLIPBOARD' | translate: params" ngxClipboard
+                  [cbContent]="getLink(r)" (click)="copyLinks()"></i>
+                <i *ngIf="r.type==='repo' || r.type==='folder'" class="actions__item item-color-hover fal fa-trash-alt"
+                  (click)="onOpenModal('unshare', r)" data-toggle="tooltip" [title]="'TOOLTIPS.UNSHARE' | translate: params"
+                  data-placement="bottom"></i>
+                <i *ngIf="r.type==='download-link' || r.type==='upload-link'" class="actions__item item-color-hover fal fa-trash-alt"
+                  (click)="onOpenModal('remove', r)" data-toggle="tooltip" [title]="'TOOLTIPS.REMOVE' | translate: params"
+                  data-placement="bottom"></i>
+                <i [routerLink]="['/folders',r.repo_id]" class="fal fa-external-link-square ico--custom"
+                  data-toggle="tooltip" [title]="'TOOLTIPS.VISIT' | translate: params"></i>
+              </div>
+              <div class="actions" *ngIf="r.type=='meeting-private-share'">
+                <i class="fal fa-trash-alt ico--custom" (click)="onOpenModal('remove', r)"
+                data-toggle="tooltip" [title]="'TOOLTIPS.REMOVE' | translate: params"></i>
+              </div>
+              <div class="actions" *ngIf="r.type=='meeting-public-share'">
+                <i [routerLink]="['/share-link', 'm', r.share_token]" class="fal fa-external-link-square ico--custom"
+                  data-toggle="tooltip" [title]="'TOOLTIPS.VISIT' | translate: params"></i>
+                <i class="fal fa-trash-alt ico--custom" (click)="onOpenModal('remove', r)"
+                  data-toggle="tooltip" [title]="'TOOLTIPS.REMOVE' | translate: params"></i>
+              </div>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </ng-container>
+  </tbody>
+</table>

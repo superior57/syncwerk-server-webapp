@@ -1,0 +1,91 @@
+<ng-container *ngIf="setting.SHOW_COOKIE_DISCLAIMER && setting.COOKIE_DISCLAIMER_TYPE==='banner'">
+  <div class="alert alert-dark alert-dismissible fade show alert-custom">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">×</span>
+    </button>
+    <div *ngIf="choosenLanguage=='en'" [innerHTML]="setting.COOKIE_BANNER_TEXT_EN"></div>
+    <div *ngIf="choosenLanguage=='de'" [innerHTML]="setting.COOKIE_BANNER_TEXT_DE"></div>
+
+  </div>
+</ng-container>
+
+<header>
+  <div class="login__block__header__custom">
+    <a data-toggle="tooltip" [title]="logoTooltip" [routerLink]="'/'"><img [src]="logoURL" (error)="logoErrorHandler($event)"
+        height="30rem" alt=""></a>
+    <div class="select__languages">
+      <select2 [data]="select2TranslateData" [options]="translateOptions" [value]="choosenLanguage" [width]="88"
+        (valueChanged)="switchLanguage($event)"></select2>
+    </div>
+  </div>
+</header>
+
+
+<div class="login">
+  <div class="login__title">
+    <h3>{{ 'LOGIN.LABEL.SIGN_IN' | translate}}</h3>
+  </div>
+  <!-- Login -->
+  <div class="login__block active" id="l-login">
+    <form>
+      <div class="login__block__body">
+        <!-- ID or Email -->
+        <div class="form-group form-group--float form-group--centered">
+          <input id="username" name="username" type="text" class="form-control input-center form-control--active"
+            #username [(ngModel)]="model.username" #username="ngModel" required>
+          <label [innerHTML]="'LOGIN.LABEL.LOGIN_ID' | translate"></label>
+          <i class="form-group__bar"></i>
+        </div>
+        <div class="error-msg" *ngIf="error.type==='login'">{{ error.message }}</div>
+
+        <!-- Password -->
+        <div class="form-group form-group--float form-group--centered">
+          <input id="password" name="password" type="password" class="form-control input-center form-control--active"
+            #password [(ngModel)]="model.password" #password="ngModel">
+          <label [innerHTML]="'LOGIN.LABEL.PASSWORD' | translate"></label>
+          <i class="form-group__bar"></i>
+        </div>
+        <div class="error-msg" *ngIf="error.type==='password'">{{ error.message }}</div>
+
+        <!-- Captcha -->
+        <div *ngIf="dataLoginConfig && dataLoginConfig.IS_SHOWING_CAPTCHA" class="row">
+          <div class="col-6">
+            <div class="form-group form-group--float form-group--centered" style="margin-top: 0;">
+              <input id="captcha" name="captcha" type="text" class="form-control input-center" #captcha [(ngModel)]="model.captcha"
+                #captcha="ngModel" [ngClass]="{'form-control--active': captcha.value}">
+              <label [innerHTML]="'LOGIN.LABEL.CAPTCHA' | translate"></label>
+              <i class="form-group__bar"></i>
+            </div>
+            <div class="error-msg text-left" *ngIf="error.type==='captcha'">{{ error.message }}</div>
+          </div>
+          <div class="col-6">
+            <img width="80px" height="35px" [src]="dataCaptcha.image_url" alt="captcha">
+            <i class="actions__item fal fa-redo green-color" (click)="refreshCaptcha()" data-toggle="tooltip"
+              title="{{ 'LOGIN.LABEL.REFRESH_CAPTCHA' | translate}}"></i>
+          </div>
+
+        </div>
+        <div class="col-12 text-left">
+          <div class="form-check">
+            <label class="form-check-label">
+              <input type="checkbox" class="form-check-input" (change)="handleCheckBox($event)">
+              <span class="remember" [innerHTML]="'LOGIN.LABEL.LOGIN_REMEMBER' | translate: {'remember_days': remember_days}"></span>
+            </label>
+          </div>
+        </div>
+
+        <button (click)="login()" class="btn btn--icon-text btn-success">
+          <i class="fa"></i>
+          <span [innerHTML]="'LOGIN.LABEL.SIGN_IN' | translate"></span>
+        </button>
+      </div>
+    </form>
+  </div>
+  <div class="login_block_register">
+    <a *ngIf="setting.ENABLE_SIGNUP" class="register__a" routerLink="/register" [innerHTML]="'SIGNUP.TITLE' | translate"></a>
+    <a routerLink="/forgot-password" href="" [innerHTML]="'LOGIN.LABEL.FORGOT_PASSWORD' | translate"></a>
+  </div>
+  <div class="footer ft--custom">
+    <app-footer></app-footer>
+  </div>
+</div>

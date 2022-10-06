@@ -1,0 +1,12 @@
+<div class="breadcrumb-container">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item">
+      {{ titleBreadcrumbs }}
+      <a class="color-folder-breadcrumbs" [ngStyle]="{'cursor': breadcrumbs.paths.length > 0 ? 'pointer' : 'text'}" (click)="breadcrumbs.paths.length > 0 ? navigateBreadcrumbs(-1) : null">{{ rootBreadcrumbs | CutStringAny }}</a>
+    </li>
+    <li class="breadcrumb-item" *ngFor="let name of breadcrumbs.paths; let index = index" [ngClass]="{'active': breadcrumbs.paths.length === index + 1}">
+      <a *ngIf="breadcrumbs.paths.length > index + 1" (click)="navigateBreadcrumbs(index)">{{ name | CutStringAny }}</a>
+      <span *ngIf="breadcrumbs.paths.length === index + 1">{{ name | CutStringAny }}</span>
+    </li>
+  </ol>
+</div>

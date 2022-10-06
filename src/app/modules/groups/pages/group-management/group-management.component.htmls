@@ -1,0 +1,203 @@
+<header class="content__title">
+  <!-- <strong> -->
+  <h1>
+    <i class="fal fa-caret-circle-left icon-back" (click)="goBack()"></i>
+    <strong> {{ groupInfo.name }} </strong>
+    <span [innerHTML]="'GROUP_MANAGEMENT.TITLE' | translate"></span>
+  </h1>
+  <!-- </strong> -->
+  <!-- <small [innerHTML]="'GROUP_MANAGEMENT.DESC' | translate"></small> -->
+  <app-breadcrumbs2 [breadcrumbs]="breadcrumbs"></app-breadcrumbs2>
+  <div class="actions">
+    <app-list-grid-button (onChangeViewMode)="onChangeViewMode($event)"></app-list-grid-button>
+  </div>
+</header>
+
+<div class="card">
+  <div class="card-block">
+    <div class="data-table__header d-flex justify-content-betwwen">
+      <ng-container *ngIf="groupInfo.admins?.includes(loggedUser.email)">
+        <div class="form-group">
+          <button (click)="openAddMemberModal()" class="btn btn-secondary waves-effect btn--icon-text mr-25px">
+            {{'GROUP_MANAGEMENT.ADD_MEMBERS_BTN' | translate}}</button>
+        </div>
+      </ng-container>
+      <div class="form-group data-table__filter">
+        <input [placeholder]="'SEARCHS.ALL_COLUMNS' | translate: params" class="form-control" />
+        <i class="form-group__bar"></i>
+      </div>
+      <div class="row-selector">
+        <app-row-selector (changed)="onPerPageChanged($event)"></app-row-selector>
+      </div>
+
+      <div class="data-table_buttons actions">
+        <a class="actions__item" role="button" (click)="settingUserRole()" data-toggle="dropdown" data-placement="bottom"
+          [title]="'LIST_GROUPS.SETTINGS' | translate: params">
+          <i class="fal fa-cog"></i>
+        </a>
+        <div class="dropdown-menu dropdown-menu-right">
+          <div class="listview listview--hover">
+            <div class="listview__header">
+              <span [innerHTML]="'LIST_GROUPS.SETTINGS' | translate: params"></span>
+            </div>
+            <div class="dropdown-divider"></div>
+            <a *ngIf="isShownSettingMenu.rename_group" class="dropdown-item" (click)="handleOpenModal('rename-group')">
+              <span [innerHTML]="'LIST_GROUPS.OTHERS.RENAME' | translate: params"></span>
+            </a>
+            <a *ngIf="isShownSettingMenu.transfer_group" class="dropdown-item" (click)="handleOpenModal('transfer-group')">
+              <span [innerHTML]="'LIST_GROUPS.OTHERS.TRANSFER' | translate: params"></span>
+            </a>
+            <a *ngIf="isShownSettingMenu.dismiss" class="dropdown-item" (click)="handleOpenModal('dismiss')">
+              <span [innerHTML]="'LIST_GROUPS.OTHERS.DISMISS_GROUP' | translate: params"></span>
+            </a>
+            <a *ngIf="isShownSettingMenu.leave" class="dropdown-item" (click)="handleOpenModal('leave')">
+              <span [innerHTML]="'LIST_GROUPS.OTHERS.LEAVE_GROUP' | translate: params"></span>
+            </a>
+          </div>
+        </div>
+        <div class="btn-group">
+          <a class="actions__item" role="button" (click)="goToGroupFolder(groupInfo.id)" [title]="'GROUP_MANAGEMENT.VIEW_FOLDER_BTN' | translate: params">
+            <i class="fas fa-folder"></i>
+          </a>
+        </div>
+        <app-discussions-group [idGroup]="groupInfo.id" [currentLoginUser]="loggedUser" [groupInfo]="groupInfo"></app-discussions-group>
+      </div>
+
+      <!-- <div class="data-table_buttons actions">
+        <div class="form-group">
+          <button (click)="goToGroupFolder(groupInfo.id)" class="btn btn-secondary waves-effect btn--icon-text">
+            {{'GROUP_MANAGEMENT.VIEW_FOLDER_BTN' | translate}}</button>
+        </div>
+      </div> -->
+    </div>
+
+    <!-- GRID VIEW -->
+    <div *ngIf="isListView!==true">
+      <div class="contacts row">
+        <div *ngFor="let member of displayedMembers; let index=index" (mouseover)="hoveredIndex=index" (mouseleave)="hoveredIndex=-1"
+          class="col-xl-3 col-lg-3 col-sm-4 col-6">
+          <div class="contacts__item">
+            <div *ngIf="hoveredIndex===index">
+              <div *ngIf="member.email!==loggedUser.email && member.email !== groupInfo.owner.email" class="dropup actions__item grid-menu-button">
+                <button (click)="requireRemoveMember('remove', member)" class="btn btn-secondary waves-effect"
+                  data-toggle="tooltip" [title]="'TOOLTIPS.REMOVE' | translate: params" style="padding: 8.5px; width: 31px;">
+                  <i class="fal fa-trash-alt"></i>
+                </button>
+              </div>
+            </div>
+            <a *ngIf="member.is_default_avatar" class="card__profile">
+              <i class="fal fa-user"></i>
+            </a>
+            <a *ngIf="!member.is_default_avatar" class="contacts__img">
+              <img [src]="member.avatar_url" alt="">
+            </a>
+            <div class="contacts__info">
+              <strong>{{member.name}}
+                <span *ngIf="member.is_admin">
+                  <i class="fal fa-crown fa--put" data-toggle="tooltip" [title]="'GROUP_MANAGEMENT.ROLE_ADMIN' | translate"></i>
+                </span>
+              </strong>
+              <small>{{member.email}}</small>
+            </div>
+            <ng-container *ngIf="loggedUser.email === member.email">
+              <div *ngIf="member.role.toLowerCase() === 'admin'" class="contacts__btn no-edit">{{'GROUP_MANAGEMENT.ROLE_ADMIN'|
+                translate}}</div>
+              <div *ngIf="member.role.toLowerCase() === 'member'" class="contacts__btn no-edit">{{'GROUP_MANAGEMENT.ROLE_MEMBER'|
+                translate}}</div>
+              <div *ngIf="member.role.toLowerCase() === 'owner'" class="contacts__btn no-edit">{{'GROUP_MANAGEMENT.ROLE_OWNER'|
+                translate}}</div>
+            </ng-container>
+            <ng-container *ngIf="loggedUser.email !== member.email">
+              <div *ngIf="member.email === groupInfo.owner.email" class="contacts__btn no-edit">{{'GROUP_MANAGEMENT.ROLE_OWNER'|
+                translate}}</div>
+              <div *ngIf="member.email !== groupInfo.owner.email" class="dropdown">
+                <button class="contacts__btn" data-toggle="dropdown" aria-expanded="false">
+                  <span *ngIf="member.role.toLowerCase() === 'admin'">{{'GROUP_MANAGEMENT.ROLE_ADMIN' | translate}}</span>
+                  <span *ngIf="member.role.toLowerCase() === 'member'">{{'GROUP_MANAGEMENT.ROLE_MEMBER' | translate}}</span>
+                  &nbsp;
+                  <i *ngIf="hoveredIndex===index" class="fal fa-pencil" aria-hidden="true"></i>
+                </button>
+                <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 34px, 0px); top: 0px; left: 0px; will-change: transform;">
+                  <a *ngFor="let option of roleOptions" (click)="changeGroupMemberRole(member, option.value)" class="dropdown-item">
+                    {{ option.text }}</a>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- LIST VIEW -->
+    <div *ngIf="isListView===true">
+      <table class="table table-hover table-sm">
+        <thead>
+          <tr>
+            <th width="10%"></th>
+            <th width="20%">{{'GROUP_MANAGEMENT.TABLE_HEADERS.NAME' | translate}}</th>
+            <th width="30%">{{'GROUP_MANAGEMENT.TABLE_HEADERS.EMAIL' | translate}}</th>
+            <th width="20%">{{'GROUP_MANAGEMENT.TABLE_HEADERS.ROLE' | translate}}</th>
+            <th width="20%">{{'GROUP_MANAGEMENT.TABLE_HEADERS.ACTIONS' | translate}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let member of displayedMembers; let index=index" (mouseover)="hoveredIndex=index" (mouseleave)="hoveredIndex=-1">
+            <td>
+              <span *ngIf="!member.is_admin">
+                <img class="member-avatar" [src]="member.avatar_url">
+              </span>
+              <span *ngIf="member.is_admin">
+                <img class="member-avatar" [src]="member.avatar_url">
+                <i class="fal fa-crown fa--put" data-toggle="tooltip" [title]="'GROUP_MANAGEMENT.ROLE_ADMIN' | translate"></i>
+              </span>
+            </td>
+            <td class="text-ellipsis">{{ member.name }}</td>
+            <td class="text-ellipsis">{{ member.email }}</td>
+            <td>
+              <ng-container *ngIf="loggedUser.email === member.email">
+                <div *ngIf="member.role.toLowerCase() === 'admin'" class="contacts__btn no-edit">{{'GROUP_MANAGEMENT.ROLE_ADMIN'|
+                  translate}}</div>
+                <div *ngIf="member.role.toLowerCase() === 'member'" class="contacts__btn no-edit">{{'GROUP_MANAGEMENT.ROLE_MEMBER'|
+                  translate}}</div>
+                <div *ngIf="member.role.toLowerCase() === 'owner'" class="contacts__btn no-edit">{{'GROUP_MANAGEMENT.ROLE_OWNER'|
+                  translate}}</div>
+              </ng-container>
+              <ng-container *ngIf="loggedUser.email !== member.email">
+                <div *ngIf="member.email === groupInfo.owner.email" class="contacts__btn no-edit">{{'GROUP_MANAGEMENT.ROLE_OWNER'|
+                  translate}}</div>
+                <div *ngIf="member.email !== groupInfo.owner.email" class="dropdown">
+                  <button class="contacts__btn" data-toggle="dropdown" aria-expanded="false">
+                    <span *ngIf="member.role.toLowerCase() === 'admin'">{{'GROUP_MANAGEMENT.ROLE_ADMIN' | translate}}</span>
+                    <span *ngIf="member.role.toLowerCase() === 'member'">{{'GROUP_MANAGEMENT.ROLE_MEMBER' | translate}}</span>
+                    &nbsp;
+                    <i *ngIf="hoveredIndex===index" class="fal fa-pencil" aria-hidden="true"></i>
+                  </button>
+                  <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 34px, 0px); top: 0px; left: 0px; will-change: transform;">
+                    <a *ngFor="let option of roleOptions" (click)="changeGroupMemberRole(member, option.value)" class="dropdown-item">
+                      {{ option.text }}</a>
+                  </div>
+                </div>
+              </ng-container>
+            </td>
+            <td>
+              <div *ngIf="hoveredIndex===index">
+                <i (click)="requireRemoveMember('remove', member)" *ngIf="member.email!==loggedUser.email && member.email !== groupInfo.owner.email"
+                  class="fal fa-lg fa-trash actions__item" aria-hidden="true" data-toggle="tooltip" [title]="'TOOLTIPS.REMOVE' | translate: params"></i>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <app-processing *ngIf="isProcessing"></app-processing>
+  </div>
+</div>
+
+<pagination [itemsPerPage]="pagination.itemsPerPage" [totalItems]="listMembersDisplay.length" (pageChanged)="pageChanged($event)"></pagination>
+
+<app-modal-confirmation *ngIf="isOpenModal.confirmation" [title]="modalConfirmation.title" [verifyQuestion]="modalConfirmation.verify_question"
+  (submit)="onRemoveMember()"></app-modal-confirmation>
+
+<app-dismiss-leave-group-modal *ngIf="isOpenSpecificGroupModal.dismiss_leave" [typeModal]="typeModal" [groupInfo]="groupInfo"
+  [currentEmailLogin]="loggedUser.email" (DismissLeaveCallback)="callbackDismissLeaveGroup($event)"></app-dismiss-leave-group-modal>
+<app-rename-group *ngIf="isOpenSpecificGroupModal.rename_group" [groupInfo]="groupInfo" (onRenameGroupSuccess)="renameGroupSuccess()"></app-rename-group>
+<app-transfer-group *ngIf="isOpenSpecificGroupModal.transfer_group" [groupInfo]="groupInfo" (onTransferGroupSuccess)="transferGroupSuccess()"></app-transfer-group>

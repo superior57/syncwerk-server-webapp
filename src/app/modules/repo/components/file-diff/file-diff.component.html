@@ -1,0 +1,66 @@
+<main class="main">
+  <div *ngIf="!pageStatus.isGettingData && !pageStatus.isError">
+    <section class="">
+      <header class="content__title">
+        <div class="header-modification">
+          <!-- <button class="btn btn-success btn--icon waves-effect margin-btn-back" (click)="goBack()" data-toggle="tooltip" title="Back"> -->
+          <i class="fal fa-caret-circle-left fa-hc-fw icon-back-folders" (click)="goBack()"></i>
+          <!-- </button> -->
+          <div>
+            <strong class="name-modification">{{ diffData.u_filename }}</strong>
+            <span class="modification">
+              <strong [innerHTML]="'HISTORY.TITLE' | translate: params"></strong>
+            </span>
+          </div>
+          <!-- <span style="display: block;" class="caption-modification">
+            <a class="commit-author" (click)="goToProfile()">
+              <strong>{{ diffData.prev_commit.name }}</strong>
+            </a>
+            <span [innerHTML]="'DIFF.EDITED' | translate: params"></span>
+            <span>{{ diffData.prev_commit.time | amLocale:choosenLanguage | amTimeAgo }}</span>
+          </span> -->
+        </div>
+        <span style="display: block;" class="caption-modification">
+          <a class="commit-author" (click)="goToProfile()">
+            <strong>{{ diffData.prev_commit.name }}</strong>
+          </a>
+          <span [innerHTML]="'DIFF.EDITED' | translate: params" class="edited"></span>
+          <span>{{ diffData.prev_commit.time | amLocale:choosenLanguage | amTimeAgo }}</span>
+        </span>
+      </header>
+      <div class="card">
+        <div class="card-block">
+          <nav class="breadcrumb">
+            <span class="breadcrumb-title" [innerHTML]="'DIFF.CURRENT_PATH' | translate: params">:</span>
+            <a *ngFor="let path of diffData.zipped; let index=index" class="breadcrumb-item" (click)="openItem(path, index)">
+              {{ path[0] }}
+            </a>
+          </nav>
+          <table class="table table__file-diff">
+            <thead>
+              <tr>
+                <th width="5%"></th>
+                <th width="45%" class="text-center text-uppercase">
+                  <span [innerHTML]="'DIFF.BEFORE_MODIFICATION' | translate: params"></span>
+                </th>
+                <th width="5%"></th>
+                <th width="45%" class="text-center text-uppercase">
+                  <span [innerHTML]="'DIFF.AFTER_MODIFICATION' | translate: params"></span>
+                </th>
+              </tr>
+            </thead>
+            <tbody [innerHTML]="diffData.diff_result_table"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div *ngIf="!pageStatus.isGettingData && pageStatus.isError">
+    <section class="content content--full">
+      <div class="alert alert-danger text-center" role="alert">
+        {{ pageStatus.errorMessage }}
+      </div>
+    </section>
+  </div>
+</main>

@@ -1,0 +1,136 @@
+<header class="content__title">
+  <h1>
+    <i class="fal fa-caret-circle-left fa-hc-fw icon-back-folders" (click)="goBack()"></i>
+    {{ currentFolderName }}
+  </h1>
+  <app-breadcrumbs2 [breadcrumbs]="breadcrumbs"></app-breadcrumbs2>
+  <!-- <div class="breadcrumb-container">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a class="color-folder-breadcrumbs" [routerLink]="['/admin', 'folders', 'system-lib']">{{'TITLE_PAGE.SYSTEM_LIB' | translate}}</a>
+      </li>
+      <li class="breadcrumb-item">
+        <a [routerLink]="['/admin', 'folders', 'system-lib', dataFileFolder.repo_id ]">{{ dataFileFolder.repo_name }}</a>
+      </li>
+      <li class="breadcrumb-item" *ngFor="let name of breadcrumbs.paths; let index = index" [ngClass]="{'active': breadcrumbs.paths.length === index + 1}">
+        <a *ngIf="breadcrumbs.paths.length > index + 1" (click)="navigateBreadcrumbs(index)">{{ name | CutStringAny }}</a>
+        <span *ngIf="breadcrumbs.paths.length === index + 1">{{ name | CutStringAny }}</span>
+      </li>
+    </ol>
+  </div> -->
+</header>
+
+<div *ngIf="isDropzoneShow && currentUserPermission.can_manage_folder !== false" class="file-drop-container">
+  <file-drop headertext="" (onFileDrop)="onfileDrop($event)" (onFileLeave)="isDropzoneShow = false">
+    <div class="row text-center">
+      <div class="col-12">
+        <div>
+          <i class="fal fa-cloud-upload fa-5x"></i>
+        </div>
+        <div>
+          <h3>
+            <strong [innerHTML]="'FILE_DROP.INTRUCTION' | translate: params"></strong>
+          </h3>
+        </div>
+      </div>
+    </div>
+  </file-drop>
+</div>
+
+<div *ngIf="!isDropzoneShow" (dragenter)="showDropzone()" class="card">
+  <div class="card-block">
+    <div class="data-table__header d-flex justify-content-between">
+      <div class="data-table_buttons actions" *ngIf="currentUserPermission.can_manage_folder !== false">
+        <input type="file" name="file" id="file" class="inputfile" (change)="onClickUploadFile($event)" />
+        <label for="file" class="cursor-pointer btn btn-secondary waves-effect btn--icon-text" data-toggle="tooltip"
+          [title]="'TOOLTIPS.UPLOAD_A_FILE' | translate: params">
+          {{'TOOLTIPS.UPLOAD' | translate:params}}
+        </label>
+        <button (click)="handleOpenModal('create-folder')" class="btn btn-secondary waves-effect btn--icon-text">
+          <i data-toggle="tooltip" [title]="'TOOLTIPS.NEW_SUBFOLDER' | translate: params"></i>
+          {{'TOOLTIPS.NEW' | translate:params}}
+        </button>
+      </div>
+      <div class="form-group data-table__filter">
+        <input *ngIf="config.filtering" [placeholder]="'SEARCHS.ALL_COLUMNS' | translate: params" [(ngModel)]="config.filtering.filterString"
+          class="form-control" (keyup)="changeTable(config)" />
+        <i class="form-group__bar"></i>
+      </div>
+      <select2 class="select2-per-page" [data]="perPageSelectData" [options]="perPageSelectOptions" [value]="page.itemsPerPage"
+        (valueChanged)="onPerPageChanged($event)"></select2>
+    </div>
+
+    <div *ngIf="dataFileFolderDisplay.length > 0" class="data-table">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th *ngFor="let column of columns" [width]="column.width" (click)="column.sort!==false ? sortColumn(column, config) : ''">
+              <span [innerHTML]="column.title | translate: params"></span>
+              <!-- <i class="fal fa-hc-lg float-right" [ngClass]="{'zmdi-sort-amount-asc': column.sort==='asc', 'zmdi-sort-amount-desc': column.sort==='desc'}"></i> -->
+              <ng-container>
+                <i *ngIf="column.sort==='asc'" class="fal fa-sort-amount-up sort-icon float-right ico--custom"></i>
+                <i *ngIf="column.sort==='desc'" class="fal fa-sort-amount-down sort-icon float-right ico--custom"></i>
+              </ng-container>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of dataFileFolderDisplay; let index=index" (mouseover)="hoveredIndex=index" (mouseleave)="hoveredIndex=-1">
+            <td class="tb-name">
+              <div class="row">
+                <div class="col-12 col-md-9 vertical-items">
+                  <div *ngIf="!item.is_file" class="icon-tb-name cursor-pointer" (click)="openFolder(item.obj_name)">
+                    <i class="fas fa-folder fa-fw icon-folder"></i>
+                  </div>
+                  <div *ngIf="item.is_file" class="icon-tb-name">
+                    <img *ngIf="!item.imgError || (item.imgError && item.imgError !==1 ) " style="transition: all 0.5s"
+                      [ngStyle]="{ 'transform': 'scale(' + rangeTransformScale + ')'} " (error)="setErrorImg(index) "
+                      class="icon-file" max-height="90px " src="{{ item.name | fileIconPath: false: repoID: parentPath + item.name: 500 }} ">
+                    <!-- <img *ngIf="(item.imgError && item.imgError === 1)" class="icon-file" src="{{ item.obj_name | customFileIcon }}"> -->
+                    <div *ngIf="(item.imgError && item.imgError===1 ) ">
+                      <i class="{{ item.obj_name | customFileIcon }}" id="icon--custom--listview"></i>
+                    </div>
+                  </div>
+                  <span (click)="!item.is_file && openFolder(item.obj_name)" [ngClass]="{'cursor-pointer': !item.is_file}">{{
+                    item.obj_name }}</span>
+                </div>
+                <div class="col-6 col-md-3 vertical-items">
+                  <div *ngIf="index===hoveredIndex">
+                    <i *ngIf="currentUserPermission.can_manage_folder !== false" class="actions__item fal fa-trash-alt green-color-hover" (click)="deleteItem(item)" data-toggle="tooltip"
+                      [title]="'TOOLTIPS.DELETE' | translate: params"></i>
+                    <i *ngIf="item.is_file" class="actions__item fal fa-download green-color-hover" (click)="downloadFile(item.obj_name)"
+                      data-toggle="tooltip" [title]="'TOOLTIPS.DOWNLOAD' | translate: params"></i>
+                  </div>
+                </div>
+              </div>
+            </td>
+            <td>{{ item.file_size }}</td>
+            <td>
+              <span data-toggle="tooltip" title="{{ item.last_update | amDateFormat: 'ddd, D MMM YYYY HH:mm:ss ZZ' }}">{{
+                item.last_update | amDateFormat:'YYYY-MM-DD HH:mm:ss' }}</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <app-empty-item *ngIf="dataFileFolderDisplay.length === 0 && this.dataFileFolder.dirent_list?.length === 0"
+      [messageTitle]="'ADMIN_AREA.FOLDERS.CHILD_SYSTEM.EMPTY_ITEM.MSG_TITLE' | translate: params" [messageSub]="'ADMIN_AREA.FOLDERS.CHILD_SYSTEM.EMPTY_ITEM.MSG_SUB_TITLE' | translate: params"></app-empty-item>
+    <app-empty-item *ngIf="dataFileFolderDisplay.length === 0 && this.dataFileFolder.dirent_list?.length !== 0"
+      [messageTitle]="'ADMIN_AREA.FOLDERS.CHILD_SYSTEM.EMPTY_ITEM.MSG_SEARCH' | translate: params" [messageSub]="'ADMIN_AREA.FOLDERS.CHILD_SYSTEM.EMPTY_ITEM.MSG_SEARCH_SUB' | translate: params"></app-empty-item>
+
+    <app-modal-create-new-folder *ngIf="isOpenModal.create_folder" [repoID]="repoID" [currentPath]="currentPath"
+      (created)="onCreatedReload($event)"></app-modal-create-new-folder>
+    <app-processing *ngIf="isProcessing"></app-processing>
+    <app-modal-folders-system-delete-item *ngIf="isOpenModal.delete" [dataItem]="currentItem" (deleted)="onDeletedReload($event)"></app-modal-folders-system-delete-item>
+
+    <div *ngIf="currentUserPermission.can_manage_folder !== false" class="tips-drop" [innerHTML]="'ADMIN_AREA.FOLDERS.CHILD_SYSTEM.EMPTY_ITEM.DROP_FILES' | translate: params"></div>
+    <!-- <app-processing *ngIf="isProcessing"></app-processing> -->
+  </div>
+</div>
+
+<div *ngIf="dataFileFolderDisplay.length > 0 && !isDropzoneShow" class="data-table__footer">
+  <pagination *ngIf="config.paging" [(ngModel)]="page.page" [totalItems]="length" [itemsPerPage]="page.itemsPerPage"
+    [maxSize]="maxSize" [boundaryLinks]="true" [rotate]="false" (pageChanged)="changeTable(config, $event)" (numPages)="numPages = $event">
+  </pagination>
+</div>

@@ -1,0 +1,40 @@
+<div *ngIf="isSuccess === true" class="content__inner content__inner--sm">
+  <header class="content__title">
+    <h1>{{ profileEmailData.name ? profileEmailData.name : profileEmailData.contact_email }}</h1>
+  </header>
+  <div class="card profile">
+    <div *ngIf="isDefaultAvater" class="default__avatar">
+      <i class="fal fa-user"></i>
+    </div>
+    <div *ngIf="!isDefaultAvater" class="profile__img">
+      <img [src]="urlAvatarUser" [alt]="email" class="img--profile--custom">
+    </div>
+
+    <div class="profile__info">
+      <ul class="icon-list">
+        <li>
+          <i class="fal fa-envelope"></i>
+          {{ profileEmailData.contact_email }}
+        </li>
+        <li>
+          <i class="zmdi zmdi-phone"></i>
+          {{ profileEmailData.profile && profileEmailData.profile?.telephone ? profileEmailData.profile?.telephone
+          :'(no phone number)'}}
+        </li>
+        <li>
+          <i class="fal fa-building"></i>
+          {{ profileEmailData.profile && profileEmailData.profile?.department ? profileEmailData.profile?.department
+          :'(no department)'}}
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="row" *ngIf="isSuccess === false">
+  <div class="col-12">
+    <div class="alert alert-danger text-center" role="alert">
+      <p class="mb-0">{{ statusMessage }}</p>
+    </div>
+  </div>
+</div>

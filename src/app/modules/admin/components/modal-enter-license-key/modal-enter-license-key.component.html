@@ -1,0 +1,23 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h5 class="modal-title pull-left custom-title" [innerHTML]="'MODALS.TITLES.ENTER_LICENSE' | translate"></h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="bsModalRef.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+  </div>
+  <div class="modal-body">
+              <textarea appFocus [(ngModel)]="licenseKey" rows="10" [placeholder]="'MODALS.TITLES.ENTER_LICENSE' | translate"
+                        class="form-control"></textarea>
+
+    <i class="form-group__bar"></i>
+  </div>
+
+<div class="modal-footer flex-wrap">
+    <label *ngIf="errorText != ''" class="w-100 alert alert-danger" [innerHTML]="errorText"></label>
+      <button type="button" class="btn btn-success btn--icon-text waves-effect" (click)="submitLicense()" [disabled]="isProcessing ? 'disabled' : ''">
+      <i *ngIf="isProcessing" class="fal fa-refresh fa-spin" style="margin-right: 5px;"></i>
+      <span [innerHTML]="'BUTTONS.SUBMIT' | translate"></span>
+    </button>
+</div>
+
+</div>

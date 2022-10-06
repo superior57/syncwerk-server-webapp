@@ -1,0 +1,1572 @@
+<header class="content__title">
+  <h1 [innerHTML]="'TITLE_PAGE.SETTINGS' | translate: params"></h1>
+  <small [innerHTML]="'ADMIN.SETTINGS.NOTE' | translate: params"></small>
+</header>
+
+<div *ngIf="!isProcessing && settingConfig">
+  <!-- INFO -->
+  <ng-container *ngIf="currentUserPermission.can_view_system_info !== false">
+    <app-sys-admin-info></app-sys-admin-info>
+  </ng-container>
+
+  <!-- URL -->
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title" [innerHTML]="'ADMIN.SETTINGS.COLLAPSES.URL' | translate: params"></h2>
+    </div>
+
+    <div class="card-block">
+      <div class="row mb-3rem">
+        <div class="col-3">
+          <h4 class="card-block__title">SERVICE_URL</h4>
+        </div>
+        <div class="col-9">
+          <div class="d-flex justify-content-start mt--1rem">
+            <div class="form-group mr-15px">
+              <input [disabled]="currentUserPermission.can_config_system===false" #input_service_url type="text"
+                     class="form-control w-30rem" (focus)="onFocus('service-url', 'SERVICE_URL')"
+                     (blur)="onBlur('service-url', 'SERVICE_URL')" (keyup.enter)="onEnter('service-url')"
+                     value="{{settingConfig.SERVICE_URL}}">
+              <i class="form-group__bar"></i>
+            </div>
+            <div *ngIf="showAction['service-url']" class="btn-actions">
+              <button [disabled]="currentUserPermission.can_config_system===false" #submit_button
+                      class="btn btn-success waves-effect mr-3px" (click)="changeServiceURL()">
+                <i class="fal fa-check"></i>
+              </button>
+              <button [disabled]="currentUserPermission.can_config_system===false" class="btn btn-danger waves-effect">
+                <i class="fal fa-times"></i>
+              </button>
+            </div>
+          </div>
+          <p [innerHTML]="'ADMIN.SETTINGS.URL.DESCRIBE_SERVICE_URL' | translate: params"></p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-3">
+          <h4 class="card-block__title">FILE_SERVER_ROOT</h4>
+        </div>
+        <div class="col-9">
+          <div class="d-flex justify-content-start mt--1rem">
+            <div class="form-group mr-15px">
+              <input [disabled]="currentUserPermission.can_config_system===false" #input_file_server_root type="text"
+                     class="form-control w-30rem" (focus)="onFocus('file-server-root', 'FILE_SERVER_ROOT')"
+                     (blur)="onBlur('file-server-root', 'FILE_SERVER_ROOT')" (keyup.enter)="onEnter('file-server-root')"
+                     value="{{settingConfig.FILE_SERVER_ROOT}}">
+              <i class="form-group__bar"></i>
+            </div>
+            <div *ngIf="showAction['file-server-root']" class="btn-actions">
+              <button [disabled]="currentUserPermission.can_config_system===false"
+                      class="btn btn-success waves-effect mr-3px" (click)="changeFileServiceRoot()">
+                <i class="fal fa-check"></i>
+              </button>
+              <button [disabled]="currentUserPermission.can_config_system===false" class="btn btn-danger waves-effect">
+                <i class="fal fa-times"></i>
+              </button>
+            </div>
+          </div>
+          <p [innerHTML]="'ADMIN.SETTINGS.URL.DESCRIBE_FILE_SERVER_ROOT' | translate: params"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title" [innerHTML]="'ADMIN.SETTINGS.COLLAPSES.ONLYOFFICE' | translate: params"></h2>
+    </div>
+
+    <div class="card-block">
+      <div class="row mb-2rem">
+        <div class="col-3">
+          <h4 class="card-block__title">ENABLE_ONLYOFFICE</h4>
+        </div>
+                <div class="col-9 d-flex justify-content-start">
+          <div class="mr-1rem">
+            <div class="toggle-switch toggle-switch--green">
+              <input [disabled]="currentUserPermission.can_config_system===false" type="checkbox"
+                     class="toggle-switch__checkbox" #input_enable_onlyoffice
+                     [checked]="'' + settingConfig.ENABLE_ONLYOFFICE == '1'"
+                     (change)="changeBooleanVal($event, 'ENABLE_ONLYOFFICE')">
+              <i class="toggle-switch__helper"></i>
+            </div>
+          </div>
+          <p [innerHTML]="'ADMIN.SETTINGS.URL.DESCRIBE_ENABLE_ONLYOFFICE' | translate: params"></p>
+        </div>
+      </div>
+      <div class="row mb-2rem">
+        <div class="col-3">
+          <h4 class="card-block__title">VERIFY_ONLYOFFICE_CERTIFICATE</h4>
+        </div>
+        <div class="col-9 d-flex justify-content-start">
+          <div class="mr-1rem">
+            <div class="toggle-switch toggle-switch--green">
+              <input [disabled]="currentUserPermission.can_config_system===false" type="checkbox"
+                     class="toggle-switch__checkbox" #input_verify_onlyoffice_certificate
+                     [checked]="'' + settingConfig.VERIFY_ONLYOFFICE_CERTIFICATE == '1'"
+                     (change)="changeBooleanVal($event, 'VERIFY_ONLYOFFICE_CERTIFICATE')">
+              <i class="toggle-switch__helper"></i>
+            </div>
+          </div>
+          <p [innerHTML]="'ADMIN.SETTINGS.URL.DESCRIBE_VERIFY_ONLYOFFICE_CERTIFICATE' | translate: params"></p>
+        </div>
+      </div>
+      <div class="row mb-2rem">
+        <div class="col-3">
+          <h4 class="card-block__title">ONLYOFFICE_APIJS_URL</h4>
+        </div>
+        <div class="col-9">
+          <div class="d-flex justify-content-start mt--1rem">
+            <div class="form-group mr-15px">
+              <input [disabled]="currentUserPermission.can_config_system===false" #input_onlyoffice_apijs_url type="text"
+                     class="form-control w-30rem" (focus)="onFocus('onlyoffice-apijs-url', 'ONLYOFFICE_APIJS_URL')"
+                     (blur)="onBlur('onlyoffice-apijs-url', 'ONLYOFFICE_APIJS_URL')" (keyup.enter)="onEnter('onlyoffice-apijs-url')"
+                     value="{{settingConfig.ONLYOFFICE_APIJS_URL}}">
+              <i class="form-group__bar"></i>
+            </div>
+            <div *ngIf="showAction['onlyoffice-apijs-url']" class="btn-actions">
+              <button [disabled]="currentUserPermission.can_config_system===false"
+                      class="btn btn-success waves-effect mr-3px" (click)="changeOnlyofficeUrl()">
+                <i class="fal fa-check"></i>
+              </button>
+              <button [disabled]="currentUserPermission.can_config_system===false" class="btn btn-danger waves-effect">
+                <i class="fal fa-times"></i>
+              </button>
+            </div>
+          </div>
+          <p [innerHTML]="'ADMIN.SETTINGS.URL.DESCRIBE_ONLYOFFICE_APIJS_URL' | translate: params"></p>
+        </div>
+      </div>
+      <div class="row mb-2rem">
+        <div class="col-3">
+          <h4 class="card-block__title">ONLYOFFICE_FILE_EXTENSION</h4>
+        </div>
+        <div class="col-9">
+          <div class="d-flex justify-content-start mt--1rem">
+            <div class="form-group mr-15px">
+              <input [disabled]="currentUserPermission.can_config_system===false" #input_onlyoffice_file_extensions type="text"
+                     class="form-control w-30rem" (focus)="onFocus('onlyoffice-file-extension', 'ONLYOFFICE_FILE_EXTENSION')"
+                     (blur)="onBlur('onlyoffice-file-extension', 'ONLYOFFICE_FILE_EXTENSION')" (keyup.enter)="onEnter('onlyoffice-file-extension')"
+                     value="{{settingConfig.ONLYOFFICE_FILE_EXTENSION}}">
+              <i class="form-group__bar"></i>
+            </div>
+            <div *ngIf="showAction['onlyoffice-file-extension']" class="btn-actions">
+              <button [disabled]="currentUserPermission.can_config_system===false"
+                      class="btn btn-success waves-effect mr-3px" (click)="changeOnlyofficeExtensions()">
+                <i class="fal fa-check"></i>
+              </button>
+              <button [disabled]="currentUserPermission.can_config_system===false" class="btn btn-danger waves-effect">
+                <i class="fal fa-times"></i>
+              </button>
+            </div>
+          </div>
+          <p [innerHTML]="'ADMIN.SETTINGS.URL.DESCRIBE_ONLYOFFICE_FILE_EXTENSION' | translate: params"></p>
+        </div>
+      </div>
+      <div class="row mb-2rem">
+        <div class="col-3">
+          <h4 class="card-block__title">ONLYOFFICE_EDIT_FILE_EXTENSION</h4>
+        </div>
+        <div class="col-9">
+          <div class="d-flex justify-content-start mt--1rem">
+            <div class="form-group mr-15px">
+              <input [disabled]="currentUserPermission.can_config_system===false" #input_onlyoffice_edit_file_extensions type="text"
+                     class="form-control w-30rem" (focus)="onFocus('onlyoffice-edit-file-extension', 'ONLYOFFICE_EDIT_FILE_EXTENSION')"
+                     (blur)="onBlur('onlyoffice-edit-file-extension', 'ONLYOFFICE_EDIT_FILE_EXTENSION')" (keyup.enter)="onEnter('onlyoffice-edit-file-extension')"
+                     value="{{settingConfig.ONLYOFFICE_EDIT_FILE_EXTENSION}}">
+              <i class="form-group__bar"></i>
+            </div>
+            <div *ngIf="showAction['onlyoffice-edit-file-extension']" class="btn-actions">
+              <button [disabled]="currentUserPermission.can_config_system===false"
+                      class="btn btn-success waves-effect mr-3px" (click)="changeOnlyofficeEditExtensions()">
+                <i class="fal fa-check"></i>
+              </button>
+              <button [disabled]="currentUserPermission.can_config_system===false" class="btn btn-danger waves-effect">
+                <i class="fal fa-times"></i>
+              </button>
+            </div>
+          </div>
+          <p [innerHTML]="'ADMIN.SETTINGS.URL.DESCRIBE_ONLYOFFICE_EDIT_FILE_EXTENSION' | translate: params"></p>
+        </div>
+      </div>
+      <div class="row mb-2rem">
+        <div class="col-3">
+          <h4 class="card-block__title">ONLYOFFICE_FORCE_ADMIN_SETTINGS</h4>
+        </div>
+                <div class="col-9 d-flex justify-content-start">
+          <div class="mr-1rem">
+            <div class="toggle-switch toggle-switch--green">
+              <input [disabled]="currentUserPermission.can_config_system===false" type="checkbox"
+                     class="toggle-switch__checkbox" #input_enable_onlyoffice
+                     [checked]="'' + settingConfig.ONLYOFFICE_FORCE_ADMIN_SETTINGS == '1'"
+                     (change)="changeBooleanVal($event, 'ONLYOFFICE_FORCE_ADMIN_SETTINGS')">
+              <i class="toggle-switch__helper"></i>
+            </div>
+          </div>
+          <p [innerHTML]="'ADMIN.SETTINGS.URL.DESCRIBE_ONLYOFFICE_FORCE_ADMIN_SETTINGS' | translate: params"></p>
+        </div>
+      </div>
+      <div class="row mb-2rem">
+        <div class="col-3">
+          <h4 class="card-block__title">ONLYOFFICE_OPEN_MODE</h4>
+        </div>
+        <div class="col-9">
+          <div class="d-flex justify-content-start mt--1rem">
+            <div class="form-group mr-15px">
+              <select [disabled]="currentUserPermission.can_config_system===false" #input_onlyoffice_open_mode
+                     class="form-control w-30rem" (focus)="onSelectFocus('onlyoffice-open-mode', 'ONLYOFFICE_OPEN_MODE')"
+                     (blur)="onSelectBlur('onlyoffice-open-mode', 'ONLYOFFICE_OPEN_MODE')" (keyup.enter)="onEnter('onlyoffice-open-mode')">
+                <option value="edit" [selected]="settingConfig.ONLYOFFICE_OPEN_MODE=='edit'">Edit Mode</option>
+                <option value="preview" [selected]="settingConfig.ONLYOFFICE_OPEN_MODE=='preview'">Preview Mode</option>
+              </select>
+              <i class="form-group__bar"></i>
+            </div>
+            <div *ngIf="showAction['onlyoffice-open-mode']" class="btn-actions">
+              <button [disabled]="currentUserPermission.can_config_system===false"
+                      class="btn btn-success waves-effect mr-3px" (click)="changeOnlyofficeOpenMode()">
+                <i class="fal fa-check"></i>
+              </button>
+              <button [disabled]="currentUserPermission.can_config_system===false" class="btn btn-danger waves-effect">
+                <i class="fal fa-times"></i>
+              </button>
+            </div>
+          </div>
+          <p [innerHTML]="'ADMIN.SETTINGS.URL.DESCRIBE_ONLYOFFICE_OPEN_MODE' | translate: params"></p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- LOGO -->
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title" [innerHTML]="'ADMIN.SETTINGS.COLLAPSES.GENERAL' | translate: params"></h2>
+    </div>
+
+    <div class="card-block">
+      <div class="row mb-3rem">
+        <div class="col-3">
+          <h4 class="card-block__title">Logo</h4>
+        </div>
+        <div class="col-9 d-flex justify-content-start">
+          <div class="mr-1rem wrap__img">
+            <p>
+              <img class="custom-logo" width="168px" height="50px" [src]="logoURL">
+            </p>
+            <p class="setting-description">148px * 30px</p>
+          </div>
+          <div class="btn__modifiled">
+            <label class="custom-control custom-checkbox align-self-start" for="file-upload-logo">
+              <input [disabled]="currentUserPermission.can_config_system===false" #fileLogoInput id="file-upload-logo"
+                     type="file" (change)="onUpdateLogo($event)" class="d-none" />
+              <div class="btn btn-success btn--icon waves-effect">
+                <i *ngIf="logoUploading" class="fal fa-sync-alt fa-spin"></i>
+                <i class="fal fa-pen"></i>
+              </div>
+              <!-- <button [disabled]="currentUserPermission.can_config_system===false" class="btn btn-success btn--icon waves-effect">
+                <i *ngIf="logoUploading" class="fal fa-sync-alt fa-spin"></i>
+                <i class="fal fa-pen"></i>
+              </button> -->
+            </label>
+            <button [disabled]="currentUserPermission.can_config_system===false" (click)="resetLogo()"
+                    class="btn btn-success btn--icon waves-effect btn--custom" data-toggle="tooltip" title="Reset">
+              <i class="fal fa-redo"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-3">
+          <h4 class="card-block__title">Favicon</h4>
+        </div>
+        <div class="col-9 d-flex justify-content-start">
+          <div class="mr-1rem">
+            <p>
+              <img class="custom-favicon" width="52px" height="52px" [src]="faviconURL">
+            </p>
+            <p class="setting-description">32px * 32px</p>
+          </div>
+          <div>
+            <label class="custom-control custom-checkbox align-self-start" for="file-upload-favicon">
+              <input [disabled]="currentUserPermission.can_config_system===false" #fileFaviconInput
+                     id="file-upload-favicon" type="file" (change)="onUpdateFavicon($event)" class="d-none" />
+              <div class="btn btn-success btn--icon waves-effect">
+                <i *ngIf="faviconUploading" class="fal fa-sync-alt fa-spin"></i>
+                <i class="fal fa-pen"></i>
+              </div>
+              <!-- <button [disabled]="currentUserPermission.can_config_system===false" class="btn btn-success btn--icon waves-effect btn--ico">
+                <i *ngIf="faviconUploading" class="fal fa-sync-alt fa-spin"></i>
+                <i class="fal fa-pen"></i>
+              </button> -->
+            </label>
+            <button [disabled]="currentUserPermission.can_config_system===false"
+                    [disabled]="currentUserPermission.can_config_system===false" (click)="resetFavIcon()"
+                    class="btn btn-success btn--icon waves-effect btn--ico" data-toggle="tooltip" title="Reset">
+              <i class="fal fa-redo"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<div class="card">
+    <div class="card-header">
+      <h2 class="card-title" [innerHTML]="'ADMIN.SETTINGS.COLLAPSES.BATCH_DOWNLOAD' | translate: params"></h2>
+    </div>
+    <div class="card-block">
+      <div class="row">
+        <div class="col-3">
+          <h4 class="card-block__title" [innerHTML]="'ADMIN.SETTINGS.COLLAPSES.ALLOW_FOLDERS_IN_BATCH' | translate: params"></h4>
+        </div>
+        <div class="col-9 d-flex justify-content-start">
+          <div class="mr-1rem">
+            <div class="toggle-switch toggle-switch--green">
+              <input [disabled]="currentUserPermission.can_config_system===false" type="checkbox"
+                     class="toggle-switch__checkbox"
+                     [checked]="'' + settingConfig.ALLOW_FOLDERS_IN_BATCH == '1'"
+                     (change)="changeAllowFoldersInBatch($event, 'ALLOW_FOLDERS_IN_BATCH')">
+              <i class="toggle-switch__helper"></i>
+            </div>
+          </div>
+          <p [innerHTML]="'ADMIN.SETTINGS.URL.DESCRIBE_ALLOW_FOLDERS_IN_BATCH' | translate: params"></p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-3">
+          <h4 class="card-block__title" [innerHTML]="'ADMIN.SETTINGS.COLLAPSES.BATCH_MAX_FILES_COUNT' | translate: params"></h4>
+        </div>
+        <div class="col-9">
+          <div class="d-flex justify-content-start mt--1rem">
+            <div class="form-group mr-15px">
+              <input [disabled]="currentUserPermission.can_config_system===false" #input_batch_max_files_count type="text"
+                     class="form-control w-30rem" (focus)="onFocus('batch-max-files-count', 'BATCH_MAX_FILES_COUNT')"
+                     (blur)="onBlur('batch-max-files-count', 'BATCH_MAX_FILES_COUNT')" (keyup.enter)="onEnter('allow-folders-in-batch')"
+                     value="{{settingConfig.BATCH_MAX_FILES_COUNT}}">
+              <i class="form-group__bar"></i>
+            </div>
+            <div *ngIf="showAction['batch-max-files-count']" class="btn-actions">
+              <button [disabled]="currentUserPermission.can_config_system===false"
+                      class="btn btn-success waves-effect mr-3px" (click)="changeBatchMaxFilesCount()">
+                <i class="fal fa-check"></i>
+              </button>
+              <button [disabled]="currentUserPermission.can_config_system===false" class="btn btn-danger waves-effect">
+                <i class="fal fa-times"></i>
+              </button>
+            </div>
+          </div>
+          <p [innerHTML]="'ADMIN.SETTINGS.URL.DESCRIBE_BATCH_MAX_FILES_COUNT' | translate: params"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- USER -->
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title" [innerHTML]="'ADMIN.SETTINGS.COLLAPSES.USER' | translate: params"></h2>
+    </div>
+
+    <div class="card-block">
+      <div class="row mb-3rem">
+        <div class="col-3">
+          <h4 class="card-block__title" [innerHTML]="'ADMIN.SETTINGS.USER.ALLOW_NEW_REGISTRATION' | translate: params">
+          </h4>
+        </div>
+        <div class="col-9 d-flex justify-content-start">
+          <div class="mr-1rem">
+            <div class="toggle-switch toggle-switch--green">
+              <input [disabled]="currentUserPermission.can_config_system===false" type="checkbox"
+                     class="toggle-switch__checkbox"
+                     [checked]="settingConfig.ENABLE_SIGNUP || settingConfig.ENABLE_SIGNUP === 1"
+                     (change)="changeSystemSettingToggle($event, 'ENABLE_SIGNUP')">
+              <i class="toggle-switch__helper"></i>
+            </div>
+          </div>
+          <div [innerHTML]="'ADMIN.SETTINGS.USER.DESCRIBE_ALLOW_NEW_REGISTRATION' | translate: params"></div>
+        </div>
+      </div>
+
+      <div class="cardblock">
+        <div class="row mb-3rem">
+          <div class="col-3">
+            <h4 class="card-block__title"
+                [innerHTML]="'ADMIN.SETTINGS.USER.TERMS_AND_CONDITION_LABEL' | translate: params"></h4>
+          </div>
+
+          <div class="col-4">
+            <div class="form-group">
+              <label>{{ 'ADMIN.SETTINGS.USER.TERMS_AND_CONDITION_TEXT_DE' | translate }}</label>
+              <textarea [disabled]="currentUserPermission.can_config_system===false" #terms_and_conditions_text_de
+                        class="form-control" rows="5"
+                        (focus)="onFocus('terms-and-conditions-text-de' , 'REGISTER_PAGE_TERM_AND_CONDITION_CHECKBOX_TEXT_DE')"
+                        (blur)="onBlur('terms-and-conditions-text-de' , 'REGISTER_PAGE_TERM_AND_CONDITION_CHECKBOX_TEXT_DE')"
+                        value="{{settingConfig.REGISTER_PAGE_TERM_AND_CONDITION_CHECKBOX_TEXT_DE}}"></textarea>
+              <i class="form-group__bar"></i>
+            </div>
+            <div class="btn-group" *ngIf="showAction['terms-and-conditions-text-de']"
+                 (click)="changeTextSettings('REGISTER_PAGE_TERM_AND_CONDITION_CHECKBOX_TEXT_DE')">
+              <button [disabled]="currentUserPermission.can_config_system===false" type="button"
+                      class="btn btn-success mr-3px">
+                <i class="fal fa-check"></i>
+              </button>
+              <button [disabled]="currentUserPermission.can_config_system===false" type="button" class="btn btn-danger">
+                <i class="fal fa-times"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="col-4">
+            <div class="form-group">
+              <label>{{ 'ADMIN.SETTINGS.USER.TERMS_AND_CONDITION_TEXT_EN' | translate }}</label>
+              <textarea [disabled]="currentUserPermission.can_config_system===false" #terms_and_conditions_text_en
+                        class="form-control" rows="5"
+                        (focus)="onFocus('terms-and-conditions-text-en' , 'REGISTER_PAGE_TERM_AND_CONDITION_CHECKBOX_TEXT_EN')"
+                        (blur)="onBlur('terms-and-conditions-text-en' , 'REGISTER_PAGE_TERM_AND_CONDITION_CHECKBOX_TEXT_EN')"
+                        value="{{settingConfig.REGISTER_PAGE_TERM_AND_CONDITION_CHECKBOX_TEXT_EN}}"></textarea>
+              <i class="form-group__bar"></i>
+            </div>
+            <div class="btn-group" *ngIf="showAction['terms-and-conditions-text-en']"
+                 (click)="changeTextSettings('REGISTER_PAGE_TERM_AND_CONDITION_CHECKBOX_TEXT_EN')">
+              <button [disabled]="currentUserPermission.can_config_system===false" type="button"
+                      class="btn btn-success mr-3px">
+                <i class="fal fa-check"></i>
+              </button>
+              <button [disabled]="currentUserPermission.can_config_system===false" type="button" class="btn btn-danger">
+                <i class="fal fa-times"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mb-3rem">
+        <div class="col-3">
+          <h4 class="card-block__title"
+              [innerHTML]="'ADMIN.SETTINGS.USER.ACTIVATE_AFTER_REGISTRATION' | translate: params"></h4>
+        </div>
+        <div class="col-9 d-flex justify-content-start">
+          <div class="mr-1rem">
+            <div class="toggle-switch toggle-switch--green">
+              <input [disabled]="currentUserPermission.can_config_system===false" type="checkbox"
+                     class="toggle-switch__checkbox" [checked]="settingConfig.ACTIVATE_AFTER_REGISTRATION === 1"
+                     (change)="changeSystemSettingToggle($event, 'ACTIVATE_AFTER_REGISTRATION')">
+              <i class="toggle-switch__helper"></i>
+            </div>
+          </div>
+          <div [innerHTML]="'ADMIN.SETTINGS.USER.DESCRIBE_ACTIVATE_AFTER_REGISTRATION' | translate: params"></div>
+        </div>
+      </div>
+
+      <div class="row mb-3rem" [ngClass]="{'setting-disabled': settingConfig.ACTIVATE_AFTER_REGISTRATION === 1}">
+        <div class="col-3">
+          <h4 class="card-block__title" [innerHTML]="'ADMIN.SETTINGS.USER.SEND_ACTIVATION_EMAIL' | translate: params">
+          </h4>
+        </div>
+        <div class="col-9 d-flex justify-content-start">
+          <div class="mr-1rem">
+            <div class="toggle-switch toggle-switch--green">
+              <input [disabled]="currentUserPermission.can_config_system===false" type="checkbox"
+                     class="toggle-switch__checkbox" [disabled]="settingConfig.ACTIVATE_AFTER_REGISTRATION === 1"
+                     [checked]="settingConfig.REGISTRATION_SEND_MAIL === 1"
+                     (change)="changeSystemSettingToggle($event, 'REGISTRATION_SEND_MAIL')">
+              <i class="toggle-switch__helper"></i>
+            </div>
+          </div>
+          <div [innerHTML]="'ADMIN.SETTINGS.USER.DESCRIBE_SEND_ACTIVATION_EMAIL' | translate: params"></div>
+        </div>
+      </div>
+      <div class="row mb-3rem">
+        <div class="col-3">
+          <h4 class="card-block__title" [innerHTML]="'ADMIN.SETTINGS.USER.KEEP_SIGN_IN' | translate: params"></h4>
+        </div>
+        <div class="col-9">
+          <div class="d-flex justify-content-start mt--1rem">
+            <div class="form-group mr-15px">
+              <input [disabled]="currentUserPermission.can_config_system===false" #input_keep_sign_in type="text"
+                     class="form-control w-30rem" (focus)="onFocus('keep-sign-in', 'LOGIN_REMEMBER_DAYS')"
+                     (blur)="onBlur('keep-sign-in' , 'LOGIN_REMEMBER_DAYS')" value="{{settingConfig.LOGIN_REMEMBER_DAYS}}"
+                     (keydown.enter)="onEnter('keep-sign-in')">
+              <i class="form-group__bar"></i>
+            </div>
+            <div *ngIf="showAction['keep-sign-in']" class="btn-actions">
+              <button [disabled]="currentUserPermission.can_config_system===false"
+                      class="btn btn-success waves-effect mr-3px" (click)="changeKeepSignIn()">
+                <i class="fal fa-check"></i>
+              </button>
+              <button [disabled]="currentUserPermission.can_config_system===false" class="btn btn-danger waves-effect">
+                <i class="fal fa-times"></i>
+              </button>
+            </div>
+          </div>
+          <p [innerHTML]="'ADMIN.SETTINGS.USER.DESCRIBE_KEEP_SIGN_IN' | translate: params"></p>
+        </div>
+      </div>
+
+      <div class="row mb-3rem">
+        <div class="col-3">
+          <h4 class="card-block__title" [innerHTML]="'ADMIN.SETTINGS.USER.LOGIN_ATTEMP_LIMIT' | translate: params"></h4>
+        </div>
+        <div class="col-9">
+          <div class="d-flex justify-content-start mt--1rem">
+            <div class="form-group mr-15px">
+              <input [disabled]="currentUserPermission.can_config_system===false" #input_login_attempt_limit type="text"
+                     class="form-control w-30rem" (focus)="onFocus('login-attempt-limit', 'LOGIN_ATTEMPT_LIMIT')"
+                     (blur)="onBlur('login-attempt-limit', 'LOGIN_ATTEMPT_LIMIT')"
+                     value="{{settingConfig.LOGIN_ATTEMPT_LIMIT}}" (keydown.enter)="onEnter('login-attempt-limit')">
+              <i class="form-group__bar"></i>
+            </div>
+            <div *ngIf="showAction['login-attempt-limit']" class="btn-actions">
+              <button [disabled]="currentUserPermission.can_config_system===false"
+                      class="btn btn-success waves-effect mr-3px" (click)="changeLoginAttemptLimit()">
+                <i class="fal fa-check"></i>
+              </button>
+              <button [disabled]="currentUserPermission.can_config_system===false" class="btn btn-danger waves-effect">
+                <i class="fal fa-times"></i>
+              </button>
+            </div>
+          </div>
+          <p [innerHTML]="'ADMIN.SETTINGS.USER.DESCRIBE_LOGIN_ATTEMP_LIMIT' | translate: params"></p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-3">
+          <h4 class="card-block__title"
+              [innerHTML]="'ADMIN.SETTINGS.USER.FREEZE_USER_ON_LOGIN_FAILED' | translate: params"></h4>
+        </div>
+        <div class="col-9 d-flex justify-content-start">
+          <div class="mr-1rem">
+            <div class="toggle-switch toggle-switch--green">
+              <input [disabled]="currentUserPermission.can_config_system===false" type="checkbox"
+                     class="toggle-switch__checkbox" [checked]="settingConfig.FREEZE_USER_ON_LOGIN_FAILED"
+                     (change)="changeSystemSettingToggle($event, 'FREEZE_USER_ON_LOGIN_FAILED')">
+              <i class="toggle-switch__helper"></i>
+            </div>
+          </div>
+          <div [innerHTML]="'ADMIN.SETTINGS.USER.DESCRIBE_FREEZE_USER_ON_LOGIN_FAILED' | translate: params"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PASSWORD -->
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title" [innerHTML]="'ADMIN.SETTINGS.COLLAPSES.PASSWORD' | translate: params"></h2>
+    </div>
+
+    <div class="card-block">
+      <div class="row mb-3rem">
+        <div class="col-3">
+          <h4 class="card-block__title" [innerHTML]="'ADMIN.SETTINGS.PASSWORD.STRONG_PASSWORD' | translate: params">
+          </h4>
+        </div>
+        <div class="col-9 d-flex justify-content-start">
+          <div class="mr-1rem">
+            <div class="toggle-switch toggle-switch--green">
+              <input [disabled]="currentUserPermission.can_config_system===false" type="checkbox"
+                     class="toggle-switch__checkbox" [checked]="settingConfig.USER_STRONG_PASSWORD_REQUIRED"
+                     (change)="changeSystemSettingToggle($event, 'USER_STRONG_PASSWORD_REQUIRED')">
+              <i class="toggle-switch__helper"></i>
+            </div>
+          </div>
+          <div [innerHTML]="'ADMIN.SETTINGS.PASSWORD.DESCRIBE_STRONG_PASSWORD' | translate: params"></div>
+        </div>
+      </div>
+
+      <div *ngIf="settingConfig.USER_STRONG_PASSWORD_REQUIRED" class="row mb-3rem">
+        <div class="col-3">
+          <h4 class="card-block__title"
+              [innerHTML]="'ADMIN.SETTINGS.PASSWORD.PASSWORD_STRENGTH_LEVEL' | translate: params"></h4>
+        </div>
+        <div class="col-9">
+          <div class="d-flex justify-content-start mt--1rem">
+            <div class="form-group mr-15px">
+              <input [disabled]="currentUserPermission.can_config_system===false" #input_password_strength_level
+                     type="text" class="form-control w-30rem"
+                     (focus)="onFocus('password-strength-level', 'USER_PASSWORD_STRENGTH_LEVEL')"
+                     (blur)="onBlur('password-strength-level', 'USER_PASSWORD_STRENGTH_LEVEL')"
+                     value="{{settingConfig.USER_PASSWORD_STRENGTH_LEVEL}}">
+              <i class="form-group__bar"></i>
+            </div>
+            <div *ngIf="showAction['password-strength-level']" class="btn-actions">
+              <button [disabled]="currentUserPermission.can_config_system===false"
+                      class="btn btn-success waves-effect mr-3px" (click)="changePasswordStrengthLevel()"
+                      (keyup.enter)="onEnter('password-strength-level')">
+                <i class="fal fa-check"></i>
+              </button>
+              <button [disabled]="currentUserPermission.can_config_system===false" class="btn btn-danger waves-effect">
+                <i class="fal fa-times"></i>
+              </button>
+            </div>
+          </div>
+          <p [innerHTML]="'ADMIN.SETTINGS.PASSWORD.DESCRIBE_PASSWORD_STRENGTH_LEVEL' | translate: params"></p>
+        </div>
+      </div>
+
+      <div class="row mb-3rem">
+        <div class="col-3">
+          <h4 class="card-block__title"
+              [innerHTML]="'ADMIN.SETTINGS.PASSWORD.FORCE_PASSWORD_CHANGE' | translate: params"></h4>
+        </div>
+        <div class="col-9 d-flex justify-content-start">
+          <div class="mr-1rem">
+            <div class="toggle-switch toggle-switch--green">
+              <input [disabled]="currentUserPermission.can_config_system===false" type="checkbox"
+                     class="toggle-switch__checkbox" [checked]="settingConfig.FORCE_PASSWORD_CHANGE"
+                     (change)="changeSystemSettingToggle($event, 'FORCE_PASSWORD_CHANGE')">
+              <i class="toggle-switch__helper"></i>
+            </div>
+          </div>
+          <div [innerHTML]="'ADMIN.SETTINGS.PASSWORD.DESCRIBE_FORCE_PASSWORD_CHANGE' | translate: params"></div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-3">
+          <h4 class="card-block__title"
+              [innerHTML]="'ADMIN.SETTINGS.PASSWORD.PASSWORD_MINIMUM_LENGTH' | translate: params"></h4>
+        </div>
+        <div class="col-9">
+          <div class="d-flex justify-content-start mt--1rem">
+            <div class="form-group mr-15px">
+              <input [disabled]="currentUserPermission.can_config_system===false" #input_password_minimum_length
+                     type="text" class="form-control w-30rem"
+                     (focus)="onFocus('password-minimum-length', 'USER_PASSWORD_MIN_LENGTH')"
+                     (blur)="onBlur('password-minimum-length', 'USER_PASSWORD_MIN_LENGTH')"
+                     value="{{settingConfig.USER_PASSWORD_MIN_LENGTH}}" (keydown.enter)="onEnter('password-minimum-length')">
+              <i class="form-group__bar"></i>
+            </div>
+            <div *ngIf="showAction['password-minimum-length']" class="btn-actions">
+              <button [disabled]="currentUserPermission.can_config_system===false"
+                      class="btn btn-success waves-effect mr-3px" (click)="changePasswordMinimumLength()">
+                <i class="fal fa-check"></i>
+              </button>
+              <button [disabled]="currentUserPermission.can_config_system===false" class="btn btn-danger waves-effect">
+                <i class="fal fa-times"></i>
+              </button>
+            </div>
+          </div>
+          <p [innerHTML]="'ADMIN.SETTINGS.PASSWORD.DESCRIBE_PASSWORD_MINIMUM_LENGTH' | translate: params"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOLDER -->
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title" [innerHTML]="'ADMIN.SETTINGS.COLLAPSES.FOLDER' | translate: params"></h2>
+    </div>
+    <div class="card-block">
+      <div class="row mb-3rem">
+        <div class="col-3">
+          <h4 class="card-block__title" [innerHTML]="'ADMIN.SETTINGS.FOLDER.FOLDER_HISTORY' | translate: params"></h4>
+        </div>
+        <div class="col-9 d-flex justify-content-start">
+          <div class="mr-1rem">
+            <div class="toggle-switch toggle-switch--green">
+              <input [disabled]="currentUserPermission.can_config_system===false" type="checkbox"
+                     class="toggle-switch__checkbox" [checked]="settingConfig.ENABLE_REPO_HISTORY_SETTING"
+                     (change)="changeSystemSettingToggle($event, 'ENABLE_REPO_HISTORY_SETTING')">
+              <i class="toggle-switch__helper"></i>
+            </div>
+          </div>
+          <div [innerHTML]="'ADMIN.SETTINGS.FOLDER.DESCRIBE_FOLDER_HISTORY' | translate: params"></div>
+        </div>
+      </div>
+
+      <div class="row mb-3rem">
+        <div class="col-3">
+          <h4 class="card-block__title" [innerHTML]="'ADMIN.SETTINGS.FOLDER.ENCRYPTED_FOLDER' | translate: params"></h4>
+        </div>
+        <div class="col-9 d-flex justify-content-start">
+          <div class="mr-1rem">
+            <div class="toggle-switch toggle-switch--green">
+              <input [disabled]="currentUserPermission.can_config_system===false" type="checkbox"
+                     class="toggle-switch__checkbox" [checked]="settingConfig.ENABLE_ENCRYPTED_FOLDER"
+                     (change)="changeSystemSettingToggle($event, 'ENABLE_ENCRYPTED_FOLDER')">
+              <i class="toggle-switch__helper"></i>
+            </div>
+          </div>
+          <div [innerHTML]="'ADMIN.SETTINGS.FOLDER.DESCRIBE_ENCRYPTED_FOLDER' | translate: params"></div>
+        </div>
+      </div>
+
+      <div class="row mb-3rem" [ngClass]="{'d-none' : settingConfig.ENABLE_ENCRYPTED_FOLDER === 0}">
+        <div class="col-3">
+          <h4 class="card-block__title"
+              [innerHTML]="'ADMIN.SETTINGS.FOLDER.FOLDER_PASSWORD_MINIMUM_LENGTH' | translate: params"></h4>
+        </div>
+        <div class="col-9">
+          <div class="d-flex justify-content-start mt--1rem">
+            <div class="form-group mr-15px">
+              <input [disabled]="currentUserPermission.can_config_system===false" #input_folder_password_minimum_length
+                     type="text" class="form-control w-30rem"
+                     (focus)="onFocus('folder-password-minimum-length', 'REPO_PASSWORD_MIN_LENGTH')"
+                     (blur)="onBlur('folder-password-minimum-length', 'REPO_PASSWORD_MIN_LENGTH')"
+                     value="{{settingConfig.REPO_PASSWORD_MIN_LENGTH}}"
+                     (keyup.enter)="onEnter('folder-password-minimum-length')">
+              <i class="form-group__bar"></i>
+            </div>
+            <div *ngIf="showAction['folder-password-minimum-length']" class="btn-actions">
+              <button [disabled]="currentUserPermission.can_config_system===false"
+                      class="btn btn-success waves-effect mr-3px" (click)="changeFolderPasswordMinimumLength()">
+                <i class="fal fa-check"></i>
+              </button>
+              <button [disabled]="currentUserPermission.can_config_system===false" class="btn btn-danger waves-effect">
+                <i class="fal fa-times"></i>
+              </button>
+            </div>
+          </div>
+          <p [innerHTML]="'ADMIN.SETTINGS.FOLDER.DESCRIBE_FOLDER_PASSWORD_MINIMUM_LENGTH' | translate: params"></p>
+        </div>
+      </div>
+
+      <div class="row mb-3rem">
+        <div class="col-3">
+          <h4 class="card-block__title"
+              [innerHTML]="'ADMIN.SETTINGS.FOLDER.DOWNLOAD_UPLOAD_LINK_PASSWORD_MINIMUM_LENGTH' | translate: params"></h4>
+        </div>
+        <div class="col-9">
+          <div class="d-flex justify-content-start mt--1rem">
+            <div class="form-group mr-15px">
+              <input [disabled]="currentUserPermission.can_config_system===false" #input_link_password_minimum_length
+                     type="text" class="form-control w-30rem"
+                     (focus)="onFocus('link-password-minimum-length', 'SHARE_LINK_PASSWORD_MIN_LENGTH')"
+                     (blur)="onBlur('link-password-minimum-length', 'SHARE_LINK_PASSWORD_MIN_LENGTH')"
+                     value="{{settingConfig.SHARE_LINK_PASSWORD_MIN_LENGTH}}"
+                     (keyup.enter)="onEnter('link-password-minimum-length')">
+              <i class="form-group__bar"></i>
+            </div>
+            <div *ngIf="showAction['link-password-minimum-length']" class="btn-actions">
+              <button [disabled]="currentUserPermission.can_config_system===false"
+                      class="btn btn-success waves-effect mr-3px" (click)="changeLinkPasswordMinimumLength()">
+                <i class="fal fa-check"></i>
+              </button>
+              <button [disabled]="currentUserPermission.can_config_system===false" class="btn btn-danger waves-effect">
+                <i class="fal fa-times"></i>
+              </button>
+            </div>
+          </div>
+          <p
+                  [innerHTML]="'ADMIN.SETTINGS.FOLDER.DESCRIBE_DOWNLOAD_UPLOAD_LINK_PASSWORD_MINIMUM_LENGTH' | translate: params">
+          </p>
+        </div>
+      </div>
+
+      <div class="row mb-3rem">
+        <div class="col-3">
+          <h4 class="card-block__title"
+              [innerHTML]="'ADMIN.SETTINGS.FOLDER.ENABLE_USER_CREATE_ORG_REPO' | translate: params"></h4>
+        </div>
+        <div class="col-9 d-flex justify-content-start">
+          <div class="mr-1rem">
+            <div class="toggle-switch toggle-switch--green">
+              <input [disabled]="currentUserPermission.can_config_system===false" type="checkbox"
+                     class="toggle-switch__checkbox" [checked]="settingConfig.ENABLE_USER_CREATE_ORG_REPO"
+                     (change)="changeSystemSettingToggle($event, 'ENABLE_USER_CREATE_ORG_REPO')">
+              <i class="toggle-switch__helper"></i>
+            </div>
+          </div>
+          <div [innerHTML]="'ADMIN.SETTINGS.FOLDER.DESCRIBE_ENABLE_USER_CREATE_ORG_REPO' | translate: params"></div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-3">
+          <h4 class="card-block__title"
+              [innerHTML]="'ADMIN.SETTINGS.FOLDER.PREVIEW_FILE_EXTENSIONS' | translate: params"></h4>
+        </div>
+        <div class="col-9">
+          <div class="d-flex justify-content-start mt--1rem">
+            <div class="form-group mr-15px">
+              <input [disabled]="currentUserPermission.can_config_system===false" #input_preview_file_extensions
+                     type="text" class="form-control w-30rem"
+                     (focus)="onFocus('preview-file-extensions' , 'TEXT_PREVIEW_EXT')"
+                     (blur)="onBlur('preview-file-extensions' , 'TEXT_PREVIEW_EXT')"
+                     value="{{settingConfig.TEXT_PREVIEW_EXT}}" (keyup.enter)="onEnter('preview-file-extensions')">
+              <i class="form-group__bar"></i>
+            </div>
+            <div *ngIf="showAction['preview-file-extensions']" class="btn-actions">
+              <button [disabled]="currentUserPermission.can_config_system===false"
+                      class="btn btn-success waves-effect mr-3px" (click)="changePreviewFileExtensions()">
+                <i class="fal fa-check"></i>
+              </button>
+              <button [disabled]="currentUserPermission.can_config_system===false" class="btn btn-danger waves-effect">
+                <i class="fal fa-times"></i>
+              </button>
+            </div>
+          </div>
+          <p [innerHTML]="'ADMIN.SETTINGS.FOLDER.DESCRIBE_PREVIEW_FILE_EXTENSIONS' | translate: params"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SYNC -->
+  <div class="card">
+    <div class="card-header" role="tab">
+      <h2 class="card-title" [innerHTML]="'ADMIN.SETTINGS.COLLAPSES.SYNC' | translate: params"></h2>
+    </div>
+
+    <div class="card-block">
+      <div class="row">
+        <div class="col-3">
+          <h4 class="card-block__title"
+              [innerHTML]="'ADMIN.SETTINGS.SYNC.ENABLE_SYNC_WITH_ANY_FOLDER' | translate: params"></h4>
+        </div>
+        <div class="col-9 d-flex justify-content-start">
+          <div class="mr-1rem">
+            <div class="toggle-switch toggle-switch--green">
+              <input [disabled]="currentUserPermission.can_config_system===false" type="checkbox"
+                     class="toggle-switch__checkbox" [checked]="!settingConfig.DISABLE_SYNC_WITH_ANY_FOLDER"
+                     (change)="changeSystemSettingToggle($event, 'DISABLE_SYNC_WITH_ANY_FOLDER')">
+              <i class="toggle-switch__helper"></i>
+            </div>
+          </div>
+          <div [innerHTML]="'ADMIN.SETTINGS.SYNC.DESCRIBE_DISABLE_SYNC_WITH_ANY_FOLDER' | translate: params"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COOKIE DISCLAIMER -->
+  <div class="card">
+    <div class="card-header" role="tab">
+      <h2 class="card-title" [innerHTML]="'ADMIN.SETTINGS.COLLAPSES.COOKIE_DISCLAIMER' | translate: params"></h2>
+    </div>
+
+    <div class="card-block">
+      <div class="row mb-3rem">
+        <div class="col-3">
+          <h4 class="card-block__title"
+              [innerHTML]="'ADMIN.SETTINGS.COOKIE_DISCLAIMER.SHOW_COOKIE_DISCLAIMER' | translate: params"></h4>
+        </div>
+        <div class="col-9 d-flex justify-content-start">
+          <div class="mr-1rem">
+            <div class="toggle-switch toggle-switch--green">
+              <input [disabled]="currentUserPermission.can_config_system===false" type="checkbox"
+                     class="toggle-switch__checkbox" [checked]="settingConfig.SHOW_COOKIE_DISCLAIMER"
+                     (change)="changeSystemSettingToggle($event, 'SHOW_COOKIE_DISCLAIMER')">
+              <i class="toggle-switch__helper"></i>
+            </div>
+          </div>
+          <div [innerHTML]="'ADMIN.SETTINGS.COOKIE_DISCLAIMER.SHOW_COOKIE_DISCLAIMER_DESC' | translate: params"></div>
+        </div>
+      </div>
+
+      <div class="row mb-3rem">
+        <div class="col-3">
+          <h4 class="card-block__title"
+              [innerHTML]="'ADMIN.SETTINGS.COOKIE_DISCLAIMER.COOKIE_DISCLAIMER_TYPE' | translate: params"></h4>
+        </div>
+        <div class="col-9 d-flex justify-content-start">
+          <div class="mr-1rem">
+            <select [disabled]="currentUserPermission.can_config_system===false" class="form-control"
+                    [(ngModel)]="settingConfig.COOKIE_DISCLAIMER_TYPE"
+                    (change)="changeSystemSettingSelect($event, 'COOKIE_DISCLAIMER_TYPE')">
+              <option *ngFor="let option of cookieDisclaimerOptions" value="{{option.id}}">{{ option.display }}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="row row mb-3rem">
+        <div class="col-3">
+          <h4 class="card-block__title"
+              [innerHTML]="'ADMIN.SETTINGS.COOKIE_DISCLAIMER.COOKIE_BANNER_TEXT' | translate: params"></h4>
+        </div>
+        <div class="col-4">
+          <div class="form-group">
+            <label>{{ 'ADMIN.SETTINGS.COOKIE_DISCLAIMER.COOKIE_TEXT_DE' | translate }}</label>
+            <textarea [disabled]="currentUserPermission.can_config_system===false" #cookie_disclaimer_banner_de
+                      class="form-control" rows="5"
+                      (focus)="onFocus('cookie-disclaimer-banner-de-text' , 'COOKIE_BANNER_TEXT_DE')"
+                      (blur)="onBlur('cookie-disclaimer-banner-de-text' , 'COOKIE_BANNER_TEXT_DE')"
+                      value="{{settingConfig.COOKIE_BANNER_TEXT_DE}}"></textarea>
+            <i class="form-group__bar"></i>
+          </div>
+          <div class="btn-group" *ngIf="showAction['cookie-disclaimer-banner-de-text']"
+               (click)="changeTextSettings('COOKIE_BANNER_TEXT_DE')">
+            <button [disabled]="currentUserPermission.can_config_system===false" type="button"
+                    class="btn btn-success mr-3px">
+              <i class="fal fa-check"></i>
+            </button>
+            <button [disabled]="currentUserPermission.can_config_system===false" type="button" class="btn btn-danger">
+              <i class="fal fa-times"></i>
+            </button>
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="form-group">
+            <label>{{ 'ADMIN.SETTINGS.COOKIE_DISCLAIMER.COOKIE_TEXT_EN' | translate }}</label>
+            <textarea [disabled]="currentUserPermission.can_config_system===false" #cookie_disclaimer_banner_en
+                      class="form-control" rows="5"
+                      (focus)="onFocus('cookie-disclaimer-banner-en-text' , 'COOKIE_BANNER_TEXT_EN')"
+                      (blur)="onBlur('cookie-disclaimer-banner-en-text' , 'COOKIE_BANNER_TEXT_EN')"
+                      value="{{settingConfig.COOKIE_BANNER_TEXT_EN}}"></textarea>
+            <i class="form-group__bar"></i>
+          </div>
+          <div class="btn-group" *ngIf="showAction['cookie-disclaimer-banner-en-text']">
+            <button [disabled]="currentUserPermission.can_config_system===false" type="button"
+                    class="btn btn-success mr-3px" (click)="changeTextSettings('COOKIE_BANNER_TEXT_EN')">
+              <i class="fal fa-check"></i>
+            </button>
+            <button [disabled]="currentUserPermission.can_config_system===false" type="button" class="btn btn-danger">
+              <i class="fal fa-times"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="row row mb-3rem">
+        <div class="col-3">
+          <h4 class="card-block__title"
+              [innerHTML]="'ADMIN.SETTINGS.COOKIE_DISCLAIMER.COOKIE_MODAL_TEXT' | translate: params"></h4>
+        </div>
+        <div class="col-4">
+          <div class="form-group">
+            <label>{{ 'ADMIN.SETTINGS.COOKIE_DISCLAIMER.COOKIE_TEXT_DE' | translate }}</label>
+            <textarea [disabled]="currentUserPermission.can_config_system===false" #cookie_disclaimer_modal_de
+                      class="form-control" rows="5"
+                      (focus)="onFocus('cookie-disclaimer-modal-de-text' , 'COOKIE_MODAL_TEXT_DE')"
+                      (blur)="onBlur('cookie-disclaimer-modal-de-text' , 'COOKIE_MODAL_TEXT_DE')"
+                      value="{{settingConfig.COOKIE_MODAL_TEXT_DE}}"></textarea>
+            <i class="form-group__bar"></i>
+          </div>
+          <div class="btn-group" *ngIf="showAction['cookie-disclaimer-modal-de-text']"
+               (click)="changeTextSettings('COOKIE_MODAL_TEXT_DE')">
+            <button [disabled]="currentUserPermission.can_config_system===false" type="button"
+                    class="btn btn-success mr-3px">
+              <i class="fal fa-check"></i>
+            </button>
+            <button [disabled]="currentUserPermission.can_config_system===false" type="button" class="btn btn-danger">
+              <i class="fal fa-times"></i>
+            </button>
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="form-group">
+            <label>{{ 'ADMIN.SETTINGS.COOKIE_DISCLAIMER.COOKIE_TEXT_EN' | translate }}</label>
+            <textarea [disabled]="currentUserPermission.can_config_system===false" #cookie_disclaimer_modal_en
+                      class="form-control" rows="5"
+                      (focus)="onFocus('cookie-disclaimer-modal-en-text' , 'COOKIE_MODAL_TEXT_EN')"
+                      (blur)="onBlur('cookie-disclaimer-modal-en-text' , 'COOKIE_MODAL_TEXT_EN')"
+                      value="{{settingConfig.COOKIE_MODAL_TEXT_EN}}"></textarea>
+            <i class="form-group__bar"></i>
+          </div>
+          <div class="btn-group" *ngIf="showAction['cookie-disclaimer-modal-en-text']">
+            <button [disabled]="currentUserPermission.can_config_system===false" type="button"
+                    class="btn btn-success mr-3px" (click)="changeTextSettings('COOKIE_MODAL_TEXT_EN')">
+              <i class="fal fa-check"></i>
+            </button>
+            <button [disabled]="currentUserPermission.can_config_system===false" type="button" class="btn btn-danger">
+              <i class="fal fa-times"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+  </div>
+
+  <!-- CMS Settings -->
+  <div class="card">
+    <div class="card-header" role="tab">
+      <h2 class="card-title" [innerHTML]="'ADMIN.SETTINGS.COLLAPSES.CMS' | translate: params"></h2>
+    </div>
+
+    <div class="card-block">
+
+      <div class="row mb-1rem">
+        <div class="offset-4 col-4">
+          <h4 class="card-block__title" [innerHTML]="'ADMIN.SETTINGS.CMS.LANG_DE_TITLE' | translate: params"></h4>
+        </div>
+        <div class="col-4">
+          <h4 class="card-block__title" [innerHTML]="'ADMIN.SETTINGS.CMS.LANG_EN_TITLE' | translate: params"></h4>
+        </div>
+      </div>
+
+      <div class="row mb-3rem">
+        <div class="col-3">
+          <h4 class="card-block__title" [innerHTML]="'ADMIN.SETTINGS.CMS.SUPPORT_PAGE_TITLE' | translate: params"></h4>
+        </div>
+        <div class="col-1 d-flex justify-content-start">
+          <div class="toggle-switch toggle-switch--green">
+            <input [disabled]="currentUserPermission.can_config_system===false" type="checkbox"
+                   class="toggle-switch__checkbox" [checked]="settingConfig.SUPPORT_PAGE_ENABLE"
+                   (change)="changeSystemSettingToggle($event, 'SUPPORT_PAGE_ENABLE')">
+            <i class="toggle-switch__helper"></i>
+          </div>
+        </div>
+        <div class="col-8">
+          <div class="row" class="cms-setting-desc"
+               [innerHTML]="'ADMIN.SETTINGS.CMS.SUPPORT_PAGE_DESC' | translate:{hostOrigin:hostOrigin}">
+          </div>
+          <div class="row">
+            <div class="col-6">
+              <div class="d-flex cms-setting justify-content-start mt--1rem">
+                <div class="form-group mr-15px">
+                  <input [disabled]="currentUserPermission.can_config_system===false" #support_page_de_link readonly
+                         type="text" class="form-control input-text--clickable"
+                         (click)="openFileChooserModal('SUPPORT_PAGE_DE_HTML_FILE_PATH')"
+                         [placeholder]="'ADMIN.SETTINGS.CMS.PLACEHOLDER_TEXT' | translate: params"
+                         (focus)="onFocus('support_page_de_link', 'SUPPORT_PAGE_DE_HTML_FILE_PATH')"
+                         (blur)="onBlur('support_page_de_link', 'SUPPORT_PAGE_DE_HTML_FILE_PATH')"
+                         (keyup.enter)="onEnter('support_page_de_link')"
+                         value="{{settingConfig.SUPPORT_PAGE_DE_HTML_FILE_PATH}}">
+                  <i class="form-group__bar"></i>
+                </div>
+                <div class="btn-actions">
+                  <button class="btn btn-danger" (click)="clearPage('SUPPORT_PAGE_DE_HTML_FILE_PATH')">
+                    <i class="fal fa-times"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="d-flex cms-setting justify-content-start mt--1rem">
+                <div class="form-group mr-15px">
+                  <input [disabled]="currentUserPermission.can_config_system===false" #support_page_en_link readonly
+                         type="text" class="form-control input-text--clickable"
+                         (click)="openFileChooserModal('SUPPORT_PAGE_EN_HTML_FILE_PATH')"
+                         [placeholder]="'ADMIN.SETTINGS.CMS.PLACEHOLDER_TEXT' | translate: params"
+                         (focus)="onFocus('support_page_en_link', 'SUPPORT_PAGE_EN_HTML_FILE_PATH')"
+                         (blur)="onBlur('support_page_en_link', 'SUPPORT_PAGE_EN_HTML_FILE_PATH')"
+                         (keyup.enter)="onEnter('support_page_en_link')"
+                         value="{{settingConfig.SUPPORT_PAGE_EN_HTML_FILE_PATH}}">
+                  <i class="form-group__bar"></i>
+                </div>
+                <div class="btn-actions">
+                  <button class="btn btn-danger" (click)="clearPage('SUPPORT_PAGE_EN_HTML_FILE_PATH')">
+                    <i class="fal fa-times"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="row mb-3rem">
+        <div class="col-3">
+          <h4 class="card-block__title" [innerHTML]="'ADMIN.SETTINGS.CMS.PRIVACY_POLICY_TITLE' | translate: params">
+          </h4>
+        </div>
+        <div class="col-1 d-flex justify-content-start">
+          <div class="toggle-switch toggle-switch--green">
+            <input [disabled]="currentUserPermission.can_config_system===false" type="checkbox"
+                   class="toggle-switch__checkbox" [checked]="settingConfig.PRIVACY_POLICY_ENABLE"
+                   (change)="changeSystemSettingToggle($event, 'PRIVACY_POLICY_ENABLE')">
+            <i class="toggle-switch__helper"></i>
+          </div>
+        </div>
+        <div class="col-8">
+          <div class="row" class="cms-setting-desc"
+               [innerHTML]="'ADMIN.SETTINGS.CMS.PRIVACY_POLICY_DESC' | translate:{hostOrigin:hostOrigin}">
+          </div>
+          <div class="row">
+            <div class="col-6">
+              <div class="d-flex cms-setting justify-content-start mt--1rem">
+                <div class="form-group mr-15px">
+                  <input [disabled]="currentUserPermission.can_config_system===false" #privacy_policy_de_link readonly
+                         type="text" class="form-control input-text--clickable"
+                         (click)="openFileChooserModal('PRIVACY_POLICY_DE_HTML_FILE_PATH')"
+                         [placeholder]="'ADMIN.SETTINGS.CMS.PLACEHOLDER_TEXT' | translate: params"
+                         (focus)="onFocus('privacy_policy_de_link', 'PRIVACY_POLICY_DE_HTML_FILE_PATH')"
+                         (blur)="onBlur('privacy_policy_de_link', 'PRIVACY_POLICY_DE_HTML_FILE_PATH')"
+                         (keyup.enter)="onEnter('privacy_policy_de_link')"
+                         value="{{settingConfig.PRIVACY_POLICY_DE_HTML_FILE_PATH}}">
+                  <i class="form-group__bar"></i>
+                </div>
+                <div class="btn-actions">
+                  <button class="btn btn-danger" (click)="clearPage('PRIVACY_POLICY_DE_HTML_FILE_PATH')">
+                    <i class="fal fa-times"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="d-flex cms-setting justify-content-start mt--1rem">
+                <div class="form-group mr-15px">
+                  <input [disabled]="currentUserPermission.can_config_system===false" #privacy_policy_en_link readonly
+                         type="text" class="form-control input-text--clickable"
+                         (click)="openFileChooserModal('PRIVACY_POLICY_EN_HTML_FILE_PATH')"
+                         [placeholder]="'ADMIN.SETTINGS.CMS.PLACEHOLDER_TEXT' | translate: params"
+                         (focus)="onFocus('privacy_policy_en_link', 'PRIVACY_POLICY_EN_HTML_FILE_PATH')"
+                         (blur)="onBlur('privacy_policy_en_link', 'PRIVACY_POLICY_EN_HTML_FILE_PATH')"
+                         (keyup.enter)="onEnter('privacy_policy_en_link')"
+                         value="{{settingConfig.PRIVACY_POLICY_EN_HTML_FILE_PATH}}">
+                  <i class="form-group__bar"></i>
+                </div>
+                <div class="btn-actions">
+                  <button class="btn btn-danger" (click)="clearPage('PRIVACY_POLICY_EN_HTML_FILE_PATH')">
+                    <i class="fal fa-times"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mb-3rem">
+        <div class="col-3">
+          <h4 class="card-block__title" [innerHTML]="'ADMIN.SETTINGS.CMS.TERMS_TITLE' | translate: params"></h4>
+        </div>
+        <div class="col-1 d-flex justify-content-start">
+          <div class="toggle-switch toggle-switch--green">
+            <input [disabled]="currentUserPermission.can_config_system===false" type="checkbox"
+                   class="toggle-switch__checkbox" [checked]="settingConfig.TERMS_ENABLE"
+                   (change)="changeSystemSettingToggle($event, 'TERMS_ENABLE')">
+            <i class="toggle-switch__helper"></i>
+          </div>
+        </div>
+        <div class="col-8">
+          <div class="row" class="cms-setting-desc"
+               [innerHTML]="'ADMIN.SETTINGS.CMS.TERMS_DESC' | translate:{hostOrigin:hostOrigin}">
+          </div>
+          <div class="row">
+            <div class="col-6">
+              <div class="d-flex cms-setting justify-content-start mt--1rem">
+                <div class="form-group mr-15px">
+                  <input [disabled]="currentUserPermission.can_config_system===false" #terms_de_link readonly
+                         type="text" class="form-control input-text--clickable"
+                         (click)="openFileChooserModal('TERMS_DE_HTML_FILE_PATH')"
+                         [placeholder]="'ADMIN.SETTINGS.CMS.PLACEHOLDER_TEXT' | translate: params"
+                         (focus)="onFocus('terms_de_link', 'TERMS_DE_HTML_FILE_PATH')"
+                         (blur)="onBlur('terms_de_link', 'TERMS_DE_HTML_FILE_PATH')" (keyup.enter)="onEnter('terms_de_link')"
+                         value="{{settingConfig.TERMS_DE_HTML_FILE_PATH}}">
+                  <i class="form-group__bar"></i>
+                </div>
+                <div class="btn-actions">
+                  <button class="btn btn-danger" (click)="clearPage('TERMS_DE_HTML_FILE_PATH')">
+                    <i class="fal fa-times"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="d-flex cms-setting justify-content-start mt--1rem">
+                <div class="form-group mr-15px">
+                  <input [disabled]="currentUserPermission.can_config_system===false" #terms_en_link readonly
+                         type="text" class="form-control input-text--clickable"
+                         (click)="openFileChooserModal('TERMS_EN_HTML_FILE_PATH')"
+                         [placeholder]="'ADMIN.SETTINGS.CMS.PLACEHOLDER_TEXT' | translate: params"
+                         (focus)="onFocus('terms_en_link', 'TERMS_EN_HTML_FILE_PATH')"
+                         (blur)="onBlur('terms_en_link', 'TERMS_EN_HTML_FILE_PATH')" (keyup.enter)="onEnter('terms_en_link')"
+                         value="{{settingConfig.TERMS_EN_HTML_FILE_PATH}}">
+                  <i class="form-group__bar"></i>
+                </div>
+                <div class="btn-actions">
+                  <button class="btn btn-danger" (click)="clearPage('TERMS_EN_HTML_FILE_PATH')">
+                    <i class="fal fa-times"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mb-3rem">
+        <div class="col-3">
+          <h4 class="card-block__title" [innerHTML]="'ADMIN.SETTINGS.CMS.WELCOME_TITLE' | translate: params"></h4>
+        </div>
+        <div class="col-1 d-flex justify-content-start">
+          <div class="toggle-switch toggle-switch--green">
+            <input [disabled]="currentUserPermission.can_config_system===false" type="checkbox"
+                   class="toggle-switch__checkbox" [checked]="settingConfig.WELCOME_MESSAGE_ENABLE"
+                   (change)="changeSystemSettingToggle($event, 'WELCOME_MESSAGE_ENABLE')">
+            <i class="toggle-switch__helper"></i>
+          </div>
+        </div>
+        <div class="col-8">
+          <div class="row" class="cms-setting-desc"
+               [innerHTML]="'ADMIN.SETTINGS.CMS.WELCOME_DESC' | translate:{hostOrigin:hostOrigin}">
+          </div>
+          <div class="row">
+            <div class="col-6">
+              <div class="d-flex cms-setting justify-content-start mt--1rem">
+                <div class="form-group mr-15px">
+                  <input [disabled]="currentUserPermission.can_config_system===false" #welcome_message_de_link readonly
+                         type="text" class="form-control input-text--clickable"
+                         (click)="openFileChooserModal('WELCOME_MESSAGE_DE_HTML_FILE_PATH')"
+                         [placeholder]="'ADMIN.SETTINGS.CMS.PLACEHOLDER_TEXT' | translate: params"
+                         (focus)="onFocus('welcome_message_de_link', 'WELCOME_MESSAGE_DE_HTML_FILE_PATH')"
+                         (blur)="onBlur('welcome_message_de_link', 'WELCOME_MESSAGE_DE_HTML_FILE_PATH')"
+                         (keyup.enter)="onEnter('welcome_message_de_link')"
+                         value="{{settingConfig.WELCOME_MESSAGE_DE_HTML_FILE_PATH}}">
+                  <i class="form-group__bar"></i>
+                </div>
+                <div class="btn-actions">
+                  <button class="btn btn-danger" (click)="clearPage('WELCOME_MESSAGE_DE_HTML_FILE_PATH')">
+                    <i class="fal fa-times"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="d-flex cms-setting justify-content-start mt--1rem">
+                <div class="form-group mr-15px">
+                  <input [disabled]="currentUserPermission.can_config_system===false" #welcome_message_en_link readonly
+                         type="text" class="form-control input-text--clickable"
+                         (click)="openFileChooserModal('WELCOME_MESSAGE_EN_HTML_FILE_PATH')"
+                         [placeholder]="'ADMIN.SETTINGS.CMS.PLACEHOLDER_TEXT' | translate: params"
+                         (focus)="onFocus('welcome_message_en_link', 'WELCOME_MESSAGE_EN_HTML_FILE_PATH')"
+                         (blur)="onBlur('welcome_message_en_link', 'WELCOME_MESSAGE_EN_HTML_FILE_PATH')"
+                         (keyup.enter)="onEnter('welcome_message_en_link')"
+                         value="{{settingConfig.WELCOME_MESSAGE_EN_HTML_FILE_PATH}}">
+                  <i class="form-group__bar"></i>
+                </div>
+                <div class="btn-actions">
+                  <button class="btn btn-danger" (click)="clearPage('WELCOME_MESSAGE_EN_HTML_FILE_PATH')">
+                    <i class="fal fa-times"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mb-3rem">
+        <div class="col-3">
+          <h4 class="card-block__title" [innerHTML]="'ADMIN.SETTINGS.CMS.LEGAL_NOTICES_TITLE' | translate: params"></h4>
+        </div>
+        <div class="col-1 d-flex justify-content-start">
+          <div class="toggle-switch toggle-switch--green">
+            <input [disabled]="currentUserPermission.can_config_system===false" type="checkbox"
+                   class="toggle-switch__checkbox" [checked]="settingConfig.LEGAL_NOTICES_ENABLE"
+                   (change)="changeSystemSettingToggle($event, 'LEGAL_NOTICES_ENABLE')">
+            <i class="toggle-switch__helper"></i>
+          </div>
+        </div>
+        <div class="col-8">
+          <div class="row" class="cms-setting-desc"
+               [innerHTML]="'ADMIN.SETTINGS.CMS.LEGAL_NOTICES_DESC' | translate:{hostOrigin:hostOrigin}">
+          </div>
+          <div class="row">
+            <div class="col-6">
+              <div class="d-flex cms-setting justify-content-start mt--1rem">
+                <div class="form-group mr-15px">
+                  <input [disabled]="currentUserPermission.can_config_system===false" #legal_notice_de_link readonly
+                         type="text" class="form-control input-text--clickable"
+                         (click)="openFileChooserModal('LEGAL_NOTICES_DE_HTML_FILE_PATH')"
+                         [placeholder]="'ADMIN.SETTINGS.CMS.PLACEHOLDER_TEXT' | translate: params"
+                         (focus)="onFocus('legal_notice_de_link', 'LEGAL_NOTICES_DE_HTML_FILE_PATH')"
+                         (blur)="onBlur('legal_notice_de_link', 'LEGAL_NOTICES_DE_HTML_FILE_PATH')"
+                         (keyup.enter)="onEnter('legal_notice_de_link')"
+                         value="{{settingConfig.LEGAL_NOTICES_DE_HTML_FILE_PATH}}">
+                  <i class="form-group__bar"></i>
+                </div>
+                <div class="btn-actions">
+                  <button class="btn btn-danger" (click)="clearPage('LEGAL_NOTICES_DE_HTML_FILE_PATH')">
+                    <i class="fal fa-times"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="d-flex cms-setting justify-content-start mt--1rem">
+                <div class="form-group mr-15px">
+                  <input [disabled]="currentUserPermission.can_config_system===false" #legal_notice_en_link readonly
+                         type="text" class="form-control input-text--clickable"
+                         (click)="openFileChooserModal('LEGAL_NOTICES_EN_HTML_FILE_PATH')"
+                         [placeholder]="'ADMIN.SETTINGS.CMS.PLACEHOLDER_TEXT' | translate: params"
+                         (focus)="onFocus('legal_notice_en_link', 'LEGAL_NOTICES_EN_HTML_FILE_PATH')"
+                         (blur)="onBlur('legal_notice_en_link', 'LEGAL_NOTICES_EN_HTML_FILE_PATH')"
+                         (keyup.enter)="onEnter('legal_notice_en_link')"
+                         value="{{settingConfig.LEGAL_NOTICES_EN_HTML_FILE_PATH}}">
+                  <i class="form-group__bar"></i>
+                </div>
+                <div class="btn-actions">
+                  <button class="btn btn-danger" (click)="clearPage('LEGAL_NOTICES_EN_HTML_FILE_PATH')">
+                    <i class="fal fa-times"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GENERAL -->
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">General</h2>
+    </div>
+
+    <div class="card-block">
+      <div class="row mb-3rem">
+        <div class="col-3">
+          <h4 class="card-block__title"
+              [innerHTML]="'ADMIN.SETTINGS.GENERAL.ENABLE_GLOBAL_ADDRESS_BOOK' | translate: params"></h4>
+        </div>
+        <div class="col-9 d-flex justify-content-start">
+          <div class="mr-1rem">
+            <div class="toggle-switch toggle-switch--green">
+              <input [disabled]="currentUserPermission.can_config_system===false" type="checkbox"
+                     class="toggle-switch__checkbox"
+                     [checked]="settingConfig.ENABLE_GLOBAL_ADDRESSBOOK || settingConfig.ENABLE_GLOBAL_ADDRESSBOOK === 1"
+                     (change)="changeSystemSettingToggle($event, 'ENABLE_GLOBAL_ADDRESSBOOK')">
+              <i class="toggle-switch__helper"></i>
+            </div>
+          </div>
+          <div [innerHTML]="'ADMIN.SETTINGS.GENERAL.DESCRIBE_ENABLE_GLOBAL_ADDRESS_BOOK' | translate"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BigBlueButton -->
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">{{ 'ADMIN.SETTINGS.BBB.TITLE' | translate }}</h2>
+    </div>
+
+    <div class="card-block">
+      <div class="row mb-3rem">
+        <div class="col-3">
+          <h4 class="card-block__title">{{ 'ADMIN.SETTINGS.BBB.ACTIVATED' | translate }}</h4>
+        </div>
+        <div class="col-9 d-flex justify-content-start">
+          <div class="mr-1rem">
+            <div class="toggle-switch toggle-switch--green">
+              <input [disabled]="currentUserPermission.can_config_system===false" type="checkbox"
+                     class="toggle-switch__checkbox" [checked]="settingConfig.BBB_ENABLED || settingConfig.BBB_ENABLED === 1"
+                     (change)="changeSystemSettingToggle($event, 'BBB_ENABLED')">
+              <i class="toggle-switch__helper"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="card-block">
+      <div class="row mb-3rem">
+        <div class="col-3">
+          <h4 class="card-block__title">{{ 'ADMIN.SETTINGS.BBB.BBB_SERVER_URL' | translate }}</h4>
+        </div>
+        <div class="col-9">
+          <div class="d-flex justify-content-start mt--1rem">
+            <div class="form-group mr-15px">
+              <input [disabled]="currentUserPermission.can_config_system===false" #input_bbb_server_url type="text"
+                     class="form-control w-30rem" (focus)="onFocus('bbb-server-url', 'BBB_SERVER_URL')"
+                     (blur)="onBlur('bbb-server-url', 'BBB_SERVER_URL')" (keyup.enter)="onEnter('bbb-server-url')"
+                     value="{{settingConfig.BBB_SERVER_URL}}">
+              <i class="form-group__bar"></i>
+            </div>
+            <div *ngIf="showAction['bbb-server-url']" class="btn-actions">
+              <button [disabled]="currentUserPermission.can_config_system===false"
+                      class="btn btn-success waves-effect mr-3px" (click)="changeB3ServerURL()">
+                <i class="fal fa-check"></i>
+              </button>
+              <button [disabled]="currentUserPermission.can_config_system===false" class="btn btn-danger waves-effect">
+                <i class="fal fa-times"></i>
+              </button>
+            </div>
+          </div>
+          <div>{{ 'ADMIN.SETTINGS.BBB.BBB_SERVER_URL_DESC' | translate }}</div>
+        </div>
+      </div>
+
+      <div class="row mb-3rem">
+        <div class="col-3">
+          <h4 class="card-block__title">{{ 'ADMIN.SETTINGS.BBB.BBB_SECRET_KEY' | translate }}</h4>
+        </div>
+        <div class="col-9">
+          <div class="d-flex justify-content-start mt--1rem">
+            <div class="form-group mr-15px">
+              <input [disabled]="currentUserPermission.can_config_system===false" #input_bbb_secret_key type="password"
+                     class="form-control w-30rem" (focus)="onFocus('bbb-secret-key', 'BBB_SECRET_KEY')"
+                     (blur)="onBlur('bbb-secret-key', 'BBB_SECRET_KEY')" (keyup.enter)="onEnter('bbb-secret-key')"
+                     [placeholder]="(settingConfig.BBB_SECRET_KEY === true ? 'ADMIN.SETTINGS.BBB.BBB_SECRET_KEY_PLACEHOLDER' : '') | translate "  >
+              <i class="form-group__bar"></i>
+            </div>
+            <div *ngIf="showAction['bbb-secret-key']" class="btn-actions">
+              <button [disabled]="currentUserPermission.can_config_system===false"
+                      class="btn btn-success waves-effect mr-3px" (click)="changeB3SecretKey()">
+                <i class="fal fa-check"></i>
+              </button>
+              <button [disabled]="currentUserPermission.can_config_system===false" class="btn btn-danger waves-effect">
+                <i class="fal fa-times"></i>
+              </button>
+            </div>
+          </div>
+          <div>{{ 'ADMIN.SETTINGS.BBB.BBB_SECRET_KEY_DESC' | translate }}</div>
+        </div>
+      </div>
+
+      <div class="row mb-3rem">
+        <div class="col-3">
+          <h4 class="card-block__title">{{ 'ADMIN.SETTINGS.BBB.TEST_CONNECTION' | translate }}</h4>
+        </div>
+        <div class="col-9">
+          <div class="d-flex justify-content-start mt--1rem">
+            <div class="form-group mr-15px">
+              <div class="btn-actions">
+                <button [disabled]="isTestingBBBConnection ? 'disabled' : ''" (click)="testMeetingConnection()"
+                        class="btn btn-success btn-test-connection">
+                  <span *ngIf="isTestingBBBConnection">
+                    <i class="fal fa-circle-notch fa-spin"></i>
+                  </span>
+                  <span *ngIf="!isTestingBBBConnection">
+                    {{ 'ADMIN.SETTINGS.BBB.TEST_CONNECTION' | translate }}
+                  </span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+
+    </div>
+
+    <div class="card-header">
+      <h2 class="card-title">{{ 'ADMIN.SETTINGS.BBB.ADVANCED_CONFIGS' | translate }}</h2>
+    </div>
+
+    <div class="card-block">
+      <!-- <div class="row mb-3rem">
+        <div class="col-3">
+          <h4 class="card-block__title">{{ 'ADMIN.SETTINGS.BBB.ALLOW_USER_PRIVATE_BBB_SERVER' | translate }}</h4>
+        </div>
+        <div class="col-9 d-flex justify-content-start">
+          <div class="mr-1rem">
+            <div class="toggle-switch toggle-switch--green">
+              <input [disabled]="currentUserPermission.can_config_system===false" type="checkbox"
+                class="toggle-switch__checkbox" [checked]="settingConfig.BBB_ALLOW_USER_PRIVATE_SERVER || settingConfig.BBB_ALLOW_USER_PRIVATE_SERVER === 1"
+                (change)="changeSystemSettingToggle($event, 'BBB_ALLOW_USER_PRIVATE_SERVER')">
+              <i class="toggle-switch__helper"></i>
+            </div>
+          </div>
+          <div>
+            {{ 'ADMIN.SETTINGS.BBB.ALLOW_USER_PRIVATE_BBB_SERVER_DESC' | translate }} <br />
+            {{ 'ADMIN.SETTINGS.BBB.ALLOW_USER_PRIVATE_BBB_SERVER_NOTE' | translate }}
+          </div>
+        </div>
+      </div> -->
+      <!-- <div class="row mb-3rem">
+        <div class="col-3">
+          <h4 class="card-block__title">{{ 'ADMIN.SETTINGS.BBB.ALLOW_TENANTS_PRIVATE_BBB_SERVER' | translate }}</h4>
+        </div>
+        <div class="col-9 d-flex justify-content-start">
+          <div class="mr-1rem">
+            <div class="toggle-switch toggle-switch--green">
+              <input [disabled]="currentUserPermission.can_config_system===false" type="checkbox"
+                class="toggle-switch__checkbox" [checked]="settingConfig.BBB_ALLOW_TENANTS_PRIVATE_SERVER || settingConfig.BBB_ALLOW_TENANTS_PRIVATE_SERVER === 1"
+                (change)="changeSystemSettingToggle($event, 'BBB_ALLOW_TENANTS_PRIVATE_SERVER')">
+              <i class="toggle-switch__helper"></i>
+            </div>
+          </div>
+          <div>
+            {{ 'ADMIN.SETTINGS.BBB.ALLOW_TENANTS_PRIVATE_BBB_SERVER_DESC' | translate }} <br />
+            {{ 'ADMIN.SETTINGS.BBB.ALLOW_TENANTS_PRIVATE_BBB_SERVER_NOTE' | translate }}
+          </div>
+        </div>
+      </div> -->
+      <!-- <div class="row mb-3rem">
+        <div class="col-3">
+          <h4 class="card-block__title">{{ 'ADMIN.SETTINGS.BBB.ALLOW_GROUPS_PRIVATE_BBB_SERVER' | translate }}</h4>
+        </div>
+        <div class="col-9 d-flex justify-content-start">
+          <div class="mr-1rem">
+            <div class="toggle-switch toggle-switch--green">
+              <input [disabled]="currentUserPermission.can_config_system===false" type="checkbox"
+                class="toggle-switch__checkbox" [checked]="settingConfig.BBB_ALLOW_GROUPS_PRIVATE_SERVER || settingConfig.BBB_ALLOW_GROUPS_PRIVATE_SERVER === 1"
+                (change)="changeSystemSettingToggle($event, 'BBB_ALLOW_GROUPS_PRIVATE_SERVER')">
+              <i class="toggle-switch__helper"></i>
+            </div>
+          </div>
+          <div>
+            {{ 'ADMIN.SETTINGS.BBB.ALLOW_GROUPS_PRIVATE_BBB_SERVER_DESC' | translate }} <br />
+            {{ 'ADMIN.SETTINGS.BBB.ALLOW_GROUPS_PRIVATE_BBB_SERVER_NOTE' | translate }}
+          </div>
+        </div>
+      </div> -->
+      <div class="row mb-3rem">
+        <div class="col-3">
+          <h4 class="card-block__title">{{ 'ADMIN.SETTINGS.BBB.DEFAULT_AMOUNT_OF_MEETING' | translate }}</h4>
+        </div>
+        <div class="col-9">
+          <div class="d-flex justify-content-start mt--1rem">
+            <div class="form-group mr-15px">
+              <input [disabled]="currentUserPermission.can_config_system===false" #input_bbb_default_meetings_amount type="text"
+                     class="form-control w-30rem" (focus)="onFocus('bbb-default-amount-of-meetings', 'BBB_MAX_MEETINGS_PER_USER')"
+                     (blur)="onBlur('bbb-default-amount-of-meetings', 'BBB_MAX_MEETINGS_PER_USER')" (keyup.enter)="onEnter('bbb-default-amount-of-meetings')"
+                     value="{{settingConfig.BBB_MAX_MEETINGS_PER_USER}}">
+              <i class="form-group__bar"></i>
+            </div>
+            <div *ngIf="showAction['bbb-default-amount-of-meetings']" class="btn-actions">
+              <button [disabled]="currentUserPermission.can_config_system===false"
+                      class="btn btn-success waves-effect mr-3px" (click)="changeB3DefaultMeetingAmount()">
+                <i class="fal fa-check"></i>
+              </button>
+              <button [disabled]="currentUserPermission.can_config_system===false" class="btn btn-danger waves-effect">
+                <i class="fal fa-times"></i>
+              </button>
+            </div>
+          </div>
+          <div>{{ 'ADMIN.SETTINGS.BBB.DEFAULT_AMOUNT_OF_MEETING_DESC' | translate }}</div>
+        </div>
+      </div>
+      <div class="row mb-3rem">
+        <div class="col-3">
+          <h4 class="card-block__title">{{ 'ADMIN.SETTINGS.BBB.ALLOW_MEETING_RECORDINGS' | translate }}</h4>
+        </div>
+        <div class="col-9 d-flex justify-content-start">
+          <div class="mr-1rem">
+            <div class="toggle-switch toggle-switch--green">
+              <input [disabled]="currentUserPermission.can_config_system===false" type="checkbox"
+                     class="toggle-switch__checkbox" [checked]="settingConfig.BBB_ALLOW_MEETING_RECORDINGS || settingConfig.BBB_ALLOW_MEETING_RECORDINGS === 1"
+                     (change)="changeSystemSettingToggle($event, 'BBB_ALLOW_MEETING_RECORDINGS')">
+              <i class="toggle-switch__helper"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3rem">
+        <div class="col-3">
+          <h4 class="card-block__title">{{ 'ADMIN.SETTINGS.BBB.ALLOW_PUBLIC_SHARES_FOR_RECORDINGS' | translate }}</h4>
+        </div>
+        <div class="col-9 d-flex justify-content-start">
+          <div class="mr-1rem">
+            <div class="toggle-switch toggle-switch--green">
+              <input [disabled]="currentUserPermission.can_config_system===false" type="checkbox"
+                     class="toggle-switch__checkbox" [checked]="settingConfig.BBB_ALLOW_PUBLIC_SHARES_FOR_MEETING || settingConfig.BBB_ALLOW_PUBLIC_SHARES_FOR_MEETING === 1"
+                     (change)="changeSystemSettingToggle($event, 'BBB_ALLOW_PUBLIC_SHARES_FOR_MEETING')">
+              <i class="toggle-switch__helper"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="row mb-3rem">
+        <div class="col-3">
+          <h4 class="card-block__title">{{ 'ADMIN.SETTINGS.BBB.ALLOW_PUBLIC_SHARES_FOR_MEETING_RECORDINGS' | translate }}</h4>
+        </div>
+        <div class="col-9 d-flex justify-content-start">
+          <div class="mr-1rem">
+            <div class="toggle-switch toggle-switch--green">
+              <input [disabled]="currentUserPermission.can_config_system===false" type="checkbox"
+                class="toggle-switch__checkbox" [checked]="settingConfig.BBB_ALLOW_PUBLIC_SHARES_FOR_MEETING_RECORDINGS || settingConfig.BBB_ALLOW_PUBLIC_SHARES_FOR_MEETING_RECORDINGS === 1"
+                (change)="changeSystemSettingToggle($event, 'BBB_ALLOW_PUBLIC_SHARES_FOR_MEETING_RECORDINGS')">
+              <i class="toggle-switch__helper"></i>
+            </div>
+          </div>
+        </div>
+      </div> -->
+    </div>
+
+  </div>
+
+  <app-processing *ngIf="isProcessing"></app-processing>

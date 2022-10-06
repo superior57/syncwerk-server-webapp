@@ -1,0 +1,116 @@
+<table *ngIf="listSharedLinks.length > 0" class="table table-hover mb-0">
+  <thead>
+    <tr>
+      <th>
+        <span [innerHTML]="'USERADMIN_INFO.SHARED_LINKS.TABLE.NAME' | translate: params"></span>
+      </th>
+      <th width="12.5%">
+        <span [innerHTML]="'USERADMIN_INFO.SHARED_LINKS.TABLE.SIZE' | translate: params"></span>
+      </th>
+      <th width="12.5%">
+        <span [innerHTML]="'USERADMIN_INFO.SHARED_LINKS.TABLE.TYPE' | translate: params"></span>
+      </th>
+      <th width="15%">
+        <span [innerHTML]="'USERADMIN_INFO.SHARED_LINKS.TABLE.VISITS' | translate: params"></span>
+      </th>
+      <th width="10%">
+        <span [innerHTML]="'USERADMIN_INFO.SHARED_LINKS.TABLE.OPERATIONS' | translate: params"></span>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of listSharedLinks; let index = index" (mouseover)="hoveredIndex=index" (mouseleave)="hoveredIndex=-1">
+
+      <ng-container *ngIf="item.is_download">
+        <ng-container *ngIf="item.is_dir_share_link">
+          <ng-container *ngIf="enableViewRepo">
+            <td class="tb-name item-link" (click)="browseShareLink(item)">
+              <div class="vertical-items">
+                <div class="icon-tb-name d-inline-block">
+                  <i class="fas fa-folder fa-fw icon-folder"></i>
+                </div>
+                <span class="text-ellipsis" data-toggle="tooltip" title="{{ item.item_name }}">{{ item.item_name }}</span>
+              </div>
+            </td>
+          </ng-container>
+          <ng-container *ngIf="!enableViewRepo">
+            <td class="tb-name">
+              <div class="vertical-items">
+                <div class="icon-tb-name d-inline-block">
+                  <i class="fas fa-folder fa-fw icon-folder"></i>
+                </div>
+                <span class="text-ellipsis" data-toggle="tooltip" title="{{ item.item_name }}">{{ item.item_name }}</span>
+              </div>
+            </td>
+          </ng-container>
+        </ng-container>
+        <ng-container *ngIf="!item.is_dir_share_link">
+          <td class="tb-name">
+            <div class="vertical-items">
+              <div class="icon-tb-name d-inline-block">
+                <img *ngIf="!item.imgError || (item.imgError && item.imgError != 1)" (error)="setErrorImg(index)" class="icon-file"
+                  src="{{ item.item_name | customFileIcon: false: item.link_img }}">
+                <div *ngIf="(item.imgError && item.imgError === 1)">
+                  <i class="{{ item.item_name | customFileIcon }}" id="icon-file"></i>
+                </div>
+              </div>
+              <span class="text-ellipsis" data-toggle="tooltip" title="{{ item.item_name }}">{{ item.item_name }}</span>
+            </div>
+          </td>
+        </ng-container>
+      </ng-container>
+
+      <ng-container *ngIf="item.is_upload">
+        <ng-container *ngIf="enableViewRepo">
+          <td class="tb-name item-link" (click)="browseShareLink(item)">
+            <div class="vertical-items">
+              <div class="icon-tb-name d-inline-block">
+                <i class="fas fa-folder fa-fw icon-folder"></i>
+              </div>
+              <span class="text-ellipsis" data-toggle="tooltip" title="{{ item.dir_name }}">{{ item.dir_name }}</span>
+            </div>
+          </td>
+        </ng-container>
+        <ng-container *ngIf="!enableViewRepo">
+          <td class="tb-name">
+            <div class="vertical-items">
+              <div class="icon-tb-name d-inline-block">
+                <i class="fas fa-folder fa-fw icon-folder"></i>
+              </div>
+              <span class="text-ellipsis" data-toggle="tooltip" title="{{ item.dir_name }}">{{ item.dir_name }}</span>
+            </div>
+          </td>
+        </ng-container>
+
+
+      </ng-container>
+      <td>
+        <span *ngIf="item.is_download">{{ (item.is_dir_share_link ? item.dir_size : item.file_size) | customFileSize }}</span>
+        <span *ngIf="item.is_upload">--</span>
+      </td>
+      <td>
+        <span *ngIf="item.is_download">Download</span>
+        <span *ngIf="item.is_upload">Upload</span>
+      </td>
+      <td>
+        {{ item.view_cnt }}
+      </td>
+      <td>
+        <div *ngIf="index === hoveredIndex">
+          <i *ngIf="currentUserPermission.can_manage_folder !== false" data-toggle="tooltip" [title]="'TOOLTIPS.REMOVE' | translate: params" class="actions__item fal fa-trash-alt"
+            (click)="removeItem(item)"></i>
+          <a [routerLink]="['/folders', item.repo_id]">
+            <i data-toggle="tooltip" [title]="'TOOLTIPS.VISIT_LINK' | translate: params" class="fal fa-external-link-square"></i>
+          </a>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<app-empty-item *ngIf="listSharedLinks.length === 0" [messageTitle]="'USERADMIN_INFO.SHARED_LINKS.EMPTY_ITEM.MSG_TITLE' | translate: params"></app-empty-item>
+
+<app-modal-delete-remove *ngIf="isOpenModal.remove && currentItem.is_download" [typeDelete]="'Download Link'"
+  [itemName]="currentItem.item_name" [isDeleteModal]="false" (submitRemoveItem)="onSubmitRemoveItem()"></app-modal-delete-remove>
+<app-modal-delete-remove *ngIf="isOpenModal.remove && currentItem.is_upload" [typeDelete]="'Upload Link'" [itemName]="currentItem.dir_name"
+  [isDeleteModal]="false" (submitRemoveItem)="onSubmitRemoveItem()"></app-modal-delete-remove>

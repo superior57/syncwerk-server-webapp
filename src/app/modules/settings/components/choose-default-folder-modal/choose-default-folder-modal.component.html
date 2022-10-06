@@ -1,0 +1,31 @@
+<div class="modal fade" id="choose-default-folder-modal" tabindex="-1">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <header class="content__title font-size-content">
+          <h1>
+            <strong [innerHTML]="'SETTINGS.DEFAULT_FOLDER.YOUR_DEFAULT_FOLDER' | translate"></strong>
+          </h1>
+        </header>
+      </div>
+      <div class="modal-body">
+        <div class="tree-demo-app">
+          <div class="tree-container tree-container--with-controls">
+            <div class="tree-content">
+              <tree #treeFolders [tree]="folders" (nodeSelected)="onNodeSelected($event)">
+              </tree>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success btn--icon-text waves-effect" (click)="submitDefaultFolder()">
+          <span [innerHTML]="'SETTINGS.DEFAULT_FOLDER.MODAL_SUBMIT' | translate"></span>
+        </button>
+        <button type="button" class="btn btn-secondary btn--icon-text waves-effect" data-dismiss="modal" (click)="closeModal()">
+          <span [innerHTML]="'SETTINGS.DEFAULT_FOLDER.MODAL_CANCEL' | translate"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,27 @@
+// .p-name:hover {
+//   display: none;
+// }
+
+.vertical-item {
+  display: flex;
+  align-items: center;
+}
+
+.mb-2dot3 {
+  margin-bottom: 2.3rem;
+}
+
+.img-avatar {
+  //border-radius: 50%;
+}
+
+.card__profile {
+  width: 10rem;
+  background: #cecece;
+  height: 10rem;
+  //border-radius: 50%;
+  text-align: center;
+  padding: 0px;
+  font-size: 7rem;
+  color: #fff;
+}
